@@ -26,7 +26,7 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   siteUrl: 'https://blog.ulna520.top',
-  siteTitle: 'ulBo Astro Theme',
+  siteTitle: 'ulBo',
   siteDescription: 'A configurable Astro blog theme with centralized config and zero-content defaults.',
   locale: 'zh-CN',
   headerGithubRepoUrl: 'https://github.com/xxy1103/xxy1103.github.io',
