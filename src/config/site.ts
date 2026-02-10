@@ -22,6 +22,10 @@ export interface SiteConfig {
    * Repository URL shown in the header action area.
    */
   headerGithubRepoUrl: string;
+  /**
+   * Global favicon ico path served from the public directory.
+   */
+  faviconIco: string;
 }
 
 export const siteConfig: SiteConfig = {
@@ -30,6 +34,7 @@ export const siteConfig: SiteConfig = {
   siteDescription: 'A configurable Astro blog theme with centralized config and zero-content defaults.',
   locale: 'zh-CN',
   headerGithubRepoUrl: 'https://github.com/xxy1103/xxy1103.github.io',
+  faviconIco: '/favicon.ico',
 };
 
 export const { siteUrl, siteTitle, siteDescription, locale, headerGithubRepoUrl } = siteConfig;

@@ -5,7 +5,7 @@ import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { enableCustomCursorByDefault, locale, siteTitle, siteUrl } from '../config';
+import { enableCustomCursorByDefault, faviconIco, locale, siteTitle, siteUrl } from '../config';
 
 type SchemaObject = Record<string, unknown>;
 
@@ -64,6 +64,7 @@ const schemaList = !schema ? [] : Array.isArray(schema) ? schema : [schema];
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="custom-cursor-default" content={enableCustomCursorByDefault ? 'on' : 'off'} />
+<link rel="icon" href={faviconIco} sizes="any" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
 	rel="alternate"
