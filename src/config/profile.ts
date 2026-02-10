@@ -1,4 +1,4 @@
-import defaultAvatar from '../assets/blog-placeholder-about.jpg';
+import defaultAvatar from '../assets/avatar.webp';
 
 /**
  * Allowed social entry keys in profile configuration.
@@ -54,15 +54,15 @@ export interface ProfileConfig {
 
 export const profileConfig: ProfileConfig = {
   avatar: defaultAvatar.src,
-  name: 'Your Name',
-  title: 'Your Role / Focus',
-  bio: 'Write a short self-introduction here. This content is used in About and article schema.',
-  location: 'Your City',
-  email: 'you@example.com',
-  githubProfileUrl: 'https://github.com/your-username',
+  name: 'ulna',
+  title: '北邮计算机在读 / 深度学习与工程实践',
+  bio: '以兴趣驱动探索，余者皆为馈赠。',
+  location: '北京',
+  email: 'xianxingyuan520@outlook.com',
+  githubProfileUrl: 'https://github.com/xxy1103',
   socials: [
-    { key: 'github', label: 'GitHub', url: 'https://github.com/your-username' },
-    { key: 'x', label: 'X', url: 'https://x.com/your-handle' },
-    { key: 'website', label: 'Website', url: 'https://your-site.example.com' },
+    { key: 'github', label: 'GitHub', url: 'https://github.com/xxy1103' },
+    { key: 'x', label: 'X', url: '' },
+    { key: 'website', label: 'Website', url: '' },
   ],
 };

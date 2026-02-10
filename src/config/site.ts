@@ -29,7 +29,7 @@ export const siteConfig: SiteConfig = {
   siteTitle: 'ulBo Astro Theme',
   siteDescription: 'A configurable Astro blog theme with centralized config and zero-content defaults.',
   locale: 'zh-CN',
-  headerGithubRepoUrl: 'https://github.com/xxy1103/ulbo-astro-theme-template',
+  headerGithubRepoUrl: 'https://github.com/xxy1103/xxy1103.github.io',
 };
 
 export const { siteUrl, siteTitle, siteDescription, locale, headerGithubRepoUrl } = siteConfig;
