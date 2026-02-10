@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest an improvement for the theme
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What problem are you trying to solve?
+      placeholder: Clear problem statement.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe your preferred solution.
+      placeholder: Proposed approach and expected outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternatives or tradeoffs?
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Mockups, links, and other details.

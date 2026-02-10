@@ -1,0 +1,374 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import HeroHeader from '../../components/HeroHeader.astro';
+import SearchModal from '../../components/SearchModal.astro';
+import { heroConfig, siteTitle } from '../../config';
+import { existsSync } from 'node:fs';
+
+// 获取所有博客文章
+const posts = (await getCollection('blog')).filter((post) =>
+	post.filePath ? existsSync(post.filePath) : false
+);
+
+// 提取所有标签并统计每个标签的文章数量
+const tagCount: Record<string, number> = {};
+posts.forEach((post) => {
+	const tags = post.data.tags || [];
+	tags.forEach((tag: string) => {
+		tagCount[tag] = (tagCount[tag] || 0) + 1;
+	});
+});
+
+// 按文章数量降序排列标签
+const sortedTags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]);
+const tagsHero = heroConfig.tags;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead
+			title={`标签 | ${siteTitle}`}
+			description="按标签浏览所有博客文章"
+		/>
+		<style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+			body {
+				background-color: var(--color-bg);
+			}
+			main {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Stats Section Wrapper */
+            .stats-wrapper {
+                position: relative;
+                background: linear-gradient(to bottom, transparent 100px, var(--color-bg) 100px);
+                min-height: 50vh;
+            }
+
+            /* Content Card */
+            .content-card {
+                position: relative;
+                z-index: 20;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1em 2em;
+            }
+			
+			.posts-container {
+				background: var(--color-surface);
+				border-radius: 16px;
+				box-shadow: var(--shadow-card);
+				padding: 2em;
+				min-height: 300px;
+			}
+            
+            .section-header {
+                display: flex;
+                align-items: baseline;
+                gap: 0.5em;
+                margin-bottom: 0.5em;
+            }
+
+            .section-number {
+                font-size: 0.9em;
+                color: var(--color-text-muted);
+                font-weight: 500;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+                font-weight: bold;
+                margin: 0;
+                color: var(--color-text);
+            }
+
+            .intro-text {
+                color: var(--color-text-secondary);
+                margin-bottom: 2em;
+                font-size: 0.9em;
+                line-height: 1.6;
+            }
+
+			.tags-container {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1rem;
+                padding-top: 1em;
+			}
+			.tag {
+				display: inline-flex;
+				align-items: center;
+				padding: 0.8em 1.5em;
+				
+                /* Glassmorphism Base */
+                background: var(--color-surface-hover);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid var(--color-border);
+                box-shadow: 
+                    0 4px 6px rgba(var(--shadow-color), 0.02),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                
+				color: var(--color-text-secondary);
+				border-radius: 50px;
+				text-decoration: none;
+				transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+                font-weight: 500;
+                position: relative;
+                overflow: hidden;
+                
+                /* Animation Init State */
+                opacity: 0;
+                animation: fadeInUp 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+                animation-delay: calc(var(--i) * 0.04s);
+			}
+            
+            /* Liquid Light Reflection */
+            .tag::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 50%;
+                background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0));
+                border-radius: 50px 50px 0 0;
+                opacity: 0.3;
+                pointer-events: none;
+            }
+
+            /* Liquid Fill Gradient - Hidden by default */
+            .tag::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, var(--accent), #a1c4fd); /* Dynamic liquid gradient */
+                opacity: 0;
+                transition: opacity 0.4s ease;
+                z-index: -1;
+            }
+
+            .tag:hover {
+                /* On hover, become more "liquid" and vibrant */
+                border-color: rgba(255, 255, 255, 0.4);
+				color: white;
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 
+                    0 15px 25px -10px rgba(var(--accent-rgb, 0,0,0), 0.3), /* Deep colored shadow */
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+			}
+            
+            .tag:hover::after {
+                opacity: 1;
+            }
+            
+            /* Text z-index fix */
+            .tag-text, .tag-count {
+                position: relative;
+                z-index: 2;
+                text-shadow: none;
+                transition: color 0.3s;
+            }
+            
+            /* Count bubble adjustments for glass style */
+			.tag-count {
+				margin-left: 0.8em;
+				font-size: 0.75em;
+				opacity: 0.8;
+                font-weight: 600;
+                background: rgba(var(--shadow-color),0.06);
+                padding: 3px 9px;
+                border-radius: 20px;
+                box-shadow: inset 0 1px 2px rgba(var(--shadow-color),0.05);
+			}
+            
+            .tag:hover .tag-count {
+                background: rgba(255,255,255,0.25);
+                color: white;
+                box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+			.no-tags {
+				color: rgb(var(--gray));
+				font-style: italic;
+                text-align: center;
+                padding: 2em;
+			}
+			
+			@media (max-width: 900px) {
+				.content-card {
+					padding: 0 0.75em 1.5em;
+				}
+
+				.posts-container {
+					padding: 1.4em;
+				}
+
+				.tags-container {
+					gap: 0.75rem;
+				}
+			}
+
+				@media (max-width: 720px) {
+					.content-card {
+						padding: 0;
+					}
+
+					.posts-container {
+						padding: 1.1em;
+						border-radius: 0;
+					}
+
+				.section-title {
+					font-size: clamp(1.45rem, 6vw, 1.7rem);
+				}
+
+				.tag {
+					padding: 0.7em 1.2em;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header transparent={true} />
+        <div id="main-content">
+		<main>
+            <!-- Hero Header -->
+            <HeroHeader
+                text={tagsHero.text}
+                subtitle={tagsHero.subtitle}
+                backgroundImage={tagsHero.backgroundImage}
+                compact={true}
+            />
+
+            <!-- Stats Section Wrapper -->
+            <div class="stats-wrapper">
+                <div class="content-card" id="stats-card" transition:name="page-content">
+                    <div class="posts-container">
+                        <div class="section-header">
+                            <span class="section-number">Tags</span>
+                        </div>
+                        <h2 class="section-title">所有标签</h2>
+                        <p class="intro-text">共包含 {sortedTags.length} 个标签</p>
+
+                        {sortedTags.length > 0 ? (
+                            <div class="tags-container">
+                                {sortedTags.map(([tag, count], index) => (
+                                    <a href={`/tags/${encodeURIComponent(tag)}/`} class="tag" style={`--i: ${index}`}>
+                                        <span class="tag-text"># {tag}</span>
+                                        <span class="tag-count">{count}</span>
+                                    </a>
+                                ))}
+                            </div>
+                        ) : (
+                            <p class="no-tags">暂无标签</p>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+
+		</main>
+        
+        <script>
+            document.addEventListener('astro:page-load', () => {
+                // Magnetic Button Effect for Tags
+                const tags = document.querySelectorAll('.tag');
+                const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+                if (!isCoarsePointer) {
+                    tags.forEach(tag => {
+                        const tagAny = tag as any;
+                        if (tagAny.__magneticMoveHandler) {
+                            tag.removeEventListener('mousemove', tagAny.__magneticMoveHandler);
+                        }
+                        if (tagAny.__magneticLeaveHandler) {
+                            tag.removeEventListener('mouseleave', tagAny.__magneticLeaveHandler);
+                        }
+
+                        tagAny.__magneticMoveHandler = (e: MouseEvent) => {
+                            const rect = tag.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            
+                            // Calculate distance from center
+                            const centerX = rect.width / 2;
+                            const centerY = rect.height / 2;
+                            
+                            const deltaX = (x - centerX) * 0.3; // Strength of magnetism
+                            const deltaY = (y - centerY) * 0.3;
+                            
+                            tag.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(1.05)`;
+                        };
+
+                        tagAny.__magneticLeaveHandler = () => {
+                            tag.style.transform = '';
+                        };
+
+                        tag.addEventListener('mousemove', tagAny.__magneticMoveHandler);
+                        tag.addEventListener('mouseleave', tagAny.__magneticLeaveHandler);
+                    });
+                }
+
+                // Parallax card effect - 卡片浮动效果
+                const statsCard = document.getElementById('stats-card');
+                const heroHeader = document.querySelector('.hero-header');
+                const mainContent = document.getElementById('main-content');
+                const maxRise = isCoarsePointer ? 72 : 180;
+
+                if (statsCard && heroHeader && mainContent) {
+                    let ticking = false;
+                    function updateParallax() {
+                        const scrollY = mainContent!.scrollTop;
+                        // 一滑就上浮，滚动距离与上浮距离成正比
+                        const progress = Math.min(scrollY / (window.innerHeight * 0.5), 1);
+                        const rise = progress * maxRise;
+                        statsCard.style.transform = `translateY(-${rise}px)`;
+                    }
+
+                    const onScroll = () => {
+                        if (ticking) return;
+                        ticking = true;
+                        requestAnimationFrame(() => {
+                            updateParallax();
+                            ticking = false;
+                        });
+                    };
+
+                    const mainContentAny = mainContent as any;
+                    if (mainContentAny.__tagsIndexParallaxHandler) {
+                        mainContent.removeEventListener('scroll', mainContentAny.__tagsIndexParallaxHandler);
+                    }
+
+                    mainContentAny.__tagsIndexParallaxHandler = onScroll;
+                    updateParallax();
+                    mainContent.addEventListener('scroll', onScroll, { passive: true });
+                }
+            });
+        </script>
+		<Footer />
+        </div>
+		<SearchModal />
+	</body>
+</html>

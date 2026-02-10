@@ -1,0 +1,196 @@
+---
+---
+<div id="custom-cursor-wrapper" class="hidden">
+    <div id="custom-cursor-inner"></div>
+</div>
+
+<style>
+    /* 
+     * Global Cursor Reset 
+     * Force hide default cursor everywhere
+     */
+    :global(html.is-android.custom-cursor-enabled),
+    :global(html.is-android.custom-cursor-enabled body),
+    :global(html.is-android.custom-cursor-enabled *),
+    :global(html.is-android.custom-cursor-enabled.custom-cursor-active),
+    :global(html.is-android.custom-cursor-enabled.custom-cursor-active) * {
+        cursor: none !important;
+    }
+
+    :global(html.is-android.custom-cursor-enabled) #custom-cursor-wrapper {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        :global(html.custom-cursor-enabled),
+        :global(html.custom-cursor-enabled body),
+        :global(html.custom-cursor-enabled *) {
+            cursor: none !important;
+        }
+    }
+
+    #custom-cursor-wrapper {
+        position: fixed;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        z-index: 2147483647;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        mix-blend-mode: normal; 
+    }
+
+    #custom-cursor-wrapper[data-visible="true"] {
+        opacity: 1;
+    }
+
+    #custom-cursor-inner {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform-origin: center center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        
+        /* Base Liquid Glass Look */
+        background: rgba(30, 30, 30, 0.04); /* Subtle gray tint */
+        backdrop-filter: saturate(140%) contrast(120%) brightness(110%);
+        -webkit-backdrop-filter: saturate(140%) contrast(120%) brightness(110%);
+        
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 
+            0 0 0 1px rgba(0, 0, 0, 0.05), /* Faint dark outline for white backgrounds */
+            inset 0 0 16px rgba(255, 255, 255, 0.4),
+            0 4px 20px rgba(0, 0, 0, 0.1),
+            inset 4px 4px 10px rgba(255, 255, 255, 0.6),
+            inset -4px -4px 10px rgba(255, 255, 255, 0.05);
+            
+        transition: 
+            width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+            height 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+            border-radius 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 0.28s ease,
+            border-color 0.28s ease,
+            transform 0.08s linear;
+    }
+
+    /* --- Contextual Hover States --- */
+
+    /* 1. Standard Link Hover (Text links, buttons) */
+    #custom-cursor-wrapper.hovering #custom-cursor-inner {
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 
+            inset 0 0 20px rgba(255, 255, 255, 0.3),
+            0 8px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 2. Navigation Items / Tags (Pill shape wrap) */
+    #custom-cursor-wrapper.hovering-nav #custom-cursor-inner {
+        width: var(--cursor-target-width, 100px);
+        height: var(--cursor-target-height, 40px);
+        border-radius: 999px; /* Fully rounded pill */
+        
+        /* Universal Glass Style (Same as Home Page but optimized for contrast) */
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.6); 
+        box-shadow: 
+            0 0 0 1px rgba(0, 0, 0, 0.05), /* Thin dark ring for light-mode visibility */
+            0 4px 20px rgba(0, 0, 0, 0.05), /* Soft drop shadow */
+            inset 0 0 0 1px rgba(255, 255, 255, 0.1); /* Inner gloss */
+            
+        /* Clarity */
+        backdrop-filter: saturate(110%);
+        -webkit-backdrop-filter: saturate(110%);
+    }
+
+    /* 3. Avatar (Circular containment) */
+    #custom-cursor-wrapper.hovering-avatar #custom-cursor-inner {
+        width: var(--cursor-target-width, 220px);
+        height: var(--cursor-target-height, 220px);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.01);
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        box-shadow:
+            inset 0 0 26px rgba(255, 255, 255, 0.12),
+            0 12px 36px rgba(0, 0, 0, 0.14);
+        backdrop-filter: saturate(118%) contrast(108%) brightness(104%);
+        -webkit-backdrop-filter: saturate(118%) contrast(108%) brightness(104%);
+    }
+
+    /* 4. Email (Pill containment with accent tint) */
+    #custom-cursor-wrapper.hovering-email #custom-cursor-inner {
+        width: var(--cursor-target-width, 220px);
+        height: var(--cursor-target-height, 44px);
+        border-radius: 999px;
+        background: rgba(var(--accent-rgb), 0.09);
+        border: 1.5px solid rgba(var(--accent-rgb), 0.35);
+        box-shadow:
+            inset 0 0 16px rgba(255, 255, 255, 0.18),
+            0 8px 24px rgba(var(--accent-rgb), 0.18);
+        backdrop-filter: saturate(120%) contrast(110%);
+        -webkit-backdrop-filter: saturate(120%) contrast(110%);
+    }
+
+    #custom-cursor-wrapper.hovering-nav #custom-cursor-inner,
+    #custom-cursor-wrapper.hovering-email #custom-cursor-inner,
+    #custom-cursor-wrapper.hovering-avatar #custom-cursor-inner {
+        transition:
+            width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+            height 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+            border-radius 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 0.24s ease,
+            border-color 0.24s ease,
+            transform 0s linear;
+    }
+
+    /* Click State */
+    #custom-cursor-wrapper.clicking #custom-cursor-inner {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Dark Mode Adjustment (Global Base) */
+    @media (prefers-color-scheme: dark) {
+        #custom-cursor-inner {
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 
+                inset 0 0 16px rgba(255, 255, 255, 0.2),
+                0 4px 20px rgba(0, 0, 0, 0.3),
+                inset 2px 2px 8px rgba(255, 255, 255, 0.4);
+        }
+    }
+    
+    :global([data-theme="dark"]) #custom-cursor-inner {
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 
+            inset 0 0 16px rgba(255, 255, 255, 0.2),
+            0 4px 20px rgba(0, 0, 0, 0.3),
+            inset 2px 2px 8px rgba(255, 255, 255, 0.4);
+    }
+    
+    /* No specific overrides for nav in dark mode - use Universal Glass */
+    
+    @media (hover: none) and (pointer: coarse) {
+        #custom-cursor-wrapper {
+            display: none !important;
+        }
+        :global(html.custom-cursor-enabled),
+        :global(html.custom-cursor-enabled body),
+        :global(html.custom-cursor-enabled *) {
+            cursor: none !important;
+        }
+        :global(html.custom-cursor-enabled.custom-cursor-active),
+        :global(html.custom-cursor-enabled.custom-cursor-active) * {
+            cursor: none !important;
+        }
+    }
+</style>
+
+<script>
+import '../scripts/custom-cursor.client';
+</script>
