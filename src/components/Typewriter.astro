@@ -1,0 +1,71 @@
+---
+interface Props {
+    text: string;
+    tag?: 'h1' | 'h2' | 'h3' | 'span';
+    class?: string;
+    id?: string;
+}
+
+const { text, tag = 'h1', class: className = '', id } = Astro.props;
+const Tag = tag;
+const elementId = id || `typewriter-${Math.random().toString(36).substring(7)}`;
+---
+
+<Tag class:list={['typewriter', className]} id={elementId} data-text={text}>
+    <span class="typed-text">{text}</span><span class="cursor" aria-hidden="true">_</span>
+</Tag>
+
+<style>
+    .typewriter {
+        display: inline-block;
+    }
+
+    .typed-text {
+        white-space: pre-wrap;
+        color: white;
+    }
+
+    .cursor {
+        display: inline-block;
+        margin-left: 2px;
+        font-weight: 700;
+        color: white;
+        animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+</style>
+
+<script>
+    // Initialize all typewriter elements - wrapped for View Transitions
+    document.addEventListener('astro:page-load', () => {
+        const typewriters = document.querySelectorAll('.typewriter[data-text]');
+        
+        typewriters.forEach((element) => {
+            const fullText = element.getAttribute('data-text') || '';
+            const typedTextSpan = element.querySelector('.typed-text');
+            
+            if (typedTextSpan && fullText) {
+                // Reset text content for View Transitions
+                typedTextSpan.textContent = '';
+                let i = 0;
+                // Delay start slightly to ensure page is rendered
+                setTimeout(() => {
+                    function typeWriter() {
+                        if (i < fullText.length) {
+                            typedTextSpan.textContent += fullText.charAt(i);
+                            i++;
+                            // Random typing speed for natural feel (50ms - 150ms)
+                            const randomSpeed = Math.floor(Math.random() * 100) + 50;
+                            setTimeout(typeWriter, randomSpeed);
+                        }
+                    }
+                    typeWriter();
+                }, 300);
+            }
+        });
+    });
+</script>

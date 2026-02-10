@@ -1,0 +1,864 @@
+/*
+  The CSS in this style tag is based off of Bear Blog's default CSS.
+  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
+  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+ */
+
+:root {
+	--accent: #2337ff;
+	--accent-dark: #000d8a;
+	--accent-rgb: 35, 55, 255;
+	--black: 15, 18, 25;
+	--gray: 96, 115, 159;
+	--gray-light: 229, 233, 240;
+	--gray-dark: 34, 41, 57;
+	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
+	--box-shadow:
+		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
+
+	/* Animation Variables */
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+	/* Theme Transition */
+	--theme-transition: background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		border-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		box-shadow 0.4s cubic-bezier(0.2, 0, 0, 1);
+
+	/* ═══════════════════════════════════════
+	   Semantic Color Tokens — Light Mode
+	   ═══════════════════════════════════════ */
+
+	/* Surfaces */
+	--color-bg: #f4f5f6;
+	--color-surface: #ffffff;
+	--color-surface-hover: #fafbfc;
+	--color-surface-elevated: #fafafa;
+	--color-surface-input: #f8f9fa;
+
+	/* Text */
+	--color-text: #333333;
+	--color-text-secondary: #666666;
+	--color-text-tertiary: #888888;
+	--color-text-muted: #999999;
+	--color-text-strong: #222222;
+
+	/* Borders */
+	--color-border: #eeeeee;
+	--color-border-subtle: #f0f0f0;
+	--color-border-strong: #e5e5e5;
+
+	/* Interactive Elements */
+	--color-tag-bg: #f0f0f0;
+	--color-tag-bg-hover: #e0e0e0;
+	--color-tag-text: #666666;
+
+	/* Shadows */
+	--shadow-color: 0, 0, 0;
+	--shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
+	--shadow-card-hover: 0 2px 16px rgba(0, 0, 0, 0.04);
+
+	/* Code */
+	--color-code-inline-bg: linear-gradient(135deg, #f8f9fa 0%, #f0f1f3 100%);
+	--color-code-inline-text: #d63384;
+	--color-code-inline-border: rgba(0, 0, 0, 0.06);
+	--color-code-block-bg: #ffffff;
+	--color-code-block-text: #374151;
+	--color-code-block-border: rgba(0, 0, 0, 0.08);
+	--color-code-block-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+	--color-code-block-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	--color-code-toolbar-bg: rgba(0, 0, 0, 0.04);
+	--color-code-toolbar-text: rgba(0, 0, 0, 0.5);
+	--color-code-toolbar-border: rgba(0, 0, 0, 0.06);
+	--color-code-toolbar-hover: rgba(0, 0, 0, 0.08);
+	--color-line-numbers-bg: rgba(0, 0, 0, 0.02);
+	--color-line-numbers-border: rgba(0, 0, 0, 0.06);
+	--color-line-numbers-text: rgba(0, 0, 0, 0.3);
+
+	/* Blockquote */
+	--color-blockquote-border: rgb(210, 210, 210);
+	--color-blockquote-text: rgb(120, 120, 120);
+
+	/* Header / Glassmorphism */
+	--color-header-bg: #ffffff;
+	--color-header-glass: rgba(255, 255, 255, 0.7);
+	--color-header-glass-border: rgba(255, 255, 255, 0.5);
+	--color-header-shadow: 0 2px 8px rgba(15, 18, 25, 0.05);
+
+	/* Search */
+	--color-search-bg: #ffffff;
+	--color-search-footer-bg: #fcfcfc;
+	--color-search-result-hover: #f8f9fa;
+	--color-search-highlight-text: #e53e3e;
+	--color-search-highlight-bg: rgba(229, 62, 62, 0.1);
+
+	/* Scrollbar */
+	--color-scrollbar: rgba(153, 153, 153, 0.4);
+	--color-scrollbar-hover: rgba(153, 153, 153, 0.6);
+
+	/* Misc */
+	--color-skill-bar-bg: #e0e0e0;
+	--color-gradient-start: #667eea;
+	--color-hobby-gradient: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+/* ═══════════════════════════════════════
+   Dark Mode — Premium Dark Palette
+   舒适、质感、高级感
+   ═══════════════════════════════════════ */
+[data-theme="dark"] {
+	--accent: #7b8cff;
+	--accent-dark: #5c6ae6;
+	--accent-rgb: 123, 140, 255;
+	--black: 232, 234, 237;
+	--gray: 140, 155, 185;
+	--gray-light: 35, 40, 56;
+	--gray-dark: 200, 210, 225;
+	--gray-gradient: rgba(var(--gray-light), 50%), var(--color-bg);
+
+	/* Surfaces */
+	--color-bg: #0f1117;
+	--color-surface: #1a1d28;
+	--color-surface-hover: #22263a;
+	--color-surface-elevated: #1e2230;
+	--color-surface-input: #252836;
+
+	/* Text */
+	--color-text: #e0e2e8;
+	--color-text-secondary: #9aa0a6;
+	--color-text-tertiary: #7c8290;
+	--color-text-muted: #5f6874;
+	--color-text-strong: #eef0f4;
+
+	/* Borders */
+	--color-border: #2d3244;
+	--color-border-subtle: #252836;
+	--color-border-strong: #3d4253;
+
+	/* Interactive */
+	--color-tag-bg: #252836;
+	--color-tag-bg-hover: #2d3244;
+	--color-tag-text: #9aa0a6;
+
+	/* Shadows */
+	--shadow-color: 0, 0, 0;
+	--shadow-card: 0 4px 24px rgba(0, 0, 0, 0.35);
+	--shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+	/* Code */
+	--color-code-inline-bg: linear-gradient(135deg, #252836 0%, #1e2230 100%);
+	--color-code-inline-text: #f472b6;
+	--color-code-inline-border: rgba(255, 255, 255, 0.06);
+	--color-code-block-bg: #161822;
+	--color-code-block-text: #d1d5db;
+	--color-code-block-border: rgba(255, 255, 255, 0.06);
+	--color-code-block-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+	--color-code-block-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+	--color-code-toolbar-bg: rgba(255, 255, 255, 0.06);
+	--color-code-toolbar-text: rgba(255, 255, 255, 0.5);
+	--color-code-toolbar-border: rgba(255, 255, 255, 0.08);
+	--color-code-toolbar-hover: rgba(255, 255, 255, 0.1);
+	--color-line-numbers-bg: rgba(255, 255, 255, 0.03);
+	--color-line-numbers-border: rgba(255, 255, 255, 0.06);
+	--color-line-numbers-text: rgba(255, 255, 255, 0.25);
+
+	/* Blockquote */
+	--color-blockquote-border: #3d4253;
+	--color-blockquote-text: #8b8fa0;
+
+	/* Header / Glassmorphism */
+	--color-header-bg: #1a1d28;
+	--color-header-glass: rgba(26, 29, 40, 0.85);
+	--color-header-glass-border: rgba(255, 255, 255, 0.06);
+	--color-header-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+	/* Search */
+	--color-search-bg: #1a1d28;
+	--color-search-footer-bg: #161822;
+	--color-search-result-hover: #22263a;
+	--color-search-highlight-text: #f87171;
+	--color-search-highlight-bg: rgba(248, 113, 113, 0.15);
+
+	/* Scrollbar */
+	--color-scrollbar: rgba(200, 200, 200, 0.15);
+	--color-scrollbar-hover: rgba(200, 200, 200, 0.3);
+
+	/* Misc */
+	--color-skill-bar-bg: #2d3244;
+	--color-gradient-start: #7b8cff;
+	--color-hobby-gradient: linear-gradient(135deg, #1e2230, #252836);
+}
+
+/* Theme transition for smooth switching */
+html[data-theme],
+html[data-theme] body,
+html[data-theme] header,
+html[data-theme] .search-container,
+html[data-theme] .content-card,
+html[data-theme] .stats-wrapper,
+html[data-theme] .stats-container,
+html[data-theme] .stat-item,
+html[data-theme] .blog-link,
+html[data-theme] .posts-container,
+html[data-theme] .about-container,
+html[data-theme] .toc-sidebar,
+html[data-theme] .sticky-toc,
+html[data-theme] .code-block-wrapper,
+html[data-theme] .code-lang,
+html[data-theme] .code-copy-btn,
+html[data-theme] .hero-header-overlay,
+html[data-theme] .skill-item,
+html[data-theme] .timeline-item,
+html[data-theme] .hobby-item,
+html[data-theme] .post-item,
+html[data-theme] .tag,
+html[data-theme] .back-link,
+html[data-theme] .page-btn {
+	transition: var(--theme-transition);
+}
+
+.smooth-theme-transition {
+	transition: var(--theme-transition);
+}
+
+/* Animation Utilities */
+.hover-scale {
+	transition: transform 0.3s var(--ease-elastic);
+	display: inline-block;
+}
+
+.hover-scale:hover {
+	transform: scale(1.05);
+}
+
+.hover-scale:active {
+	transform: scale(0.95);
+}
+
+html {
+	height: 100%;
+	background-color: var(--color-bg);
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+body {
+	font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+		-apple-system, BlinkMacSystemFont, sans-serif;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	text-align: left;
+	background: linear-gradient(var(--gray-gradient)) no-repeat;
+	background-size: 100% 600px;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	color: rgb(var(--gray-dark));
+	font-size: 16px;
+	line-height: 1.7;
+	/* Lock body scroll, delegate to #main-content */
+	overflow: hidden;
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+/* Shared Wrapper Gradient */
+.stats-wrapper {
+	position: relative;
+	background: linear-gradient(to bottom, transparent 100px, var(--color-bg) 100px);
+	min-height: 50vh;
+}
+
+/* Global Scroll Container */
+#main-content {
+	height: 100vh;
+	height: 100dvh;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scroll-behavior: smooth;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior-y: contain;
+	/* Ensure content goes under header */
+	position: relative;
+	z-index: 1;
+}
+
+body.mobile-menu-open #main-content {
+	overflow: hidden;
+	touch-action: none;
+}
+
+/* Scrollbar styling for the container */
+#main-content::-webkit-scrollbar {
+	width: 6px;
+}
+
+#main-content::-webkit-scrollbar-track {
+	background: transparent;
+	/* Visual trick: Push scrollbar start down if needed, but z-index cover is better */
+	margin-top: 64px;
+	/* Matches explicit header height */
+}
+
+#main-content::-webkit-scrollbar-thumb {
+	background-color: var(--color-scrollbar);
+	border-radius: 4px;
+}
+
+#main-content::-webkit-scrollbar-thumb:hover {
+	background-color: var(--color-scrollbar-hover);
+}
+
+main {
+	width: 720px;
+	max-width: calc(100% - 2em);
+	margin: auto;
+	padding: 3em 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 0.5rem 0;
+	color: rgb(var(--black));
+	line-height: 1.2;
+}
+
+.prose h1,
+.prose h2 {
+	border-bottom: 1px solid var(--color-border);
+	padding-bottom: 0.3em;
+	margin-bottom: 1em;
+	margin-top: 1.5em;
+	/* 增加顶部间距以区分段落 */
+}
+
+h1 {
+	font-size: 2.2em;
+}
+
+h2 {
+	font-size: 1.8em;
+}
+
+h3 {
+	font-size: 1.5em;
+}
+
+h4 {
+	font-size: 1.25em;
+}
+
+h5 {
+	font-size: 1.1em;
+}
+
+strong,
+b {
+	font-weight: 700;
+}
+
+a {
+	color: var(--accent);
+}
+
+a:hover {
+	color: var(--accent);
+}
+
+p {
+	margin-bottom: 1em;
+}
+
+.prose p {
+	margin-bottom: 1.2em;
+}
+
+.prose img {
+	display: block;
+	margin: 0 auto;
+	box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+	transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+		box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+	/* Limit image height and allow zoom */
+	max-height: 80vh;
+	object-fit: contain;
+	cursor: zoom-in;
+}
+
+.prose img:hover {
+	transform: translateY(-4px) scale(1.01);
+	box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.25);
+}
+
+/* Lightbox Styles */
+.lightbox-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.9);
+	z-index: 10000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+	backdrop-filter: blur(5px);
+}
+
+.lightbox-overlay.active {
+	opacity: 1;
+	visibility: visible;
+}
+
+.lightbox-image {
+	max-width: 95%;
+	max-height: 95%;
+	object-fit: contain;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+	transform: scale(0.9);
+	transition: transform 0.3s ease;
+}
+
+.lightbox-overlay.active .lightbox-image {
+	transform: scale(1);
+}
+
+.lightbox-close {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	color: white;
+	font-size: 40px;
+	cursor: pointer;
+	line-height: 1;
+	z-index: 10001;
+	opacity: 0.7;
+	transition: opacity 0.2s;
+}
+
+.lightbox-close:hover {
+	opacity: 1;
+}
+
+textarea {
+	width: 100%;
+	font-size: 16px;
+}
+
+input {
+	font-size: 16px;
+}
+
+table {
+	width: 100%;
+}
+
+.prose table {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+/* 行内代码 */
+code {
+	padding: 2px 8px;
+	background: var(--color-code-inline-bg);
+	border-radius: 6px;
+	font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+	font-size: 0.875em;
+	color: var(--color-code-inline-text);
+	border: 1px solid var(--color-code-inline-border);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   代码块 - 极简现代设计（白色主题）
+   设计理念：干净、专注、优雅的阅读体验
+   ═══════════════════════════════════════════════════════════ */
+
+.code-block-wrapper {
+	position: relative;
+	margin: 2em 0;
+	border-radius: 12px;
+	overflow: hidden;
+	background: var(--color-code-block-bg);
+	box-shadow: var(--color-code-block-shadow);
+	border: 1px solid var(--color-code-block-border);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.code-block-wrapper:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--color-code-block-shadow-hover);
+}
+
+/* 浮动工具栏 - 右上角 */
+.code-toolbar {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 10;
+}
+
+/* 语言标签 - 默认显示 */
+.code-lang {
+	display: inline-flex;
+	align-items: center;
+	font-size: 10px;
+	font-weight: 600;
+	color: var(--color-code-toolbar-text);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	padding: 6px 12px;
+	border-radius: 6px;
+	background: var(--color-code-toolbar-bg);
+	border: 1px solid var(--color-code-toolbar-border);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* 复制按钮 - 默认隐藏 */
+.code-copy-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: none;
+	background: var(--color-code-toolbar-bg);
+	border: 1px solid var(--color-code-toolbar-border);
+	border-radius: 6px;
+	cursor: pointer;
+	color: var(--color-code-toolbar-text);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease,
+		color 0.2s ease, border-color 0.2s ease;
+	opacity: 0;
+	transform: scale(0.9);
+	pointer-events: none;
+}
+
+/* Hover 状态：隐藏语言，显示复制按钮 */
+.code-block-wrapper:hover .code-lang {
+	opacity: 0;
+	transform: scale(0.9);
+	pointer-events: none;
+}
+
+.code-block-wrapper:hover .code-copy-btn {
+	opacity: 1;
+	transform: scale(1);
+	pointer-events: auto;
+}
+
+.code-copy-btn:hover {
+	background: var(--color-code-toolbar-hover);
+	color: var(--color-text);
+}
+
+.code-copy-btn.copied {
+	color: #22c55e;
+	background: rgba(34, 197, 94, 0.1);
+}
+
+.code-copy-btn svg {
+	width: 16px;
+	height: 16px;
+	transition: transform 0.2s ease;
+}
+
+.code-copy-btn:hover svg {
+	transform: scale(1.1);
+}
+
+.code-copy-btn:active svg {
+	transform: scale(0.95);
+}
+
+/* 代码块主体容器 */
+.code-body {
+	display: flex;
+	overflow-x: auto;
+}
+
+/* 行号区域 - 优雅设计 */
+.line-numbers {
+	flex-shrink: 0;
+	padding: 1.25rem 0;
+	/* Removed background to match main area */
+	border-right: 1px solid var(--color-line-numbers-border);
+	text-align: right;
+	user-select: none;
+	font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+	font-size: 14px;
+	/* Matched 14px */
+	line-height: 1.6;
+	/* Matched 1.6 */
+	color: var(--color-line-numbers-text);
+}
+
+.line-numbers span {
+	display: block;
+	padding: 0 8px 0 12px;
+	/* Reduced right padding */
+	transition: color 0.15s ease;
+}
+
+/* 代码块主体 - 白色主题 */
+pre {
+	margin: 0;
+	padding: 1.25rem 1em 1.25rem 0.5em;
+	/* Reduced left padding */
+	background: transparent;
+	overflow-x: auto;
+	flex: 1;
+	min-width: 0;
+}
+
+pre>code {
+	all: unset;
+	display: block;
+	font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--color-code-block-text);
+	white-space: pre;
+	tab-size: 4;
+}
+
+/* Shiki/Astro 代码高亮适配 */
+pre.astro-code {
+	background: transparent !important;
+	padding: 1.25em 1.5em;
+	border-radius: 0;
+}
+
+pre.astro-code code {
+	background: transparent;
+}
+
+/* 强制应用暗色主题高亮 */
+[data-theme="dark"] .astro-code,
+[data-theme="dark"] .astro-code span {
+	color: var(--shiki-dark) !important;
+	background-color: transparent !important;
+}
+
+blockquote {
+	border-left: 4px solid var(--color-blockquote-border);
+	padding: 0 0 0 20px;
+	margin: 0;
+	font-size: 1em;
+	color: var(--color-blockquote-text);
+}
+
+hr {
+	border: none;
+	border-top: 1px solid rgb(var(--gray-light));
+}
+
+@media (max-width: 720px) {
+	body {
+		font-size: 16px;
+	}
+
+	main {
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	#main-content .content-card {
+		max-width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	h1 {
+		font-size: clamp(1.6rem, 7vw, 2rem);
+	}
+
+	h2 {
+		font-size: clamp(1.35rem, 5.6vw, 1.65rem);
+	}
+
+	h3 {
+		font-size: clamp(1.2rem, 4.8vw, 1.45rem);
+	}
+
+	.code-block-wrapper {
+		margin: 1.25em 0;
+		border-radius: 10px;
+	}
+
+	.line-numbers {
+		display: none;
+	}
+
+	pre,
+	pre.astro-code {
+		padding: 1rem 0.9rem !important;
+	}
+
+	.code-toolbar {
+		top: 8px;
+		right: 8px;
+	}
+
+	.code-lang {
+		display: none;
+	}
+
+	.code-copy-btn,
+	.code-block-wrapper:hover .code-copy-btn {
+		opacity: 1;
+		transform: scale(1);
+		pointer-events: auto;
+	}
+}
+
+@media (hover: none) and (pointer: coarse) {
+	.hover-scale:hover,
+	.tag-link:hover,
+	.blog-link:hover,
+	.post-item:hover,
+	.page-btn:hover,
+	.back-link:hover,
+	.social-link:hover,
+	.meta-item:hover,
+	.tag:hover {
+		transform: none !important;
+		box-shadow: none !important;
+		filter: none !important;
+	}
+
+	.internal-links:hover a {
+		opacity: 1 !important;
+		filter: none !important;
+		transform: none !important;
+	}
+
+	.prose img:hover {
+		transform: none;
+		box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+	}
+
+	.code-block-wrapper:hover .code-lang {
+		opacity: 1;
+		transform: none;
+		pointer-events: auto;
+	}
+
+	.code-copy-btn {
+		opacity: 1;
+		transform: scale(1);
+		pointer-events: auto;
+	}
+
+	.code-block-wrapper:hover .code-copy-btn {
+		opacity: 1;
+		transform: scale(1);
+		pointer-events: auto;
+	}
+}
+
+.sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+	clip: rect(1px 1px 1px 1px);
+	/* maybe deprecated but we need to support legacy browsers */
+	clip: rect(1px, 1px, 1px, 1px);
+	/* modern browsers, clip-path works inwards from each corner */
+	clip-path: inset(50%);
+	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
+	white-space: nowrap;
+}
+
+/* KaTeX 数学公式样式 */
+/* 显示渲染后的公式，隐藏原始 MathML */
+.katex-html {
+	display: unset !important;
+}
+
+.katex-mathml {
+	display: none !important;
+}
+
+/* 确保块级公式可以水平滚动 */
+.katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding: 0.5em 0;
+	margin: 1em 0;
+}
+
+/* Minimalist Scrollbar */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--color-scrollbar);
+	border-radius: 3px;
+	transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-scrollbar-hover);
+}
+
+/* For Firefox */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-scrollbar) transparent;
+}
+
+/* Dark Mode Image Handling */
+[data-theme="dark"] .prose img {
+	/* Reduce brightness and increase contrast for better reading in dark mode */
+	filter: brightness(0.6) contrast(1.2);
+	transition: filter 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+}
+
+[data-theme="dark"] .prose img:hover {
+	/* Reveal original image on hover */
+	filter: none;
+}
+
+/* Ensure Lightbox image is always original */
+.lightbox-image {
+	filter: none !important;
+}

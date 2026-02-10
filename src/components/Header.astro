@@ -1,0 +1,571 @@
+---
+import { headerGithubRepoUrl, siteTitle } from '../config';
+import HeaderLink from './HeaderLink.astro';
+
+interface Props {
+	transparent?: boolean;
+}
+
+const { transparent = true } = Astro.props;
+---
+
+<header class:list={[{ transparent }]} transition:persist transition:name="header" transition:animate="none">
+	<nav>
+		<h2><a href="/">{siteTitle}</a></h2>
+		<div class="internal-links">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/tags">Tags</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+			<div class="nav-indicator" id="nav-indicator"></div>
+		</div>
+		<div class="header-actions">
+			<button id="search-btn" class="search-btn" aria-label="搜索">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8"></circle>
+					<path d="m21 21-4.35-4.35"></path>
+				</svg>
+			</button>
+			<button id="cursor-toggle" class="cursor-toggle-btn" aria-label="切换自定义光标" aria-pressed="true">
+				<svg class="cursor-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="12" cy="12" r="3"></circle>
+					<line x1="12" y1="3" x2="12" y2="6"></line>
+					<line x1="12" y1="18" x2="12" y2="21"></line>
+					<line x1="3" y1="12" x2="6" y2="12"></line>
+					<line x1="18" y1="12" x2="21" y2="12"></line>
+				</svg>
+				<svg class="cursor-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="12" cy="12" r="3"></circle>
+					<line x1="12" y1="3" x2="12" y2="6"></line>
+					<line x1="12" y1="18" x2="12" y2="21"></line>
+					<line x1="3" y1="12" x2="6" y2="12"></line>
+					<line x1="18" y1="12" x2="21" y2="12"></line>
+					<line x1="5" y1="19" x2="19" y2="5"></line>
+				</svg>
+			</button>
+			<button id="theme-toggle" class="theme-toggle-btn" aria-label="切换深色模式">
+				<svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="12" cy="12" r="5"></circle>
+					<line x1="12" y1="1" x2="12" y2="3"></line>
+					<line x1="12" y1="21" x2="12" y2="23"></line>
+					<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+					<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+					<line x1="1" y1="12" x2="3" y2="12"></line>
+					<line x1="21" y1="12" x2="23" y2="12"></line>
+					<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+					<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+				</svg>
+				<svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+				</svg>
+			</button>
+			{headerGithubRepoUrl && (
+				<a href={headerGithubRepoUrl} target="_blank" rel="noreferrer">
+					<span class="sr-only">Go to GitHub</span>
+					<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
+						><path
+							fill="currentColor"
+							d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+						></path></svg
+					>
+				</a>
+			)}
+			<button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav-drawer">
+				<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+					<line x1="3" y1="6" x2="21" y2="6"></line>
+					<line x1="3" y1="12" x2="21" y2="12"></line>
+					<line x1="3" y1="18" x2="21" y2="18"></line>
+				</svg>
+				<svg class="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+					<path d="M18 6L6 18"></path>
+					<path d="M6 6l12 12"></path>
+				</svg>
+			</button>
+		</div>
+	</nav>
+	<div id="mobile-nav-overlay" class="mobile-nav-overlay" aria-hidden="true"></div>
+	<aside id="mobile-nav-drawer" class="mobile-nav-drawer" aria-hidden="true">
+		<nav class="mobile-nav-links" aria-label="移动端导航">
+			<a href="/" class="mobile-nav-link">Home</a>
+			<a href="/blog" class="mobile-nav-link">Blog</a>
+			<a href="/tags" class="mobile-nav-link">Tags</a>
+			<a href="/about" class="mobile-nav-link">About</a>
+		</nav>
+	</aside>
+</header>
+<style>
+	/* Entrance Animations Removed per request */
+    
+	header {
+		margin: 0;
+		padding: 0 1em;
+		background: var(--color-header-bg);
+		box-shadow: var(--color-header-shadow);
+        /* New Layout: Header is fixed at top, 100% width */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        height: 64px; /* Explicit height to match scrollbar margin */
+        box-sizing: border-box;
+	}
+	h2 {
+		margin: 0;
+		font-size: 1em;
+	}
+
+	h2 a,
+	h2 a.active {
+		text-decoration: none;
+        position: relative;
+        display: inline-block;
+	}
+
+    /* Exquisite Underline Animation (Logo) */
+    h2 a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent);
+        transform-origin: bottom right;
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    h2 a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 64px;
+	}
+
+    /* Nav Links Container */
+    .internal-links {
+		display: flex;
+        gap: 1em;
+        position: relative;
+    }
+
+    /* Stronger "Focus" Effect */
+    .internal-links:hover a {
+        opacity: 0.3; /* Increased transparency for non-hovered items (was 0.5) */
+        filter: blur(1px); /* Increased blur (was 0.5px) */
+        transform: scale(0.98); /* Slight shrink for non-focused items */
+        transition: opacity 0.3s, filter 0.3s, transform 0.3s;
+    }
+    
+	nav a {
+		padding: 1em 0.5em;
+		color: var(--black);
+		text-decoration: none;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+    
+    /* Reveal delays removed */
+    .internal-links a:nth-child(1) { animation-delay: 0s; }
+    .internal-links a:nth-child(2) { animation-delay: 0s; }
+    .internal-links a:nth-child(3) { animation-delay: 0s; }
+    .internal-links a:nth-child(4) { animation-delay: 0s; }
+
+    /* Active dot is now handled by .nav-indicator */
+
+    /* Sliding Nav Indicator */
+    .nav-indicator {
+        position: absolute;
+        bottom: 10px;
+        height: 4px;
+        background: var(--accent);
+        border-radius: 4px;
+        pointer-events: none;
+        will-change: transform, width, border-radius;
+        z-index: 5;
+    }
+
+    /* Refined Hover State */
+    .internal-links a:hover {
+        opacity: 1 !important;
+        filter: blur(0) !important;
+        transform: scale(1.05) translateY(-2px); /* Scale up focused item */
+        color: var(--accent);
+    }
+
+	.header-actions,
+	.header-actions a {
+		display: flex;
+		gap: 0.5em;
+		align-items: center;
+	}
+	.header-actions {
+		margin-right: 1em;
+	}
+
+	.mobile-menu-btn {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		background: rgba(128, 128, 128, 0.1);
+		border-radius: 12px;
+		color: inherit;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+		transition: background 0.25s ease, transform 0.2s ease;
+	}
+
+	.mobile-menu-btn .menu-icon,
+	.mobile-menu-btn .close-icon {
+		position: absolute;
+		transition: transform 0.25s ease, opacity 0.2s ease;
+	}
+
+	.mobile-menu-btn .close-icon {
+		opacity: 0;
+		transform: rotate(-90deg) scale(0.8);
+	}
+
+	header.mobile-menu-open .mobile-menu-btn .menu-icon {
+		opacity: 0;
+		transform: rotate(90deg) scale(0.8);
+	}
+
+	header.mobile-menu-open .mobile-menu-btn .close-icon {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+
+	.mobile-menu-btn:hover {
+		background: rgba(128, 128, 128, 0.2);
+	}
+
+	.mobile-menu-btn:active {
+		transform: scale(0.95);
+	}
+
+	.mobile-nav-overlay {
+		position: fixed;
+		inset: 64px 0 0 0;
+		background: rgba(0, 0, 0, 0.35);
+		backdrop-filter: blur(2px);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 0.25s ease, visibility 0.25s ease;
+	}
+
+	.mobile-nav-drawer {
+		position: fixed;
+		top: 64px;
+		right: 0;
+		width: min(86vw, 320px);
+		height: calc(100vh - 64px);
+		height: calc(100dvh - 64px);
+		background: var(--color-header-bg);
+		border-left: 1px solid var(--color-border);
+		box-shadow: -10px 0 28px rgba(0, 0, 0, 0.12);
+		transform: translateX(105%);
+		transition: transform 0.25s var(--ease-out-expo);
+		padding: 1.2em;
+		box-sizing: border-box;
+		pointer-events: none;
+	}
+
+	.mobile-nav-links {
+		display: flex;
+		flex-direction: column;
+		gap: 0.45em;
+	}
+
+	.mobile-nav-link {
+		display: block;
+		padding: 0.85em 0.9em;
+		border-radius: 12px;
+		color: var(--color-text);
+		text-decoration: none;
+		font-size: 1rem;
+		font-weight: 600;
+		background: transparent;
+		transition: background 0.2s ease, color 0.2s ease;
+	}
+
+	.mobile-nav-drawer .mobile-nav-link {
+		color: var(--color-text);
+	}
+
+	.mobile-nav-link.active {
+		color: var(--accent);
+		background: rgba(var(--accent-rgb), 0.08);
+	}
+
+	header.mobile-menu-open .mobile-nav-overlay {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+
+	header.mobile-menu-open .mobile-nav-drawer {
+		transform: translateX(0);
+		pointer-events: auto;
+	}
+	
+	/* Search Button Pulse/Rotate Interaction */
+	.search-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		background: rgba(128, 128, 128, 0.1);
+		border-radius: 12px;
+		cursor: pointer;
+		color: inherit;
+		transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	
+	.search-btn:hover {
+        transform: rotate(90deg);
+	}
+	.search-btn:active {
+		transform: rotate(90deg);
+	}
+
+	/* Cursor Toggle Button */
+	.cursor-toggle-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		background: rgba(128, 128, 128, 0.1);
+		border-radius: 12px;
+		cursor: pointer;
+		color: inherit;
+		transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.cursor-toggle-btn:hover {
+		background: rgba(128, 128, 128, 0.2);
+		transform: scale(1.1);
+	}
+
+	.cursor-toggle-btn:active {
+		transform: scale(0.95);
+	}
+
+	.cursor-toggle-btn .cursor-on-icon,
+	.cursor-toggle-btn .cursor-off-icon {
+		position: absolute;
+		transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+	}
+
+	.cursor-toggle-btn .cursor-on-icon {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+
+	.cursor-toggle-btn .cursor-off-icon {
+		opacity: 0;
+		transform: rotate(-20deg) scale(0.6);
+	}
+
+	.cursor-toggle-btn[aria-pressed="false"] .cursor-on-icon {
+		opacity: 0;
+		transform: rotate(20deg) scale(0.6);
+	}
+
+	.cursor-toggle-btn[aria-pressed="false"] .cursor-off-icon {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+
+	.cursor-toggle-btn[aria-pressed="true"]:hover .cursor-on-icon {
+		transform: rotate(42deg) scale(1.16);
+	}
+
+	.cursor-toggle-btn[aria-pressed="false"]:hover .cursor-off-icon {
+		transform: rotate(42deg) scale(1.16);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cursor-toggle-btn[aria-pressed="true"]:hover .cursor-on-icon,
+		.cursor-toggle-btn[aria-pressed="false"]:hover .cursor-off-icon {
+			transform: none;
+		}
+	}
+
+	/* Theme Toggle Button */
+	.theme-toggle-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		background: rgba(128, 128, 128, 0.1);
+		border-radius: 12px;
+		cursor: pointer;
+		color: inherit;
+		transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.theme-toggle-btn:hover {
+		background: rgba(128, 128, 128, 0.2);
+		transform: scale(1.1);
+	}
+
+	.theme-toggle-btn:active {
+		transform: scale(0.95);
+	}
+
+	/* Sun/Moon icon transitions */
+	.theme-toggle-btn .sun-icon,
+	.theme-toggle-btn .moon-icon {
+		position: absolute;
+		transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
+	}
+
+	.theme-toggle-btn .sun-icon {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+
+	.theme-toggle-btn .moon-icon {
+		opacity: 0;
+		transform: rotate(-90deg) scale(0.5);
+	}
+
+	/* Dark mode: show moon, hide sun */
+	:global([data-theme="dark"]) .theme-toggle-btn .sun-icon {
+		opacity: 0;
+		transform: rotate(90deg) scale(0.5);
+	}
+
+	:global([data-theme="dark"]) .theme-toggle-btn .moon-icon {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+
+	.theme-toggle-btn:hover .sun-icon {
+		transform: rotate(45deg) scale(1.1);
+	}
+
+	:global([data-theme="dark"]) .theme-toggle-btn:hover .moon-icon {
+		transform: rotate(-15deg) scale(1.1);
+	}
+	
+	@media (max-width: 900px) {
+		header {
+			padding: 0 0.75em;
+		}
+
+		.internal-links {
+			display: none;
+		}
+
+		.nav-indicator {
+			display: none;
+		}
+
+		.mobile-menu-btn {
+			display: inline-flex;
+		}
+
+		.header-actions {
+			margin-right: 0;
+		}
+
+		.header-actions > a {
+			display: none;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.mobile-nav-drawer {
+			width: min(92vw, 300px);
+			padding: 1em;
+		}
+	}
+	
+	header.transparent {
+		background: transparent;
+		box-shadow: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 100;
+		transition: background-color 0.3s, box-shadow 0.3s;
+	}
+	
+	header.transparent > nav .internal-links a,
+	header.transparent > nav .header-actions > a,
+	header.transparent > nav h2 a,
+	header.transparent > nav .search-btn,
+	header.transparent > nav .cursor-toggle-btn,
+	header.transparent > nav .theme-toggle-btn,
+	header.transparent > nav .mobile-menu-btn {
+		color: white;
+		transition: color 0.3s, opacity 0.3s, transform 0.3s, filter 0.3s;
+	}
+	
+	header.transparent > nav .internal-links a.active,
+	header.transparent > nav h2 a.active {
+		border-bottom-color: white;
+	}
+
+	header.transparent .mobile-nav-drawer .mobile-nav-link {
+		color: var(--color-text);
+	}
+
+	header.transparent .mobile-nav-drawer .mobile-nav-link.active {
+		color: var(--accent);
+	}
+    
+    header.transparent .nav-indicator {
+        background: white;
+    }
+
+    /* Scrolled state for transparent header - Enhanced Glassmorphism */
+    header.transparent.scrolled {
+        background: var(--color-header-glass);
+        backdrop-filter: blur(12px); /* Increased blur for glass effect */
+        box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        border-bottom: 1px solid var(--color-header-glass-border);
+    }
+
+    header.transparent.scrolled > nav .internal-links a,
+    header.transparent.scrolled > nav .header-actions > a,
+    header.transparent.scrolled > nav h2 a,
+    header.transparent.scrolled > nav .search-btn,
+    header.transparent.scrolled > nav .cursor-toggle-btn,
+    header.transparent.scrolled > nav .theme-toggle-btn,
+    header.transparent.scrolled > nav .mobile-menu-btn {
+        color: var(--black);
+    }
+
+    header.transparent.scrolled .nav-indicator {
+        background: var(--accent);
+    }
+</style>
+
+<script>
+import '../scripts/header.client';
+</script>

@@ -1,0 +1,42 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+import { extractSeoDescription } from '../../utils/seo';
+import { existsSync } from 'node:fs';
+
+export async function getStaticPaths() {
+	const posts = (await getCollection('blog')).filter((post) =>
+		post.filePath ? existsSync(post.filePath) : false
+	);
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+const { Content, headings } = await render(post);
+const seoDescription =
+	(post.data.description?.trim() || extractSeoDescription(post.body ?? '') || post.data.title).trim();
+const body = post.body ?? '';
+const hasMath = /\$\$[\s\S]*?\$\$|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]|\$[^$\n]+\$|\\begin\{[a-zA-Z*]+\}/.test(
+	body,
+);
+
+// 计算字数和阅读时间
+const wordCount = body ? body.replace(/[#*`~>\[\]\(\)\-\!\s]/g, '').length : 0;
+const readingTime = Math.ceil(wordCount / 400);
+---
+
+<BlogPost
+	{...post.data}
+	headings={headings}
+	wordCount={wordCount}
+	readingTime={readingTime}
+	seoDescription={seoDescription}
+	loadKatexStyles={hasMath}
+>
+	<Content />
+</BlogPost>
+
