@@ -177,7 +177,10 @@
         border-radius: 8px;
         padding: 0.85em 1em;
         border: 1px solid transparent;
-        transition: all 0.2s;
+        transition:
+            background-color 0.2s,
+            border-color 0.2s,
+            box-shadow 0.2s;
     }
 
     .search-input-wrapper:focus-within {
@@ -215,7 +218,9 @@
         color: var(--color-text-muted);
         cursor: pointer;
         border-radius: 6px;
-        transition: all 0.2s;
+        transition:
+            background-color 0.2s,
+            color 0.2s;
     }
 
     .search-close:hover {
@@ -252,7 +257,11 @@
         padding: 1.25em 1.5em;
         text-decoration: none !important;
         color: var(--color-text) !important;
-        transition: all 0.2s ease-in-out;
+        transition:
+            background-color 0.2s ease-in-out,
+            border-color 0.2s ease-in-out,
+            color 0.2s ease-in-out,
+            padding-left 0.2s ease-in-out;
         border-left: 4px solid transparent; 
         border-bottom: 1px solid var(--color-border-subtle);
         background: var(--color-surface);
