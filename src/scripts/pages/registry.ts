@@ -1,13 +1,15 @@
+import { initAboutPage } from './about.client';
 import { initBlogListPage } from './blog-list.client';
 import { initHomePage } from './home.client';
 import { initTagDetailPage } from './tag-detail.client';
 import { initTagsIndexPage } from './tags-index.client';
 
-type PageEnhancementId = 'home' | 'blog-list' | 'tags-index' | 'tag-detail';
+type PageEnhancementId = 'home' | 'about' | 'blog-list' | 'tags-index' | 'tag-detail';
 type PageEnhancementHandler = () => void;
 
 const handlers: Record<PageEnhancementId, PageEnhancementHandler> = {
 	home: initHomePage,
+	about: initAboutPage,
 	'blog-list': initBlogListPage,
 	'tags-index': initTagsIndexPage,
 	'tag-detail': initTagDetailPage,
@@ -22,13 +24,13 @@ export function runPageEnhancements(id: PageEnhancementId) {
 	const registryWindow = window as RegistryWindow;
 	registryWindow.__pageEnhancementRegistry ||= {};
 
-	const existing = registryWindow.__pageEnhancementRegistry[id];
-	if (existing) {
-		document.removeEventListener('astro:page-load', existing);
+	for (const existing of Object.values(registryWindow.__pageEnhancementRegistry)) {
+		if (existing) {
+			document.removeEventListener('astro:page-load', existing);
+		}
 	}
 
-	registryWindow.__pageEnhancementRegistry[id] = handler;
+	registryWindow.__pageEnhancementRegistry = { [id]: handler };
 	document.addEventListener('astro:page-load', handler);
 	handler();
 }
-

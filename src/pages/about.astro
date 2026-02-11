@@ -346,4 +346,11 @@ const personSchema = {
       </div>
     </ContentCard>
   </div>
+
+  <Fragment slot="scripts">
+    <script>
+      import { runPageEnhancements } from '../scripts/pages/registry';
+      runPageEnhancements('about');
+    </script>
+  </Fragment>
 </PageShell>
