@@ -359,6 +359,16 @@ These commands match `package.json` exactly:
 | `npm run dev`             | Start local development server                           |
 | `npm run build`           | Build with feature-flag pipeline (`build-with-config`) |
 | `npm run build:astro`     | Run raw `astro build` only                             |
+| `npm run check`           | Run `astro check` for type/template validation          |
+
+## Post-refactor Conventions (2026-02)
+
+- Use `src/layouts/PageShell.astro` for standard page shells (post detail remains on `BlogPost` layout).
+- Centralize blog content reads in `src/lib/content/blog.ts` instead of repeating `getCollection` logic per page.
+- Use `src/lib/content/text.ts` for excerpts and SEO description extraction.
+- Use `src/lib/profile/social.ts` for social link normalization and sameAs generation.
+- Place page interaction scripts in `src/scripts/pages/*` and register them via `src/scripts/pages/registry.ts`.
+- See `docs/frontend-architecture-map.md` for the dependency and page relationship map.
 | `npm run preview`         | Preview production output                                |
 | `npm run astro`           | Native Astro CLI entry                                   |
 | `npm run optimize:images` | Convert blog images to WebP and replace references       |

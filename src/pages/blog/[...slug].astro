@@ -1,13 +1,11 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { type CollectionEntry, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
-import { extractSeoDescription } from '../../utils/seo';
-import { existsSync } from 'node:fs';
+import { getBlogPosts } from '../../lib/content/blog';
+import { extractSeoDescription } from '../../lib/content/text';
 
 export async function getStaticPaths() {
-	const posts = (await getCollection('blog')).filter((post) =>
-		post.filePath ? existsSync(post.filePath) : false
-	);
+	const posts = await getBlogPosts();
 	return posts.map((post) => ({
 		params: { slug: post.id },
 		props: post,

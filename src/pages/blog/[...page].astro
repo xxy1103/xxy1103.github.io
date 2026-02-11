@@ -1,707 +1,521 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
+import type { GetStaticPaths, Page } from 'astro';
+import ContentCard from '../../components/ContentCard.astro';
 import HeroHeader from '../../components/HeroHeader.astro';
-import SearchModal from '../../components/SearchModal.astro';
+import PageShell from '../../layouts/PageShell.astro';
+import PostListItem from '../../components/PostListItem.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import { heroConfig, siteTitle } from '../../config';
-import { existsSync } from 'node:fs';
+import { getBlogPosts, type BlogPost } from '../../lib/content/blog';
+import { extractExcerpt } from '../../lib/content/text';
 
-export async function getStaticPaths({ paginate }) {
-	const posts = (await getCollection('blog'))
-		.filter((post) => (post.filePath ? existsSync(post.filePath) : false))
-		.sort(
-		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-	);
-	if (posts.length === 0) {
-		return [
-			{
-				params: { page: undefined },
-				props: {
-					page: {
-						data: [],
-						start: 0,
-						end: 0,
-						size: 15,
-						total: 0,
-						currentPage: 1,
-						lastPage: 1,
-						url: {
-							current: '/blog',
-							prev: undefined,
-							next: undefined,
-						},
-					},
-				},
-			},
-		];
-	}
-	return paginate(posts, { pageSize: 15 });
-}
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const posts = await getBlogPosts();
 
-const { page } = Astro.props;
+  if (posts.length === 0) {
+    return [
+      {
+        params: { page: undefined },
+        props: {
+          page: {
+            data: [],
+            start: 0,
+            end: 0,
+            size: 15,
+            total: 0,
+            currentPage: 1,
+            lastPage: 1,
+            url: {
+              current: '/blog',
+              prev: undefined,
+              next: undefined,
+            },
+          },
+        },
+      },
+    ];
+  }
+
+  return paginate(posts, { pageSize: 15 });
+};
+
+const { page } = Astro.props as { page: Page<BlogPost> };
 const siteURL = Astro.site ?? Astro.url;
 const hasPosts = page.total > 0;
 const blogHero = heroConfig.blog;
 const pageTitle =
-	!hasPosts || page.currentPage === 1
-		? `博客 | ${siteTitle}`
-		: `博客 - 第 ${page.currentPage} 页 | ${siteTitle}`;
+  !hasPosts || page.currentPage === 1
+    ? `博客 | ${siteTitle}`
+    : `博客 - 第 ${page.currentPage} 页 | ${siteTitle}`;
 const pageDescription =
-	!hasPosts
-		? '当前模板未附带文章内容，你可以在 src/content/blog/ 中添加 Markdown 后自动生成列表。'
-		: page.currentPage === 1
-		? `按发布时间倒序浏览全部 ${page.total} 篇文章。`
-		: `博客归档第 ${page.currentPage} 页（共 ${page.lastPage} 页），收录 ${page.total} 篇文章。`;
+  !hasPosts
+    ? '当前模板未附带文章内容，你可以在 src/content/blog/ 中添加 Markdown 后自动生成列表。'
+    : page.currentPage === 1
+    ? `按发布时间倒序浏览全部 ${page.total} 篇文章。`
+    : `博客归档第 ${page.currentPage} 页（共 ${page.lastPage} 页），收录 ${page.total} 篇文章。`;
 const shouldNoindex = page.currentPage > 1;
 const canonicalPath = page.currentPage === 1 ? '/blog/' : `/blog/${page.currentPage}/`;
 const canonicalURL = new URL(canonicalPath, siteURL);
 const prevURL = page.url.prev ? new URL(page.url.prev, siteURL).toString() : undefined;
 const nextURL = page.url.next ? new URL(page.url.next, siteURL).toString() : undefined;
 
-// Pagination Logic
-const allPages = [...Array(page.lastPage).keys()].map((i) => {
-	const num = i + 1;
-	return {
-		num,
-		url: num === 1 ? '/blog' : `/blog/${num}`
-	};
-});
-
-// Calculate the range of pages to show
 const current = page.currentPage;
 const last = page.lastPage;
-const delta = 2; // Number of pages to show around current page
-
-const visiblePageNumbers = [];
-
-// Always show page 1
-if (current > delta + 2) {
-    visiblePageNumbers.push(1);
-    visiblePageNumbers.push('...');
-}
-
-// Show pages around current
-const start = Math.max(1, current - delta);
-const end = Math.min(last, current + delta);
-
-for (let i = start; i <= end; i++) {
-    // Avoid duplicating 1 if already added
-    if (i === 1 && visiblePageNumbers.includes(1)) continue;
-    visiblePageNumbers.push(i);
-}
-
-// Always show last page
-if (current < last - delta - 1) {
-    visiblePageNumbers.push('...');
-    visiblePageNumbers.push(last);
-} else if (!visiblePageNumbers.includes(last)) {
-    // If not using ellipsis but last page wasn't in loop (e.g. current=last-2), ensure it's added
-    // Actually our loop handles up to `end`. if `end` < `last`, we need to see if we fill the gap.
-    // simpler logic:
-    // If the loop didn't reach the last page, we might need to add it key logic is the "..."
-}
-
-// Refined Logic for simpler array construction:
-// 1 ... 4 5 6 7 8 ... 15
-const paginationList = [];
+const delta = 2;
+const paginationList: Array<number | '...'> = [];
 const rangeStart = Math.max(2, current - delta);
 const rangeEnd = Math.min(last - 1, current + delta);
 
-paginationList.push(1); // Always 1
-
-if (rangeStart > 2) {
-    paginationList.push('...');
-}
-
-for (let i = rangeStart; i <= rangeEnd; i++) {
-    paginationList.push(i);
-}
-
-if (rangeEnd < last - 1) {
-    paginationList.push('...');
-}
-
-if (last > 1) {
-    paginationList.push(last); // Always last if exists
-}
-
-// 提取摘要函数：获取 <!-- more --> 之前的内容
-function getExcerpt(body: string): string {
-    const moreIndex = body.indexOf('<!-- more -->');
-    if (moreIndex > 0) {
-        return body.substring(0, moreIndex).trim();
-    }
-    // 如果没有 <!-- more -->，取前150个字符
-    return body.substring(0, 150).trim() + '...';
-}
+paginationList.push(1);
+if (rangeStart > 2) paginationList.push('...');
+for (let i = rangeStart; i <= rangeEnd; i += 1) paginationList.push(i);
+if (rangeEnd < last - 1) paginationList.push('...');
+if (last > 1) paginationList.push(last);
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-	<head>
-		<BaseHead
-			title={pageTitle}
-			description={pageDescription}
-			noindex={shouldNoindex}
-			canonical={canonicalURL}
-		/>
-		{prevURL && <link rel="prev" href={prevURL} />}
-		{nextURL && <link rel="next" href={nextURL} />}
-		<style>
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
-			main {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
+<PageShell
+  title={pageTitle}
+  description={pageDescription}
+  noindex={shouldNoindex}
+  canonical={canonicalURL}
+  prevURL={prevURL}
+  nextURL={nextURL}
+  transparentHeader={true}
+>
+  <Fragment slot="head">
+    <style>
+      .stats-wrapper {
+        position: relative;
+        min-height: 50vh;
+      }
 
+      .posts-container {
+        background: var(--color-surface);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card);
+        padding: 2em;
+      }
 
+      .posts-container :global(.section-header) {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5em;
+        margin-bottom: 0.5em;
+      }
 
-			/* Content Card */
-			.content-card {
-				position: relative;
-				z-index: 20;
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 0 1em 2em;
-			}
-			
-			.posts-container {
-				background: var(--color-surface);
-				border-radius: 16px;
-				box-shadow: var(--shadow-card);
-				padding: 2em;
-			}
-            
-            .section-header {
-                display: flex;
-                align-items: baseline;
-                gap: 0.5em;
-                margin-bottom: 0.5em;
-            }
+      .posts-container :global(.section-number) {
+        font-size: 0.9em;
+        color: var(--accent);
+        font-weight: 600;
+        opacity: 0.7;
+      }
 
-            .section-number {
-                font-size: 0.9em;
-                color: var(--accent);
-                font-weight: 600;
-                opacity: 0.7;
-            }
+      .posts-container :global(.section-title) {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin: 0;
+        color: var(--color-text);
+        position: relative;
+        display: inline-block;
+      }
 
-            .section-title {
-                font-size: 1.8em;
-                font-weight: bold;
-                margin: 0;
-                color: var(--color-text);
-                position: relative;
-                display: inline-block;
-            }
+      .posts-container :global(.section-title)::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 2em;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), transparent);
+        border-radius: 3px;
+      }
 
-            .section-title::after {
-                content: '';
-                position: absolute;
-                bottom: -4px;
-                left: 0;
-                width: 2em;
-                height: 3px;
-                background: linear-gradient(90deg, var(--accent), transparent);
-                border-radius: 3px;
-            }
+      .posts-container :global(.intro-text) {
+        color: var(--color-text-secondary);
+        margin-bottom: 2em;
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
 
-            .intro-text {
-                color: var(--color-text-secondary);
-                margin-bottom: 2em;
-                font-size: 0.9em;
-                line-height: 1.6;
-            }
-			
-			/* Post Item */
-            .post-item {
-                padding: 1.2em 1em;
-                margin: 0 -1em;
-                border-bottom: 1px solid var(--color-border-subtle);
-                border-radius: 12px;
-                position: relative;
-                transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-            }
-			
-			.post-item:last-child {
-				border-bottom: none;
-			}
+      .blog-posts-list :global(.blog-post-item) {
+        padding: 1.2em 1em;
+        margin: 0 -1em;
+        border-bottom: 1px solid var(--color-border-subtle);
+        border-radius: 12px;
+        position: relative;
+        transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      }
 
-            .post-item::before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 50%;
-                transform: translateY(-50%) scaleY(0);
-                width: 3px;
-                height: 60%;
-                background: var(--accent);
-                border-radius: 0 3px 3px 0;
-                transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-            }
+      .blog-posts-list :global(.blog-post-item:last-child) {
+        border-bottom: none;
+      }
 
-            .post-item:hover {
-                background: var(--color-surface-hover);
-                box-shadow: var(--shadow-card-hover);
-                transform: translateX(4px);
-            }
+      .blog-posts-list :global(.blog-post-item)::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%) scaleY(0);
+        width: 3px;
+        height: 60%;
+        background: var(--accent);
+        border-radius: 0 3px 3px 0;
+        transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+      }
 
-            .post-item:hover::before {
-                transform: translateY(-50%) scaleY(1);
-            }
-			
-			.post-title {
-				font-size: 1.4em;
-				font-weight: 700;
-				margin: 0 0 0.5em 0;
-				color: var(--color-text);
-			}
-			
-			.post-title a {
-				color: inherit;
-				text-decoration: none;
-				transition: color 0.2s;
-			}
-			
-			.post-title a:hover {
-				color: var(--accent);
-			}
-			
-			.post-excerpt {
-				color: var(--color-text-secondary);
-				font-size: 0.95em;
-				line-height: 1.6;
-				margin: 0 0 1em 0;
-			}
-			
-			/* Post Meta */
-			.post-meta {
-				display: flex;
-				flex-wrap: wrap;
-				align-items: center;
-				gap: 1em;
-				font-size: 0.85em;
-				color: var(--color-text-tertiary);
-			}
-			
-			.post-meta-item {
-				display: flex;
-				align-items: center;
-				gap: 0.3em;
-                padding: 2px 6px;
-                border-radius: 4px;
-			}
-			
-			.post-meta-item svg {
-				width: 14px;
-				height: 14px;
-			}
-			
-			/* Tags */
-			.post-tags {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5em;
-			}
-			
-			.tag-link {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.2em;
-				padding: 2px 8px;
-				background: var(--color-tag-bg);
-				color: var(--color-tag-text);
-				text-decoration: none;
-				border-radius: 4px;
-				font-size: 0.85em;
-				transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-                transform-origin: center;
-			}
-			
-			.tag-link:hover {
-				background: var(--accent);
-				color: white;
-                transform: translateY(-2px) scale(1.05);
-                box-shadow: 0 3px 8px rgba(var(--accent-rgb), 0.25);
-			}
+      .blog-posts-list :global(.blog-post-item:hover) {
+        background: var(--color-surface-hover);
+        box-shadow: var(--shadow-card-hover);
+        transform: translateX(4px);
+      }
 
-            .tag-link:active {
-                transform: translateY(0) scale(0.97);
-            }
-			
-			.tag-link svg {
-				width: 12px;
-				height: 12px;
-			}
-			
-			@media (max-width: 900px) {
-				.content-card {
-					padding: 0 0.75em 1.5em;
-				}
+      .blog-posts-list :global(.blog-post-item:hover)::before {
+        transform: translateY(-50%) scaleY(1);
+      }
 
-				.posts-container {
-					padding: 1.5em;
-				}
+      .blog-posts-list :global(.blog-post-title) {
+        font-size: 1.4em;
+        font-weight: 700;
+        margin: 0 0 0.5em 0;
+        color: var(--color-text);
+      }
 
-				.post-item {
-					margin: 0;
-					padding: 1em 0.75em;
-				}
-			}
+      .blog-posts-list :global(.blog-post-title a) {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
 
-				@media (max-width: 720px) {
-					.content-card {
-						padding: 0;
-					}
+      .blog-posts-list :global(.blog-post-title a:hover) {
+        color: var(--accent);
+      }
 
-					.posts-container {
-						padding: 1.2em;
-						border-radius: 0;
-					}
+      .blog-posts-list :global(.blog-post-excerpt) {
+        color: var(--color-text-secondary);
+        font-size: 0.95em;
+        line-height: 1.6;
+        margin: 0 0 1em 0;
+      }
 
-				.section-title {
-					font-size: clamp(1.45rem, 6vw, 1.7rem);
-				}
+      .blog-posts-list :global(.blog-post-meta) {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1em;
+        font-size: 0.85em;
+        color: var(--color-text-tertiary);
+      }
 
-				.post-title {
-					font-size: 1.2em;
-				}
+      .blog-posts-list :global(.blog-post-meta-item) {
+        display: flex;
+        align-items: center;
+        gap: 0.3em;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
 
-				.post-meta {
-					gap: 0.6em;
-				}
-			}
+      .blog-posts-list :global(.blog-post-meta-item svg) {
+        width: 14px;
+        height: 14px;
+      }
 
-            /* Pagination */
-            .pagination {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 3em;
-                padding-top: 2em;
-                border-top: 1px solid var(--color-border);
-                gap: 1em;
-            }
+      .blog-posts-list :global(.blog-post-tags) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5em;
+      }
 
-            .page-numbers {
-                display: flex;
-                align-items: center;
-                gap: 0.5em;
-                transition: transform 0.3s cubic-bezier(0.2, 0.0, 0.0, 1.0);
-            }
+      .blog-posts-list :global(.blog-tag-link) {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2em;
+        padding: 2px 8px;
+        background: var(--color-tag-bg);
+        color: var(--color-tag-text);
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.85em;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        transform-origin: center;
+      }
 
-            .pagination:hover .page-numbers {
-                transform: scale(1.02);
-            }
+      .blog-posts-list :global(.blog-tag-link:hover) {
+        background: var(--accent);
+        color: white;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 3px 8px rgba(var(--accent-rgb), 0.25);
+      }
 
-            .page-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 8px;
-                background: transparent;
-                color: var(--color-text-secondary);
-                text-decoration: none;
-                transition: all 0.3s cubic-bezier(0.05, 0.7, 0.1, 1.0);
-                font-weight: 500;
-                font-size: 0.95em;
-                border: 1px solid transparent;
-                position: relative;
-                overflow: hidden;
-                transform-origin: center;
-            }
+      .blog-posts-list :global(.blog-tag-link:active) {
+        transform: translateY(0) scale(0.97);
+      }
 
-            .page-btn::after {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: var(--accent);
-                opacity: 0;
-                border-radius: inherit;
-                transform: scale(0);
-                transition: transform 0.4s cubic-bezier(0.2, 0.0, 0.0, 1.0), 
-                           opacity 0.3s cubic-bezier(0.05, 0.7, 0.1, 1.0);
-            }
+      .blog-posts-list :global(.blog-tag-link svg) {
+        width: 12px;
+        height: 12px;
+      }
 
-            .page-btn:hover:not(.disabled):not(.active)::after {
-                transform: scale(1);
-                opacity: 0.06;
-            }
+      @media (max-width: 900px) {
+        .posts-container {
+          padding: 1.5em;
+        }
 
-            .page-btn:hover:not(.disabled):not(.active) {
-                color: var(--accent);
-                transform: translateY(-3px) scale(1.05);
-                transition: all 0.25s cubic-bezier(0.05, 0.7, 0.1, 1.0);
-            }
-            
-            .page-btn.active {
-                background: var(--accent);
-                color: white;
-                font-weight: 600;
-                box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.35);
-                transform: scale(1.08);
-                transition: all 0.4s cubic-bezier(0.2, 0.0, 0.0, 1.0);
-            }
-            
-            .page-btn.disabled {
-                opacity: 0.25;
-                cursor: not-allowed;
-                pointer-events: none;
-                transition: opacity 0.3s cubic-bezier(0.3, 0.0, 0.8, 0.15);
-            }
+        .blog-posts-list :global(.blog-post-item) {
+          margin: 0;
+          padding: 1em 0.75em;
+        }
+      }
 
-            .prev-btn:hover:not(.disabled),
-            .next-btn:hover:not(.disabled) {
-                transform: translateY(-3px) scale(1.05);
-                transition: all 0.25s cubic-bezier(0.05, 0.7, 0.1, 1.0);
-            }
+      @media (max-width: 720px) {
+        .posts-container {
+          padding: 1.2em;
+          border-radius: 0;
+        }
 
-            .prev-btn:active:not(.disabled) {
-                transform: translateX(-4px) scale(0.95);
-                transition: all 0.15s cubic-bezier(0.3, 0.0, 0.8, 0.15);
-            }
+        .posts-container :global(.section-title) {
+          font-size: clamp(1.45rem, 6vw, 1.7rem);
+        }
 
-            .next-btn:active:not(.disabled) {
-                transform: translateX(4px) scale(0.95);
-                transition: all 0.15s cubic-bezier(0.3, 0.0, 0.8, 0.15);
-            }
-            
-            @media (max-width: 480px) {
-                .pagination {
-                    gap: 0.5em;
-                    justify-content: flex-start;
-                    overflow-x: auto;
-                    padding-bottom: 0.4em;
+        .blog-posts-list :global(.blog-post-title) {
+          font-size: 1.2em;
+        }
+
+        .blog-posts-list :global(.blog-post-meta) {
+          gap: 0.6em;
+        }
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 3em;
+        padding-top: 2em;
+        border-top: 1px solid var(--color-border);
+        gap: 1em;
+      }
+
+      .page-numbers {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      .pagination:hover .page-numbers {
+        transform: scale(1.02);
+      }
+
+      .page-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        transition: transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
+          box-shadow 0.3s cubic-bezier(0.05, 0.7, 0.1, 1) !important;
+        font-weight: 500;
+        font-size: 0.95em;
+        border: 1px solid transparent;
+        position: relative;
+        overflow: hidden;
+        transform-origin: center;
+      }
+
+      .page-btn::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--accent);
+        opacity: 0;
+        border-radius: inherit;
+        transform: scale(0);
+        transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+      }
+
+      .page-btn:hover:not(.disabled):not(.active)::after {
+        transform: scale(1);
+        opacity: 0.06;
+      }
+
+      .page-btn:hover:not(.disabled):not(.active) {
+        color: var(--accent);
+        transform: translateY(-3px) scale(1.05);
+        transition: transform 0.25s cubic-bezier(0.05, 0.7, 0.1, 1),
+          box-shadow 0.25s cubic-bezier(0.05, 0.7, 0.1, 1) !important;
+      }
+
+      .page-btn.active {
+        background: var(--accent);
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.35);
+        transform: scale(1.08);
+        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      .page-btn.disabled {
+        opacity: 0.25;
+        cursor: not-allowed;
+        pointer-events: none;
+        transition: opacity 0.3s cubic-bezier(0.3, 0, 0.8, 0.15);
+      }
+
+      .prev-btn:hover:not(.disabled),
+      .next-btn:hover:not(.disabled) {
+        transform: translateY(-3px) scale(1.05);
+        transition: all 0.25s cubic-bezier(0.05, 0.7, 0.1, 1);
+      }
+
+      .prev-btn:active:not(.disabled) {
+        transform: translateX(-4px) scale(0.95);
+        transition: all 0.15s cubic-bezier(0.3, 0, 0.8, 0.15);
+      }
+
+      .next-btn:active:not(.disabled) {
+        transform: translateX(4px) scale(0.95);
+        transition: all 0.15s cubic-bezier(0.3, 0, 0.8, 0.15);
+      }
+
+      @media (max-width: 480px) {
+        .pagination {
+          gap: 0.5em;
+          justify-content: flex-start;
+          overflow-x: auto;
+          padding-bottom: 0.4em;
+        }
+
+        .page-numbers {
+          gap: 0.2em;
+          flex-shrink: 0;
+        }
+
+        .page-btn {
+          width: 32px;
+          height: 32px;
+          font-size: 0.85em;
+        }
+      }
+
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s cubic-bezier(0.05, 0.7, 0.1, 1), transform 0.6s cubic-bezier(0.05, 0.7, 0.1, 1);
+      }
+
+      .scroll-reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page-ellipsis {
+        color: var(--color-text-muted);
+        padding: 0 0.2em;
+        font-size: 0.9em;
+        animation: ellipsisPulse 1.8s cubic-bezier(0.2, 0, 0, 1) infinite;
+        transition: all 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+      }
+
+      .page-ellipsis:hover {
+        color: var(--accent);
+        transform: scale(1.2);
+      }
+
+      @keyframes ellipsisPulse {
+        0%,
+        100% {
+          opacity: 0.2;
+          transform: scale(1);
+        }
+
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+    </style>
+  </Fragment>
+
+  <HeroHeader
+    text={blogHero.text}
+    subtitle={blogHero.subtitle}
+    backgroundImage={blogHero.backgroundImage}
+    compact={true}
+  />
+
+  <div class="stats-wrapper">
+    <ContentCard id="stats-card">
+      <div class="posts-container">
+        <SectionHeader
+          number={`Page ${page.currentPage}`}
+          title="所有文章"
+          intro={hasPosts
+            ? `这里收录了所有的 ${page.total} 篇文章 (第 ${page.currentPage} / ${page.lastPage} 页)`
+            : '当前没有文章内容。请在 src/content/blog/ 添加 .md/.mdx 文件后重新构建。'}
+        />
+
+        <div class="blog-posts-list">
+          {page.data.length > 0 ? (
+            page.data.map((post) => (
+              <div class="scroll-reveal">
+                <PostListItem
+                  post={post}
+                  titleTag="h2"
+                  articleClass="blog-post-item"
+                  titleClass="blog-post-title"
+                  excerptClass="blog-post-excerpt"
+                  showExcerpt={true}
+                  excerpt={extractExcerpt(post.body || '', 160)}
+                  metaContainerClass="blog-post-meta"
+                  metaItemClass="blog-post-meta-item"
+                  metaTagsClass="blog-post-tags"
+                  tagLinkClass="blog-tag-link hover-scale"
+                />
+              </div>
+            ))
+          ) : (
+            <p class="blog-post-excerpt" style="text-align:center;padding:1.5em 0;">
+              暂无文章。请在 <code>src/content/blog/</code> 添加内容后再查看此页。
+            </p>
+          )}
+        </div>
+
+        {page.lastPage > 1 && (
+          <div class="pagination">
+            <a href={page.url.prev || '#'} class={`page-btn prev-btn ${!page.url.prev ? 'disabled' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+            </a>
+
+            <div class="page-numbers">
+              {paginationList.map((num) => {
+                if (num === '...') {
+                  return <span class="page-ellipsis">...</span>;
                 }
-                .page-numbers {
-                    gap: 0.2em;
-                    flex-shrink: 0;
-                }
-                .page-btn { width: 32px; height: 32px; font-size: 0.85em; }
-            }
-		</style>
-	</head>
-	<body>
-		<Header transparent={true} />
-        <div id="main-content">
-		<main>
-            <!-- Hero Header -->
-            <HeroHeader
-                text={blogHero.text}
-                subtitle={blogHero.subtitle}
-                backgroundImage={blogHero.backgroundImage}
-                compact={true}
-            />
-		
-            <!-- Stats Section Wrapper -->
-            <div class="stats-wrapper">
-                <div class="content-card" id="stats-card" transition:name="page-content">
-                    <div class="posts-container">
-                        <div class="section-header">
-                            <span class="section-number">Page {page.currentPage}</span>
-                        </div>
-                        <h2 class="section-title">所有文章</h2>
-                        <p class="intro-text">
-                            {hasPosts
-                                ? `这里收录了所有的 ${page.total} 篇文章 (第 ${page.currentPage} / ${page.lastPage} 页)`
-                                : '当前没有文章内容。请在 src/content/blog/ 添加 .md/.mdx 文件后重新构建。'}
-                        </p>
-
-                        <div class="posts-list">
-                            {page.data.length > 0 ? (
-                                page.data.map((post) => (
-                                    <article class="post-item scroll-reveal">
-                                        <h2 class="post-title">
-                                            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-                                        </h2>
-                                        <p class="post-excerpt">{getExcerpt(post.body || '')}</p>
-                                        <div class="post-meta">
-                                            <div class="post-meta-item">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                                </svg>
-                                                <FormattedDate date={post.data.pubDate} />
-                                            </div>
-                                            {post.data.categories && (
-                                                <div class="post-meta-item">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                                    </svg>
-                                                    <span>{post.data.categories}</span>
-                                                </div>
-                                            )}
-                                            {post.data.tags && post.data.tags.length > 0 && (
-                                                <div class="post-tags">
-                                                    {post.data.tags.map((tag: string) => (
-                                                        <a href={`/tags/${encodeURIComponent(tag)}/`} class="tag-link hover-scale">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                                                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                                                            </svg>
-                                                            #{tag}
-                                                        </a>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </article>
-                                ))
-                            ) : (
-                                <p class="post-excerpt" style="text-align:center;padding:1.5em 0;">
-                                    暂无文章。请在 <code>src/content/blog/</code> 添加内容后再查看此页。
-                                </p>
-                            )}
-                        </div>
-
-                        <!-- Pagination -->
-                        {page.lastPage > 1 && (
-                        <div class="pagination">
-                            <!-- Previous Button -->
-                            <a href={page.url.prev || '#'} class={`page-btn prev-btn ${!page.url.prev ? 'disabled' : ''}`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                            </a>
-                            
-                            <!-- Page Numbers -->
-                            <div class="page-numbers">
-                                {paginationList.map((num) => {
-                                    if (num === '...') {
-                                        return <span class="page-ellipsis">...</span>;
-                                    }
-                                    return (
-                                        <a 
-                                            href={num === 1 ? '/blog' : `/blog/${num}`} 
-                                            class={`page-btn ${page.currentPage === num ? 'active' : ''}`}
-                                        >
-                                            {num}
-                                        </a>
-                                    );
-                                })}
-                            </div>
-                            
-                            <!-- Next Button -->
-                            <a href={page.url.next || '#'} class={`page-btn next-btn ${!page.url.next ? 'disabled' : ''}`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                            </a>
-                        </div>
-                        )}
-                    </div>
-                </div>
+                return (
+                  <a href={num === 1 ? '/blog' : `/blog/${num}`} class={`page-btn ${page.currentPage === num ? 'active' : ''}`}>
+                    {num}
+                  </a>
+                );
+              })}
             </div>
 
-            <script>
-                document.addEventListener('astro:page-load', () => {
-                    // 1. Scroll Reveal for Blog Posts
-                    const observerOptions = {
-                        root: null,
-                        rootMargin: '0px',
-                        threshold: 0.1
-                    };
+            <a href={page.url.next || '#'} class={`page-btn next-btn ${!page.url.next ? 'disabled' : ''}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+            </a>
+          </div>
+        )}
+      </div>
+    </ContentCard>
+  </div>
 
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                                observer.unobserve(entry.target); // Only animate once
-                            }
-                        });
-                    }, observerOptions);
-
-                    document.querySelectorAll('.scroll-reveal').forEach(el => {
-                        observer.observe(el);
-                    });
-
-                    // 2. Parallax card effect
-                    const statsCard = document.getElementById('stats-card');
-                    const heroHeader = document.querySelector('.hero-header');
-                    const mainContent = document.getElementById('main-content');
-                    const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-                    const maxRise = isCoarsePointer ? 72 : 180;
-
-                    if (statsCard && heroHeader && mainContent) {
-                        let ticking = false;
-                        function updateParallax() {
-                            const scrollY = mainContent!.scrollTop;
-                            // 一滑就上浮，滚动距离与上浮距离成正比
-                            const progress = Math.min(scrollY / (window.innerHeight * 0.5), 1);
-                            const rise = progress * maxRise;
-                            statsCard.style.transform = `translateY(-${rise}px)`;
-                        }
-
-                        const onScroll = () => {
-                            if (ticking) return;
-                            ticking = true;
-                            requestAnimationFrame(() => {
-                                updateParallax();
-                                ticking = false;
-                            });
-                        };
-
-                        const mainContentAny = mainContent as any;
-                        if (mainContentAny.__blogParallaxHandler) {
-                            mainContent.removeEventListener('scroll', mainContentAny.__blogParallaxHandler);
-                        }
-
-                        mainContentAny.__blogParallaxHandler = onScroll;
-                        updateParallax();
-                        mainContent.addEventListener('scroll', onScroll, { passive: true });
-                    }
-                });
-            </script>
-            
-            <style>
-                .scroll-reveal {
-                    opacity: 0;
-                    transform: translateY(30px);
-                    transition: opacity 0.6s cubic-bezier(0.05, 0.7, 0.1, 1),
-                                transform 0.6s cubic-bezier(0.05, 0.7, 0.1, 1);
-                }
-                .scroll-reveal.visible {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-
-                /* Pagination ellipsis pulse */
-                .page-ellipsis {
-                    color: var(--color-text-muted);
-                    padding: 0 0.2em;
-                    font-size: 0.9em;
-                    animation: ellipsisPulse 1.8s cubic-bezier(0.2, 0.0, 0.0, 1.0) infinite;
-                    transition: all 0.3s cubic-bezier(0.05, 0.7, 0.1, 1.0);
-                }
-
-                .page-ellipsis:hover {
-                    color: var(--accent);
-                    transform: scale(1.2);
-                }
-
-                @keyframes ellipsisPulse {
-                    0%, 100% { 
-                        opacity: 0.2; 
-                        transform: scale(1);
-                    }
-                    50% { 
-                        opacity: 1; 
-                        transform: scale(1.05);
-                    }
-                }
-            </style>
-		</main>
-		<Footer />
-        </div>
-		<SearchModal />
-	</body>
-</html>
+  <Fragment slot="scripts">
+    <script>
+      import { runPageEnhancements } from '../../scripts/pages/registry';
+      runPageEnhancements('blog-list');
+    </script>
+  </Fragment>
+</PageShell>

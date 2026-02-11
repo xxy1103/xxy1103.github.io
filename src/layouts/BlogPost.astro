@@ -1,11 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
 import HeroHeader from '../components/HeroHeader.astro';
-import SearchModal from '../components/SearchModal.astro';
+import PageShell from './PageShell.astro';
 import { heroConfig, locale, profileConfig, siteTitle } from '../config';
 import katexStylesheetUrl from 'katex/dist/katex.min.css?url';
 
@@ -15,7 +12,9 @@ interface Heading {
 	text: string;
 }
 
-interface Props extends CollectionEntry<'blog'>['data'] {
+type BlogPostData = CollectionEntry<'blog'>['data'];
+
+interface Props extends BlogPostData {
 	headings?: Heading[];
 	wordCount?: number;
 	readingTime?: number;
@@ -36,7 +35,7 @@ const {
 	readingTime,
 	seoDescription,
 	loadKatexStyles = false,
-} = Astro.props;
+} = Astro.props as Props;
 const metaDescription = (seoDescription || description || title).trim();
 const siteURL = Astro.site ?? Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
@@ -111,19 +110,20 @@ function buildTocTree(headings: Heading[]): TocNode[] {
 const tocTree = buildTocTree(headings);
 ---
 
-<html lang="zh-CN">
-	<head>
-		<BaseHead
-			title={title}
-			description={metaDescription}
-			image={displayHeroImage}
-			type="article"
-			publishedTime={pubDate}
-			modifiedTime={updatedDate}
-			section={articleSection}
-			tags={articleTags}
-			schema={articleSchema}
-		/>
+<PageShell
+	title={title}
+	description={metaDescription}
+	image={displayHeroImage}
+	type="article"
+	publishedTime={pubDate}
+	modifiedTime={updatedDate}
+	section={articleSection}
+	tags={articleTags}
+	schema={articleSchema}
+	canonical={canonicalURL}
+	useMainWrapper={false}
+>
+	<Fragment slot="head">
 		<link rel="preload" as="image" href={displayHeroImageSrc} />
 		{loadKatexStyles && (
 			<>
@@ -135,6 +135,21 @@ const tocTree = buildTocTree(headings);
 			</>
 		)}
 		<style>
+			.stats-wrapper {
+				position: relative;
+				min-height: 50vh;
+			}
+
+			.stats-wrapper::before {
+				content: '';
+				position: absolute;
+				top: 100px;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: var(--color-bg);
+				z-index: -1;
+			}
 			
             
             /* Hero Meta Custom Styles */
@@ -404,14 +419,9 @@ const tocTree = buildTocTree(headings);
 				}
 			}
 		</style>
-	</head>
-
-	<body>
-		<Header />
-		<div id="main-content">
-		
-		<!-- Hero Header with injected content -->
-		<HeroHeader 
+	</Fragment>
+	<!-- Hero Header with injected content -->
+	<HeroHeader 
             text={title} 
             backgroundImage={displayHeroImageSrc}
             compact={true}
@@ -438,92 +448,88 @@ const tocTree = buildTocTree(headings);
                     )}
                 </div>
             </div>
-        </HeroHeader>
+	</HeroHeader>
 		
-		<div class="stats-wrapper">
-			<div class="layout-container">
-				<main class="content-card" transition:name="page-content">
-					<article>
-						<div class="prose">
-							<slot />
-							{updatedDate && (
-								<div class="last-updated-on">
-									Last updated on <FormattedDate date={updatedDate} />
-								</div>
-							)}
-						</div>
-					</article>
-				</main>
-				
-				{tocTree.length > 0 && (
-					<aside class="sidebar-container slide-in-right">
-						<nav class="toc-sidebar sticky-toc" id="toc">
-							<div class="toc-title">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-									<path d="M3 6h18M3 12h18M3 18h18" />
-								</svg>
-								目录
+	<div class="stats-wrapper">
+		<div class="layout-container">
+			<main class="content-card" transition:name="page-content">
+				<article>
+					<div class="prose">
+						<slot />
+						{updatedDate && (
+							<div class="last-updated-on">
+								Last updated on <FormattedDate date={updatedDate} />
 							</div>
-							<ul class="toc-list" id="toc-root">
-								{tocTree.map((node) => (
-									<li class="toc-item" data-depth={node.heading.depth} data-slug={node.heading.slug}>
-										<a href={`#${node.heading.slug}`} class="toc-link">
-											<span class="toc-text">{node.heading.text}</span>
-										</a>
-										{node.children.length > 0 && (
-											<ul class="toc-children">
-												{node.children.map((child) => (
-													<li class="toc-item" data-depth={child.heading.depth} data-slug={child.heading.slug}>
-														<a href={`#${child.heading.slug}`} class="toc-link">
-															<span class="toc-text">{child.heading.text}</span>
-														</a>
-														{child.children.length > 0 && (
-															<ul class="toc-children">
-																{child.children.map((grandchild) => (
-																	<li class="toc-item" data-depth={grandchild.heading.depth} data-slug={grandchild.heading.slug}>
-																		<a href={`#${grandchild.heading.slug}`} class="toc-link">
-																			<span class="toc-text">{grandchild.heading.text}</span>
-																		</a>
-																		{grandchild.children.length > 0 && (
-																			<ul class="toc-children">
-																				{grandchild.children.map((ggc) => (
-																					<li class="toc-item" data-depth={ggc.heading.depth} data-slug={ggc.heading.slug}>
-																						<a href={`#${ggc.heading.slug}`} class="toc-link">
-																							<span class="toc-text">{ggc.heading.text}</span>
-																						</a>
-																					</li>
-																				))}
-																			</ul>
-																		)}
-																	</li>
-																))}
-															</ul>
-														)}
-													</li>
-												))}
-											</ul>
-										)}
-									</li>
-								))}
-							</ul>
-						</nav>
-					</aside>
-				)}
-			</div>
+						)}
+					</div>
+				</article>
+			</main>
+				
+			{tocTree.length > 0 && (
+				<aside class="sidebar-container slide-in-right">
+					<nav class="toc-sidebar sticky-toc" id="toc">
+						<div class="toc-title">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+								<path d="M3 6h18M3 12h18M3 18h18" />
+							</svg>
+							目录
+						</div>
+						<ul class="toc-list" id="toc-root">
+							{tocTree.map((node) => (
+								<li class="toc-item" data-depth={node.heading.depth} data-slug={node.heading.slug}>
+									<a href={`#${node.heading.slug}`} class="toc-link">
+										<span class="toc-text">{node.heading.text}</span>
+									</a>
+									{node.children.length > 0 && (
+										<ul class="toc-children">
+											{node.children.map((child) => (
+												<li class="toc-item" data-depth={child.heading.depth} data-slug={child.heading.slug}>
+													<a href={`#${child.heading.slug}`} class="toc-link">
+														<span class="toc-text">{child.heading.text}</span>
+													</a>
+													{child.children.length > 0 && (
+														<ul class="toc-children">
+															{child.children.map((grandchild) => (
+																<li class="toc-item" data-depth={grandchild.heading.depth} data-slug={grandchild.heading.slug}>
+																	<a href={`#${grandchild.heading.slug}`} class="toc-link">
+																		<span class="toc-text">{grandchild.heading.text}</span>
+																	</a>
+																	{grandchild.children.length > 0 && (
+																		<ul class="toc-children">
+																			{grandchild.children.map((ggc) => (
+																				<li class="toc-item" data-depth={ggc.heading.depth} data-slug={ggc.heading.slug}>
+																					<a href={`#${ggc.heading.slug}`} class="toc-link">
+																						<span class="toc-text">{ggc.heading.text}</span>
+																					</a>
+																				</li>
+																			))}
+																		</ul>
+																	)}
+																</li>
+															))}
+														</ul>
+													)}
+												</li>
+											))}
+										</ul>
+									)}
+								</li>
+							))}
+						</ul>
+					</nav>
+				</aside>
+			)}
 		</div>
+	</div>
 		
-		<Footer />
-        </div>
-		
-		<SearchModal />
-		
-		<!-- Lightbox HTML -->
-		<div id="lightbox" class="lightbox-overlay">
-			<span class="lightbox-close">&times;</span>
-			<img class="lightbox-image" src="" alt="Lightbox">
-		</div>
+	<!-- Lightbox HTML -->
+	<div id="lightbox" class="lightbox-overlay">
+		<span class="lightbox-close">&times;</span>
+		<img class="lightbox-image" src="" alt="Lightbox">
+	</div>
 
-        <script>
+	<Fragment slot="scripts">
+		<script>
             import { setupToc } from '../scripts/toc';
             import { setupCodeBlocks } from '../scripts/code-block';
             import { setupLightbox } from '../scripts/lightbox';
@@ -534,13 +540,17 @@ const tocTree = buildTocTree(headings);
                 setupLightbox?.();
             };
 
-            if (window.__blogEnhancementsHandler) {
-                document.removeEventListener('astro:page-load', window.__blogEnhancementsHandler);
+            const runtimeWindow = window as Window & {
+                __blogEnhancementsHandler?: () => void;
+            };
+
+            if (runtimeWindow.__blogEnhancementsHandler) {
+                document.removeEventListener('astro:page-load', runtimeWindow.__blogEnhancementsHandler);
             }
-            window.__blogEnhancementsHandler = runEnhancements;
+            runtimeWindow.__blogEnhancementsHandler = runEnhancements;
             document.addEventListener('astro:page-load', runEnhancements);
             runEnhancements();
-        </script>
-	</body>
-</html>
+		</script>
+	</Fragment>
+</PageShell>
 

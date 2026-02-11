@@ -61,21 +61,22 @@ const schemaList = !schema ? [] : Array.isArray(schema) ? schema : [schema];
 ---
 
 <!-- Global Metadata -->
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="custom-cursor-default" content={enableCustomCursorByDefault ? 'on' : 'off'} />
-<link rel="icon" href={faviconIco} sizes="any" />
-<link rel="sitemap" href="/sitemap-index.xml" />
+<meta charset="utf-8" transition:persist />
+<meta name="viewport" content="width=device-width,initial-scale=1" transition:persist />
+<meta name="custom-cursor-default" content={enableCustomCursorByDefault ? 'on' : 'off'} transition:persist />
+<link rel="icon" href={faviconIco} sizes="any" transition:persist />
+<link rel="sitemap" href="/sitemap-index.xml" transition:persist />
 <link
 	rel="alternate"
 	type="application/rss+xml"
 	title={siteTitle}
 	href={new URL('rss.xml', siteURL)}
+	transition:persist
 />
-<meta name="generator" content={Astro.generator} />
+<meta name="generator" content={Astro.generator} transition:persist />
 
 <!-- Theme initialization — prevents flash of wrong theme -->
-<script is:inline>
+<script is:inline transition:persist>
 (function() {
   function getTheme() {
     const stored = localStorage.getItem('theme');
@@ -92,7 +93,7 @@ const schemaList = !schema ? [] : Array.isArray(schema) ? schema : [schema];
 </script>
 
 <!-- Custom cursor switch (head-level) -->
-<script is:inline>
+<script is:inline transition:persist>
 (() => {
   const STORAGE_KEY = 'custom-cursor-enabled';
   const defaultEnabled =
@@ -174,7 +175,7 @@ const schemaList = !schema ? [] : Array.isArray(schema) ? schema : [schema];
 ))}
 
 <!-- On Android, force full-page reload navigation -->
-<script is:inline>
+<script is:inline transition:persist>
 (() => {
   const isAndroid = () => /Android/i.test(navigator.userAgent);
   const android = isAndroid();

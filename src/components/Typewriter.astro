@@ -46,26 +46,27 @@ const elementId = id || `typewriter-${Math.random().toString(36).substring(7)}`;
         
         typewriters.forEach((element) => {
             const fullText = element.getAttribute('data-text') || '';
-            const typedTextSpan = element.querySelector('.typed-text');
+            const typedTextSpan = element.querySelector('.typed-text') as HTMLElement | null;
             
-            if (typedTextSpan && fullText) {
-                // Reset text content for View Transitions
-                typedTextSpan.textContent = '';
-                let i = 0;
-                // Delay start slightly to ensure page is rendered
-                setTimeout(() => {
-                    function typeWriter() {
-                        if (i < fullText.length) {
-                            typedTextSpan.textContent += fullText.charAt(i);
-                            i++;
-                            // Random typing speed for natural feel (50ms - 150ms)
-                            const randomSpeed = Math.floor(Math.random() * 100) + 50;
-                            setTimeout(typeWriter, randomSpeed);
-                        }
+            if (!typedTextSpan || !fullText) return;
+            const typedTextNode = typedTextSpan;
+
+            // Reset text content for View Transitions
+            typedTextNode.textContent = '';
+            let i = 0;
+            // Delay start slightly to ensure page is rendered
+            setTimeout(() => {
+                function typeWriter() {
+                    if (i < fullText.length) {
+                        typedTextNode.textContent += fullText.charAt(i);
+                        i++;
+                        // Random typing speed for natural feel (50ms - 150ms)
+                        const randomSpeed = Math.floor(Math.random() * 100) + 50;
+                        setTimeout(typeWriter, randomSpeed);
                     }
-                    typeWriter();
-                }, 300);
-            }
+                }
+                typeWriter();
+            }, 300);
         });
     });
 </script>

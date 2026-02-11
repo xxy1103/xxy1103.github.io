@@ -321,6 +321,16 @@ npm run preview
 | `npm run dev`             | 启动本地开发服务器                            |
 | `npm run build`           | 带特性开关的构建流程（`build-with-config`） |
 | `npm run build:astro`     | 仅执行 `astro build`                        |
+| `npm run check`           | 执行 `astro check` 类型与模板校验           |
+
+## 重构后的开发约定（2026-02）
+
+- 页面壳层统一使用 `src/layouts/PageShell.astro`（文章详情保持 `BlogPost` 专用布局）。
+- 博客内容读取统一从 `src/lib/content/blog.ts` 获取，不再在页面里重复 `getCollection` 逻辑。
+- 摘要与 SEO 文本统一使用 `src/lib/content/text.ts`。
+- 个人社交链接解析统一使用 `src/lib/profile/social.ts`。
+- 页面交互脚本放在 `src/scripts/pages/*`，通过 `src/scripts/pages/registry.ts` 注册。
+- 页面关系与依赖图见 `docs/frontend-architecture-map.md`。
 | `npm run preview`         | 预览生产构建产物                              |
 | `npm run astro`           | Astro CLI 原生命令入口                        |
 | `npm run optimize:images` | 执行博客图片 WebP 转换与引用替换              |

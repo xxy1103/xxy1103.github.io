@@ -18,8 +18,9 @@ export function setupCodeBlocks() {
     let index = 0;
 
     const enhanceBlock = (pre: HTMLPreElement) => {
-        // Avoid double-wrapping
-        if (pre.parentElement?.classList.contains('code-block-wrapper')) return;
+        // Avoid double-wrapping across repeated lifecycle calls.
+        if (pre.dataset.codeBlockEnhanced === 'true') return;
+        if (pre.closest('.code-block-wrapper')) return;
 
         // Get language
         let lang = 'code';
@@ -111,6 +112,8 @@ export function setupCodeBlocks() {
 
         wrapper.appendChild(toolbar);
         wrapper.appendChild(codeBody);
+
+        pre.dataset.codeBlockEnhanced = 'true';
     };
 
     const processBatch = () => {

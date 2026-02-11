@@ -12,7 +12,7 @@
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
 	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
+	--gray-gradient: rgba(var(--gray-light), 50%), var(--color-bg);
 	--box-shadow:
 		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
 
@@ -190,41 +190,18 @@
 	--color-hobby-gradient: linear-gradient(135deg, #1e2230, #252836);
 }
 
-/* Theme transition for smooth switching */
-html[data-theme],
-html[data-theme] body,
-html[data-theme] header,
-html[data-theme] .search-container,
-html[data-theme] .content-card,
-html[data-theme] .stats-wrapper,
-html[data-theme] .stats-container,
-html[data-theme] .stat-item,
-html[data-theme] .blog-link,
-html[data-theme] .posts-container,
-html[data-theme] .about-container,
-html[data-theme] .toc-sidebar,
-html[data-theme] .sticky-toc,
-html[data-theme] .code-block-wrapper,
-html[data-theme] .code-lang,
-html[data-theme] .code-copy-btn,
-html[data-theme] .hero-header-overlay,
-html[data-theme] .skill-item,
-html[data-theme] .timeline-item,
-html[data-theme] .hobby-item,
-html[data-theme] .post-item,
-html[data-theme] .tag,
-html[data-theme] .back-link,
-html[data-theme] .profile-card,
-html[data-theme] .meta-chip,
-html[data-theme] .profile-name,
-html[data-theme] .profile-title,
-html[data-theme] .profile-bio,
-html[data-theme] .page-btn {
-	transition: var(--theme-transition);
-}
-
-.smooth-theme-transition {
-	transition: var(--theme-transition);
+/* Theme transition for smooth switching — only while toggling */
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+	transition: background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		border-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		box-shadow 0.4s cubic-bezier(0.2, 0, 0, 1),
+		fill 0.4s cubic-bezier(0.2, 0, 0, 1),
+		stroke 0.4s cubic-bezier(0.2, 0, 0, 1),
+		background 0.4s cubic-bezier(0.2, 0, 0, 1),
+		filter 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
 }
 
 /* Animation Utilities */
@@ -266,13 +243,6 @@ body {
 	overflow: hidden;
 	max-width: 100%;
 	overflow-x: hidden;
-}
-
-/* Shared Wrapper Gradient */
-.stats-wrapper {
-	position: relative;
-	background: linear-gradient(to bottom, transparent 100px, var(--color-bg) 100px);
-	min-height: 50vh;
 }
 
 /* Global Scroll Container */
@@ -557,8 +527,10 @@ code {
 	color: var(--color-code-toolbar-text);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
-	transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease,
-		color 0.2s ease, border-color 0.2s ease;
+	transition: opacity 0.2s ease, transform 0.2s ease,
+		background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		color 0.4s cubic-bezier(0.2, 0, 0, 1),
+		border-color 0.4s cubic-bezier(0.2, 0, 0, 1);
 	opacity: 0;
 	transform: scale(0.9);
 	pointer-events: none;
@@ -747,12 +719,18 @@ hr {
 @media (hover: none) and (pointer: coarse) {
 	.hover-scale:hover,
 	.tag-link:hover,
+	.home-tag-link:hover,
+	.blog-tag-link:hover,
 	.blog-link:hover,
 	.post-item:hover,
+	.home-post-item:hover,
+	.blog-post-item:hover,
+	.tag-post-item:hover,
 	.page-btn:hover,
 	.back-link:hover,
 	.social-link:hover,
 	.meta-item:hover,
+	.tag-meta-item:hover,
 	.tag:hover {
 		transform: none !important;
 		box-shadow: none !important;

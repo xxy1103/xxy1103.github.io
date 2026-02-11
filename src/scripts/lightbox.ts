@@ -67,7 +67,7 @@ export function setupLightbox() {
 
     // Hint browser for offscreen images without blocking entrance animation
     const hintImages = () => {
-        document.querySelectorAll('.prose img').forEach((img) => {
+        document.querySelectorAll<HTMLImageElement>('.prose img').forEach((img) => {
             if (!img.loading) img.loading = 'lazy';
             img.decoding = 'async';
         });

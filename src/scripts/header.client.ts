@@ -270,8 +270,16 @@
             const current = html.getAttribute('data-theme') || 'light';
             const next = current === 'dark' ? 'light' : 'dark';
 
+            // Enable smooth theme transition on all elements
+            html.classList.add('theme-transitioning');
+
             html.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
+
+            // Remove transition class after animation completes
+            setTimeout(() => {
+                html.classList.remove('theme-transitioning');
+            }, 400);
         };
 
         (toggle as any).__themeHandler = handler;

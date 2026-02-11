@@ -1,0 +1,93 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import SearchModal from '../components/SearchModal.astro';
+
+type SchemaObject = Record<string, unknown>;
+
+interface Props {
+	title: string;
+	description: string;
+	image?: ImageMetadata | string;
+	type?: 'website' | 'article';
+	noindex?: boolean;
+	publishedTime?: Date | string;
+	modifiedTime?: Date | string;
+	section?: string;
+	tags?: string[];
+	schema?: SchemaObject | SchemaObject[];
+	canonical?: string | URL;
+	transparentHeader?: boolean;
+	lang?: string;
+	prevURL?: string;
+	nextURL?: string;
+	useMainWrapper?: boolean;
+}
+
+const {
+	title,
+	description,
+	image,
+	type,
+	noindex,
+	publishedTime,
+	modifiedTime,
+	section,
+	tags,
+	schema,
+	canonical,
+	transparentHeader = true,
+	lang = 'zh-CN',
+	prevURL,
+	nextURL,
+	useMainWrapper = true,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<BaseHead
+			title={title}
+			description={description}
+			image={image}
+			type={type}
+			noindex={noindex}
+			publishedTime={publishedTime}
+			modifiedTime={modifiedTime}
+			section={section}
+			tags={tags}
+			schema={schema}
+			canonical={canonical}
+		/>
+		{prevURL && <link rel="prev" href={prevURL} />}
+		{nextURL && <link rel="next" href={nextURL} />}
+		<slot name="head" />
+	</head>
+	<body>
+		<Header transparent={transparentHeader} />
+		<div id="main-content">
+			{useMainWrapper ? (
+				<main class="page-shell-main">
+					<slot />
+				</main>
+			) : (
+				<slot />
+			)}
+			<Footer />
+		</div>
+		<SearchModal />
+		<slot name="scripts" />
+	</body>
+</html>
+
+<style>
+	.page-shell-main {
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+</style>

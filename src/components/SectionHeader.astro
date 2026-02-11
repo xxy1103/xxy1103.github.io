@@ -1,0 +1,28 @@
+---
+interface Props {
+	number?: string;
+	title: string;
+	intro?: string;
+	headerClass?: string;
+	numberClass?: string;
+	titleClass?: string;
+	introClass?: string;
+}
+
+const {
+	number,
+	title,
+	intro,
+	headerClass = 'section-header',
+	numberClass = 'section-number',
+	titleClass = 'section-title',
+	introClass = 'intro-text',
+} = Astro.props;
+---
+
+<div class={headerClass}>
+	{number && <span class={numberClass}>{number}</span>}
+</div>
+<h2 class={titleClass}>{title}</h2>
+{intro && <p class={introClass}>{intro}</p>}
+

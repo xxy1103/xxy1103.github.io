@@ -1,34 +1,16 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
+import ContentCard from '../components/ContentCard.astro';
 import HeroHeader from '../components/HeroHeader.astro';
-import SearchModal from '../components/SearchModal.astro';
+import PageShell from '../layouts/PageShell.astro';
 import { heroConfig, profileConfig, siteTitle } from '../config';
+import { buildSameAsLinks, getRenderableSocials, resolveSocialUrl } from '../lib/profile/social';
 
 const profile = profileConfig;
 const aboutHero = heroConfig.about;
 const siteURL = Astro.site ?? Astro.url;
 const profileInitial = profile.name.trim().charAt(0).toUpperCase() || 'U';
-const socials = profile.socials.filter((item) => item.url.trim().length > 0);
-
-function resolveSocialUrl(key: string, url: string) {
-  if (key === 'email' && !url.startsWith('mailto:')) {
-    return `mailto:${url}`;
-  }
-  return url;
-}
-
-const sameAsSet = new Set<string>();
-if (profile.githubProfileUrl.trim()) {
-  sameAsSet.add(profile.githubProfileUrl.trim());
-}
-socials
-  .filter((item) => item.key !== 'email')
-  .map((item) => resolveSocialUrl(item.key, item.url))
-  .filter((url) => /^https?:\/\//.test(url))
-  .forEach((url) => sameAsSet.add(url));
-const sameAs = Array.from(sameAsSet);
+const socials = getRenderableSocials(profile.socials);
+const sameAs = buildSameAsLinks(profile);
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -44,40 +26,28 @@ const personSchema = {
 };
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <BaseHead
-      title={`About | ${siteTitle}`}
-      description="个人简介 / Profile"
-      schema={personSchema}
-    />
+<PageShell
+  title={`About | ${siteTitle}`}
+  description="个人简介 / Profile"
+  schema={personSchema}
+  transparentHeader={true}
+>
+  <Fragment slot="head">
     <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-      }
-
-      main {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-
       .stats-wrapper {
         position: relative;
-        background: linear-gradient(to bottom, transparent 100px, var(--color-bg) 100px);
         min-height: 50vh;
       }
 
-      .content-card {
-        position: relative;
-        z-index: 20;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1em 2em;
+      .stats-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 100px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--color-bg);
+        z-index: -1;
       }
 
       .about-container {
@@ -95,20 +65,6 @@ const personSchema = {
         font-size: 0.9em;
         color: var(--color-text-muted);
         font-weight: 500;
-      }
-
-      .section-title {
-        font-size: 1.8em;
-        font-weight: bold;
-        margin: 0;
-        color: var(--color-text);
-      }
-
-      .intro-text {
-        color: var(--color-text-secondary);
-        margin-bottom: 2em;
-        font-size: 0.95em;
-        line-height: 1.7;
       }
 
       .profile-card {
@@ -276,10 +232,6 @@ const personSchema = {
       }
 
       @media (max-width: 720px) {
-        .content-card {
-          padding: 0;
-        }
-
         .profile-card {
           border-radius: 0;
         }
@@ -301,105 +253,97 @@ const personSchema = {
         }
       }
     </style>
-  </head>
-  <body>
-    <Header transparent={true} />
-    <div id="main-content">
-      <main>
-        <HeroHeader
-          text={aboutHero.text}
-          subtitle={aboutHero.subtitle}
-          backgroundImage={aboutHero.backgroundImage}
-          compact={true}
-        />
+  </Fragment>
 
-        <div class="stats-wrapper">
-          <div class="content-card" id="stats-card" transition:name="page-content">
-            <div class="about-container">
-              <div class="section-header">
-                <span class="section-number">01</span>
-              </div>
-              <article class="profile-card">
-                <div class="profile-media">
-                  {profile.avatar ? (
-                    <img class="avatar" src={profile.avatar} alt={profile.name} loading="lazy" />
-                  ) : (
-                    <div class="avatar-placeholder" aria-label={profile.name}>{profileInitial}</div>
-                  )}
-                </div>
+  <HeroHeader
+    text={aboutHero.text}
+    subtitle={aboutHero.subtitle}
+    backgroundImage={aboutHero.backgroundImage}
+    compact={true}
+  />
 
-                <div class="profile-content">
-                  <h3 class="profile-name">{profile.name}</h3>
-                  <div class="profile-title">{profile.title}</div>
-                  <p class="profile-bio">{profile.bio}</p>
-
-                  <div class="meta-row">
-                    {profile.location && (
-                      <span class="meta-chip">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        {profile.location}
-                      </span>
-                    )}
-                    {profile.email && (
-                      <a class="meta-chip" href={`mailto:${profile.email}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                          <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                        {profile.email}
-                      </a>
-                    )}
-                  </div>
-
-                  {socials.length > 0 && (
-                    <div class="social-row">
-                      {socials.map((social) => (
-                        <a
-                          href={resolveSocialUrl(social.key, social.url)}
-                          target={social.key === 'email' ? undefined : '_blank'}
-                          rel={social.key === 'email' ? undefined : 'noreferrer'}
-                          class="social-link"
-                          title={social.label}
-                        >
-                          {social.key === 'github' && (
-                            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-                            </svg>
-                          )}
-                          {social.key === 'x' && (
-                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                              <path d="M18.901 1.154h3.68l-8.04 9.19 9.458 12.502h-7.406l-5.8-7.584-6.633 7.584H.478l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932z"></path>
-                            </svg>
-                          )}
-                          {social.key === 'email' && (
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                              <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                          )}
-                          {social.key === 'website' && (
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <line x1="2" y1="12" x2="22" y2="12"></line>
-                              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                            </svg>
-                          )}
-                          <span>{social.label}</span>
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </article>
-            </div>
-          </div>
+  <div class="stats-wrapper">
+    <ContentCard id="stats-card">
+      <div class="about-container">
+        <div class="section-header">
+          <span class="section-number">01</span>
         </div>
-      </main>
-      <Footer />
-    </div>
-    <SearchModal />
-  </body>
-</html>
+        <article class="profile-card">
+          <div class="profile-media">
+            {profile.avatar ? (
+              <img class="avatar" src={profile.avatar} alt={profile.name} loading="lazy" />
+            ) : (
+              <div class="avatar-placeholder" aria-label={profile.name}>{profileInitial}</div>
+            )}
+          </div>
+
+          <div class="profile-content">
+            <h3 class="profile-name">{profile.name}</h3>
+            <div class="profile-title">{profile.title}</div>
+            <p class="profile-bio">{profile.bio}</p>
+
+            <div class="meta-row">
+              {profile.location && (
+                <span class="meta-chip">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  {profile.location}
+                </span>
+              )}
+              {profile.email && (
+                <a class="meta-chip" href={`mailto:${profile.email}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  {profile.email}
+                </a>
+              )}
+            </div>
+
+            {socials.length > 0 && (
+              <div class="social-row">
+                {socials.map((social) => (
+                  <a
+                    href={resolveSocialUrl(social.key, social.url)}
+                    target={social.key === 'email' ? undefined : '_blank'}
+                    rel={social.key === 'email' ? undefined : 'noreferrer'}
+                    class="social-link"
+                    title={social.label}
+                  >
+                    {social.key === 'github' && (
+                      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                      </svg>
+                    )}
+                    {social.key === 'x' && (
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M18.901 1.154h3.68l-8.04 9.19 9.458 12.502h-7.406l-5.8-7.584-6.633 7.584H.478l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932z"></path>
+                      </svg>
+                    )}
+                    {social.key === 'email' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    )}
+                    {social.key === 'website' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                      </svg>
+                    )}
+                    <span>{social.label}</span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      </div>
+    </ContentCard>
+  </div>
+</PageShell>
