@@ -43,7 +43,13 @@ function formatDate(date: Date) {
 }
 ---
 
-<PageShell title={siteTitle} description={siteDescription} schema={webSiteSchema} transparentHeader={true}>
+<PageShell
+  title={siteTitle}
+  description={siteDescription}
+  schema={webSiteSchema}
+  transparentHeader={true}
+  pageId="home"
+>
   <Fragment slot="head">
     <style>
       .stats-wrapper {
@@ -146,52 +152,51 @@ function formatDate(date: Date) {
         border-top: 1px solid var(--color-border);
       }
 
-      .home-posts-list :global(.home-post-item) {
+      .home-posts-list.home-stagger-ready :global(.home-post-item) {
         opacity: 0;
         transform: translateY(20px);
-        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
       }
 
-      .home-posts-list.visible :global(.home-post-item) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item) {
         opacity: 1;
         transform: translateY(0);
       }
 
-      .home-posts-list.visible :global(.home-post-item:nth-child(1)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(1)) {
         transition-delay: 0.1s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(2)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(2)) {
         transition-delay: 0.2s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(3)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(3)) {
         transition-delay: 0.3s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(4)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(4)) {
         transition-delay: 0.4s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(5)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(5)) {
         transition-delay: 0.5s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(6)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(6)) {
         transition-delay: 0.6s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(7)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(7)) {
         transition-delay: 0.7s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(8)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(8)) {
         transition-delay: 0.8s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(9)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(9)) {
         transition-delay: 0.9s;
       }
-      .home-posts-list.visible :global(.home-post-item:nth-child(10)) {
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(10)) {
         transition-delay: 1s;
       }
 
       .home-posts-list :global(.home-post-item) {
         padding: 1.2em 0;
         border-bottom: 1px solid var(--color-border-subtle);
-        transition: background 0.2s, transform 0.2s;
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out, background 0.2s;
       }
 
       .home-posts-list :global(.home-post-item:last-child) {
@@ -380,10 +385,4 @@ function formatDate(date: Date) {
     </ContentCard>
   </div>
 
-  <Fragment slot="scripts">
-    <script>
-      import { runPageEnhancements } from '../scripts/pages/registry';
-      runPageEnhancements('home');
-    </script>
-  </Fragment>
 </PageShell>

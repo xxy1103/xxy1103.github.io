@@ -4,7 +4,7 @@ import { initHomePage } from './home.client';
 import { initTagDetailPage } from './tag-detail.client';
 import { initTagsIndexPage } from './tags-index.client';
 
-type PageEnhancementId = 'home' | 'about' | 'blog-list' | 'tags-index' | 'tag-detail';
+export type PageEnhancementId = 'home' | 'about' | 'blog-list' | 'tags-index' | 'tag-detail';
 type PageEnhancementHandler = () => void;
 
 const handlers: Record<PageEnhancementId, PageEnhancementHandler> = {
@@ -15,22 +15,47 @@ const handlers: Record<PageEnhancementId, PageEnhancementHandler> = {
 	'tag-detail': initTagDetailPage,
 };
 
-interface RegistryWindow extends Window {
-	__pageEnhancementRegistry?: Partial<Record<PageEnhancementId, PageEnhancementHandler>>;
+type MainContentHandlerKey =
+	| '__homeParallaxHandler'
+	| '__blogParallaxHandler'
+	| '__tagsIndexParallaxHandler'
+	| '__tagParallaxHandler'
+	| '__aboutParallaxHandler';
+
+type MainContentWithHandlers = HTMLElement & Partial<Record<MainContentHandlerKey, () => void>>;
+
+const mainContentHandlerKeys: MainContentHandlerKey[] = [
+	'__homeParallaxHandler',
+	'__blogParallaxHandler',
+	'__tagsIndexParallaxHandler',
+	'__tagParallaxHandler',
+	'__aboutParallaxHandler',
+];
+
+function cleanupMainContentHandlers() {
+	const mainContent = document.getElementById('main-content') as MainContentWithHandlers | null;
+	if (!mainContent) return;
+
+	for (const key of mainContentHandlerKeys) {
+		const handler = mainContent[key];
+		if (!handler) continue;
+		mainContent.removeEventListener('scroll', handler);
+		delete mainContent[key];
+	}
 }
 
-export function runPageEnhancements(id: PageEnhancementId) {
-	const handler = handlers[id];
-	const registryWindow = window as RegistryWindow;
-	registryWindow.__pageEnhancementRegistry ||= {};
-
-	for (const existing of Object.values(registryWindow.__pageEnhancementRegistry)) {
-		if (existing) {
-			document.removeEventListener('astro:page-load', existing);
-		}
+function getCurrentPageId(): PageEnhancementId | undefined {
+	const pageId = document.body.dataset.pageId;
+	if (!pageId) return undefined;
+	if (pageId in handlers) {
+		return pageId as PageEnhancementId;
 	}
+	return undefined;
+}
 
-	registryWindow.__pageEnhancementRegistry = { [id]: handler };
-	document.addEventListener('astro:page-load', handler);
-	handler();
+export function runCurrentPageEnhancements() {
+	cleanupMainContentHandlers();
+	const pageId = getCurrentPageId();
+	if (!pageId) return;
+	handlers[pageId]();
 }
