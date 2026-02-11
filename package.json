@@ -8,6 +8,7 @@
     "build:astro": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "check": "astro check",
     "optimize:images": "node scripts/optimize-blog-images.mjs"
   },
   "dependencies": {
@@ -20,5 +21,9 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.9.2"
   }
 }

@@ -6,7 +6,7 @@ function trimToLength(text: string, maxLength: number): string {
 	return `${sliced}…`;
 }
 
-function stripMarkdownAndHtml(text: string): string {
+export function stripMarkdownAndHtml(text: string): string {
 	return text
 		.replace(/<!--[\s\S]*?-->/g, ' ')
 		.replace(/<[^>]+>/g, ' ')
@@ -25,7 +25,7 @@ function stripMarkdownAndHtml(text: string): string {
 		.trim();
 }
 
-export function extractSeoDescription(body: string, maxLength = 160): string {
+export function extractExcerpt(body: string, maxLength = 150): string {
 	const source = body || '';
 	const moreIndex = source.indexOf(MORE_MARKER);
 	const beforeMore = moreIndex >= 0 ? source.slice(0, moreIndex) : source;
@@ -33,3 +33,8 @@ export function extractSeoDescription(body: string, maxLength = 160): string {
 	if (!cleaned) return '';
 	return trimToLength(cleaned, maxLength);
 }
+
+export function extractSeoDescription(body: string, maxLength = 160): string {
+	return extractExcerpt(body, maxLength);
+}
+

@@ -1,0 +1,92 @@
+---
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	date: Date;
+	categories?: string | string[];
+	tags?: string[];
+	tagLimit?: number;
+	showCategories?: boolean;
+	showTags?: boolean;
+	containerClass?: string;
+	itemClass?: string;
+	tagsClass?: string;
+	tagLinkClass?: string;
+}
+
+const {
+	date,
+	categories,
+	tags = [],
+	tagLimit,
+	showCategories = true,
+	showTags = true,
+	containerClass = 'post-meta',
+	itemClass = 'post-meta-item',
+	tagsClass = 'post-tags',
+	tagLinkClass = 'tag-link',
+} = Astro.props;
+
+const categoryList = Array.isArray(categories) ? categories : categories ? [categories] : [];
+const categoryText = categoryList.join(' / ');
+const visibleTags = typeof tagLimit === 'number' ? tags.slice(0, tagLimit) : tags;
+---
+
+<div class={containerClass}>
+	<div class={itemClass}>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
+			<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+			<line x1="16" y1="2" x2="16" y2="6"></line>
+			<line x1="8" y1="2" x2="8" y2="6"></line>
+			<line x1="3" y1="10" x2="21" y2="10"></line>
+		</svg>
+		<FormattedDate date={date} />
+	</div>
+	{showCategories && categoryText && (
+		<div class={itemClass}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+				<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+			</svg>
+			<span>{categoryText}</span>
+		</div>
+	)}
+	{showTags && visibleTags.length > 0 && (
+		<div class={tagsClass}>
+			{visibleTags.map((tag) => (
+				<a href={`/tags/${encodeURIComponent(tag)}/`} class={tagLinkClass}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+						<line x1="7" y1="7" x2="7.01" y2="7"></line>
+					</svg>
+					#{tag}
+				</a>
+			))}
+		</div>
+	)}
+</div>
+

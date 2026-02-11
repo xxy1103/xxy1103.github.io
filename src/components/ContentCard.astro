@@ -1,0 +1,49 @@
+---
+interface Props {
+	id?: string;
+	class?: string;
+	transitionName?: string;
+	as?: 'div' | 'section' | 'article' | 'main';
+	floating?: boolean;
+}
+
+const {
+	id,
+	class: className = '',
+	transitionName = 'page-content',
+	as = 'div',
+	floating = false,
+} = Astro.props as Props;
+const Tag = as;
+---
+
+<Tag
+	id={id}
+	class:list={['content-card', { 'content-card-floating': floating }, className]}
+	transition:name={transitionName}
+>
+	<slot />
+</Tag>
+
+<style>
+	.content-card {
+		position: relative;
+		z-index: 20;
+		width: min(1200px, 100%);
+		margin: 0 auto;
+		padding: 0 1em 2em;
+		box-sizing: border-box;
+	}
+
+	@media (max-width: 720px) {
+		.content-card {
+			padding: 0;
+		}
+	}
+
+	@media (min-width: 721px) {
+		.content-card-floating {
+			margin-top: clamp(-120px, -9vw, -72px);
+		}
+	}
+</style>

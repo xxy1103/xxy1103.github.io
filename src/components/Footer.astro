@@ -1,17 +1,11 @@
 ---
 import CustomCursor from './CustomCursor.astro';
 import { headerGithubRepoUrl, profileConfig, siteTitle } from '../config';
+import { getRenderableSocials, resolveSocialUrl } from '../lib/profile/social';
 
 const today = new Date();
 
-const socials = profileConfig.socials.filter((item) => item.url.trim().length > 0);
-
-function resolveSocialUrl(key: string, url: string) {
-	if (key === 'email' && !url.startsWith('mailto:')) {
-		return `mailto:${url}`;
-	}
-	return url;
-}
+const socials = getRenderableSocials(profileConfig.socials);
 ---
 
 <footer transition:animate="none">
@@ -60,7 +54,7 @@ function resolveSocialUrl(key: string, url: string) {
 		padding: 0.25em 0.55em;
 		border-radius: 999px;
 		border: 1px solid rgba(var(--gray), 0.2);
-		transition: color 0.2s ease, border-color 0.2s ease;
+		transition: color 0.2s ease, border-color 0.2s ease !important;
 	}
 
 	.social-links a:hover {

@@ -9,10 +9,12 @@ import rehypeKatex from 'rehype-katex';
 import rehypeLazyImages from './src/plugins/rehype-lazy-images.mjs';
 import { siteUrl } from './src/config/site';
 
+/** @returns {import('vite').Plugin} */
 function patchKatexFontDisplayPlugin() {
 	return {
 		name: 'patch-katex-font-display',
 		apply: 'build',
+		/** @param {import('rollup').NormalizedOutputOptions} _options @param {Record<string, import('rollup').OutputAsset | import('rollup').OutputChunk>} bundle */
 		generateBundle(_options, bundle) {
 			let foundKatexCss = false;
 			let replacedOccurrences = 0;

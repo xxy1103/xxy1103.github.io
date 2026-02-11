@@ -206,7 +206,7 @@ export function setupToc() {
     window.addEventListener('resize', windowAny.__tocResizeHandler);
 
     if ('fonts' in document) {
-        document.fonts.ready.then(scheduleRecalc).catch(() => {});
+        document.fonts.ready.then(() => scheduleRecalc()).catch(() => {});
     }
 
     if (mainContent) {

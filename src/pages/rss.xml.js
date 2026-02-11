@@ -1,13 +1,10 @@
-import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import { siteDescription, siteTitle } from '../config';
-import { extractSeoDescription } from '../utils/seo';
-import { existsSync } from 'node:fs';
+import { getBlogPosts } from '../lib/content/blog';
+import { extractSeoDescription } from '../lib/content/text';
 
 export async function GET(context) {
-	const posts = (await getCollection('blog')).filter((post) =>
-		post.filePath ? existsSync(post.filePath) : false
-	);
+	const posts = await getBlogPosts();
 	return rss({
 		title: siteTitle,
 		description: siteDescription,

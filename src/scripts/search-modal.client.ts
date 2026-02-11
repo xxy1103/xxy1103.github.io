@@ -1,11 +1,11 @@
-import Fuse from 'fuse.js';
+import Fuse, { type FuseResult, type FuseResultMatch } from 'fuse.js';
 
     interface SearchItem {
         id: string;
         title: string;
         excerpt: string;
         tags: string[];
-        categories: string;
+        categories: string[];
         url: string;
     }
 
@@ -127,25 +127,26 @@ import Fuse from 'fuse.js';
             `;
         };
         
-        // Helper to highlight text based on Fuse matches
-        const highlightText = (text: string, matches: readonly Fuse.FuseResultMatch[] = []) => {
-            if (!matches || matches.length === 0) return text;
-            
-            // Merge overlapping indices
+        const escapeHtml = (value: string) =>
+            value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+
+        const mergeIndices = (matches: readonly FuseResultMatch[] = []) => {
+            const crudeIndices = matches
+                .flatMap((m) => m.indices)
+                .sort((a, b) => a[0] - b[0]);
+
             const indices: [number, number][] = [];
-            
-            // Flatten all matches for this key
-            const crudeIndices = matches.flatMap(m => m.indices);
-            
-            // Sort by start index
-            crudeIndices.sort((a, b) => a[0] - b[0]);
-            
             let current: [number, number] | null = null;
+
             for (const [start, end] of crudeIndices) {
                 if (!current) {
                     current = [start, end];
                 } else if (start <= current[1] + 1) {
-                    // Overlap or adjacent
                     current[1] = Math.max(current[1], end);
                 } else {
                     indices.push(current);
@@ -153,22 +154,26 @@ import Fuse from 'fuse.js';
                 }
             }
             if (current) indices.push(current);
-            
-            // Build highlighted string
+            return indices;
+        };
+
+        const highlightText = (text: string, matches: readonly FuseResultMatch[] = []) => {
+            const indices = mergeIndices(matches);
+            if (indices.length === 0) return escapeHtml(text);
+
             let result = '';
             let lastIndex = 0;
-            
             for (const [start, end] of indices) {
-                result += text.substring(lastIndex, start);
-                result += `<span class="search-highlight">${text.substring(start, end + 1)}</span>`;
+                result += escapeHtml(text.substring(lastIndex, start));
+                result += `<span class="search-highlight">${escapeHtml(text.substring(start, end + 1))}</span>`;
                 lastIndex = end + 1;
             }
-            result += text.substring(lastIndex);
+            result += escapeHtml(text.substring(lastIndex));
             return result;
         };
 
         // Render search results
-        const renderResults = (items: Fuse.FuseResult<SearchItem>[]) => {
+        const renderResults = (items: FuseResult<SearchItem>[]) => {
             if (items.length === 0) {
                 renderNoResults();
                 return;
@@ -178,54 +183,34 @@ import Fuse from 'fuse.js';
                 const item = result.item;
                 
                 // Process Title Highlighting
-                const titleMatches = result.matches?.filter(m => m.key === 'title') || [];
+                const titleMatches = (result.matches?.filter((m) => m.key === 'title') || []) as FuseResultMatch[];
                 const highlightedTitle = highlightText(item.title, titleMatches);
                 
                 // Process Excerpt Highlighting
-                let excerptDisplay = item.excerpt;
-                const excerptMatches = result.matches?.filter(m => m.key === 'excerpt') || [];
+                let excerptDisplay = escapeHtml(item.excerpt);
+                const excerptMatches = (result.matches?.filter((m) => m.key === 'excerpt') || []) as FuseResultMatch[];
                 
                 if (excerptMatches.length > 0) {
-                    // Find the best window to show context
                     const firstMatch = excerptMatches[0].indices[0][0];
                     const start = Math.max(0, firstMatch - 60);
                     const end = Math.min(item.excerpt.length, start + 200);
-                    excerptDisplay = (start > 0 ? '...' : '') + item.excerpt.substring(start, end).trim() + (end < item.excerpt.length ? '...' : '');
-                    
-                    // Re-calculate highlighting for the windowed excerpt
-                    // Note: This is a simplified approach. Ideally we'd map indices back, but re-matching locally is easier for snippets
-                    // Since fuse matches against the whole string, we use highlightText which expects raw indices.
-                    // Instead, we just highlight the whole text first then slice, but text is potentially long.
-                    // Better approach for visualization: Highlight the WHOLE string, then crop around the first highlight.
-                    const fullHighlighted = highlightText(item.excerpt, excerptMatches);
-                    
-                    // Locate first highlight in the modified HTML string is hard. 
-                    // Let's stick to highlighting the snippet we cropped, but we need to adjust indices or just regex match the query words (less accurate)
-                    // Or keep it simple: Highlight full text then substring? HTML tags make substring hard.
-                    
-                    // Robust approach: 
-                    // 1. Get highlight indices. 
-                    // 2. Determine window. 
-                    // 3. Generate HTML only for that window.
-                    
+
                     let windowedResult = '';
                     let lastIdx = start;
-                    
-                    // Filter indices relevant to our window
                     const relevantIndices = excerptMatches
-                        .flatMap(m => m.indices)
-                        .filter(([s, e]) => e >= start && s < end)
-                        .sort((a, b) => a[0] - b[0]);
+                        .flatMap((m: FuseResultMatch) => m.indices)
+                        .filter(([s, e]: readonly [number, number]) => e >= start && s < end)
+                        .sort((a: readonly [number, number], b: readonly [number, number]) => a[0] - b[0]);
                         
                     for (const [s, e] of relevantIndices) {
                          const matchStart = Math.max(s, start);
-                         const matchEnd = Math.min(e, end - 1); // e is inclusive
+                         const matchEnd = Math.min(e, end - 1);
                          
-                         windowedResult += item.excerpt.substring(lastIdx, matchStart);
-                         windowedResult += `<span class="search-highlight">${item.excerpt.substring(matchStart, matchEnd + 1)}</span>`;
+                         windowedResult += escapeHtml(item.excerpt.substring(lastIdx, matchStart));
+                         windowedResult += `<span class="search-highlight">${escapeHtml(item.excerpt.substring(matchStart, matchEnd + 1))}</span>`;
                          lastIdx = matchEnd + 1;
                     }
-                    windowedResult += item.excerpt.substring(lastIdx, end);
+                    windowedResult += escapeHtml(item.excerpt.substring(lastIdx, end));
                     excerptDisplay = (start > 0 ? '...' : '') + windowedResult + (end < item.excerpt.length ? '...' : '');
                 }
 
@@ -241,8 +226,10 @@ import Fuse from 'fuse.js';
                     fragment = `#:~:text=${encodeURIComponent(matchText)}`;
                 }
 
+                const safeHref = encodeURI(`${item.url}${fragment}`);
+
                 return `
-                    <a href="${item.url}${fragment}" class="search-result-item ${index === focusedIndex ? 'focused' : ''}" data-index="${index}">
+                    <a href="${safeHref}" class="search-result-item ${index === focusedIndex ? 'focused' : ''}" data-index="${index}">
                         <div class="search-result-title">${highlightedTitle}</div>
                         <div class="search-result-excerpt">${excerptDisplay}</div>
                     </a>
@@ -251,7 +238,7 @@ import Fuse from 'fuse.js';
         };
 
         // Search input handler
-        let searchTimeout: NodeJS.Timeout;
+        let searchTimeout: ReturnType<typeof setTimeout>;
         input.addEventListener('input', () => {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {

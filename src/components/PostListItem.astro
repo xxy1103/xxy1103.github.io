@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostMeta from './PostMeta.astro';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+	titleTag?: 'h2' | 'h3';
+	articleClass?: string;
+	titleClass?: string;
+	excerptClass?: string;
+	showExcerpt?: boolean;
+	excerpt?: string;
+	tagLimit?: number;
+	metaContainerClass?: string;
+	metaItemClass?: string;
+	metaTagsClass?: string;
+	tagLinkClass?: string;
+	showCategories?: boolean;
+	showTags?: boolean;
+}
+
+const {
+	post,
+	titleTag = 'h2',
+	articleClass = 'post-item',
+	titleClass = 'post-title',
+	excerptClass = 'post-excerpt',
+	showExcerpt = false,
+	excerpt = '',
+	tagLimit,
+	metaContainerClass = 'post-meta',
+	metaItemClass = 'post-meta-item',
+	metaTagsClass = 'post-tags',
+	tagLinkClass = 'tag-link',
+	showCategories = true,
+	showTags = true,
+} = Astro.props;
+
+const TitleTag = titleTag;
+---
+
+<article class={articleClass}>
+	<TitleTag class={titleClass}>
+		<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+	</TitleTag>
+	{showExcerpt && excerpt && <p class={excerptClass}>{excerpt}</p>}
+	<PostMeta
+		date={post.data.pubDate}
+		categories={post.data.categories}
+		tags={post.data.tags}
+		tagLimit={tagLimit}
+		showCategories={showCategories}
+		showTags={showTags}
+		containerClass={metaContainerClass}
+		itemClass={metaItemClass}
+		tagsClass={metaTagsClass}
+		tagLinkClass={tagLinkClass}
+	/>
+</article>
+

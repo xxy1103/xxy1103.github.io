@@ -1,467 +1,286 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
+import ContentCard from '../../components/ContentCard.astro';
 import HeroHeader from '../../components/HeroHeader.astro';
-import SearchModal from '../../components/SearchModal.astro';
+import PageShell from '../../layouts/PageShell.astro';
+import PostListItem from '../../components/PostListItem.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import { heroConfig, siteTitle } from '../../config';
-import { existsSync } from 'node:fs';
+import { getBlogPosts, getPostsByTag } from '../../lib/content/blog';
+import { extractExcerpt } from '../../lib/content/text';
 
 export async function getStaticPaths() {
-	const posts = (await getCollection('blog')).filter((post) =>
-		post.filePath ? existsSync(post.filePath) : false
-	);
-	
-	// 收集所有唯一的标签
-	const tags = new Set<string>();
-	posts.forEach((post) => {
-		const postTags = post.data.tags || [];
-		postTags.forEach((tag: string) => tags.add(tag));
-	});
-	
-	// 为每个标签生成一个页面路径
-	return Array.from(tags).map((tag) => ({
-		params: { tag },
-		props: { tag },
-	}));
+  const posts = await getBlogPosts();
+  const tags = new Set<string>();
+
+  posts.forEach((post) => {
+    post.data.tags.forEach((tag: string) => tags.add(tag));
+  });
+
+  return Array.from(tags).map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
 }
 
 const { tag } = Astro.props;
-
-// 获取所有带有此标签的文章
-const allPosts = (await getCollection('blog')).filter((post) =>
-	post.filePath ? existsSync(post.filePath) : false
-);
-const posts = allPosts
-	.filter((post) => {
-		const postTags = post.data.tags || [];
-		return postTags.includes(tag);
-	})
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// 提取摘要函数
-function getExcerpt(body: string): string {
-	const moreIndex = body.indexOf('<!-- more -->');
-	if (moreIndex > 0) {
-		return body.substring(0, moreIndex).trim();
-	}
-	return body.substring(0, 150).trim() + '...';
-}
+const posts = await getPostsByTag(tag);
 const tagsHero = heroConfig.tags;
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-	<head>
-		<BaseHead
-			title={`标签: ${tag} | ${siteTitle}`}
-			description={`所有标记为 "${tag}" 的博客文章`}
-		/>
-		<style>
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
-			body {
-				background-color: var(--color-bg);
-			}
-			main {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
+<PageShell
+  title={`标签: ${tag} | ${siteTitle}`}
+  description={`所有标记为 "${tag}" 的博客文章`}
+  transparentHeader={true}
+>
+  <Fragment slot="head">
+    <style>
+      .stats-wrapper {
+        position: relative;
+        min-height: 50vh;
+      }
 
+      .posts-container {
+        background: var(--color-surface);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card);
+        padding: 2em;
+      }
 
+      .posts-container :global(.section-header) {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5em;
+        margin-bottom: 0.5em;
+      }
 
-            /* Content Card */
-            .content-card {
-                position: relative;
-                z-index: 20;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 0 1em 2em;
-            }
-			
-			.posts-container {
-				background: var(--color-surface);
-				border-radius: 16px;
-				box-shadow: var(--shadow-card);
-				padding: 2em;
-			}
-            
-            .section-header {
-                display: flex;
-                align-items: baseline;
-                gap: 0.5em;
-                margin-bottom: 0.5em;
-            }
+      .posts-container :global(.section-number) {
+        font-size: 0.9em;
+        color: var(--color-text-muted);
+        font-weight: 500;
+      }
 
-            .section-number {
-                font-size: 0.9em;
-                color: var(--color-text-muted);
-                font-weight: 500;
-            }
+      .posts-container :global(.section-title) {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin: 0;
+        color: var(--color-text);
+      }
 
-            .section-title {
-                font-size: 1.8em;
-                font-weight: bold;
-                margin: 0;
-                color: var(--color-text);
-            }
+      .posts-container :global(.intro-text) {
+        color: var(--color-text-secondary);
+        margin-bottom: 2em;
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
 
-            .intro-text {
-                color: var(--color-text-secondary);
-                margin-bottom: 2em;
-                font-size: 0.9em;
-                line-height: 1.6;
-            }
-            .back-link {
-				display: inline-flex;
-                align-items: center;
-                gap: 0.5em;
-                padding: 0.5em 1.2em;
-				margin-bottom: 2em;
-                background: var(--color-surface);
-                color: var(--color-text-secondary);
-                border: 1px solid var(--color-border);
-                border-radius: 50px;
-				text-decoration: none;
-                font-size: 0.9em;
-                font-weight: 500;
-                transition: all 0.2s ease;
-                box-shadow: 0 2px 8px rgba(var(--shadow-color),0.04);
-			}
-			.back-link:hover {
-				color: var(--accent);
-                border-color: var(--accent);
-                transform: translateX(-3px);
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-			}
-			
-			/* Post Item Wrapper - Handles Entrance Animation */
-            .post-anim-wrapper {
-                /* Animation Init State */
-                opacity: 0;
-                animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-                animation-delay: calc(var(--i) * 0.1s);
-            }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.5em 1.2em;
+        margin-bottom: 2em;
+        background: var(--color-surface);
+        color: var(--color-text-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 0.9em;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(var(--shadow-color), 0.04);
+      }
 
-			/* Post Item - Handles Layout & Hover */
-            .post-item {
-                padding: 1.2em 1em;
-                margin: 0 -1em;
-                border: none;
-                border-bottom: 1px solid var(--color-border-subtle);
-                border-radius: 12px;
-                position: relative;
-                transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-                background: transparent;
-            }
-			
-			.post-item:last-child {
-				border-bottom: none;
-                margin-bottom: 0;
-			}
+      .back-link:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+        transform: translateX(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
 
-            .post-item::before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 50%;
-                transform: translateY(-50%) scaleY(0);
-                width: 3px;
-                height: 60%;
-                background: var(--accent);
-                border-radius: 0 3px 3px 0;
-                transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-            }
+      .post-anim-wrapper {
+        opacity: 0;
+        animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        animation-delay: calc(var(--i) * 0.1s);
+      }
 
-            .post-item:hover {
-                background: var(--color-surface-hover);
-                box-shadow: var(--shadow-card-hover);
-                transform: translateX(4px);
-            }
+      .tag-posts-list :global(.tag-post-item) {
+        padding: 1.2em 1em;
+        margin: 0 -1em;
+        border: none;
+        border-bottom: 1px solid var(--color-border-subtle);
+        border-radius: 12px;
+        position: relative;
+        transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+        background: transparent;
+      }
 
-            .post-item:hover::before {
-                transform: translateY(-50%) scaleY(1);
-            }
-			
-			.post-title {
-				font-size: 1.4em;
-				font-weight: 700;
-				margin: 0 0 0.5em 0;
-				color: var(--color-text);
-			}
-			
-			.post-title a {
-				color: inherit;
-				text-decoration: none;
-				transition: color 0.2s;
-			}
-			
-			.post-title a:hover {
-				color: var(--accent);
-			}
-			
-			.post-excerpt {
-				color: var(--color-text-secondary);
-				font-size: 0.95em;
-				line-height: 1.6;
-				margin: 0 0 1em 0;
-			}
-			
-			/* Post Meta */
-			.post-meta {
-				display: flex;
-				flex-wrap: wrap;
-				align-items: center;
-				gap: 1em;
-				font-size: 0.85em;
-				color: var(--color-text-tertiary);
-			}
-			
-			.meta-item {
-				display: flex;
-				align-items: center;
-				gap: 0.3em;
-                padding: 2px 6px;
-                border-radius: 4px;
-                transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
-			}
+      .tag-posts-list :global(.tag-post-item:last-child) {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
 
-            .meta-item:hover {
-                background: rgba(var(--accent-rgb), 0.08);
-                color: var(--accent);
-            }
-			
-			.meta-item svg {
-				width: 14px;
-				height: 14px;
-			}
-			
-			/* Tags */
-			.post-tags {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5em;
-			}
-			
-			.tag-link {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.2em;
-				padding: 2px 8px;
-				background: var(--color-tag-bg);
-				color: var(--color-tag-text);
-				text-decoration: none;
-				border-radius: 4px;
-				font-size: 0.85em;
-				transition: all 0.2s;
-			}
-			
-			.tag-link:hover {
-				background: var(--accent);
-				color: white;
-			}
-			
-			.tag-link svg {
-				width: 12px;
-				height: 12px;
-			}
-			
-			@media (max-width: 900px) {
-				.content-card {
-					padding: 0 0.75em 1.5em;
-				}
+      .tag-posts-list :global(.tag-post-item)::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%) scaleY(0);
+        width: 3px;
+        height: 60%;
+        background: var(--accent);
+        border-radius: 0 3px 3px 0;
+        transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+      }
 
-				.posts-container {
-					padding: 1.4em;
-				}
+      .tag-posts-list :global(.tag-post-item:hover) {
+        background: var(--color-surface-hover);
+        box-shadow: var(--shadow-card-hover);
+        transform: translateX(4px);
+      }
 
-				.post-item {
-					margin: 0;
-					padding: 1em 0.75em;
-				}
-			}
+      .tag-posts-list :global(.tag-post-item:hover)::before {
+        transform: translateY(-50%) scaleY(1);
+      }
 
-				@media (max-width: 720px) {
-					.content-card {
-						padding: 0;
-					}
+      .tag-posts-list :global(.tag-post-title) {
+        font-size: 1.4em;
+        font-weight: 700;
+        margin: 0 0 0.5em 0;
+        color: var(--color-text);
+      }
 
-					.posts-container {
-						padding: 1.1em;
-						border-radius: 0;
-					}
+      .tag-posts-list :global(.tag-post-title a) {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
 
-				.section-title {
-					font-size: clamp(1.45rem, 6vw, 1.7rem);
-				}
+      .tag-posts-list :global(.tag-post-title a:hover) {
+        color: var(--accent);
+      }
 
-				.post-title {
-					font-size: 1.2em;
-				}
+      .tag-posts-list :global(.tag-post-excerpt) {
+        color: var(--color-text-secondary);
+        font-size: 0.95em;
+        line-height: 1.6;
+        margin: 0 0 1em 0;
+      }
 
-				.post-meta {
-					gap: 0.6em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header transparent={true} />
-		<div id="main-content">
-        <main>
-            <!-- Hero Header -->
-            <HeroHeader
-                text={`标签：${tag}`}
-                subtitle={tagsHero.subtitle}
-                backgroundImage={tagsHero.backgroundImage}
-                compact={true}
-            />
-		
-            <!-- Stats Section Wrapper -->
-            <div class="stats-wrapper">
-                <div class="content-card" id="stats-card" transition:name="page-content">
-                    <div class="posts-container">
-                        <div class="section-header">
-                            <span class="section-number">Tag</span>
-                        </div>
-                        <a href="/tags/" class="back-link hover-scale">← 返回所有标签</a>
-                        <h2 class="section-title">#{tag}</h2>
-                        <p class="intro-text">包含此标签的文章共 {posts.length} 篇</p>
+      .tag-posts-list :global(.tag-post-meta) {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1em;
+        font-size: 0.85em;
+        color: var(--color-text-tertiary);
+      }
 
-                        <div class="posts-list">
-                            {posts.length > 0 ? (
-                                posts.map((post, index) => (
-                                    <div class="post-anim-wrapper" style={`--i: ${index}`}>
-                                        <article class="post-item">
-                                            <h2 class="post-title">
-                                                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-                                            </h2>
-                                            <p class="post-excerpt">{getExcerpt(post.body || '')}</p>
-                                            <div class="post-meta">
-                                                <div class="meta-item">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                                                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                                                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                                                    </svg>
-                                                    <FormattedDate date={post.data.pubDate} />
-                                                </div>
-                                                {post.data.categories && (
-                                                    <div class="meta-item">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                                        </svg>
-                                                        <span>{post.data.categories}</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </article>
-                                    </div>
-                                ))
-                            ) : (
-                                <p style="text-align:center;color:#666;padding:2em;">暂无文章</p>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
+      .tag-posts-list :global(.tag-meta-item) {
+        display: flex;
+        align-items: center;
+        gap: 0.3em;
+        padding: 2px 6px;
+        border-radius: 4px;
+        transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      }
 
-            <script>
-                document.addEventListener('astro:page-load', () => {
-                // 1. Magnetic Effect for Back Link
-                const backLink = document.querySelector('.back-link');
-                const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-                if (backLink && !isCoarsePointer) {
-                    const backLinkAny = backLink as any;
-                    if (backLinkAny.__magneticMoveHandler) {
-                        backLink.removeEventListener('mousemove', backLinkAny.__magneticMoveHandler);
-                    }
-                    if (backLinkAny.__magneticLeaveHandler) {
-                        backLink.removeEventListener('mouseleave', backLinkAny.__magneticLeaveHandler);
-                    }
+      .tag-posts-list :global(.tag-meta-item:hover) {
+        background: rgba(var(--accent-rgb), 0.08);
+        color: var(--accent);
+      }
 
-                    backLinkAny.__magneticMoveHandler = (e: MouseEvent) => {
-                        const rect = backLink.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        const deltaX = (x - centerX) * 0.4;
-                        const deltaY = (y - centerY) * 0.4;
-                        backLink.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-                    };
-                    
-                    backLinkAny.__magneticLeaveHandler = () => {
-                        backLink.style.transform = '';
-                    };
+      .tag-posts-list :global(.tag-meta-item svg) {
+        width: 14px;
+        height: 14px;
+      }
 
-                    backLink.addEventListener('mousemove', backLinkAny.__magneticMoveHandler);
-                    backLink.addEventListener('mouseleave', backLinkAny.__magneticLeaveHandler);
-                }
+      @media (max-width: 900px) {
+        .posts-container {
+          padding: 1.4em;
+        }
 
-                // 2. Parallax card effect
-                const statsCard = document.getElementById('stats-card');
-                const heroHeader = document.querySelector('.hero-header');
-                const mainContent = document.getElementById('main-content');
-                const maxRise = isCoarsePointer ? 72 : 180;
+        .tag-posts-list :global(.tag-post-item) {
+          margin: 0;
+          padding: 1em 0.75em;
+        }
+      }
 
-                if (statsCard && heroHeader && mainContent) {
-                    let ticking = false;
-                    function updateParallax() {
-                        const scrollY = mainContent!.scrollTop;
-                        // 一滑就上浮，滚动距离与上浮距离成正比
-                        const progress = Math.min(scrollY / (window.innerHeight * 0.5), 1);
-                        const rise = progress * maxRise;
-                        statsCard.style.transform = `translateY(-${rise}px)`;
-                    }
+      @media (max-width: 720px) {
+        .posts-container {
+          padding: 1.1em;
+          border-radius: 0;
+        }
 
-                    const onScroll = () => {
-                        if (ticking) return;
-                        ticking = true;
-                        requestAnimationFrame(() => {
-                            updateParallax();
-                            ticking = false;
-                        });
-                    };
+        .posts-container :global(.section-title) {
+          font-size: clamp(1.45rem, 6vw, 1.7rem);
+        }
 
-                    const mainContentAny = mainContent as any;
-                    if (mainContentAny.__tagParallaxHandler) {
-                        mainContent.removeEventListener('scroll', mainContentAny.__tagParallaxHandler);
-                    }
+        .tag-posts-list :global(.tag-post-title) {
+          font-size: 1.2em;
+        }
 
-                    mainContentAny.__tagParallaxHandler = onScroll;
-                    updateParallax();
-                    mainContent.addEventListener('scroll', onScroll, { passive: true });
-                }
-                });
-            </script>
+        .tag-posts-list :global(.tag-post-meta) {
+          gap: 0.6em;
+        }
+      }
 
-            <style>
-            /* Keyframes */
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            </style>
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
 
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </Fragment>
 
-		</main>
-		<Footer />
+  <HeroHeader
+    text={`标签：${tag}`}
+    subtitle={tagsHero.subtitle}
+    backgroundImage={tagsHero.backgroundImage}
+    compact={true}
+  />
+
+  <div class="stats-wrapper">
+    <ContentCard id="stats-card">
+      <div class="posts-container">
+        <SectionHeader number="Tag" title={`#${tag}`} intro={`包含此标签的文章共 ${posts.length} 篇`} />
+        <a href="/tags/" class="back-link hover-scale">← 返回所有标签</a>
+
+        <div class="tag-posts-list">
+          {posts.length > 0 ? (
+            posts.map((post, index) => (
+              <div class="post-anim-wrapper" style={`--i: ${index}`}>
+                <PostListItem
+                  post={post}
+                  titleTag="h2"
+                  articleClass="tag-post-item"
+                  titleClass="tag-post-title"
+                  excerptClass="tag-post-excerpt"
+                  showExcerpt={true}
+                  excerpt={extractExcerpt(post.body || '', 160)}
+                  showTags={false}
+                  metaContainerClass="tag-post-meta"
+                  metaItemClass="tag-meta-item"
+                />
+              </div>
+            ))
+          ) : (
+            <p style="text-align:center;color:#666;padding:2em;">暂无文章</p>
+          )}
         </div>
-		<SearchModal />
-	</body>
-</html>
+      </div>
+    </ContentCard>
+  </div>
+
+  <Fragment slot="scripts">
+    <script>
+      import { runPageEnhancements } from '../../scripts/pages/registry';
+      runPageEnhancements('tag-detail');
+    </script>
+  </Fragment>
+</PageShell>
