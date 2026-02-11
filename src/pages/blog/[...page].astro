@@ -88,13 +88,19 @@ if (last > 1) paginationList.push(last);
       .stats-wrapper {
         position: relative;
         min-height: 50vh;
+        background-color: var(--color-bg);
+        transform: translateY(88px);
       }
 
       .posts-container {
         background: var(--color-surface);
         border-radius: 16px;
-        box-shadow: var(--shadow-card);
+        box-shadow: 
+          0 16px 64px rgba(0, 0, 0, 0.18),
+          0 8px 24px rgba(0, 0, 0, 0.12),
+          0 0 0 1px var(--color-border-subtle);
         padding: 2em;
+        transform: translateY(-88px);
       }
 
       .posts-container :global(.section-header) {

@@ -21,25 +21,20 @@ const tagsHero = heroConfig.tags;
       .stats-wrapper {
         position: relative;
         min-height: 50vh;
-      }
-
-      .stats-wrapper::before {
-        content: '';
-        position: absolute;
-        top: 100px;
-        left: 0;
-        right: 0;
-        bottom: 0;
         background-color: var(--color-bg);
-        z-index: -1;
+        transform: translateY(88px);
       }
 
       .posts-container {
         background: var(--color-surface);
         border-radius: 16px;
-        box-shadow: var(--shadow-card);
+        box-shadow: 
+          0 16px 64px rgba(0, 0, 0, 0.18),
+          0 8px 24px rgba(0, 0, 0, 0.12),
+          0 0 0 1px var(--color-border-subtle);
         padding: 2em;
         min-height: 300px;
+        transform: translateY(-88px);
       }
 
       .posts-container :global(.section-header) {

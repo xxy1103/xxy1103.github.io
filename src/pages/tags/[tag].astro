@@ -38,13 +38,19 @@ const tagsHero = heroConfig.tags;
       .stats-wrapper {
         position: relative;
         min-height: 50vh;
+        background-color: var(--color-bg);
+        transform: translateY(88px);
       }
 
       .posts-container {
         background: var(--color-surface);
         border-radius: 16px;
-        box-shadow: var(--shadow-card);
+        box-shadow: 
+          0 16px 64px rgba(0, 0, 0, 0.18),
+          0 8px 24px rgba(0, 0, 0, 0.12),
+          0 0 0 1px var(--color-border-subtle);
         padding: 2em;
+        transform: translateY(-88px);
       }
 
       .posts-container :global(.section-header) {
@@ -99,38 +105,23 @@ const tagsHero = heroConfig.tags;
       .back-link:hover {
         color: var(--accent);
         border-color: var(--accent);
-        transform: translateX(-3px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      }
-
-      .post-anim-wrapper {
-        opacity: 0;
-        animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        animation-delay: calc(var(--i) * 0.1s);
-      }
-
-      .tag-posts-list :global(.tag-post-item) {
+        trpost-item {
         padding: 1.2em 1em;
         margin: 0 -1em;
         border: none;
         border-bottom: 1px solid var(--color-border-subtle);
         border-radius: 12px;
         position: relative;
-        transition:
-          color 0.2s cubic-bezier(0.2, 0, 0, 1),
-          background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
-          border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
-          box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-          transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+        transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
         background: transparent;
       }
 
-      .tag-posts-list :global(.tag-post-item:last-child) {
+      .post-item:last-child {
         border-bottom: none;
         margin-bottom: 0;
       }
 
-      .tag-posts-list :global(.tag-post-item)::before {
+      .post-item::before {
         content: '';
         position: absolute;
         left: 0;
@@ -143,27 +134,56 @@ const tagsHero = heroConfig.tags;
         transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
       }
 
-      .tag-posts-list :global(.tag-post-item:hover) {
+      .post-item:hover {
         background: var(--color-surface-hover);
         box-shadow: var(--shadow-card-hover);
         transform: translateX(4px);
       }
 
-      .tag-posts-list :global(.tag-post-item:hover)::before {
-        transform: translateY(-50%) scaleY(1);
+      .      margin-bottom: 0;
       }
 
-      .tag-posts-list :global(.tag-post-title) {
+      .tag-posts-list :global(.tag-post-item)::before {
+post-title {
         font-size: 1.4em;
         font-weight: 700;
         margin: 0 0 0.5em 0;
         color: var(--color-text);
       }
 
-      .tag-posts-list :global(.tag-post-title a) {
+      .post-title a {
         color: inherit;
         text-decoration: none;
         transition: color 0.2s;
+      }
+
+      .post-title a:hover {
+        color: var(--accent);
+      }
+
+      ..tag-post-item:hover) {
+        background: var(--color-surface-hover);
+        box-shadow: var(--shadow-card-hover);
+        transform: translateX(4px);
+ post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1em;
+        font-size: 0.85em;
+        color: var(--color-text-tertiary);
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.3em;
+        padding: 2px 6px;
+        border-radius: 4px;
+        transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      }
+
+      .sition: color 0.2s;
       }
 
       .tag-posts-list :global(.tag-post-title a:hover) {
@@ -246,29 +266,21 @@ const tagsHero = heroConfig.tags;
 
         to {
           opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
-  </Fragment>
-
-  <HeroHeader
-    text={`标签：${tag}`}
-    subtitle={tagsHero.subtitle}
-    backgroundImage={tagsHero.backgroundImage}
-    compact={true}
-  />
-
-  <div class="stats-wrapper">
-    <ContentCard id="stats-card">
-      <div class="posts-container">
-        <SectionHeader number="Tag" title={`#${tag}`} intro={`包含此标签的文章共 ${posts.length} 篇`} />
-        <a href="/tags/" class="back-link hover-scale">← 返回所有标签</a>
-
-        <div class="tag-posts-list">
+          transposts-list">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div class="post-anim-wrapper" style={`--i: ${index}`}>
+                <PostListItem
+                  post={post}
+                  titleTag="h2"
+                  articleClass="post-item"
+                  titleClass="post-title"
+                  excerptClass="post-excerpt"
+                  showExcerpt={true}
+                  excerpt={extractExcerpt(post.body || '', 160)}
+                  showTags={false}
+                  metaContainerClass="post-meta"
+                  metaItemClass="pper" style={`--i: ${index}`}>
                 <PostListItem
                   post={post}
                   titleTag="h2"
@@ -284,7 +296,7 @@ const tagsHero = heroConfig.tags;
               </div>
             ))
           ) : (
-            <p style="text-align:center;color:#666;padding:2em;">暂无文章</p>
+            <p style="text-align:center;color:var(--color-text-secondary);padding:2em;">暂无文章</p>
           )}
         </div>
       </div>
