@@ -24,6 +24,7 @@ interface Props {
 	prevURL?: string;
 	nextURL?: string;
 	useMainWrapper?: boolean;
+	pageId?: 'home' | 'about' | 'blog-list' | 'tags-index' | 'tag-detail';
 }
 
 const {
@@ -43,6 +44,7 @@ const {
 	prevURL,
 	nextURL,
 	useMainWrapper = true,
+	pageId,
 } = Astro.props;
 ---
 
@@ -66,7 +68,7 @@ const {
 		{nextURL && <link rel="next" href={nextURL} />}
 		<slot name="head" />
 	</head>
-	<body>
+	<body data-page-id={pageId}>
 		<Header transparent={transparentHeader} />
 		<div id="main-content">
 			{useMainWrapper ? (
@@ -79,6 +81,22 @@ const {
 			<Footer />
 		</div>
 		<SearchModal />
+		<script>
+			import { runCurrentPageEnhancements } from '../scripts/pages/registry';
+
+			const runtimeWindow = window as Window & {
+				__globalPageEnhancementsHandler?: () => void;
+			};
+
+			const handlePageLoad = () => runCurrentPageEnhancements();
+
+			if (runtimeWindow.__globalPageEnhancementsHandler) {
+				document.removeEventListener('astro:page-load', runtimeWindow.__globalPageEnhancementsHandler);
+			}
+			runtimeWindow.__globalPageEnhancementsHandler = handlePageLoad;
+			document.addEventListener('astro:page-load', handlePageLoad);
+			handlePageLoad();
+		</script>
 		<slot name="scripts" />
 	</body>
 </html>

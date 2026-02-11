@@ -14,6 +14,7 @@ const tagsHero = heroConfig.tags;
   title={`标签 | ${siteTitle}`}
   description="按标签浏览所有博客文章"
   transparentHeader={true}
+  pageId="tags-index"
 >
   <Fragment slot="head">
     <style>
@@ -233,10 +234,4 @@ const tagsHero = heroConfig.tags;
     </ContentCard>
   </div>
 
-  <Fragment slot="scripts">
-    <script>
-      import { runPageEnhancements } from '../../scripts/pages/registry';
-      runPageEnhancements('tags-index');
-    </script>
-  </Fragment>
 </PageShell>

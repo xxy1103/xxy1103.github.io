@@ -93,15 +93,25 @@ function setupCountUp() {
 }
 
 function setupPostsStagger() {
-	const postsList = document.querySelector('.home-posts-list');
+	const postsList = document.querySelector<HTMLElement>('.home-posts-list');
 	if (!postsList) return;
+
+	if (postsList.classList.contains('visible')) return;
+
+	postsList.classList.add('home-stagger-ready');
+	const reveal = () => postsList.classList.add('visible');
+
+	if (!('IntersectionObserver' in window)) {
+		reveal();
+		return;
+	}
 
 	const postsObserver = new IntersectionObserver(
 		(entries) => {
 			for (const entry of entries) {
 				if (entry.isIntersecting) {
-					postsList.classList.add('visible');
-					postsObserver.unobserve(entry.target);
+					reveal();
+					postsObserver.disconnect();
 				}
 			}
 		},
@@ -109,6 +119,14 @@ function setupPostsStagger() {
 	);
 
 	postsObserver.observe(postsList);
+
+	// Fallback: never keep content hidden when observer timing fails.
+	window.setTimeout(() => {
+		if (!postsList.classList.contains('visible')) {
+			reveal();
+			postsObserver.disconnect();
+		}
+	}, 1200);
 }
 
 export function initHomePage() {
