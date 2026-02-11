@@ -214,6 +214,11 @@ html[data-theme] .hobby-item,
 html[data-theme] .post-item,
 html[data-theme] .tag,
 html[data-theme] .back-link,
+html[data-theme] .profile-card,
+html[data-theme] .meta-chip,
+html[data-theme] .profile-name,
+html[data-theme] .profile-title,
+html[data-theme] .profile-bio,
 html[data-theme] .page-btn {
 	transition: var(--theme-transition);
 }
