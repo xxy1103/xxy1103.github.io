@@ -77,6 +77,15 @@ if (interactive) heroClass += ' hero-interactive';
         min-height: 360px;
         margin-bottom: -88px;
     }
+
+    /* compact 模式下背景层保持与主页一致的 100vh 高度，
+       使 cover 按高度约束图片，调整窗口宽度时只裁切而不缩放 */
+    .hero-header.hero-compact .hero-bg {
+        height: 100vh;
+        height: 100dvh;
+        top: 50%;
+        transform: translateY(-50%);
+    }
     
     .hero-overlay {
         position: absolute;
