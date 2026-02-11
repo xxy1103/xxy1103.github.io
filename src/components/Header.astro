@@ -168,7 +168,11 @@ const { transparent = true } = Astro.props;
 		color: var(--black);
 		text-decoration: none;
         position: relative;
-        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition:
+            color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            filter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	}
     
     /* Reveal delays removed */
@@ -332,7 +336,10 @@ const { transparent = true } = Astro.props;
 		border-radius: 12px;
 		cursor: pointer;
 		color: inherit;
-		transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition:
+			background-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+			color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+			transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
 	
 	.search-btn:hover {
@@ -354,7 +361,10 @@ const { transparent = true } = Astro.props;
 		border-radius: 12px;
 		cursor: pointer;
 		color: inherit;
-		transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+		transition:
+			background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+			color 0.4s cubic-bezier(0.2, 0, 0, 1),
+			transform 0.4s cubic-bezier(0.2, 0, 0, 1);
 		position: relative;
 		overflow: hidden;
 	}
@@ -371,7 +381,9 @@ const { transparent = true } = Astro.props;
 	.cursor-toggle-btn .cursor-on-icon,
 	.cursor-toggle-btn .cursor-off-icon {
 		position: absolute;
-		transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+		transition:
+			opacity 0.4s cubic-bezier(0.2, 0, 0, 1),
+			transform 0.4s cubic-bezier(0.2, 0, 0, 1);
 	}
 
 	.cursor-toggle-btn .cursor-on-icon {
@@ -421,7 +433,10 @@ const { transparent = true } = Astro.props;
 		border-radius: 12px;
 		cursor: pointer;
 		color: inherit;
-		transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+		transition:
+			background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+			color 0.4s cubic-bezier(0.2, 0, 0, 1),
+			transform 0.4s cubic-bezier(0.2, 0, 0, 1);
 		position: relative;
 		overflow: hidden;
 	}
@@ -439,7 +454,9 @@ const { transparent = true } = Astro.props;
 	.theme-toggle-btn .sun-icon,
 	.theme-toggle-btn .moon-icon {
 		position: absolute;
-		transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
+		transition:
+			opacity 0.5s cubic-bezier(0.2, 0, 0, 1),
+			transform 0.5s cubic-bezier(0.2, 0, 0, 1);
 	}
 
 	.theme-toggle-btn .sun-icon {

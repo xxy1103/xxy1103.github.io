@@ -88,13 +88,19 @@ if (last > 1) paginationList.push(last);
       .stats-wrapper {
         position: relative;
         min-height: 50vh;
+        background-color: var(--color-bg);
+        transform: translateY(88px);
       }
 
       .posts-container {
         background: var(--color-surface);
         border-radius: 16px;
-        box-shadow: var(--shadow-card);
+        box-shadow: 
+          0 16px 64px rgba(0, 0, 0, 0.18),
+          0 8px 24px rgba(0, 0, 0, 0.12),
+          0 0 0 1px var(--color-border-subtle);
         padding: 2em;
+        transform: translateY(-88px);
       }
 
       .posts-container :global(.section-header) {
@@ -144,7 +150,11 @@ if (last > 1) paginationList.push(last);
         border-bottom: 1px solid var(--color-border-subtle);
         border-radius: 12px;
         position: relative;
-        transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+        transition:
+          background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+          border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+          box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+          transform 0.2s cubic-bezier(0.2, 0, 0, 1);
       }
 
       .blog-posts-list :global(.blog-post-item:last-child) {
@@ -236,7 +246,11 @@ if (last > 1) paginationList.push(last);
         text-decoration: none;
         border-radius: 4px;
         font-size: 0.85em;
-        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        transition:
+          background-color 0.3s cubic-bezier(0.2, 0, 0, 1),
+          color 0.3s cubic-bezier(0.2, 0, 0, 1),
+          box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1),
+          transform 0.3s cubic-bezier(0.2, 0, 0, 1);
         transform-origin: center;
       }
 
@@ -317,8 +331,12 @@ if (last > 1) paginationList.push(last);
         background: transparent;
         color: var(--color-text-secondary);
         text-decoration: none;
-        transition: transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
-          box-shadow 0.3s cubic-bezier(0.05, 0.7, 0.1, 1) !important;
+        transition:
+          color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
+          background-color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
+          border-color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
+          transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
+          box-shadow 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
         font-weight: 500;
         font-size: 0.95em;
         border: 1px solid transparent;
@@ -346,8 +364,9 @@ if (last > 1) paginationList.push(last);
       .page-btn:hover:not(.disabled):not(.active) {
         color: var(--accent);
         transform: translateY(-3px) scale(1.05);
-        transition: transform 0.25s cubic-bezier(0.05, 0.7, 0.1, 1),
-          box-shadow 0.25s cubic-bezier(0.05, 0.7, 0.1, 1) !important;
+        transition:
+          transform 0.25s cubic-bezier(0.05, 0.7, 0.1, 1),
+          box-shadow 0.25s cubic-bezier(0.05, 0.7, 0.1, 1);
       }
 
       .page-btn.active {
@@ -356,7 +375,12 @@ if (last > 1) paginationList.push(last);
         font-weight: 600;
         box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.35);
         transform: scale(1.08);
-        transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+        transition:
+          color 0.4s cubic-bezier(0.2, 0, 0, 1),
+          background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+          border-color 0.4s cubic-bezier(0.2, 0, 0, 1),
+          box-shadow 0.4s cubic-bezier(0.2, 0, 0, 1),
+          transform 0.4s cubic-bezier(0.2, 0, 0, 1);
       }
 
       .page-btn.disabled {
@@ -369,17 +393,17 @@ if (last > 1) paginationList.push(last);
       .prev-btn:hover:not(.disabled),
       .next-btn:hover:not(.disabled) {
         transform: translateY(-3px) scale(1.05);
-        transition: all 0.25s cubic-bezier(0.05, 0.7, 0.1, 1);
+        transition: transform 0.25s cubic-bezier(0.05, 0.7, 0.1, 1);
       }
 
       .prev-btn:active:not(.disabled) {
         transform: translateX(-4px) scale(0.95);
-        transition: all 0.15s cubic-bezier(0.3, 0, 0.8, 0.15);
+        transition: transform 0.15s cubic-bezier(0.3, 0, 0.8, 0.15);
       }
 
       .next-btn:active:not(.disabled) {
         transform: translateX(4px) scale(0.95);
-        transition: all 0.15s cubic-bezier(0.3, 0, 0.8, 0.15);
+        transition: transform 0.15s cubic-bezier(0.3, 0, 0.8, 0.15);
       }
 
       @media (max-width: 480px) {
@@ -424,7 +448,9 @@ if (last > 1) paginationList.push(last);
         padding: 0 0.2em;
         font-size: 0.9em;
         animation: ellipsisPulse 1.8s cubic-bezier(0.2, 0, 0, 1) infinite;
-        transition: all 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+        transition:
+          color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
+          transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
       }
 
       .page-ellipsis:hover {

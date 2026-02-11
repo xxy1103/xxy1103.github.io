@@ -139,7 +139,7 @@ function formatDate(date: Date) {
         text-decoration: none;
         font-weight: bold;
         font-size: 0.9em;
-        transition: all 0.3s;
+        transition: color 0.3s;
       }
 
       .blog-link:hover {
@@ -270,7 +270,11 @@ function formatDate(date: Date) {
         text-decoration: none;
         border-radius: 4px;
         font-size: 0.85em;
-        transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
+        transition:
+          background-color 0.3s cubic-bezier(0.2, 0, 0, 1),
+          color 0.3s cubic-bezier(0.2, 0, 0, 1),
+          transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+          box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1);
         transform-origin: center;
       }
 

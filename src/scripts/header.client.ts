@@ -47,6 +47,7 @@
     let resizeHandler: (() => void) | null = null;
     let navResizeObserver: ResizeObserver | null = null;
     let pendingRecalc = false;
+    let themeTransitionTimer: number | null = null;
     const MOBILE_BREAKPOINT = 900;
 
     function isMobileViewport() {
@@ -255,6 +256,23 @@
         requestAnimationFrame(() => updateHeaderState());
     }
 
+    function parseCssTimeToMs(value: string): number | null {
+        const normalized = value.trim();
+        if (!normalized) return null;
+        const match = normalized.match(/^(-?\d*\.?\d+)(ms|s)$/i);
+        if (!match) return null;
+        const amount = Number(match[1]);
+        if (!Number.isFinite(amount)) return null;
+        return match[2].toLowerCase() === 's' ? amount * 1000 : amount;
+    }
+
+    function getThemeTransitionDurationMs(html: HTMLElement): number {
+        const styles = getComputedStyle(html);
+        const variableDuration = styles.getPropertyValue('--theme-color-transition-duration');
+        const parsed = parseCssTimeToMs(variableDuration);
+        return parsed ?? 400;
+    }
+
     // ====== Theme Toggle ======
     function initThemeToggle() {
         const toggle = document.getElementById('theme-toggle');
@@ -267,19 +285,27 @@
 
         const handler = () => {
             const html = document.documentElement;
-            const current = html.getAttribute('data-theme') || 'light';
-            const next = current === 'dark' ? 'light' : 'dark';
+            const transitionDuration = Math.max(0, getThemeTransitionDurationMs(html));
 
             // Enable smooth theme transition on all elements
             html.classList.add('theme-transitioning');
 
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
+            // Ensure the transition class is applied before switching theme values.
+            requestAnimationFrame(() => {
+                const current = html.getAttribute('data-theme') || 'light';
+                const next = current === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
 
-            // Remove transition class after animation completes
-            setTimeout(() => {
-                html.classList.remove('theme-transitioning');
-            }, 400);
+                if (themeTransitionTimer !== null) {
+                    clearTimeout(themeTransitionTimer);
+                }
+                const cleanupDelay = transitionDuration <= 0 ? 0 : transitionDuration + 34;
+                themeTransitionTimer = window.setTimeout(() => {
+                    html.classList.remove('theme-transitioning');
+                    themeTransitionTimer = null;
+                }, cleanupDelay);
+            });
         };
 
         (toggle as any).__themeHandler = handler;

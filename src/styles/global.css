@@ -21,10 +21,12 @@
 	--ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
 	/* Theme Transition */
-	--theme-transition: background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
-		color 0.4s cubic-bezier(0.2, 0, 0, 1),
-		border-color 0.4s cubic-bezier(0.2, 0, 0, 1),
-		box-shadow 0.4s cubic-bezier(0.2, 0, 0, 1);
+	--theme-color-transition-duration: 400ms;
+	--theme-color-transition-ease: cubic-bezier(0.2, 0, 0, 1);
+	--theme-transition: background-color var(--theme-color-transition-duration) var(--theme-color-transition-ease),
+		color var(--theme-color-transition-duration) var(--theme-color-transition-ease),
+		border-color var(--theme-color-transition-duration) var(--theme-color-transition-ease),
+		box-shadow var(--theme-color-transition-duration) var(--theme-color-transition-ease);
 
 	/* ═══════════════════════════════════════
 	   Semantic Color Tokens — Light Mode
@@ -190,18 +192,31 @@
 	--color-hobby-gradient: linear-gradient(135deg, #1e2230, #252836);
 }
 
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--theme-color-transition-duration: 0ms;
+	}
+}
+
 /* Theme transition for smooth switching — only while toggling */
+html.theme-transitioning,
+html.theme-transitioning body,
 html.theme-transitioning *,
 html.theme-transitioning *::before,
 html.theme-transitioning *::after {
-	transition: background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
-		color 0.4s cubic-bezier(0.2, 0, 0, 1),
-		border-color 0.4s cubic-bezier(0.2, 0, 0, 1),
-		box-shadow 0.4s cubic-bezier(0.2, 0, 0, 1),
-		fill 0.4s cubic-bezier(0.2, 0, 0, 1),
-		stroke 0.4s cubic-bezier(0.2, 0, 0, 1),
-		background 0.4s cubic-bezier(0.2, 0, 0, 1),
-		filter 0.4s cubic-bezier(0.2, 0, 0, 1) !important;
+	transition-property: color,
+		background,
+		background-color,
+		border-color,
+		box-shadow,
+		fill,
+		stroke,
+		filter,
+		outline-color,
+		text-decoration-color !important;
+	transition-duration: var(--theme-color-transition-duration) !important;
+	transition-timing-function: var(--theme-color-transition-ease) !important;
+	transition-delay: 0ms !important;
 }
 
 /* Animation Utilities */

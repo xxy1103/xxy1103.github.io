@@ -305,7 +305,11 @@ const tocTree = buildTocTree(headings);
 				overflow: hidden;
 				max-height: 0;
 				opacity: 0;
-				transition: all 0.3s ease-in-out;
+				transition:
+					max-height 0.3s ease-in-out,
+					opacity 0.3s ease-in-out,
+					margin-top 0.3s ease-in-out,
+					margin-bottom 0.3s ease-in-out;
 			}
 			
 			/* 展开状态 */
