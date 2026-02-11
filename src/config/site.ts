@@ -37,4 +37,4 @@ export const siteConfig: SiteConfig = {
   faviconIco: '/favicon.ico',
 };
 
-export const { siteUrl, siteTitle, siteDescription, locale, headerGithubRepoUrl } = siteConfig;
+export const { siteUrl, siteTitle, siteDescription, locale, headerGithubRepoUrl, faviconIco} = siteConfig;
