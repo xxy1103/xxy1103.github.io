@@ -7,7 +7,7 @@ tags: "hexo"
 ---
 # hexo更换主题
 
-今天在上网冲浪时，发现了一个好看的bolg主题，githob指路：[viva](https://github.com/saicaca/hexo-theme-vivia)。附效果图一张。
+今天在上网冲浪时，发现了一个好看的blog主题，githob指路：[viva](https://github.com/saicaca/hexo-theme-vivia)。附效果图一张。
 
 ![1729084843294](image/edge/1729084843294.webp)
 
@@ -44,11 +44,3 @@ tags: "hexo"
 我们这里主要是因为缓存文件过时，网站更新了某些资源（如CSS或JavaScript），但你的浏览器还在使用之前缓存的旧文件，导致页面显示异常或样式错乱。
 
 这样当你清除缓存后，浏览器重新获取了最新的资源，恢复了正常的页面显示。
-
-
-
-
-
-
-
-
