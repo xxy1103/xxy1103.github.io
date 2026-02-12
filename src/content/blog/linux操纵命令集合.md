@@ -1,7 +1,7 @@
 ---
 title: linux 简单操作命令集合
 date: 2024-07-05 20:44:41
-tags: "linux"
+tags: "Linux"
 ---
 ## 文件夹相关
 
