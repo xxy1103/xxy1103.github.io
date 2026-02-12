@@ -1,7 +1,7 @@
 import homeBackground from '../assets/blog-placeholder-1.jpg';
 import blogBackground from '../assets/blog-placeholder-1.jpg';
 import tagsBackground from '../assets/blog-placeholder-1.jpg';
-import aboutBackground from '../assets/blog-placeholder-about.jpg';
+import aboutBackground from '../assets/blog-placeholder-1.jpg';
 import postBackground from '../assets/blog-placeholder-5.jpg';
 
 /**

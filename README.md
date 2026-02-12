@@ -16,39 +16,33 @@
 
 1. 响应式博客布局（`/`、`/blog`、`/tags`、`/about`）
 
-- 页面级断点与移动端适配：`src/pages/*.astro`、`src/styles/global.css`
-- 移动端导航抽屉：`src/components/Header.astro`
-
+   - 页面级断点与移动端适配：`src/pages/*.astro`、`src/styles/global.css`
+   - 移动端导航抽屉：`src/components/Header.astro`
 2. 博客内容迁移（Hexo Frontmatter 部分兼容）
 
-- Frontmatter 兼容字段：`date/pubDate`、`updated/updatedDate`、`categories`、`tags`、`permalink`、`comments`、`layout`、`excerpt`
-- 兼容入口与归一化：`src/content.config.ts`
-- Hexo 图片相对路径兼容（`image/...` -> `/image/...`）：`src/plugins/remark-hexo-images.mjs`
-- 说明：当前是“部分兼容”，不是完整 Hexo 语义迁移，欢迎提交 PR 扩展。
-
+   - Frontmatter 兼容字段：`date/pubDate`、`updated/updatedDate`、`categories`、`tags`、`permalink`、`comments`、`layout`、`excerpt`
+   - 兼容入口与归一化：`src/content.config.ts`
+   - Hexo 图片相对路径兼容（`image/...` -> `/image/...`）：`src/plugins/remark-hexo-images.mjs`
+   - 说明：当前是“部分兼容”，不是完整 Hexo 语义迁移，欢迎提交 PR 扩展。
 3. 流畅动画设计（Material Design 曲线）
 
-- 页面过渡使用 View Transitions：`src/components/BaseHead.astro`
-- Material Design 3 动画曲线（Emphasized/Decelerate/Accelerate）用于页面与交互动画：`src/components/BaseHead.astro`、`src/components/SearchModal.astro`
-
+   - 页面过渡使用 View Transitions：`src/components/BaseHead.astro`
+   - Material Design 3 动画曲线（Emphasized/Decelerate/Accelerate）用于页面与交互动画：`src/components/BaseHead.astro`、`src/components/SearchModal.astro`
 4. SEO 优化（仅列当前代码已实现项）
 
-- 详见下方“SEO 优化（代码对齐）”章节。
-
+   - 详见下方“SEO 优化（代码对齐）”章节。
 5. KaTeX 数学公式支持
 
-- Markdown 管线：`remark-math` + `rehype-katex`（`astro.config.mjs`）
-- 按需加载 KaTeX 样式（仅检测到数学内容时加载）：`src/pages/blog/[...slug].astro`、`src/layouts/BlogPost.astro`
-
+   - Markdown 管线：`remark-math` + `rehype-katex`（`astro.config.mjs`）
+   - 按需加载 KaTeX 样式（仅检测到数学内容时加载）：`src/pages/blog/[...slug].astro`、`src/layouts/BlogPost.astro`
 6. 内置 WebP 图片压缩流程
 
-- `npm run build` 默认通过 `scripts/build-with-config.mjs` 读取开关并在构建前执行 `scripts/optimize-blog-images.mjs`
-- 开关位置：`src/config/features.mjs` 的 `enableImageOptimizationOnBuild`
-
+   - `npm run build` 默认通过 `scripts/build-with-config.mjs` 读取开关并在构建前执行 `scripts/optimize-blog-images.mjs`
+   - 开关位置：`src/config/features.mjs` 的 `enableImageOptimizationOnBuild`
 7. Lighthouse 导向性能优化
 
-- 图片懒加载、异步解码、按需预加载、延迟加载搜索索引、视口外内容渲染优化等
-- 详见下方“Lighthouse 导向性能优化（代码对齐）”章节
+   - 图片懒加载、异步解码、按需预加载、延迟加载搜索索引、视口外内容渲染优化等
+   - 详见下方“Lighthouse 导向性能优化（代码对齐）”章节
 
 ## SEO 优化（代码对齐）
 
@@ -56,36 +50,29 @@
 
 1. Canonical、robots、Open Graph、Twitter Card、JSON-LD 注入
 
-- `src/components/BaseHead.astro`
-
+   - `src/components/BaseHead.astro`
 2. 首页 `WebSite` 结构化数据
 
-- `src/pages/index.astro`
-
+   - `src/pages/index.astro`
 3. About 页 `Person` 结构化数据
 
-- `src/pages/about.astro`
-
+   - `src/pages/about.astro`
 4. 文章页 `BlogPosting` 结构化数据 + `article:*` 元信息
 
-- `src/layouts/BlogPost.astro`
-
+   - `src/layouts/BlogPost.astro`
 5. 归档分页 SEO 策略：`/blog/2+` 设为 `noindex,follow`，并输出 `rel=prev/next`
 
-- `src/pages/blog/[...page].astro`
-
+   - `src/pages/blog/[...page].astro`
 6. sitemap 过滤策略：排除标签页与 `/blog/2+` 分页路径
 
-- `astro.config.mjs`
-
+   - `astro.config.mjs`
 7. RSS 输出与 description 回退（frontmatter description -> 正文提取 -> title）
 
-- `src/pages/rss.xml.js`
-- `src/utils/seo.ts`
-
+   - `src/pages/rss.xml.js`
+   - `src/utils/seo.ts`
 8. 重要边界说明
 
-- 当前代码未对标签页显式设置 `noindex`（`/tags` 与 `/tags/[tag]` 页面未传入 `noindex`），README 不做该项声明。
+   - 当前代码未对标签页显式设置 `noindex`（`/tags` 与 `/tags/[tag]` 页面未传入 `noindex`），README 不做该项声明。
 
 ## Lighthouse 导向性能优化（代码对齐）
 
@@ -93,36 +80,29 @@
 
 1. Markdown 图片统一懒加载与异步解码
 
-- `src/plugins/rehype-lazy-images.mjs`
-
+   - `src/plugins/rehype-lazy-images.mjs`
 2. 构建期图片转 WebP + Markdown 引用自动替换
 
-- `scripts/optimize-blog-images.mjs`
-
+   - `scripts/optimize-blog-images.mjs`
 3. `npm run build` 的构建前预处理链路（可开关）
 
-- `scripts/build-with-config.mjs`
-- `src/config/features.mjs`
-
+   - `scripts/build-with-config.mjs`
+   - `src/config/features.mjs`
 4. 文章首图预加载 + KaTeX 样式按需加载
 
-- `src/layouts/BlogPost.astro`
-
+   - `src/layouts/BlogPost.astro`
 5. KaTeX 字体显示策略 patch（`font-display: block` -> `swap`）
 
-- `astro.config.mjs`
-
+   - `astro.config.mjs`
 6. 视口外图片渲染优化（减少首屏渲染压力）
 
-- `src/components/BaseHead.astro` 中 `.prose img { content-visibility: auto; }`
-
+   - `src/components/BaseHead.astro` 中 `.prose img { content-visibility: auto; }`
 7. 搜索索引懒加载（首次打开搜索框时再请求）
 
-- `src/scripts/search-modal.client.ts`
-
+   - `src/scripts/search-modal.client.ts`
 8. 主题初始化防闪烁（减少错误主题闪烁）
 
-- `src/components/BaseHead.astro`
+   - `src/components/BaseHead.astro`
 
 ## 快速开始
 
@@ -316,12 +296,12 @@ npm run preview
 
 以下命令与 `package.json` 保持一致：
 
-| 命令                        | 说明                                          |
-| :-------------------------- | :-------------------------------------------- |
-| `npm run dev`             | 启动本地开发服务器                            |
-| `npm run build`           | 带特性开关的构建流程（`build-with-config`） |
-| `npm run build:astro`     | 仅执行 `astro build`                        |
-| `npm run check`           | 执行 `astro check` 类型与模板校验           |
+| 命令                    | 说明                                          |
+| :---------------------- | :-------------------------------------------- |
+| `npm run dev`         | 启动本地开发服务器                            |
+| `npm run build`       | 带特性开关的构建流程（`build-with-config`） |
+| `npm run build:astro` | 仅执行 `astro build`                        |
+| `npm run check`       | 执行 `astro check` 类型与模板校验           |
 
 ## 重构后的开发约定（2026-02）
 
@@ -331,9 +311,9 @@ npm run preview
 - 个人社交链接解析统一使用 `src/lib/profile/social.ts`。
 - 页面交互脚本放在 `src/scripts/pages/*`，通过 `src/scripts/pages/registry.ts` 注册。
 - 页面关系与依赖图见 `docs/frontend-architecture-map.md`。
-| `npm run preview`         | 预览生产构建产物                              |
-| `npm run astro`           | Astro CLI 原生命令入口                        |
-| `npm run optimize:images` | 执行博客图片 WebP 转换与引用替换              |
+  | `npm run preview`         | 预览生产构建产物                              |
+  | `npm run astro`           | Astro CLI 原生命令入口                        |
+  | `npm run optimize:images` | 执行博客图片 WebP 转换与引用替换              |
 
 ## 开源协作
 
