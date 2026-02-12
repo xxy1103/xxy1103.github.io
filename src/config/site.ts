@@ -29,7 +29,7 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  siteUrl: 'https://blog.ulna520.top',
+  siteUrl: 'https://template.ulna520.top',
   siteTitle: 'ulBo Astro Theme',
   siteDescription: 'A configurable Astro blog theme with centralized config and zero-content defaults.',
   locale: 'zh-CN',
