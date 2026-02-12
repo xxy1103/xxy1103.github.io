@@ -16,39 +16,39 @@ Demo: [https://blog.ulna520.top](https://blog.ulna520.top)
 
 1. Responsive blog layout (`/`, `/blog`, `/tags`, `/about`)
 
-- Page-level breakpoints and mobile adaptation: `src/pages/*.astro`, `src/styles/global.css`
-- Mobile navigation drawer: `src/components/Header.astro`
+    - Page-level breakpoints and mobile adaptation: `src/pages/*.astro`, `src/styles/global.css`
+    - Mobile navigation drawer: `src/components/Header.astro`
 
 2. Blog migration support (partial Hexo Frontmatter compatibility)
 
-- Compatible Frontmatter fields: `date/pubDate`, `updated/updatedDate`, `categories`, `tags`, `permalink`, `comments`, `layout`, `excerpt`
-- Compatibility and normalization entry: `src/content.config.ts`
-- Hexo-style relative image path compatibility (`image/...` -> `/image/...`): `src/plugins/remark-hexo-images.mjs`
-- Note: this is partial compatibility, not full Hexo semantic parity. PRs are welcome.
+    - Compatible Frontmatter fields: `date/pubDate`, `updated/updatedDate`, `categories`, `tags`, `permalink`, `comments`, `layout`, `excerpt`
+    - Compatibility and normalization entry: `src/content.config.ts`
+    - Hexo-style relative image path compatibility (`image/...` -> `/image/...`): `src/plugins/remark-hexo-images.mjs`
+    - Note: this is partial compatibility, not full Hexo semantic parity. PRs are welcome.
 
 3. Smooth animation design (Material Design curves)
 
-- Page transitions built with View Transitions: `src/components/BaseHead.astro`
-- Material Design 3 easing curves (Emphasized/Decelerate/Accelerate) are used for page and interaction transitions: `src/components/BaseHead.astro`, `src/components/SearchModal.astro`
+    - Page transitions built with View Transitions: `src/components/BaseHead.astro`
+    - Material Design 3 easing curves (Emphasized/Decelerate/Accelerate) are used for page and interaction transitions: `src/components/BaseHead.astro`, `src/components/SearchModal.astro`
 
 4. SEO optimizations (implemented items only)
 
-- See the "SEO Optimizations (Code-Aligned)" section below.
+    - See the "SEO Optimizations (Code-Aligned)" section below.
 
 5. KaTeX math support
 
-- Markdown pipeline: `remark-math` + `rehype-katex` (`astro.config.mjs`)
-- KaTeX stylesheet is loaded on demand (only when math content is detected): `src/pages/blog/[...slug].astro`, `src/layouts/BlogPost.astro`
+    - Markdown pipeline: `remark-math` + `rehype-katex` (`astro.config.mjs`)
+    - KaTeX stylesheet is loaded on demand (only when math content is detected): `src/pages/blog/[...slug].astro`, `src/layouts/BlogPost.astro`
 
 6. Built-in WebP image optimization flow
 
-- `npm run build` uses `scripts/build-with-config.mjs`, reads feature flags, and runs `scripts/optimize-blog-images.mjs` before Astro build when enabled.
-- Switch location: `enableImageOptimizationOnBuild` in `src/config/features.mjs`
+    - `npm run build` uses `scripts/build-with-config.mjs`, reads feature flags, and runs `scripts/optimize-blog-images.mjs` before Astro build when enabled.
+    - Switch location: `enableImageOptimizationOnBuild` in `src/config/features.mjs`
 
 7. Lighthouse-oriented performance optimizations
 
-- Includes image lazy loading, async decoding, targeted preloading, deferred search index loading, and viewport-external rendering optimizations.
-- See the "Lighthouse-Oriented Performance Optimizations (Code-Aligned)" section below.
+    - Includes image lazy loading, async decoding, targeted preloading, deferred search index loading, and viewport-external rendering optimizations.
+    - See the "Lighthouse-Oriented Performance Optimizations (Code-Aligned)" section below.
 
 ## SEO Optimizations (Code-Aligned)
 
@@ -56,36 +56,36 @@ Every item below can be directly verified in the current codebase:
 
 1. Canonical, robots, Open Graph, Twitter Card, and JSON-LD injection
 
-- `src/components/BaseHead.astro`
+    - `src/components/BaseHead.astro`
 
 2. Home page `WebSite` structured data
 
-- `src/pages/index.astro`
+    - `src/pages/index.astro`
 
 3. About page `Person` structured data
 
-- `src/pages/about.astro`
+    - `src/pages/about.astro`
 
 4. Article page `BlogPosting` structured data + `article:*` meta
 
-- `src/layouts/BlogPost.astro`
+    - `src/layouts/BlogPost.astro`
 
 5. Archive pagination SEO strategy: `/blog/2+` is `noindex,follow`, with `rel=prev/next`
 
-- `src/pages/blog/[...page].astro`
+    - `src/pages/blog/[...page].astro`
 
 6. Sitemap filtering strategy: excludes tag pages and `/blog/2+` archive pages
 
-- `astro.config.mjs`
+    - `astro.config.mjs`
 
 7. RSS output and description fallback chain (frontmatter description -> extracted body summary -> title)
 
-- `src/pages/rss.xml.js`
-- `src/utils/seo.ts`
+    - `src/pages/rss.xml.js`
+    - `src/utils/seo.ts`
 
 8. Important scope boundary
 
-- Tag pages are not explicitly set to `noindex` in current code (`/tags` and `/tags/[tag]` do not pass `noindex`), so this README does not claim that behavior.
+    - Tag pages are not explicitly set to `noindex` in current code (`/tags` and `/tags/[tag]` do not pass `noindex`), so this README does not claim that behavior.
 
 ## Lighthouse-Oriented Performance Optimizations (Code-Aligned)
 
@@ -93,36 +93,36 @@ All items below are traceable in code:
 
 1. Unified Markdown image lazy loading + async decoding
 
-- `src/plugins/rehype-lazy-images.mjs`
+    - `src/plugins/rehype-lazy-images.mjs`
 
 2. Build-time WebP conversion + Markdown reference replacement
 
-- `scripts/optimize-blog-images.mjs`
+    - `scripts/optimize-blog-images.mjs`
 
 3. Build preprocessing pipeline (toggleable) for `npm run build`
 
-- `scripts/build-with-config.mjs`
-- `src/config/features.mjs`
+    - `scripts/build-with-config.mjs`
+    - `src/config/features.mjs`
 
 4. Article hero image preload + on-demand KaTeX stylesheet loading
 
-- `src/layouts/BlogPost.astro`
+    - `src/layouts/BlogPost.astro`
 
 5. KaTeX font display patch (`font-display: block` -> `swap`)
 
-- `astro.config.mjs`
+    - `astro.config.mjs`
 
 6. Viewport-external image rendering optimization
 
-- `.prose img { content-visibility: auto; }` in `src/components/BaseHead.astro`
+    - `.prose img { content-visibility: auto; }` in `src/components/BaseHead.astro`
 
 7. Lazy fetch of search index (load only when search modal is first opened)
 
-- `src/scripts/search-modal.client.ts`
+    - `src/scripts/search-modal.client.ts`
 
 8. Theme initialization anti-flash logic
 
-- `src/components/BaseHead.astro`
+    - `src/components/BaseHead.astro`
 
 ## Quick Start
 
