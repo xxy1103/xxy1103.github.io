@@ -4,8 +4,15 @@
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import type { ImageMetadata } from 'astro';
-import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { enableCustomCursorByDefault, faviconIco, locale, siteTitle, siteTitleSuffix, siteUrl } from '../config';
+import {
+	enableCustomCursorByDefault,
+	faviconIco,
+	heroConfig,
+	locale,
+	siteTitle,
+	siteTitleSuffix,
+	siteUrl,
+} from '../config';
 
 type SchemaObject = Record<string, unknown>;
 
@@ -25,6 +32,7 @@ interface Props {
 
 const siteURL = Astro.site ?? new URL(siteUrl);
 const ogLocale = locale.replace('-', '_');
+const defaultSeoImage = heroConfig.home.backgroundImage;
 
 function normalizeDate(value?: Date | string) {
 	if (!value) return undefined;
@@ -35,7 +43,7 @@ function normalizeDate(value?: Date | string) {
 const {
 	title,
 	description,
-	image = FallbackImage,
+	image = defaultSeoImage,
 	type = 'website',
 	noindex = false,
 	publishedTime,

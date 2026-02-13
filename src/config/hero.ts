@@ -1,8 +1,8 @@
-import homeBackground from '../assets/blog-placeholder-1.jpg';
-import blogBackground from '../assets/blog-placeholder-1.jpg';
-import tagsBackground from '../assets/blog-placeholder-1.jpg';
-import aboutBackground from '../assets/blog-placeholder-1.jpg';
-import postBackground from '../assets/blog-placeholder-1.jpg';
+import homeBackground from '../assets/blog-placeholder-1.webp';
+import blogBackground from '../assets/blog-placeholder-1.webp';
+import tagsBackground from '../assets/blog-placeholder-1.webp';
+import aboutBackground from '../assets/blog-placeholder-1.webp';
+import postBackground from '../assets/blog-placeholder-1.webp';
 
 /**
  * Hero copy and background settings for one page.

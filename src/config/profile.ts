@@ -1,4 +1,4 @@
-import defaultAvatar from '../assets/blog-placeholder-about.jpg';
+import defaultAvatar from '../assets/blog-placeholder-about.webp';
 
 /**
  * Allowed social entry keys in profile configuration.

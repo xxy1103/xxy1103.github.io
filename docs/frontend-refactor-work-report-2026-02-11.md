@@ -40,9 +40,9 @@
 ```text
 src/
   assets/
-    blog-placeholder-1.jpg
+    blog-placeholder-1.webp
     blog-placeholder-5.jpg
-    blog-placeholder-about.jpg
+    blog-placeholder-about.webp
   components/
     BaseHead.astro
     Header.astro
@@ -193,4 +193,3 @@ src/
 
 ## 9. 参考文档
 - `docs/frontend-architecture-map.md`
-
