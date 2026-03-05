@@ -48,8 +48,8 @@ const RECT_SAMPLE_INTERVAL_MS = 120;
 const SPECIAL_LOCK_MS = 160;
 const SPECIAL_RECOVER_MS = 120;
 const SPECIAL_SIZE_EASING = 0.24;
-const SPECIAL_POSITION_EASING = 0.18;
-const DEFAULT_POSITION_EASING = 0.12;
+const SPECIAL_POSITION_EASING = 1;
+const DEFAULT_POSITION_EASING = 1;
 const IDLE_KEEP_ALIVE_MS = 140;
 
 const clamp = (value: number, min: number, max: number) => {
