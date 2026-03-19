@@ -27,6 +27,28 @@ export function setupToc() {
         }
     });
 
+    const resolvedTocIdByHeadingId = new Map<string, string>();
+    const headingStack: HTMLElement[] = [];
+    headings.forEach((heading) => {
+        const currentDepth = Number.parseInt(heading.tagName.slice(1), 10);
+        while (headingStack.length > 0) {
+            const lastHeading = headingStack[headingStack.length - 1];
+            const lastDepth = Number.parseInt(lastHeading.tagName.slice(1), 10);
+            if (lastDepth < currentDepth) break;
+            headingStack.pop();
+        }
+
+        headingStack.push(heading);
+
+        for (let i = headingStack.length - 1; i >= 0; i -= 1) {
+            const candidateId = headingStack[i].id;
+            if (linkById.has(candidateId)) {
+                resolvedTocIdByHeadingId.set(heading.id, candidateId);
+                break;
+            }
+        }
+    });
+
     let lastActiveId = '';
     let lastActiveLink: HTMLAnchorElement | null = null;
     let expandedItems = new Set<HTMLElement>();
@@ -172,7 +194,7 @@ export function setupToc() {
             currentSlug = headings[headings.length - 1]?.id || currentSlug;
         }
 
-        setActiveHeading(currentSlug);
+        setActiveHeading(resolvedTocIdByHeadingId.get(currentSlug) || currentSlug);
     }
 
     // 1. Smooth Scrolling
@@ -200,7 +222,7 @@ export function setupToc() {
         // 标记正在滚动，防止 scroll 事件处理器在滚动期间频繁更新活跃状态
         isUserScrolling = true;
         lastScrollTop = getScrollTop();
-        setActiveHeading(targetId);
+        setActiveHeading(resolvedTocIdByHeadingId.get(targetId) || targetId);
 
         // 清除之前的检查定时器
         if (scrollCheckTimer) {
