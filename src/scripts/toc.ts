@@ -33,6 +33,9 @@ export function setupToc() {
     let recalcTimer: number | null = null;
     const RECALC_IDLE_TIMEOUT = 800;
     const INITIAL_RECALC_DELAY = 350;
+    let isUserScrolling = false; // 追踪用户是否在进行主动滚动
+    let scrollCheckTimer: number | null = null; // 用于检测滚动完成的定时器
+    let lastScrollTop = 0; // 上一次的滚动位置
 
     const getScrollTop = () => {
         if (mainContent) return mainContent.scrollTop;
@@ -164,10 +167,37 @@ export function setupToc() {
         const elementPosition = target.getBoundingClientRect().top;
         const offsetPosition = elementPosition + (mainContent?.scrollTop || 0) - headerOffset;
 
+        // 标记正在滚动，防止 scroll 事件处理器在滚动期间频繁更新活跃状态
+        isUserScrolling = true;
+        lastScrollTop = mainContent?.scrollTop || 0;
+
+        // 清除之前的检查定时器
+        if (scrollCheckTimer) {
+            window.clearTimeout(scrollCheckTimer);
+        }
+
         mainContent?.scrollTo({
             top: offsetPosition,
             behavior: 'smooth'
         });
+
+        // 设置滚动完成检测：当 100ms 内位置没有变化时，认为滚动完成
+        const checkScroll = () => {
+            const currentScrollTop = mainContent?.scrollTop || 0;
+            if (currentScrollTop === lastScrollTop) {
+                // 滚动已稳定，解除标记并更新活跃状态
+                isUserScrolling = false;
+                updateActiveHeading();
+                scrollCheckTimer = null;
+            } else {
+                // 滚动还在继续，继续检查
+                lastScrollTop = currentScrollTop;
+                scrollCheckTimer = window.setTimeout(checkScroll, 100);
+            }
+        };
+
+        // 最少等待 200ms 再开始检查（确保平滑滚动已经开始）
+        scrollCheckTimer = window.setTimeout(checkScroll, 200);
 
         history.pushState(null, '', href);
     };
@@ -184,6 +214,11 @@ export function setupToc() {
     }
     let ticking = false;
     scrollTargetAny.__tocScrollHandler = () => {
+        // 在用户点击 TOC 进行滚动期间，跳过处理以避免多重滚动冲突
+        if (isUserScrolling) {
+            return;
+        }
+
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
