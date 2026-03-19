@@ -7,9 +7,13 @@ export function setupToc() {
     const tocRoot = document.getElementById('toc-root');
     if (!tocRoot) return;
 
+    const articleRoot =
+        (document.querySelector('article .prose') as HTMLElement | null) ||
+        (document.querySelector('article') as HTMLElement | null) ||
+        document.body;
     const tocLinks = Array.from(document.querySelectorAll('.toc-link')) as HTMLAnchorElement[];
     const headings = Array.from(
-        document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]')
+        articleRoot.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]')
     ) as HTMLElement[];
     const mainContent = document.getElementById('main-content') as HTMLElement | null;
     const tocContainer = document.getElementById('toc') as HTMLElement | null;
@@ -19,20 +23,20 @@ export function setupToc() {
     tocLinks.forEach((link) => {
         const href = link.getAttribute('href');
         if (href && href.startsWith('#')) {
-            linkById.set(href.slice(1), link);
+            linkById.set(decodeURIComponent(href.slice(1)), link);
         }
     });
 
-    type HeadingPos = { id: string; top: number };
-    let headingPositions: HeadingPos[] = [];
-    let positionsReady = false;
     let lastActiveId = '';
     let lastActiveLink: HTMLAnchorElement | null = null;
     let expandedItems = new Set<HTMLElement>();
     let recalcScheduled = false;
     let recalcTimer: number | null = null;
-    const RECALC_IDLE_TIMEOUT = 800;
     const INITIAL_RECALC_DELAY = 350;
+    const DEFAULT_HEADER_HEIGHT = 64;
+    const TOC_SCROLL_EXTRA_OFFSET = 16;
+    const ACTIVE_VIEWPORT_RATIO = 0.36;
+    const MAX_ACTIVE_OFFSET = 360;
     let isUserScrolling = false; // 追踪用户是否在进行主动滚动
     let scrollCheckTimer: number | null = null; // 用于检测滚动完成的定时器
     let lastScrollTop = 0; // 上一次的滚动位置
@@ -42,18 +46,46 @@ export function setupToc() {
         return window.scrollY || document.documentElement.scrollTop || 0;
     };
 
-    function computeHeadingPositions() {
-        const scrollTop = getScrollTop();
-        const containerTop = mainContent ? mainContent.getBoundingClientRect().top : 0;
-        headingPositions = headings.map((h) => {
-            const rect = h.getBoundingClientRect();
-            return {
-                id: h.id,
-                top: rect.top - containerTop + scrollTop
-            };
-        });
-        positionsReady = true;
-    }
+    const isAtScrollEnd = () => {
+        if (mainContent) {
+            return mainContent.scrollHeight - mainContent.clientHeight - mainContent.scrollTop <= 1;
+        }
+
+        const scrollElement = document.documentElement;
+        return scrollElement.scrollHeight - window.innerHeight - getScrollTop() <= 1;
+    };
+
+    const getContainerTop = () => {
+        if (mainContent) return mainContent.getBoundingClientRect().top;
+        return 0;
+    };
+
+    const getViewportHeight = () => {
+        if (mainContent) return mainContent.clientHeight;
+        return window.innerHeight || document.documentElement.clientHeight || 0;
+    };
+
+    const getHeaderHeight = () => {
+        const header = document.querySelector('header');
+        if (header instanceof HTMLElement) {
+            return header.getBoundingClientRect().height;
+        }
+        return DEFAULT_HEADER_HEIGHT;
+    };
+
+    const getBaseHeadingOffset = () => {
+        return Math.max(getHeaderHeight() + TOC_SCROLL_EXTRA_OFFSET - getContainerTop(), 0);
+    };
+
+    const getActiveHeadingOffset = () => {
+        const baseOffset = getBaseHeadingOffset();
+        const viewportOffset = Math.min(
+            Math.round(getViewportHeight() * ACTIVE_VIEWPORT_RATIO),
+            MAX_ACTIVE_OFFSET
+        );
+
+        return Math.max(baseOffset, viewportOffset);
+    };
 
     function scheduleRecalc(delay = 120) {
         if (recalcTimer) {
@@ -63,45 +95,16 @@ export function setupToc() {
             recalcTimer = null;
             if (recalcScheduled) return;
             recalcScheduled = true;
-            const run = () => {
+            requestAnimationFrame(() => {
                 recalcScheduled = false;
-                computeHeadingPositions();
                 updateActiveHeading();
-            };
-            if ('requestIdleCallback' in window) {
-                (window as any).requestIdleCallback(run, { timeout: RECALC_IDLE_TIMEOUT });
-            } else {
-                requestAnimationFrame(run);
-            }
+            });
         }, delay);
     }
 
-    function findActiveId(targetOffset: number) {
-        let lo = 0;
-        let hi = headingPositions.length - 1;
-        let res = -1;
-        while (lo <= hi) {
-            const mid = (lo + hi) >> 1;
-            if (headingPositions[mid].top <= targetOffset) {
-                res = mid;
-                lo = mid + 1;
-            } else {
-                hi = mid - 1;
-            }
-        }
-        return res >= 0 ? headingPositions[res].id : '';
-    }
-
-    function updateActiveHeading() {
-        if (!positionsReady || headingPositions.length === 0) return;
-
-        const offset = 120;
-        const targetOffset = getScrollTop() + offset;
-        const currentSlug = findActiveId(targetOffset);
-
+    function setActiveHeading(currentSlug: string) {
         if (currentSlug === lastActiveId) return;
         lastActiveId = currentSlug;
-
         if (lastActiveLink) {
             lastActiveLink.classList.remove('active');
             lastActiveLink = null;
@@ -149,6 +152,29 @@ export function setupToc() {
         }
     }
 
+    function updateActiveHeading() {
+        if (headings.length === 0) return;
+
+        const containerTop = getContainerTop();
+        const activationOffset = getActiveHeadingOffset();
+        let currentSlug = '';
+
+        for (const heading of headings) {
+            const headingTop = heading.getBoundingClientRect().top - containerTop;
+            if (headingTop <= activationOffset) {
+                currentSlug = heading.id;
+                continue;
+            }
+            break;
+        }
+
+        if (isAtScrollEnd()) {
+            currentSlug = headings[headings.length - 1]?.id || currentSlug;
+        }
+
+        setActiveHeading(currentSlug);
+    }
+
     // 1. Smooth Scrolling
     const tocRootAny = tocRoot as any;
     if (tocRootAny.__tocClickHandler) {
@@ -160,31 +186,43 @@ export function setupToc() {
         e.preventDefault();
         const href = link.getAttribute('href');
         if (!href) return;
-        const target = document.querySelector(href);
+        const targetId = decodeURIComponent(href.slice(1));
+        const target = document.getElementById(targetId);
         if (!target) return;
 
-        const headerOffset = 80;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + (mainContent?.scrollTop || 0) - headerOffset;
+        const containerTop = getContainerTop();
+        const targetRect = target.getBoundingClientRect();
+        const offsetPosition = Math.max(
+            targetRect.top - containerTop + getScrollTop() - getBaseHeadingOffset(),
+            0
+        );
 
         // 标记正在滚动，防止 scroll 事件处理器在滚动期间频繁更新活跃状态
         isUserScrolling = true;
-        lastScrollTop = mainContent?.scrollTop || 0;
+        lastScrollTop = getScrollTop();
+        setActiveHeading(targetId);
 
         // 清除之前的检查定时器
         if (scrollCheckTimer) {
             window.clearTimeout(scrollCheckTimer);
         }
 
-        mainContent?.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
+        if (mainContent) {
+            mainContent.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        } else {
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
 
         // 设置滚动完成检测：当 100ms 内位置没有变化时，认为滚动完成
         const checkScroll = () => {
-            const currentScrollTop = mainContent?.scrollTop || 0;
-            if (currentScrollTop === lastScrollTop) {
+            const currentScrollTop = getScrollTop();
+            if (Math.abs(currentScrollTop - lastScrollTop) < 1) {
                 // 滚动已稳定，解除标记并更新活跃状态
                 isUserScrolling = false;
                 updateActiveHeading();
@@ -222,11 +260,6 @@ export function setupToc() {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-            if (!positionsReady) {
-                scheduleRecalc(0);
-                ticking = false;
-                return;
-            }
             updateActiveHeading();
             ticking = false;
         });
@@ -239,6 +272,14 @@ export function setupToc() {
     }
     windowAny.__tocResizeHandler = () => scheduleRecalc();
     window.addEventListener('resize', windowAny.__tocResizeHandler);
+
+    if (windowAny.__tocArticleResizeObserver) {
+        windowAny.__tocArticleResizeObserver.disconnect();
+    }
+    if ('ResizeObserver' in window) {
+        windowAny.__tocArticleResizeObserver = new ResizeObserver(() => scheduleRecalc(0));
+        windowAny.__tocArticleResizeObserver.observe(articleRoot);
+    }
 
     if ('fonts' in document) {
         document.fonts.ready.then(() => scheduleRecalc()).catch(() => {});
