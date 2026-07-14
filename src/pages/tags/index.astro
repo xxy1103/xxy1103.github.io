@@ -4,6 +4,7 @@ import HeroHeader from '../../components/HeroHeader.astro';
 import PageShell from '../../layouts/PageShell.astro';
 import { heroConfig, siteTitle } from '../../config';
 import { getTagStats } from '../../lib/content/blog';
+import { getTagPath } from '../../lib/content/tag-path';
 
 const sortedTags = await getTagStats();
 const tagsHero = heroConfig.tags;
@@ -163,7 +164,7 @@ const tagsHero = heroConfig.tags;
         {sortedTags.length > 0 ? (
           <div class="tags-container">
             {sortedTags.map(([tag, count], index) => (
-              <a href={`/tags/${encodeURIComponent(tag)}/`} class="tag" style={`--i: ${index}`}>
+              <a href={getTagPath(tag)} class="tag" style={`--i: ${index}`}>
                 <span class="tag-text"># {tag}</span>
                 <span class="tag-count">{count}</span>
               </a>
