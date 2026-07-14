@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "ulbo-astro-theme-template",
+  "name": "ulnablog",
   "compatibility_date": "2026-07-14",
   "assets": {
     "directory": "./dist",
