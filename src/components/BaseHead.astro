@@ -309,9 +309,4 @@ const fullTitle =
     z-index: 10;
   }
   
-  /* 性能优化：推迟渲染视口外的图片 */
-  .prose img {
-    content-visibility: auto;
-    contain-intrinsic-size: 1000px; /* 预估图片高度，减少布局抖动 */
-  }
 </style>
