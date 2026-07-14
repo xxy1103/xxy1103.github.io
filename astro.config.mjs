@@ -1,6 +1,7 @@
 // @ts-check
 
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 import remarkHexoImages from './src/plugins/remark-hexo-images.mjs';
@@ -61,10 +62,12 @@ export default defineConfig({
 		}),
 	],
 	markdown: {
-		// 支持 Hexo 相对图片路径 image/xxx/ 自动转换为 /image/xxx/
-		remarkPlugins: [remarkHexoImages, remarkMath],
-		// 使用 KaTeX 渲染数学公式，图片懒加载
-		rehypePlugins: [rehypeKatex, rehypeLazyImages],
+		processor: unified({
+			// 支持 Hexo 相对图片路径 image/xxx/ 自动转换为 /image/xxx/
+			remarkPlugins: [remarkHexoImages, remarkMath],
+			// 使用 KaTeX 渲染数学公式，图片懒加载
+			rehypePlugins: [rehypeKatex, rehypeLazyImages],
+		}),
 		// 使用双主题支持代码高亮
 		shikiConfig: {
 			themes: {

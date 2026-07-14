@@ -2,6 +2,8 @@
 
 Thanks for contributing to `ulBo`.
 
+Use Node.js 22.12.0 or newer and npm 9.6.5 or newer. The repository includes an `.nvmrc` file.
+
 ## Workflow
 
 1. Fork the repository and create a branch from `main`.
@@ -10,6 +12,7 @@ Thanks for contributing to `ulBo`.
 
 ```bash
 npm ci
+npm run check
 npm run build
 ```
 

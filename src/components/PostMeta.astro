@@ -1,5 +1,6 @@
 ---
 import FormattedDate from './FormattedDate.astro';
+import { getTagPath } from '../lib/content/tag-path';
 
 interface Props {
 	date: Date;
@@ -70,7 +71,7 @@ const visibleTags = typeof tagLimit === 'number' ? tags.slice(0, tagLimit) : tag
 	{showTags && visibleTags.length > 0 && (
 		<div class={tagsClass}>
 			{visibleTags.map((tag) => (
-				<a href={`/tags/${encodeURIComponent(tag)}/`} class={tagLinkClass}>
+				<a href={getTagPath(tag)} class={tagLinkClass}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
@@ -89,4 +90,3 @@ const visibleTags = typeof tagLimit === 'number' ? tags.slice(0, tagLimit) : tag
 		</div>
 	)}
 </div>
-

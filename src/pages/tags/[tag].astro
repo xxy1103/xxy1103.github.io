@@ -1,11 +1,10 @@
 ---
-import ContentCard from '../../components/ContentCard.astro';
+import ArchiveCard from '../../components/ArchiveCard.astro';
 import HeroHeader from '../../components/HeroHeader.astro';
 import PageShell from '../../layouts/PageShell.astro';
 import PostListItem from '../../components/PostListItem.astro';
-import SectionHeader from '../../components/SectionHeader.astro';
 import { heroConfig, siteTitle } from '../../config';
-import { getBlogPosts, getPostsByTag } from '../../lib/content/blog';
+import { getBlogPosts } from '../../lib/content/blog';
 import { extractExcerpt } from '../../lib/content/text';
 
 export async function getStaticPaths() {
@@ -18,12 +17,14 @@ export async function getStaticPaths() {
 
   return Array.from(tags).map((tag) => ({
     params: { tag },
-    props: { tag },
+    props: {
+      tag,
+      posts: posts.filter((post) => post.data.tags.includes(tag)),
+    },
   }));
 }
 
-const { tag } = Astro.props;
-const posts = await getPostsByTag(tag);
+const { tag, posts } = Astro.props;
 const tagsHero = heroConfig.tags;
 ---
 
@@ -35,51 +36,6 @@ const tagsHero = heroConfig.tags;
 >
   <Fragment slot="head">
     <style>
-      .stats-wrapper {
-        position: relative;
-        min-height: 50vh;
-        background-color: var(--color-bg);
-        transform: translateY(88px);
-      }
-
-      .posts-container {
-        background: var(--color-surface);
-        border-radius: 16px;
-        box-shadow:
-          0 16px 64px rgba(0, 0, 0, 0.18),
-          0 8px 24px rgba(0, 0, 0, 0.12),
-          0 0 0 1px var(--color-border-subtle);
-        padding: 2em;
-        transform: translateY(-88px);
-      }
-
-      .posts-container :global(.section-header) {
-        display: flex;
-        align-items: baseline;
-        gap: 0.5em;
-        margin-bottom: 0.5em;
-      }
-
-      .posts-container :global(.section-number) {
-        font-size: 0.9em;
-        color: var(--color-text-muted);
-        font-weight: 500;
-      }
-
-      .posts-container :global(.section-title) {
-        font-size: 1.8em;
-        font-weight: bold;
-        margin: 0;
-        color: var(--color-text);
-      }
-
-      .posts-container :global(.intro-text) {
-        color: var(--color-text-secondary);
-        margin-bottom: 2em;
-        font-size: 0.9em;
-        line-height: 1.6;
-      }
-
       .back-link {
         display: inline-flex;
         align-items: center;
@@ -215,10 +171,6 @@ const tagsHero = heroConfig.tags;
       }
 
       @media (max-width: 900px) {
-        .posts-container {
-          padding: 1.4em;
-        }
-
         .tag-posts-list :global(.tag-post-item) {
           margin: 0;
           padding: 1em 0.75em;
@@ -226,15 +178,6 @@ const tagsHero = heroConfig.tags;
       }
 
       @media (max-width: 720px) {
-        .posts-container {
-          padding: 1.1em;
-          border-radius: 0;
-        }
-
-        .posts-container :global(.section-title) {
-          font-size: clamp(1.45rem, 6vw, 1.7rem);
-        }
-
         .tag-posts-list :global(.tag-post-title) {
           font-size: 1.2em;
         }
@@ -265,10 +208,11 @@ const tagsHero = heroConfig.tags;
     compact={true}
   />
 
-  <div class="stats-wrapper">
-    <ContentCard id="stats-card">
-      <div class="posts-container">
-        <SectionHeader number="Tag" title={`#${tag}`} intro={`包含此标签的文章共 ${posts.length} 篇`} />
+  <ArchiveCard
+    number="Tag"
+    title={`#${tag}`}
+    intro={`包含此标签的文章共 ${posts.length} 篇`}
+  >
         <a href="/tags/" class="back-link hover-scale">← 返回所有标签</a>
 
         <div class="tag-posts-list">
@@ -293,8 +237,6 @@ const tagsHero = heroConfig.tags;
             <p style="text-align:center;color:var(--color-text-secondary);padding:2em;">暂无文章</p>
           )}
         </div>
-      </div>
-    </ContentCard>
-  </div>
+  </ArchiveCard>
 
 </PageShell>

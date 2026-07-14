@@ -1,0 +1,142 @@
+---
+import TocList, { type TocHeading, type TocNode } from './TocList.astro';
+
+interface Props {
+	headings: TocHeading[];
+}
+
+function buildTocTree(headings: TocHeading[]): TocNode[] {
+	const root: TocNode[] = [];
+	const stack: Array<{ node: TocNode; depth: number }> = [];
+
+	for (const heading of headings) {
+		const node: TocNode = { heading, children: [] };
+		while (stack.length > 0 && stack[stack.length - 1].depth >= heading.depth) {
+			stack.pop();
+		}
+
+		if (stack.length === 0) root.push(node);
+		else stack[stack.length - 1].node.children.push(node);
+
+		stack.push({ node, depth: heading.depth });
+	}
+
+	return root;
+}
+
+const tocTree = buildTocTree(Astro.props.headings);
+---
+
+{tocTree.length > 0 && (
+	<aside class="sidebar-container slide-in-right">
+		<nav class="toc-sidebar sticky-toc" id="toc" aria-label="文章目录">
+			<div class="toc-title">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
+					<path d="M3 6h18M3 12h18M3 18h18" />
+				</svg>
+				目录
+			</div>
+			<TocList nodes={tocTree} root={true} />
+		</nav>
+	</aside>
+)}
+
+<style is:global>
+	.sidebar-container { padding-top: 100px; }
+	.slide-in-right {
+		animation: slideInRight 0.5s ease-out forwards;
+		opacity: 0;
+		transform: translateX(20px);
+		animation-delay: 0.2s;
+		will-change: transform, opacity;
+	}
+	@keyframes slideInRight { to { opacity: 1; transform: translateX(0); } }
+	.sticky-toc {
+		position: sticky;
+		top: 20px;
+		max-height: calc(100vh - 40px);
+		overflow-y: auto;
+		background: transparent;
+		border: none;
+		box-shadow: none;
+		padding: 0;
+	}
+	.sticky-toc::-webkit-scrollbar { width: 4px; }
+	.sticky-toc::-webkit-scrollbar-thumb { background: var(--color-scrollbar); border-radius: 2px; }
+	.toc-sidebar { width: 100%; }
+	.toc-title {
+		font-size: 1.1em;
+		font-weight: 700;
+		color: var(--color-text);
+		margin-bottom: 0.8em;
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+	}
+	.toc-list { list-style: none; padding: 0; margin: 0; }
+	.toc-item { position: relative; }
+	.toc-link {
+		display: block;
+		padding: 4px 0 4px 12px;
+		color: var(--color-text-secondary);
+		text-decoration: none;
+		border-left: 2px solid var(--color-border);
+		transition: color 0.2s ease, border-left-color 0.2s ease;
+		line-height: 1.4;
+		font-size: 0.95em;
+	}
+	.toc-link:hover { color: var(--accent); border-left-color: var(--accent); }
+	.toc-link.active {
+		color: var(--accent);
+		border-left-color: var(--accent);
+		font-weight: 600;
+		background: transparent;
+	}
+	.toc-text { display: block; }
+	.toc-children {
+		list-style: none;
+		padding-left: 0;
+		margin: 0;
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+	}
+	.toc-item.expanded > .toc-children {
+		max-height: 1000px;
+		opacity: 1;
+		margin-top: 4px;
+		margin-bottom: 4px;
+	}
+	.toc-item[data-depth="2"] > .toc-link { padding-left: 24px; }
+	.toc-item[data-depth="3"] > .toc-link { padding-left: 36px; font-size: 0.9em; }
+	.toc-item[data-depth="4"] > .toc-link { padding-left: 48px; font-size: 0.85em; }
+	#toc-root { counter-reset: level1; }
+	#toc-root > .toc-item { counter-increment: level1; }
+	#toc-root > .toc-item > .toc-link .toc-text::before {
+		content: "第" counter(level1, cjk-decimal) "章 ";
+		color: var(--color-text-tertiary);
+		font-weight: normal;
+		margin-right: 4px;
+		font-size: 0.9em;
+	}
+	#toc-root > .toc-item > .toc-children { counter-reset: level2; }
+	#toc-root > .toc-item > .toc-children > .toc-item { counter-increment: level2; }
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-link .toc-text::before {
+		content: counter(level1) "." counter(level2) " ";
+		color: var(--color-text-tertiary);
+		font-weight: normal;
+		margin-right: 4px;
+		font-size: 0.9em;
+	}
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-children { counter-reset: level3; }
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-children > .toc-item { counter-increment: level3; }
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-children > .toc-item > .toc-link .toc-text::before {
+		content: counter(level1) "." counter(level2) "." counter(level3) " ";
+		color: var(--color-text-tertiary);
+		font-weight: normal;
+		margin-right: 4px;
+		font-size: 0.9em;
+	}
+	@media (max-width: 1100px) { .sidebar-container { display: none; } }
+</style>

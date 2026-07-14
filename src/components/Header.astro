@@ -26,23 +26,6 @@ const { transparent = true } = Astro.props;
 					<path d="m21 21-4.35-4.35"></path>
 				</svg>
 			</button>
-			<button id="cursor-toggle" class="cursor-toggle-btn" aria-label="切换自定义光标" aria-pressed="true">
-				<svg class="cursor-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<circle cx="12" cy="12" r="3"></circle>
-					<line x1="12" y1="3" x2="12" y2="6"></line>
-					<line x1="12" y1="18" x2="12" y2="21"></line>
-					<line x1="3" y1="12" x2="6" y2="12"></line>
-					<line x1="18" y1="12" x2="21" y2="12"></line>
-				</svg>
-				<svg class="cursor-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<circle cx="12" cy="12" r="3"></circle>
-					<line x1="12" y1="3" x2="12" y2="6"></line>
-					<line x1="12" y1="18" x2="12" y2="21"></line>
-					<line x1="3" y1="12" x2="6" y2="12"></line>
-					<line x1="18" y1="12" x2="21" y2="12"></line>
-					<line x1="5" y1="19" x2="19" y2="5"></line>
-				</svg>
-			</button>
 			<button id="theme-toggle" class="theme-toggle-btn" aria-label="切换深色模式">
 				<svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<circle cx="12" cy="12" r="5"></circle>
@@ -349,78 +332,6 @@ const { transparent = true } = Astro.props;
 		transform: rotate(90deg);
 	}
 
-	/* Cursor Toggle Button */
-	.cursor-toggle-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 36px;
-		height: 36px;
-		border: none;
-		background: rgba(128, 128, 128, 0.1);
-		border-radius: 12px;
-		cursor: pointer;
-		color: inherit;
-		transition:
-			background-color 0.4s cubic-bezier(0.2, 0, 0, 1),
-			color 0.4s cubic-bezier(0.2, 0, 0, 1),
-			transform 0.4s cubic-bezier(0.2, 0, 0, 1);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.cursor-toggle-btn:hover {
-		background: rgba(128, 128, 128, 0.2);
-		transform: scale(1.1);
-	}
-
-	.cursor-toggle-btn:active {
-		transform: scale(0.95);
-	}
-
-	.cursor-toggle-btn .cursor-on-icon,
-	.cursor-toggle-btn .cursor-off-icon {
-		position: absolute;
-		transition:
-			opacity 0.4s cubic-bezier(0.2, 0, 0, 1),
-			transform 0.4s cubic-bezier(0.2, 0, 0, 1);
-	}
-
-	.cursor-toggle-btn .cursor-on-icon {
-		opacity: 1;
-		transform: rotate(0deg) scale(1);
-	}
-
-	.cursor-toggle-btn .cursor-off-icon {
-		opacity: 0;
-		transform: rotate(-20deg) scale(0.6);
-	}
-
-	.cursor-toggle-btn[aria-pressed="false"] .cursor-on-icon {
-		opacity: 0;
-		transform: rotate(20deg) scale(0.6);
-	}
-
-	.cursor-toggle-btn[aria-pressed="false"] .cursor-off-icon {
-		opacity: 1;
-		transform: rotate(0deg) scale(1);
-	}
-
-	.cursor-toggle-btn[aria-pressed="true"]:hover .cursor-on-icon {
-		transform: rotate(42deg) scale(1.16);
-	}
-
-	.cursor-toggle-btn[aria-pressed="false"]:hover .cursor-off-icon {
-		transform: rotate(42deg) scale(1.16);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.cursor-toggle-btn[aria-pressed="true"]:hover .cursor-on-icon,
-		.cursor-toggle-btn[aria-pressed="false"]:hover .cursor-off-icon {
-			transform: none;
-		}
-	}
-
 	/* Theme Toggle Button */
 	.theme-toggle-btn {
 		display: flex;
@@ -536,7 +447,6 @@ const { transparent = true } = Astro.props;
 	header.transparent > nav .header-actions > a,
 	header.transparent > nav h2 a,
 	header.transparent > nav .search-btn,
-	header.transparent > nav .cursor-toggle-btn,
 	header.transparent > nav .theme-toggle-btn,
 	header.transparent > nav .mobile-menu-btn {
 		color: white;
@@ -572,7 +482,6 @@ const { transparent = true } = Astro.props;
     header.transparent.scrolled > nav .header-actions > a,
     header.transparent.scrolled > nav h2 a,
     header.transparent.scrolled > nav .search-btn,
-    header.transparent.scrolled > nav .cursor-toggle-btn,
     header.transparent.scrolled > nav .theme-toggle-btn,
     header.transparent.scrolled > nav .mobile-menu-btn {
         color: var(--black);

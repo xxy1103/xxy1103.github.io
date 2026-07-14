@@ -1,50 +1,4 @@
-function setupHomeParallax() {
-	const statsCard = document.getElementById('stats-card');
-	const heroHeader = document.querySelector('.hero-header') as HTMLElement | null;
-	const mainContent = document.getElementById('main-content');
-	const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-	const maxRise = isCoarsePointer ? 48 : 100;
-
-	if (statsCard) {
-		statsCard.style.opacity = '1';
-		statsCard.style.transform = 'translateY(0)';
-	}
-
-	if (!statsCard || !heroHeader || !mainContent) return;
-
-	let ticking = false;
-	const updateParallax = () => {
-		const heroBottom = heroHeader.offsetTop + heroHeader.offsetHeight;
-		const scrollY = mainContent.scrollTop;
-		const scrollStart = heroBottom - window.innerHeight;
-
-		if (scrollY > scrollStart) {
-			const progress = Math.min((scrollY - scrollStart) / (window.innerHeight * 0.5), 1);
-			const rise = progress * maxRise;
-			statsCard.style.transform = `translateY(-${rise}px)`;
-		} else {
-			statsCard.style.transform = 'translateY(0)';
-		}
-	};
-
-	const onScroll = () => {
-		if (ticking) return;
-		ticking = true;
-		requestAnimationFrame(() => {
-			updateParallax();
-			ticking = false;
-		});
-	};
-
-	const mainContentAny = mainContent as HTMLElement & { __homeParallaxHandler?: () => void };
-	if (mainContentAny.__homeParallaxHandler) {
-		mainContent.removeEventListener('scroll', mainContentAny.__homeParallaxHandler);
-	}
-
-	mainContentAny.__homeParallaxHandler = onScroll;
-	updateParallax();
-	mainContent.addEventListener('scroll', onScroll, { passive: true });
-}
+import { setupParallax } from './parallax';
 
 function setupCountUp() {
 	const statValues = document.querySelectorAll('.stat-value');
@@ -130,7 +84,12 @@ function setupPostsStagger() {
 }
 
 export function initHomePage() {
-	setupHomeParallax();
+	setupParallax({
+		desktopRise: 100,
+		coarsePointerRise: 48,
+		startAtHeroBottom: true,
+		revealTarget: true,
+	});
 	setupCountUp();
 	setupPostsStagger();
 }

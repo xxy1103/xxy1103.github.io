@@ -1,3 +1,5 @@
+import { setupParallax } from './parallax';
+
 function setupBackLinkMagnet() {
 	const backLink = document.querySelector<HTMLElement>('.back-link');
 	const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
@@ -35,42 +37,7 @@ function setupBackLinkMagnet() {
 	backLink.addEventListener('mouseleave', backLinkAny.__magneticLeaveHandler);
 }
 
-function setupTagParallax() {
-	const statsCard = document.getElementById('stats-card');
-	const mainContent = document.getElementById('main-content');
-	const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-	const maxRise = isCoarsePointer ? 72 : 180;
-
-	if (!statsCard || !mainContent) return;
-
-	let ticking = false;
-	const updateParallax = () => {
-		const scrollY = mainContent.scrollTop;
-		const progress = Math.min(scrollY / (window.innerHeight * 0.5), 1);
-		const rise = progress * maxRise;
-		statsCard.style.transform = `translateY(-${rise}px)`;
-	};
-
-	const onScroll = () => {
-		if (ticking) return;
-		ticking = true;
-		requestAnimationFrame(() => {
-			updateParallax();
-			ticking = false;
-		});
-	};
-
-	const mainContentAny = mainContent as HTMLElement & { __tagParallaxHandler?: () => void };
-	if (mainContentAny.__tagParallaxHandler) {
-		mainContent.removeEventListener('scroll', mainContentAny.__tagParallaxHandler);
-	}
-
-	mainContentAny.__tagParallaxHandler = onScroll;
-	updateParallax();
-	mainContent.addEventListener('scroll', onScroll, { passive: true });
-}
-
 export function initTagDetailPage() {
 	setupBackLinkMagnet();
-	setupTagParallax();
+	setupParallax({ desktopRise: 180, coarsePointerRise: 72 });
 }

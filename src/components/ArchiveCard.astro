@@ -1,0 +1,108 @@
+---
+import ContentCard from './ContentCard.astro';
+import SectionHeader from './SectionHeader.astro';
+
+interface Props {
+	number?: string;
+	title: string;
+	intro?: string;
+	variant?: 'blog' | 'tag';
+	minHeight?: boolean;
+}
+
+const { number, title, intro, variant = 'tag', minHeight = false } = Astro.props;
+---
+
+<div class="archive-section">
+	<ContentCard id="stats-card">
+		<div class:list={['archive-card', `archive-card-${variant}`, { 'archive-card-min-height': minHeight }] }>
+			<SectionHeader {number} {title} {intro} />
+			<slot />
+		</div>
+	</ContentCard>
+</div>
+
+<style>
+	.archive-section {
+		position: relative;
+		min-height: 50vh;
+		background-color: var(--color-bg);
+		transform: translateY(88px);
+	}
+
+	.archive-card {
+		background: var(--color-surface);
+		border-radius: 16px;
+		box-shadow:
+			0 16px 64px rgba(0, 0, 0, 0.18),
+			0 8px 24px rgba(0, 0, 0, 0.12),
+			0 0 0 1px var(--color-border-subtle);
+		padding: 2em;
+		transform: translateY(-88px);
+	}
+
+	.archive-card-min-height {
+		min-height: 300px;
+	}
+
+	.archive-card :global(.section-header) {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5em;
+		margin-bottom: 0.5em;
+	}
+
+	.archive-card :global(.section-number) {
+		font-size: 0.9em;
+		color: var(--color-text-muted);
+		font-weight: 500;
+	}
+
+	.archive-card :global(.section-title) {
+		font-size: 1.8em;
+		font-weight: bold;
+		margin: 0;
+		color: var(--color-text);
+	}
+
+	.archive-card :global(.intro-text) {
+		color: var(--color-text-secondary);
+		margin-bottom: 2em;
+		font-size: 0.9em;
+		line-height: 1.6;
+	}
+
+	.archive-card-blog :global(.section-number) {
+		color: var(--accent);
+		font-weight: 600;
+		opacity: 0.7;
+	}
+
+	.archive-card-blog :global(.section-title) {
+		position: relative;
+		display: inline-block;
+	}
+
+	.archive-card-blog :global(.section-title)::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		width: 2em;
+		height: 3px;
+		background: linear-gradient(90deg, var(--accent), transparent);
+		border-radius: 3px;
+	}
+
+	@media (max-width: 900px) {
+		.archive-card-blog { padding: 1.5em; }
+		.archive-card-tag { padding: 1.4em; }
+	}
+
+	@media (max-width: 720px) {
+		.archive-card-blog { padding: 1.2em; }
+		.archive-card-tag { padding: 1.1em; }
+		.archive-card { border-radius: 0; }
+		.archive-card :global(.section-title) { font-size: clamp(1.45rem, 6vw, 1.7rem); }
+	}
+</style>

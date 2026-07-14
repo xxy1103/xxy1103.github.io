@@ -312,54 +312,6 @@
         toggle.addEventListener('click', handler);
     }
 
-    // ====== Custom Cursor Toggle ======
-    function initCursorToggle() {
-        const toggle = document.getElementById('cursor-toggle') as HTMLButtonElement | null;
-        if (!toggle) return;
-
-        const isEnabled = () => document.documentElement.classList.contains('custom-cursor-enabled');
-        const setToggleState = (enabled: boolean) => {
-            toggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
-            toggle.setAttribute('aria-label', enabled ? '关闭自定义光标' : '开启自定义光标');
-            toggle.title = enabled ? '关闭自定义光标' : '开启自定义光标';
-        };
-
-        setToggleState(isEnabled());
-
-        if ((toggle as any).__cursorHandler) {
-            toggle.removeEventListener('click', (toggle as any).__cursorHandler);
-        }
-
-        const clickHandler = () => {
-            const nextEnabled = !isEnabled();
-            const globalSetter = (window as any).setCustomCursorEnabled;
-
-            if (typeof globalSetter === 'function') {
-                globalSetter(nextEnabled);
-            } else {
-                localStorage.setItem('custom-cursor-enabled', String(nextEnabled));
-                document.documentElement.classList.toggle('custom-cursor-enabled', nextEnabled);
-                document.documentElement.setAttribute('data-custom-cursor', nextEnabled ? 'on' : 'off');
-                if (!nextEnabled) {
-                    document.documentElement.classList.remove('custom-cursor-active');
-                }
-                window.dispatchEvent(new CustomEvent('custom-cursor:toggle', { detail: { enabled: nextEnabled } }));
-            }
-
-            setToggleState(nextEnabled);
-        };
-
-        (toggle as any).__cursorHandler = clickHandler;
-        toggle.addEventListener('click', clickHandler);
-
-        const windowAny = window as any;
-        if (windowAny.__cursorToggleSyncHandler) {
-            window.removeEventListener('custom-cursor:toggle', windowAny.__cursorToggleSyncHandler as EventListener);
-        }
-        windowAny.__cursorToggleSyncHandler = () => setToggleState(isEnabled());
-        window.addEventListener('custom-cursor:toggle', windowAny.__cursorToggleSyncHandler as EventListener);
-    }
-
     // ====== Mobile Menu ======
     function initMobileMenu() {
         const header = document.querySelector('header');
@@ -446,7 +398,6 @@
 
     const applyHeaderBehaviors = () => {
         initThemeToggle();
-        initCursorToggle();
         initMobileMenu();
         updateHeaderState();
 

@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import HeroHeader from '../components/HeroHeader.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import PageShell from './PageShell.astro';
 import { heroConfig, locale, profileConfig, siteTitle } from '../config';
 import katexStylesheetUrl from 'katex/dist/katex.min.css?url';
@@ -77,37 +78,6 @@ const articleSchema = {
 	...(articleTags.length > 0 ? { keywords: articleTags.join(', ') } : {}),
 };
 
-// 构建完整的层级树结构
-interface TocNode {
-	heading: Heading;
-	children: TocNode[];
-}
-
-function buildTocTree(headings: Heading[]): TocNode[] {
-	const root: TocNode[] = [];
-	const stack: { node: TocNode; depth: number }[] = [];
-	
-	for (const heading of headings) {
-		const node: TocNode = { heading, children: [] };
-		
-		// 向上查找合适的父节点
-		while (stack.length > 0 && stack[stack.length - 1].depth >= heading.depth) {
-			stack.pop();
-		}
-		
-		if (stack.length === 0) {
-			root.push(node);
-		} else {
-			stack[stack.length - 1].node.children.push(node);
-		}
-		
-		stack.push({ node, depth: heading.depth });
-	}
-	
-	return root;
-}
-
-const tocTree = buildTocTree(headings);
 ---
 
 <PageShell
@@ -127,11 +97,7 @@ const tocTree = buildTocTree(headings);
 		<link rel="preload" as="image" href={displayHeroImageSrc} />
 		{loadKatexStyles && (
 			<>
-				<link rel="preload" as="style" href={katexStylesheetUrl} />
-				<link rel="stylesheet" href={katexStylesheetUrl} media="print" onload="this.media='all'" />
-				<noscript>
-					<link rel="stylesheet" href={katexStylesheetUrl} />
-				</noscript>
+				<link rel="stylesheet" href={katexStylesheetUrl} />
 			</>
 		)}
 		<style>
@@ -212,119 +178,6 @@ const tocTree = buildTocTree(headings);
 				}
 			}
 
-			/* 侧边栏容器 */
-			.sidebar-container {
-				padding-top: 100px; /* 初始位置下移，避开图片 */
-			}
-
-			.slide-in-right {
-				animation: slideInRight 0.5s ease-out forwards;
-				opacity: 0;
-				transform: translateX(20px);
-				animation-delay: 0.2s; /* 稍微延迟等待主内容 */
-				will-change: transform, opacity;
-			}
-
-			@keyframes slideInRight {
-				to {
-					opacity: 1;
-					transform: translateX(0);
-				}
-			}
-			
-			/* 粘性 TOC */
-			.sticky-toc {
-				position: sticky;
-				top: 20px;
-				max-height: calc(100vh - 40px);
-				overflow-y: auto;
-				/* 移除卡片样式 */
-				background: transparent;
-				border: none;
-				box-shadow: none;
-				padding: 0;
-			}
-            
-            /* Custom Scrollbar for TOC */
-            .sticky-toc::-webkit-scrollbar { width: 4px; }
-			.sticky-toc::-webkit-scrollbar-thumb { background: var(--color-scrollbar); border-radius: 2px; }
-
-			.toc-sidebar {
-				width: 100%;
-			}
-			
-			/* 目录标题 */
-			.toc-title {
-				font-size: 1.1em;
-				font-weight: 700;
-				color: var(--color-text);
-				margin-bottom: 0.8em;
-				display: flex;
-				align-items: center;
-				gap: 0.5em;
-			}
-			
-			/* 列表基础样式 */
-			.toc-list { list-style: none; padding: 0; margin: 0; }
-			.toc-item { position: relative; }
-			
-			/* 链接样式 */
-			.toc-link {
-				display: block;
-				padding: 4px 0 4px 12px;
-				color: var(--color-text-secondary);
-				text-decoration: none;
-				border-left: 2px solid var(--color-border);
-				transition: color 0.2s ease, border-left-color 0.2s ease;
-				line-height: 1.4;
-				font-size: 0.95em;
-			}
-			
-			.toc-link:hover {
-				color: var(--accent);
-				border-left-color: rgba(var(--accent), 0.5);
-			}
-			
-			/* 激活状态：蓝色左边框 */
-			.toc-link.active {
-				color: var(--accent);
-				border-left-color: var(--accent);
-				font-weight: 600;
-				background: transparent; /* 移除背景色 */
-			}
-			
-			.toc-text {
-				display: block;
-			}
-			
-			/* 子列表 */
-			.toc-children {
-				list-style: none;
-				padding-left: 0; /* 对齐父级 */
-				margin: 0;
-				overflow: hidden;
-				max-height: 0;
-				opacity: 0;
-				transition:
-					max-height 0.3s ease-in-out,
-					opacity 0.3s ease-in-out,
-					margin-top 0.3s ease-in-out,
-					margin-bottom 0.3s ease-in-out;
-			}
-			
-			/* 展开状态 */
-			.toc-item.expanded > .toc-children {
-				max-height: 1000px; /* 足够大以显示内容 */
-				opacity: 1;
-				margin-top: 4px;
-				margin-bottom: 4px;
-			}
-			
-			/* 层级样式 - 通过 padding-left 控制缩进 */
-			.toc-item[data-depth="2"] > .toc-link { padding-left: 24px; }
-			.toc-item[data-depth="3"] > .toc-link { padding-left: 36px; font-size: 0.9em; }
-			.toc-item[data-depth="4"] > .toc-link { padding-left: 48px; font-size: 0.85em; }
-			
 			/* 响应式调整 */
 			@media (max-width: 1100px) { 
 				.layout-container {
@@ -333,64 +186,9 @@ const tocTree = buildTocTree(headings);
 					gap: 24px;
 					padding: 0 0.75em 1.5em;
 				}
-				.sidebar-container { 
-					display: none; /* 窄屏隐藏右侧栏 */
-				}
 				.content-card {
 					padding: 2.1em 1.6em;
 				}
-			}
-			
-			/* 自动编号样式 */
-			#toc-root {
-				counter-reset: level1;
-			}
-			
-			/* 第一级: 第一章 */
-			#toc-root > .toc-item {
-				counter-increment: level1;
-			}
-			
-			#toc-root > .toc-item > .toc-link .toc-text::before {
-				content: "第" counter(level1, cjk-decimal) "章 ";
-				color: var(--color-text-tertiary);
-				font-weight: normal;
-				margin-right: 4px;
-				font-size: 0.9em;
-			}
-			
-			/* 第二级: 1.1 */
-			#toc-root > .toc-item > .toc-children {
-				counter-reset: level2;
-			}
-			
-			#toc-root > .toc-item > .toc-children > .toc-item {
-				counter-increment: level2;
-			}
-			
-			#toc-root > .toc-item > .toc-children > .toc-item > .toc-link .toc-text::before {
-				content: counter(level1) "." counter(level2) " ";
-				color: var(--color-text-tertiary);
-				font-weight: normal;
-				margin-right: 4px;
-				font-size: 0.9em;
-			}
-			
-			/* 第三级: 1.1.1 */
-			#toc-root > .toc-item > .toc-children > .toc-item > .toc-children {
-				counter-reset: level3;
-			}
-			
-			#toc-root > .toc-item > .toc-children > .toc-item > .toc-children > .toc-item {
-				counter-increment: level3;
-			}
-			
-			#toc-root > .toc-item > .toc-children > .toc-item > .toc-children > .toc-item > .toc-link .toc-text::before {
-				content: counter(level1) "." counter(level2) "." counter(level3) " ";
-				color: var(--color-text-tertiary);
-				font-weight: normal;
-				margin-right: 4px;
-				font-size: 0.9em;
 			}
 			
 				@media (max-width: 768px) {
@@ -469,60 +267,7 @@ const tocTree = buildTocTree(headings);
 				</article>
 			</main>
 				
-			{tocTree.length > 0 && (
-				<aside class="sidebar-container slide-in-right">
-					<nav class="toc-sidebar sticky-toc" id="toc">
-						<div class="toc-title">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-								<path d="M3 6h18M3 12h18M3 18h18" />
-							</svg>
-							目录
-						</div>
-						<ul class="toc-list" id="toc-root">
-							{tocTree.map((node) => (
-								<li class="toc-item" data-depth={node.heading.depth} data-slug={node.heading.slug}>
-									<a href={`#${node.heading.slug}`} class="toc-link">
-										<span class="toc-text">{node.heading.text}</span>
-									</a>
-									{node.children.length > 0 && (
-										<ul class="toc-children">
-											{node.children.map((child) => (
-												<li class="toc-item" data-depth={child.heading.depth} data-slug={child.heading.slug}>
-													<a href={`#${child.heading.slug}`} class="toc-link">
-														<span class="toc-text">{child.heading.text}</span>
-													</a>
-													{child.children.length > 0 && (
-														<ul class="toc-children">
-															{child.children.map((grandchild) => (
-																<li class="toc-item" data-depth={grandchild.heading.depth} data-slug={grandchild.heading.slug}>
-																	<a href={`#${grandchild.heading.slug}`} class="toc-link">
-																		<span class="toc-text">{grandchild.heading.text}</span>
-																	</a>
-																	{grandchild.children.length > 0 && (
-																		<ul class="toc-children">
-																			{grandchild.children.map((ggc) => (
-																				<li class="toc-item" data-depth={ggc.heading.depth} data-slug={ggc.heading.slug}>
-																					<a href={`#${ggc.heading.slug}`} class="toc-link">
-																						<span class="toc-text">{ggc.heading.text}</span>
-																					</a>
-																				</li>
-																			))}
-																		</ul>
-																	)}
-																</li>
-															))}
-														</ul>
-													)}
-												</li>
-											))}
-										</ul>
-									)}
-								</li>
-							))}
-						</ul>
-					</nav>
-				</aside>
-			)}
+			<TableOfContents {headings} />
 		</div>
 	</div>
 		
