@@ -4,7 +4,9 @@
 
 `ulBo` 是一个面向个人博客场景的 Astro 主题模板，强调配置集中、可迁移、可扩展，以及对 SEO/性能的工程化细节优化。
 
-在线示例：[https://blog.ulna520.top](https://blog.ulna520.top)
+**Astro v6 Ready**：当前版本基于 Astro 6.4.8 构建并完成兼容验证。
+
+在线示例：[https://template.ulna520.top](https://template.ulna520.top)
 
 ## 项目简介
 
@@ -37,8 +39,8 @@
    - 按需加载 KaTeX 样式（仅检测到数学内容时加载）：`src/pages/blog/[...slug].astro`、`src/layouts/BlogPost.astro`
 6. 内置 WebP 图片压缩流程
 
-   - `npm run build` 默认通过 `scripts/build-with-config.mjs` 读取开关并在构建前执行 `scripts/optimize-blog-images.mjs`
-   - 开关位置：`src/config/features.mjs` 的 `enableImageOptimizationOnBuild`
+   - 图片优化与普通构建相互独立，不会在 `npm run build` 时修改文章或资源文件
+   - 使用 `npm run optimize:images:dry-run` 预览，确认后再显式执行 `npm run optimize:images`
 7. Lighthouse 导向性能优化
 
    - 图片懒加载、异步解码、按需预加载、延迟加载搜索索引、视口外内容渲染优化等
@@ -84,23 +86,20 @@
 2. 构建期图片转 WebP + Markdown 引用自动替换
 
    - `scripts/optimize-blog-images.mjs`
-3. `npm run build` 的构建前预处理链路（可开关）
+3. 显式、可预览的图片优化流程
 
-   - `scripts/build-with-config.mjs`
-   - `src/config/features.mjs`
+   - `npm run optimize:images:dry-run` 不写入文件
+   - `npm run optimize:images` 才生成 WebP 并替换 Markdown 引用
 4. 文章首图预加载 + KaTeX 样式按需加载
 
    - `src/layouts/BlogPost.astro`
 5. KaTeX 字体显示策略 patch（`font-display: block` -> `swap`）
 
    - `astro.config.mjs`
-6. 视口外图片渲染优化（减少首屏渲染压力）
-
-   - `src/components/BaseHead.astro` 中 `.prose img { content-visibility: auto; }`
-7. 搜索索引懒加载（首次打开搜索框时再请求）
+6. 搜索索引懒加载（首次打开搜索框时再请求）
 
    - `src/scripts/search-modal.client.ts`
-8. 主题初始化防闪烁（减少错误主题闪烁）
+7. 主题初始化防闪烁（减少错误主题闪烁）
 
    - `src/components/BaseHead.astro`
 
@@ -127,8 +126,9 @@ npm run preview
 
 ### 1) 前置条件
 
-- Node.js 与 npm 已安装
-- 建议使用 Node 22（CI 当前使用 Node 22，见 `.github/workflows/ci.yml` 与 `.github/workflows/deploy.yml`）
+- Node.js 22.12.0 或更高版本
+- npm 9.6.5 或更高版本
+- 仓库提供 `.nvmrc`，可使用 `nvm use` 切换到项目约定版本
 
 ### 2) 从 GitHub Template 创建项目
 
@@ -152,7 +152,6 @@ npm run dev
 - `src/config/site.ts`
 - `src/config/profile.ts`
 - `src/config/hero.ts`
-- `src/config/features.mjs`
 
 `src/config/index.ts` 是聚合导出入口，通常无需直接改动。
 
@@ -194,19 +193,27 @@ layout: "post"
 
 1. 将图片放在 `public/`（例如 `public/image/...`）。
 2. 文章中引用 `.png/.jpg/.jpeg` 图片。
-3. 执行 `npm run build` 时，若 `enableImageOptimizationOnBuild = true`，会先运行图片优化脚本。
+3. 先预览将要发生的转换，不会写入图片或 Markdown：
 
-可单独执行：
+```bash
+npm run optimize:images:dry-run
+```
+
+4. 确认结果后，显式执行转换：
 
 ```bash
 npm run optimize:images
 ```
+
+`npm run build` 和 `npm run build:astro` 都只构建网站，不会触发图片转换。
 
 可选高级参数（直接执行脚本）：
 
 ```bash
 node scripts/optimize-blog-images.mjs --max-width 1600 --quality 78
 ```
+
+使用 `--force` 可忽略参数感知缓存并重新生成；缓存位于 `.astro/`，不会提交到仓库。
 
 ### 7) 构建与预览
 
@@ -259,10 +266,6 @@ npm run preview
 - `about.text` / `about.subtitle` / `about.backgroundImage`
 - `postDefaultBackground`: 文章页默认封面（未设置 `heroImage` 时使用）
 
-### `src/config/features.mjs`
-
-- `enableImageOptimizationOnBuild`: 构建前是否默认执行图片优化
-
 ### `src/content.config.ts`（博客 Frontmatter 兼容与归一化）
 
 必填字段：
@@ -295,12 +298,16 @@ npm run preview
 
 以下命令与 `package.json` 保持一致：
 
-| 命令                    | 说明                                          |
-| :---------------------- | :-------------------------------------------- |
-| `npm run dev`         | 启动本地开发服务器                            |
-| `npm run build`       | 带特性开关的构建流程（`build-with-config`） |
-| `npm run build:astro` | 仅执行 `astro build`                        |
-| `npm run check`       | 执行 `astro check` 类型与模板校验           |
+| 命令                          | 说明                                      |
+| :---------------------------- | :---------------------------------------- |
+| `npm run dev`                 | 启动本地开发服务器                        |
+| `npm run build`               | 构建网站，不修改文章或图片资源            |
+| `npm run build:astro`         | `astro build` 的显式别名                   |
+| `npm run check`               | 执行 `astro check` 类型与模板校验          |
+| `npm run preview`             | 预览生产构建产物                          |
+| `npm run astro`               | Astro CLI 原生命令入口                    |
+| `npm run optimize:images`     | 生成 WebP 并替换博客图片引用              |
+| `npm run optimize:images:dry-run` | 预览图片优化结果，不写入任何文件       |
 
 ## 重构后的开发约定（2026-02）
 
@@ -310,9 +317,6 @@ npm run preview
 - 个人社交链接解析统一使用 `src/lib/profile/social.ts`。
 - 页面交互脚本放在 `src/scripts/pages/*`，通过 `src/scripts/pages/registry.ts` 注册。
 - 页面关系与依赖图见 `docs/frontend-architecture-map.md`。
-  | `npm run preview`         | 预览生产构建产物                              |
-  | `npm run astro`           | Astro CLI 原生命令入口                        |
-  | `npm run optimize:images` | 执行博客图片 WebP 转换与引用替换              |
 
 ## 开源协作
 

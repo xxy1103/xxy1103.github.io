@@ -4,7 +4,9 @@
 
 `ulBo` is an Astro blog theme template for personal publishing, focused on centralized configuration, migration friendliness, extensibility, and practical SEO/performance engineering details.
 
-Demo: [https://blog.ulna520.top](https://blog.ulna520.top)
+**Astro v6 Ready**: the current release is built and compatibility-tested with Astro 6.4.8.
+
+Demo: [https://template.ulna520.top](https://template.ulna520.top)
 
 ## Overview
 
@@ -42,8 +44,8 @@ Demo: [https://blog.ulna520.top](https://blog.ulna520.top)
 
 6. Built-in WebP image optimization flow
 
-    - `npm run build` uses `scripts/build-with-config.mjs`, reads feature flags, and runs `scripts/optimize-blog-images.mjs` before Astro build when enabled.
-    - Switch location: `enableImageOptimizationOnBuild` in `src/config/features.mjs`
+    - Image optimization is independent from normal builds, so `npm run build` never modifies posts or image assets.
+    - Preview with `npm run optimize:images:dry-run`, then explicitly run `npm run optimize:images` after review.
 
 7. Lighthouse-oriented performance optimizations
 
@@ -99,10 +101,10 @@ All items below are traceable in code:
 
     - `scripts/optimize-blog-images.mjs`
 
-3. Build preprocessing pipeline (toggleable) for `npm run build`
+3. Explicit, previewable image optimization flow
 
-    - `scripts/build-with-config.mjs`
-    - `src/config/features.mjs`
+    - `npm run optimize:images:dry-run` performs no writes.
+    - `npm run optimize:images` generates WebP files and replaces Markdown references.
 
 4. Article hero image preload + on-demand KaTeX stylesheet loading
 
@@ -112,15 +114,11 @@ All items below are traceable in code:
 
     - `astro.config.mjs`
 
-6. Viewport-external image rendering optimization
-
-    - `.prose img { content-visibility: auto; }` in `src/components/BaseHead.astro`
-
-7. Lazy fetch of search index (load only when search modal is first opened)
+6. Lazy fetch of search index (load only when search modal is first opened)
 
     - `src/scripts/search-modal.client.ts`
 
-8. Theme initialization anti-flash logic
+7. Theme initialization anti-flash logic
 
     - `src/components/BaseHead.astro`
 
@@ -147,8 +145,9 @@ npm run preview
 
 ### 1) Prerequisites
 
-- Node.js and npm installed
-- Node 22 is recommended (current CI uses Node 22: `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`)
+- Node.js 22.12.0 or newer
+- npm 9.6.5 or newer
+- The repository includes `.nvmrc`; run `nvm use` to select the project version
 
 ### 2) Create your project from GitHub Template
 
@@ -172,7 +171,6 @@ Edit these files first:
 - `src/config/site.ts`
 - `src/config/profile.ts`
 - `src/config/hero.ts`
-- `src/config/features.mjs`
 
 `src/config/index.ts` is an export aggregator and usually does not need direct edits.
 
@@ -214,19 +212,27 @@ Notes:
 
 1. Put images in `public/` (for example `public/image/...`).
 2. Reference `.png/.jpg/.jpeg` images in your posts.
-3. On `npm run build`, if `enableImageOptimizationOnBuild = true`, image optimization runs before Astro build.
+3. Preview the conversion without writing images or Markdown:
 
-Run optimization only:
+```bash
+npm run optimize:images:dry-run
+```
+
+4. After reviewing the result, explicitly run the conversion:
 
 ```bash
 npm run optimize:images
 ```
+
+Both `npm run build` and `npm run build:astro` only build the site and never trigger image conversion.
 
 Optional advanced args (run script directly):
 
 ```bash
 node scripts/optimize-blog-images.mjs --max-width 1600 --quality 78
 ```
+
+Use `--force` to bypass the option-aware cache and regenerate files. The cache lives in `.astro/` and is not committed.
 
 ### 7) Build and preview
 
@@ -317,10 +323,6 @@ git cherry-pick <commit_sha>
 - `about.text` / `about.subtitle` / `about.backgroundImage`
 - `postDefaultBackground`: default article hero image fallback when `heroImage` is not set
 
-### `src/config/features.mjs`
-
-- `enableImageOptimizationOnBuild`: whether to run image optimization before build by default
-
 ### `src/content.config.ts` (Blog Frontmatter compatibility and normalization)
 
 Required field:
@@ -353,12 +355,16 @@ Normalization rules:
 
 These commands match `package.json` exactly:
 
-| Command                     | Description                                              |
-| :-------------------------- | :------------------------------------------------------- |
-| `npm run dev`             | Start local development server                           |
-| `npm run build`           | Build with feature-flag pipeline (`build-with-config`) |
-| `npm run build:astro`     | Run raw `astro build` only                             |
-| `npm run check`           | Run `astro check` for type/template validation          |
+| Command                         | Description                                             |
+| :------------------------------ | :------------------------------------------------------ |
+| `npm run dev`                   | Start the local development server                      |
+| `npm run build`                 | Build the site without modifying posts or image assets  |
+| `npm run build:astro`           | Explicit alias for `astro build`                        |
+| `npm run check`                 | Run `astro check` for type/template validation          |
+| `npm run preview`               | Preview the production output                           |
+| `npm run astro`                 | Native Astro CLI entry                                  |
+| `npm run optimize:images`       | Generate WebP files and replace blog image references   |
+| `npm run optimize:images:dry-run` | Preview image optimization without writing files      |
 
 ## Post-refactor Conventions (2026-02)
 
@@ -368,9 +374,6 @@ These commands match `package.json` exactly:
 - Use `src/lib/profile/social.ts` for social link normalization and sameAs generation.
 - Place page interaction scripts in `src/scripts/pages/*` and register them via `src/scripts/pages/registry.ts`.
 - See `docs/frontend-architecture-map.md` for the dependency and page relationship map.
-| `npm run preview`         | Preview production output                                |
-| `npm run astro`           | Native Astro CLI entry                                   |
-| `npm run optimize:images` | Convert blog images to WebP and replace references       |
 
 ## Open Source Collaboration
 
