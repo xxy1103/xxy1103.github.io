@@ -152,7 +152,7 @@ npm run preview
 ### 2) Create your project from GitHub Template
 
 1. Open this repository on GitHub and click **Use this template**.
-2. Create your own new repository (public is recommended if you plan to use GitHub Pages).
+2. Create your own new repository (public and private repositories are both supported).
 3. Clone your new repository locally.
 
 ### 3) Initialize locally and run
@@ -243,14 +243,21 @@ npm run preview
 
 ### 8) Deployment
 
-GitHub Pages is recommended first (workflow already included):
+Cloudflare Workers Static Assets is recommended. The repository includes `wrangler.jsonc`; after connecting the GitHub repository, configure:
 
-- `.github/workflows/deploy.yml`
+- Build command: `npm run build`
+- Deploy command: `npm run deploy`
+- Root directory: `/`
+- Node.js: `22.12.0` (also pinned by `.nvmrc`)
 
-You can also deploy to:
+Cloudflare will build and deploy `dist/` automatically after pushes to the production branch. To deploy manually after authenticating with Cloudflare, run:
 
-- Vercel
-- Netlify
+```bash
+npm run build
+npm run deploy
+```
+
+The project can also be deployed to Cloudflare Pages, Vercel, or Netlify using `dist/` as the build output directory.
 
 ### 9) Receiving Future Theme Updates (Template Sync)
 

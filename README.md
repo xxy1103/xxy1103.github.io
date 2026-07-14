@@ -133,7 +133,7 @@ npm run preview
 ### 2) 从 GitHub Template 创建项目
 
 1. 在 GitHub 打开本仓库，点击 **Use this template**。
-2. 创建你自己的新仓库（建议公开仓库以便后续 GitHub Pages）。
+2. 创建你自己的新仓库（公开或私有仓库均可）。
 3. 克隆你的新仓库到本地。
 
 ### 3) 本地初始化与启动
@@ -224,14 +224,21 @@ npm run preview
 
 ### 8) 部署
 
-优先推荐 GitHub Pages（仓库已提供工作流）：
+推荐使用 Cloudflare Workers Static Assets。仓库已包含 `wrangler.jsonc`，连接 GitHub 仓库后配置：
 
-- `.github/workflows/deploy.yml`
+- 构建命令：`npm run build`
+- 部署命令：`npm run deploy`
+- 根目录：`/`
+- Node.js：`22.12.0`（同时由 `.nvmrc` 固定）
 
-你也可以部署到：
+推送到生产分支后，Cloudflare 会自动构建并部署 `dist/`。如需手动部署，可在完成 Cloudflare 登录后运行：
 
-- Vercel
-- Netlify
+```bash
+npm run build
+npm run deploy
+```
+
+也可以部署到 Cloudflare Pages、Vercel 或 Netlify，构建输出目录均为 `dist/`。
 
 ## 可配置项总览
 
