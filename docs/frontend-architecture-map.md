@@ -25,9 +25,12 @@
 
 ## Shared View Components
 - `src/components/ContentCard.astro`
+- `src/components/ArchiveCard.astro`
 - `src/components/SectionHeader.astro`
 - `src/components/PostMeta.astro`
 - `src/components/PostListItem.astro`
+- `src/components/TableOfContents.astro`
+- `src/components/TocList.astro`
 
 ## Client Runtime Layer
 - `src/scripts/pages/registry.ts`: centralized page enhancement lifecycle.
@@ -35,6 +38,7 @@
 - `src/scripts/pages/blog-list.client.ts`: list reveal + parallax.
 - `src/scripts/pages/tags-index.client.ts`: tag magnetic + parallax.
 - `src/scripts/pages/tag-detail.client.ts`: back-link magnetic + parallax.
+- `src/scripts/pages/parallax.ts`: shared parallax lifecycle and scroll listener cleanup.
 - `src/scripts/{header.client.ts,search-modal.client.ts,toc.ts,code-block.ts,lightbox.ts}`: global/site-level features.
 
 ## Removed Duplication Targets
@@ -42,6 +46,9 @@
 - Repeated excerpt/description extraction now centralized in `src/lib/content/text.ts`.
 - Repeated social URL and sameAs derivation now centralized in `src/lib/profile/social.ts`.
 - Repeated page shell (`BaseHead + Header + Footer + SearchModal + main-content`) now centralized in `src/layouts/PageShell.astro`.
+- Repeated archive card structure and styling now centralized in `src/components/ArchiveCard.astro`.
+- Repeated page parallax listeners now centralized in `src/scripts/pages/parallax.ts`.
+- Article table-of-contents rendering now uses recursive shared components.
 
 ## Next Maintenance Rules
 - New page should use `src/layouts/PageShell.astro` unless the page is a dedicated content layout.

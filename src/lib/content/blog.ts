@@ -11,11 +11,6 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 	return sortPostsByDateDesc(posts);
 }
 
-export async function getPostsByTag(tag: string): Promise<BlogPost[]> {
-	const posts = await getBlogPosts();
-	return posts.filter((post) => post.data.tags.includes(tag));
-}
-
 export async function getTagStats(): Promise<Array<[string, number]>> {
 	const posts = await getBlogPosts();
 	const tagCount: Record<string, number> = {};
@@ -28,4 +23,3 @@ export async function getTagStats(): Promise<Array<[string, number]>> {
 
 	return Object.entries(tagCount).sort((a, b) => b[1] - a[1]);
 }
-

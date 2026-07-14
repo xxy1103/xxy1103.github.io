@@ -1,3 +1,5 @@
+import { setupParallax } from './parallax';
+
 function setupMagneticTags() {
 	const tags = document.querySelectorAll<HTMLElement>('.tag');
 	const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
@@ -36,42 +38,7 @@ function setupMagneticTags() {
 	});
 }
 
-function setupTagsParallax() {
-	const statsCard = document.getElementById('stats-card');
-	const mainContent = document.getElementById('main-content');
-	const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-	const maxRise = isCoarsePointer ? 72 : 180;
-
-	if (!statsCard || !mainContent) return;
-
-	let ticking = false;
-	const updateParallax = () => {
-		const scrollY = mainContent.scrollTop;
-		const progress = Math.min(scrollY / (window.innerHeight * 0.5), 1);
-		const rise = progress * maxRise;
-		statsCard.style.transform = `translateY(-${rise}px)`;
-	};
-
-	const onScroll = () => {
-		if (ticking) return;
-		ticking = true;
-		requestAnimationFrame(() => {
-			updateParallax();
-			ticking = false;
-		});
-	};
-
-	const mainContentAny = mainContent as HTMLElement & { __tagsIndexParallaxHandler?: () => void };
-	if (mainContentAny.__tagsIndexParallaxHandler) {
-		mainContent.removeEventListener('scroll', mainContentAny.__tagsIndexParallaxHandler);
-	}
-
-	mainContentAny.__tagsIndexParallaxHandler = onScroll;
-	updateParallax();
-	mainContent.addEventListener('scroll', onScroll, { passive: true });
-}
-
 export function initTagsIndexPage() {
 	setupMagneticTags();
-	setupTagsParallax();
+	setupParallax({ desktopRise: 180, coarsePointerRise: 72 });
 }

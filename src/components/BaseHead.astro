@@ -2,7 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import type { ImageMetadata } from 'astro';
 import {
 	faviconIco,
@@ -138,7 +138,7 @@ const fullTitle =
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={imageURL} />
 {schemaList.map((item) => (
-	<script type="application/ld+json" set:html={JSON.stringify(item)} />
+	<script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />
 ))}
 
 <!-- On Android, force full-page reload navigation -->
@@ -202,7 +202,7 @@ const fullTitle =
 </script>
 
 <!-- View Transitions -->
-<ViewTransitions />
+<ClientRouter />
 
 <style is:global>
   /* ============================================

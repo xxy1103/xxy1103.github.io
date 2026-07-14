@@ -1,10 +1,9 @@
 ---
 import type { GetStaticPaths, Page } from 'astro';
-import ContentCard from '../../components/ContentCard.astro';
+import ArchiveCard from '../../components/ArchiveCard.astro';
 import HeroHeader from '../../components/HeroHeader.astro';
 import PageShell from '../../layouts/PageShell.astro';
 import PostListItem from '../../components/PostListItem.astro';
-import SectionHeader from '../../components/SectionHeader.astro';
 import { heroConfig, siteTitle } from '../../config';
 import { getBlogPosts, type BlogPost } from '../../lib/content/blog';
 import { extractExcerpt } from '../../lib/content/text';
@@ -85,65 +84,6 @@ if (last > 1) paginationList.push(last);
 >
   <Fragment slot="head">
     <style>
-      .stats-wrapper {
-        position: relative;
-        min-height: 50vh;
-        background-color: var(--color-bg);
-        transform: translateY(88px);
-      }
-
-      .posts-container {
-        background: var(--color-surface);
-        border-radius: 16px;
-        box-shadow: 
-          0 16px 64px rgba(0, 0, 0, 0.18),
-          0 8px 24px rgba(0, 0, 0, 0.12),
-          0 0 0 1px var(--color-border-subtle);
-        padding: 2em;
-        transform: translateY(-88px);
-      }
-
-      .posts-container :global(.section-header) {
-        display: flex;
-        align-items: baseline;
-        gap: 0.5em;
-        margin-bottom: 0.5em;
-      }
-
-      .posts-container :global(.section-number) {
-        font-size: 0.9em;
-        color: var(--accent);
-        font-weight: 600;
-        opacity: 0.7;
-      }
-
-      .posts-container :global(.section-title) {
-        font-size: 1.8em;
-        font-weight: bold;
-        margin: 0;
-        color: var(--color-text);
-        position: relative;
-        display: inline-block;
-      }
-
-      .posts-container :global(.section-title)::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 2em;
-        height: 3px;
-        background: linear-gradient(90deg, var(--accent), transparent);
-        border-radius: 3px;
-      }
-
-      .posts-container :global(.intro-text) {
-        color: var(--color-text-secondary);
-        margin-bottom: 2em;
-        font-size: 0.9em;
-        line-height: 1.6;
-      }
-
       .blog-posts-list :global(.blog-post-item) {
         padding: 1.2em 1em;
         margin: 0 -1em;
@@ -271,10 +211,6 @@ if (last > 1) paginationList.push(last);
       }
 
       @media (max-width: 900px) {
-        .posts-container {
-          padding: 1.5em;
-        }
-
         .blog-posts-list :global(.blog-post-item) {
           margin: 0;
           padding: 1em 0.75em;
@@ -282,15 +218,6 @@ if (last > 1) paginationList.push(last);
       }
 
       @media (max-width: 720px) {
-        .posts-container {
-          padding: 1.2em;
-          border-radius: 0;
-        }
-
-        .posts-container :global(.section-title) {
-          font-size: clamp(1.45rem, 6vw, 1.7rem);
-        }
-
         .blog-posts-list :global(.blog-post-title) {
           font-size: 1.2em;
         }
@@ -480,16 +407,14 @@ if (last > 1) paginationList.push(last);
     compact={true}
   />
 
-  <div class="stats-wrapper">
-    <ContentCard id="stats-card">
-      <div class="posts-container">
-        <SectionHeader
-          number={`Page ${page.currentPage}`}
-          title="所有文章"
-          intro={hasPosts
-            ? `这里收录了所有的 ${page.total} 篇文章 (第 ${page.currentPage} / ${page.lastPage} 页)`
-            : '当前没有文章内容。请在 src/content/blog/ 添加 .md/.mdx 文件后重新构建。'}
-        />
+  <ArchiveCard
+    variant="blog"
+    number={`Page ${page.currentPage}`}
+    title="所有文章"
+    intro={hasPosts
+      ? `这里收录了所有的 ${page.total} 篇文章 (第 ${page.currentPage} / ${page.lastPage} 页)`
+      : '当前没有文章内容。请在 src/content/blog/ 添加 .md/.mdx 文件后重新构建。'}
+  >
 
         <div class="blog-posts-list">
           {page.data.length > 0 ? (
@@ -541,8 +466,6 @@ if (last > 1) paginationList.push(last);
             </a>
           </div>
         )}
-      </div>
-    </ContentCard>
-  </div>
+  </ArchiveCard>
 
 </PageShell>

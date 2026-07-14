@@ -1,8 +1,4 @@
-import homeBackground from '../assets/blog-placeholder-1.webp';
-import blogBackground from '../assets/blog-placeholder-1.webp';
-import tagsBackground from '../assets/blog-placeholder-1.webp';
-import aboutBackground from '../assets/blog-placeholder-1.webp';
-import postBackground from '../assets/blog-placeholder-1.webp';
+import defaultBackground from '../assets/blog-placeholder-1.webp';
 
 /**
  * Hero copy and background settings for one page.
@@ -40,22 +36,22 @@ export const heroConfig: HeroConfig = {
   home: {
     text: 'Build your ideas, one post at a time.',
     subtitle: 'A clean Astro theme with centralized configuration.',
-    backgroundImage: homeBackground.src,
+    backgroundImage: defaultBackground.src,
   },
   blog: {
     text: 'All Posts',
     subtitle: 'Browse your writing archive.',
-    backgroundImage: blogBackground.src,
+    backgroundImage: defaultBackground.src,
   },
   tags: {
     text: 'Tags',
     subtitle: 'Explore topics by category and tag.',
-    backgroundImage: tagsBackground.src,
+    backgroundImage: defaultBackground.src,
   },
   about: {
     text: 'About',
     subtitle: 'Introduce yourself and your work.',
-    backgroundImage: aboutBackground.src,
+    backgroundImage: defaultBackground.src,
   },
-  postDefaultBackground: postBackground.src,
+  postDefaultBackground: defaultBackground.src,
 };

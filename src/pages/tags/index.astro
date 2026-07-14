@@ -1,8 +1,7 @@
 ---
-import ContentCard from '../../components/ContentCard.astro';
+import ArchiveCard from '../../components/ArchiveCard.astro';
 import HeroHeader from '../../components/HeroHeader.astro';
 import PageShell from '../../layouts/PageShell.astro';
-import SectionHeader from '../../components/SectionHeader.astro';
 import { heroConfig, siteTitle } from '../../config';
 import { getTagStats } from '../../lib/content/blog';
 
@@ -18,52 +17,6 @@ const tagsHero = heroConfig.tags;
 >
   <Fragment slot="head">
     <style>
-      .stats-wrapper {
-        position: relative;
-        min-height: 50vh;
-        background-color: var(--color-bg);
-        transform: translateY(88px);
-      }
-
-      .posts-container {
-        background: var(--color-surface);
-        border-radius: 16px;
-        box-shadow: 
-          0 16px 64px rgba(0, 0, 0, 0.18),
-          0 8px 24px rgba(0, 0, 0, 0.12),
-          0 0 0 1px var(--color-border-subtle);
-        padding: 2em;
-        min-height: 300px;
-        transform: translateY(-88px);
-      }
-
-      .posts-container :global(.section-header) {
-        display: flex;
-        align-items: baseline;
-        gap: 0.5em;
-        margin-bottom: 0.5em;
-      }
-
-      .posts-container :global(.section-number) {
-        font-size: 0.9em;
-        color: var(--color-text-muted);
-        font-weight: 500;
-      }
-
-      .posts-container :global(.section-title) {
-        font-size: 1.8em;
-        font-weight: bold;
-        margin: 0;
-        color: var(--color-text);
-      }
-
-      .posts-container :global(.intro-text) {
-        color: var(--color-text-secondary);
-        margin-bottom: 2em;
-        font-size: 0.9em;
-        line-height: 1.6;
-      }
-
       .tags-container {
         display: flex;
         flex-wrap: wrap;
@@ -180,25 +133,12 @@ const tagsHero = heroConfig.tags;
       }
 
       @media (max-width: 900px) {
-        .posts-container {
-          padding: 1.4em;
-        }
-
         .tags-container {
           gap: 0.75rem;
         }
       }
 
       @media (max-width: 720px) {
-        .posts-container {
-          padding: 1.1em;
-          border-radius: 0;
-        }
-
-        .posts-container :global(.section-title) {
-          font-size: clamp(1.45rem, 6vw, 1.7rem);
-        }
-
         .tag {
           padding: 0.7em 1.2em;
         }
@@ -213,10 +153,12 @@ const tagsHero = heroConfig.tags;
     compact={true}
   />
 
-  <div class="stats-wrapper">
-    <ContentCard id="stats-card">
-      <div class="posts-container">
-        <SectionHeader number="Tags" title="所有标签" intro={`共包含 ${sortedTags.length} 个标签`} />
+  <ArchiveCard
+    number="Tags"
+    title="所有标签"
+    intro={`共包含 ${sortedTags.length} 个标签`}
+    minHeight={true}
+  >
 
         {sortedTags.length > 0 ? (
           <div class="tags-container">
@@ -230,8 +172,6 @@ const tagsHero = heroConfig.tags;
         ) : (
           <p class="no-tags">暂无标签</p>
         )}
-      </div>
-    </ContentCard>
-  </div>
+  </ArchiveCard>
 
 </PageShell>
