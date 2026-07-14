@@ -35,7 +35,7 @@
 - `src/scripts/pages/blog-list.client.ts`: list reveal + parallax.
 - `src/scripts/pages/tags-index.client.ts`: tag magnetic + parallax.
 - `src/scripts/pages/tag-detail.client.ts`: back-link magnetic + parallax.
-- `src/scripts/{header.client.ts,search-modal.client.ts,toc.ts,code-block.ts,lightbox.ts,custom-cursor.client.ts}`: global/site-level features.
+- `src/scripts/{header.client.ts,search-modal.client.ts,toc.ts,code-block.ts,lightbox.ts}`: global/site-level features.
 
 ## Removed Duplication Targets
 - Repeated blog content loading now centralized in `src/lib/content/blog.ts`.
@@ -49,4 +49,3 @@
 - New excerpt/summary logic should go through `src/lib/content/text.ts`.
 - New social rendering logic should go through `src/lib/profile/social.ts`.
 - New page interactions should be in `src/scripts/pages/*` and registered via `runPageEnhancements()`.
-

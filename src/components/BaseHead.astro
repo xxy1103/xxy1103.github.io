@@ -5,7 +5,6 @@ import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import type { ImageMetadata } from 'astro';
 import {
-	enableCustomCursorByDefault,
 	faviconIco,
 	heroConfig,
 	locale,
@@ -77,7 +76,6 @@ const fullTitle =
 <!-- Global Metadata -->
 <meta charset="utf-8" transition:persist />
 <meta name="viewport" content="width=device-width,initial-scale=1" transition:persist />
-<meta name="custom-cursor-default" content={enableCustomCursorByDefault ? 'on' : 'off'} transition:persist />
 <link rel="icon" href={faviconIco} sizes="any" transition:persist />
 <link rel="sitemap" href="/sitemap-index.xml" transition:persist />
 <link
@@ -102,51 +100,6 @@ const fullTitle =
   // View Transitions: 在 DOM 交换前将主题写入新文档，彻底消除闪烁
   document.addEventListener('astro:before-swap', (ev) => {
     ev.newDocument.documentElement.setAttribute('data-theme', getTheme());
-  });
-})();
-</script>
-
-<!-- Custom cursor switch (head-level) -->
-<script is:inline transition:persist>
-(() => {
-  const STORAGE_KEY = 'custom-cursor-enabled';
-  const defaultEnabled =
-    document.querySelector('meta[name="custom-cursor-default"]')?.getAttribute('content') !== 'off';
-
-  const parseStoredBoolean = (value) => {
-    if (value === 'true') return true;
-    if (value === 'false') return false;
-    return null;
-  };
-
-  const applyCursorSwitch = (enabled, doc = document) => {
-    const html = doc.documentElement;
-    html.classList.toggle('custom-cursor-enabled', enabled);
-    html.setAttribute('data-custom-cursor', enabled ? 'on' : 'off');
-    if (!enabled) {
-      html.classList.remove('custom-cursor-active');
-    }
-  };
-
-  const storedValue = parseStoredBoolean(localStorage.getItem(STORAGE_KEY));
-  const initialEnabled = storedValue === null ? defaultEnabled : storedValue;
-  applyCursorSwitch(initialEnabled);
-  window.__customCursorEnabled = initialEnabled;
-
-  window.setCustomCursorEnabled = (nextEnabled) => {
-    const enabled = Boolean(nextEnabled);
-    localStorage.setItem(STORAGE_KEY, String(enabled));
-    window.__customCursorEnabled = enabled;
-    applyCursorSwitch(enabled);
-    window.dispatchEvent(new CustomEvent('custom-cursor:toggle', { detail: { enabled } }));
-    if (enabled && !window.cursorState) {
-      window.location.reload();
-    }
-  };
-
-  document.addEventListener('astro:before-swap', (ev) => {
-    const enabled = window.__customCursorEnabled ?? initialEnabled;
-    applyCursorSwitch(Boolean(enabled), ev.newDocument);
   });
 })();
 </script>

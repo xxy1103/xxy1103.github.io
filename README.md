@@ -261,7 +261,6 @@ npm run preview
 
 ### `src/config/features.mjs`
 
-- `enableCustomCursorByDefault`: 自定义光标默认开关
 - `enableImageOptimizationOnBuild`: 构建前是否默认执行图片优化
 
 ### `src/content.config.ts`（博客 Frontmatter 兼容与归一化）

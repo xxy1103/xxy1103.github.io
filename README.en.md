@@ -319,7 +319,6 @@ git cherry-pick <commit_sha>
 
 ### `src/config/features.mjs`
 
-- `enableCustomCursorByDefault`: default custom cursor toggle
 - `enableImageOptimizationOnBuild`: whether to run image optimization before build by default
 
 ### `src/content.config.ts` (Blog Frontmatter compatibility and normalization)
