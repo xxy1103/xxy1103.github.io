@@ -34,24 +34,25 @@ export interface HeroConfig {
 
 export const heroConfig: HeroConfig = {
   home: {
-    text: 'Build your ideas, one post at a time.',
-    subtitle: 'A clean Astro theme with centralized configuration.',
+    text: '骐骥一跃 不能十步 驽马十驾 功在不舍',
+    subtitle: 'Persistence over speed, mastery through endurance.',
     backgroundImage: defaultBackground.src,
   },
   blog: {
-    text: 'All Posts',
-    subtitle: 'Browse your writing archive.',
+    text: '在代码与算法间，刻下探索的序列',
+    subtitle: 'Tracing the logic of curiosity across the digital frontier.',
     backgroundImage: defaultBackground.src,
   },
   tags: {
-    text: 'Tags',
-    subtitle: 'Explore topics by category and tag.',
+    text: '兴趣的切片：在不经意间，已连点成线',
+    subtitle: 'Unintentional fragments forming a constellation of knowledge.',
     backgroundImage: defaultBackground.src,
   },
   about: {
-    text: 'About',
-    subtitle: 'Introduce yourself and your work.',
+    text: '一个正在运行的探索进程',
+    subtitle: 'An active instance of discovery, fueled by code and passion.',
     backgroundImage: defaultBackground.src,
   },
   postDefaultBackground: defaultBackground.src,
 };
+
