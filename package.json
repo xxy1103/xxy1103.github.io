@@ -11,6 +11,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "build:astro": "astro build",
+    "deploy": "wrangler deploy",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "wrangler": "4.110.0"
   }
 }
