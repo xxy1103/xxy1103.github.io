@@ -101,6 +101,14 @@ const articleSchema = {
 			</>
 		)}
 		<style>
+			:global(mark.search-landing-highlight) {
+				background: var(--color-search-highlight-bg);
+				color: var(--color-search-highlight-text);
+				border-radius: 3px;
+				padding: 0 2px;
+				box-shadow: 0 0 0 2px var(--color-search-highlight-bg);
+			}
+
 			.stats-wrapper {
 				position: relative;
 				min-height: 50vh;
@@ -282,11 +290,13 @@ const articleSchema = {
             import { setupToc } from '../scripts/toc';
             import { setupCodeBlocks } from '../scripts/code-block';
             import { setupLightbox } from '../scripts/lightbox';
+            import { setupSearchLanding } from '../scripts/search/landing';
 
             const runEnhancements = () => {
                 setupToc?.();
                 setupCodeBlocks?.();
                 setupLightbox?.();
+                setupSearchLanding?.();
             };
 
             const runtimeWindow = window as Window & {

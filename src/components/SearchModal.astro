@@ -1,8 +1,5 @@
 ---
-/**
- * SearchModal - 全站搜索模态框组件
- * 使用 Fuse.js 进行客户端全文搜索
- */
+/** 全站搜索的语义化外壳；行为由 src/scripts/search/ 管理。 */
 ---
 
 <!-- 搜索模态框 -->
@@ -12,12 +9,13 @@
 	aria-hidden="true"
 	role="dialog"
 	aria-modal="true"
-	aria-labelledby="search-input"
+	aria-labelledby="search-dialog-title"
 	transition:name="search-modal"
 	transition:persist
 >
-    <div class="search-overlay"></div>
+    <div class="search-overlay" aria-hidden="true"></div>
     <div class="search-container">
+        <h2 id="search-dialog-title" class="sr-only">搜索文章</h2>
         <div class="search-header">
             <div class="search-input-wrapper">
                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -30,7 +28,10 @@
                     class="search-input" 
                     placeholder="搜索文章标题或内容..." 
                     autocomplete="off"
-                    autofocus
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-controls="search-results"
+                    aria-expanded="false"
                 />
                 <button id="search-close" class="search-close" aria-label="关闭搜索">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -41,15 +42,8 @@
             </div>
         </div>
         
-        <div class="search-results" id="search-results">
-            <div class="search-placeholder">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <p>输入关键词开始搜索</p>
-            </div>
-        </div>
+        <div class="search-results" id="search-results" role="listbox" aria-label="搜索结果"></div>
+        <p id="search-status" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 
         <div class="search-footer">
             <span class="search-hint">
@@ -58,6 +52,37 @@
             </span>
         </div>
     </div>
+
+    <template data-search-template="idle">
+        <div class="search-state">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <p>输入关键词开始搜索</p>
+        </div>
+    </template>
+    <template data-search-template="loading">
+        <div class="search-state">
+            <span class="search-spinner" aria-hidden="true"></span>
+            <p>正在加载搜索索引…</p>
+        </div>
+    </template>
+    <template data-search-template="error">
+        <div class="search-state search-state-error">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6M12 17h.01"></path></svg>
+            <p data-search-error-message>搜索索引加载失败</p>
+            <button type="button" class="search-retry" data-search-retry>重试</button>
+        </div>
+    </template>
+    <template data-search-template="empty-index">
+        <div class="search-state"><p>暂无可搜索文章</p></div>
+    </template>
+    <template data-search-template="no-results">
+        <div class="search-state">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35M8 8l6 6M14 8l-6 6"></path></svg>
+            <p>未找到相关文章</p>
+        </div>
+    </template>
 </div>
 
 <style>
@@ -235,18 +260,48 @@
         scroll-behavior: smooth;
     }
 
-    :global(.search-placeholder) {
+    :global(.search-state) {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 200px;
+        min-height: 220px;
         color: var(--color-text-muted);
         gap: 1em;
     }
 
-    :global(.search-placeholder svg) {
+    :global(.search-state svg) {
         opacity: 0.3;
+    }
+
+    :global(.search-spinner) {
+        width: 34px;
+        height: 34px;
+        border: 3px solid var(--color-border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: search-spin 0.8s linear infinite;
+    }
+
+    @keyframes search-spin {
+        to { transform: rotate(360deg); }
+    }
+
+    :global(.search-retry) {
+        border: 1px solid var(--accent);
+        border-radius: 8px;
+        padding: 0.55em 1.1em;
+        color: var(--accent);
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+    }
+
+    :global(.search-retry:hover),
+    :global(.search-retry:focus-visible) {
+        color: white;
+        background: var(--accent);
+        outline: none;
     }
 
     /* Search Result Item Styling - :global needed for dynamically generated content */
@@ -303,16 +358,6 @@
         padding: 0 2px;
         border-radius: 2px;
         font-weight: 500;
-    }
-
-    :global(.search-no-results) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 250px;
-        color: var(--color-text-muted);
-        gap: 0.75em;
     }
 
     .search-footer {
@@ -379,8 +424,14 @@
             min-height: 84px;
         }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        :global(.search-spinner) {
+            animation-duration: 1.6s;
+        }
+    }
 </style>
 
 <script>
-import '../scripts/search-modal.client';
+import '../scripts/search';
 </script>
