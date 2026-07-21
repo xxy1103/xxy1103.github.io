@@ -84,6 +84,9 @@ const {
 		<SearchModal />
 		<script>
 			import { runCurrentPageEnhancements } from '../scripts/pages/registry';
+			import { setupMainScrollRestoration } from '../scripts/scroll-restoration';
+
+			setupMainScrollRestoration();
 
 			const runtimeWindow = window as Window & {
 				__globalPageEnhancementsHandler?: () => void;

@@ -1,0 +1,23 @@
+/_astro/*
+  Cache-Control: public, max-age=31556952, immutable
+
+/
+  Cache-Control: public, max-age=300, must-revalidate
+
+/about
+  Cache-Control: public, max-age=300, must-revalidate
+
+/about/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/blog
+  Cache-Control: public, max-age=300, must-revalidate
+
+/blog/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/tags
+  Cache-Control: public, max-age=300, must-revalidate
+
+/tags/*
+  Cache-Control: public, max-age=300, must-revalidate

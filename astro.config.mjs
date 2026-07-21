@@ -62,6 +62,10 @@ export default defineConfig({
 			},
 		}),
 	],
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: 'hover',
+	},
 	markdown: {
 		processor: unified({
 			// 支持 Hexo 相对图片路径 image/xxx/ 自动转换为 /image/xxx/
