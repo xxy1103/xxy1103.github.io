@@ -141,66 +141,6 @@ const fullTitle =
 	<script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />
 ))}
 
-<!-- On Android, force full-page reload navigation -->
-<script is:inline transition:persist>
-(() => {
-  const isAndroid = () => /Android/i.test(navigator.userAgent);
-  const android = isAndroid();
-
-  if (android) {
-    document.documentElement.classList.add('is-android');
-  } else {
-    document.documentElement.classList.remove('is-android');
-  }
-
-  if (!android) return;
-
-  const isReloadCandidate = (anchor) => {
-    if (!anchor) return false;
-    if (anchor.target && anchor.target.toLowerCase() !== '_self') return false;
-    if (anchor.hasAttribute('download')) return false;
-
-    const href = anchor.getAttribute('href');
-    if (!href || href.startsWith('#')) return false;
-    if (href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) {
-      return false;
-    }
-
-    const nextURL = new URL(anchor.href, window.location.href);
-    if (nextURL.origin !== window.location.origin) return false;
-    return nextURL.href !== window.location.href;
-  };
-
-  document.addEventListener(
-    'click',
-    (event) => {
-      if (!android) return;
-      if (
-        event.defaultPrevented ||
-        event.button !== 0 ||
-        event.metaKey ||
-        event.ctrlKey ||
-        event.shiftKey ||
-        event.altKey
-      ) {
-        return;
-      }
-
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-
-      const anchor = target.closest('a');
-      if (!(anchor instanceof HTMLAnchorElement)) return;
-      if (!isReloadCandidate(anchor)) return;
-
-      event.preventDefault();
-      window.location.assign(anchor.href);
-    },
-    { capture: true },
-  );
-})();
-</script>
-
 <!-- View Transitions -->
 <ClientRouter />
 
