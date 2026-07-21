@@ -1,5 +1,5 @@
 import { normalizeSearchText } from '../../lib/search/text';
-import { createScrollAnchor, type ScrollAnchorController } from '../toc/scroll-anchor';
+import type { ArticleNavigationController } from '../toc/controller';
 
 interface CharacterLocation {
 	node: Text;
@@ -110,7 +110,7 @@ function prefersReducedMotion() {
 	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-export function setupSearchLanding() {
+export function setupSearchLanding(navigation: ArticleNavigationController | null) {
 	cleanupCurrentLanding?.();
 	cleanupCurrentLanding = null;
 
@@ -118,17 +118,9 @@ export function setupSearchLanding() {
 	const blockId = params.get('block');
 	if (!blockId) return;
 	const target = findSearchBlock(blockId);
-	const scroller = document.getElementById('main-content');
-	if (!target || !scroller) return;
+	if (!target || !navigation) return;
 
 	const abortController = new AbortController();
-	const header = document.querySelector<HTMLElement>('header');
-	const getOffset = () => {
-		const headerHeight = header?.getBoundingClientRect().height || 64;
-		const gap = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--anchor-gap')) || 16;
-		return headerHeight + gap;
-	};
-	const anchor: ScrollAnchorController = createScrollAnchor(scroller, getOffset);
 	const map = createNormalizedTextMap(collectTextNodes(target));
 	const candidates = [params.get('match'), params.get('search')]
 		.map((value) => normalizeSearchText(value ?? '').toLocaleLowerCase())
@@ -144,24 +136,14 @@ export function setupSearchLanding() {
 	}
 	const marks = matchStart >= 0 ? highlightRange(map, matchStart, matchedText.length) : [];
 	const scrollTarget = marks[0] ?? target;
-	const behavior: ScrollBehavior = prefersReducedMotion() ? 'auto' : 'smooth';
-	// Astro restores the route scroll position immediately after the page-load lifecycle.
-	// Start after that restoration, then let the anchor controller correct late layout shifts.
-	const startTimer = window.setTimeout(() => {
-		requestAnimationFrame(() => anchor.scrollTo(scrollTarget, behavior));
-	}, 80);
-
-	const observer = new ResizeObserver(() => anchor.notifyLayoutChange());
-	observer.observe(target);
-	void document.fonts?.ready.then(() => anchor.notifyLayoutChange()).catch(() => {});
+	const behavior = prefersReducedMotion() ? 'instant' : 'smooth';
+	const startFrame = requestAnimationFrame(() => void navigation.navigate(scrollTarget, { behavior }));
 	const markTimer = window.setTimeout(() => removeMarks(marks), 4000);
 
 	const cleanup = () => {
 		abortController.abort();
-		window.clearTimeout(startTimer);
+		cancelAnimationFrame(startFrame);
 		window.clearTimeout(markTimer);
-		observer.disconnect();
-		anchor.destroy();
 		removeMarks(marks);
 	};
 	document.addEventListener('astro:before-swap', cleanup, { once: true, signal: abortController.signal });

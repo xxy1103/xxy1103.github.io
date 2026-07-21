@@ -4,13 +4,32 @@ interface ActiveHeadingOptions {
 	resolveTocId: (headingId: string) => string;
 	scroller: HTMLElement;
 	tocContainer: HTMLElement | null;
-	getBaseOffset: () => number;
-	signal: AbortSignal;
+	getActivationOffset: () => number;
 }
 
 export interface ActiveHeadingTracker {
-	refresh(): void;
-	setActive(id: string): void;
+	lock(id: string): void;
+	unlock(): void;
+	refreshLayout(): void;
+	refreshActive(): void;
+	resolveIdForTarget(target: HTMLElement): string;
+	destroy(): void;
+}
+
+export function findActiveHeadingIndex(positions: readonly number[], threshold: number) {
+	let low = 0;
+	let high = positions.length - 1;
+	let match = -1;
+	while (low <= high) {
+		const middle = Math.floor((low + high) / 2);
+		if (positions[middle] <= threshold) {
+			match = middle;
+			low = middle + 1;
+		} else {
+			high = middle - 1;
+		}
+	}
+	return match;
 }
 
 export function createActiveHeadingTracker({
@@ -19,13 +38,28 @@ export function createActiveHeadingTracker({
 	resolveTocId,
 	scroller,
 	tocContainer,
-	getBaseOffset,
-	signal,
+	getActivationOffset,
 }: ActiveHeadingOptions): ActiveHeadingTracker {
 	let activeId = '';
 	let activeLink: HTMLAnchorElement | null = null;
 	let expandedItems = new Set<HTMLElement>();
-	let frame: number | null = null;
+	let positions: number[] = [];
+	let lockedId: string | null = null;
+	let activeFrame: number | null = null;
+	let layoutFrame: number | null = null;
+	let destroyed = false;
+
+	const ensureLinkVisible = () => {
+		if (!activeLink || !tocContainer) return;
+		const containerRect = tocContainer.getBoundingClientRect();
+		const linkRect = activeLink.getBoundingClientRect();
+		const padding = 8;
+		if (linkRect.top < containerRect.top + padding) {
+			tocContainer.scrollTop -= containerRect.top + padding - linkRect.top;
+		} else if (linkRect.bottom > containerRect.bottom - padding) {
+			tocContainer.scrollTop += linkRect.bottom - (containerRect.bottom - padding);
+		}
+	};
 
 	const setActive = (id: string) => {
 		if (id === activeId) return;
@@ -50,52 +84,68 @@ export function createActiveHeadingTracker({
 		}
 		for (const item of nextExpanded) item.classList.add('expanded');
 		expandedItems = nextExpanded;
-
-		if (activeLink && tocContainer) {
-			const containerRect = tocContainer.getBoundingClientRect();
-			const linkRect = activeLink.getBoundingClientRect();
-			const padding = 8;
-			if (linkRect.top < containerRect.top + padding) {
-				tocContainer.scrollTop -= containerRect.top + padding - linkRect.top;
-			} else if (linkRect.bottom > containerRect.bottom - padding) {
-				tocContainer.scrollTop += linkRect.bottom - (containerRect.bottom - padding);
-			}
-		}
+		ensureLinkVisible();
 	};
 
-	const update = () => {
-		frame = null;
+	const updateActive = () => {
+		activeFrame = null;
+		if (destroyed || lockedId) return;
+		const atEnd = scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 1;
+		const index = atEnd
+			? headings.length - 1
+			: findActiveHeadingIndex(positions, scroller.scrollTop + getActivationOffset());
+		const headingId = index >= 0 ? headings[index]?.id ?? '' : '';
+		setActive(headingId ? resolveTocId(headingId) : '');
+	};
+
+	const refreshActive = () => {
+		if (destroyed || lockedId || activeFrame !== null) return;
+		activeFrame = requestAnimationFrame(updateActive);
+	};
+
+	const measureLayout = () => {
+		layoutFrame = null;
+		if (destroyed) return;
 		const containerTop = scroller.getBoundingClientRect().top;
-		const activationOffset = Math.max(
-			getBaseOffset(),
-			Math.min(Math.round(scroller.clientHeight * 0.36), 360),
-		);
-		let currentId = '';
-
-		for (const heading of headings) {
-			if (heading.getBoundingClientRect().top - containerTop <= activationOffset) {
-				currentId = heading.id;
-			} else {
-				break;
-			}
-		}
-
-		if (scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 1) {
-			currentId = headings.at(-1)?.id ?? currentId;
-		}
-
-		setActive(currentId ? resolveTocId(currentId) : '');
+		positions = headings.map((heading) => (
+			scroller.scrollTop + heading.getBoundingClientRect().top - containerTop
+		));
+		refreshActive();
 	};
 
-	const refresh = () => {
-		if (frame !== null) return;
-		frame = requestAnimationFrame(update);
+	const refreshLayout = () => {
+		if (destroyed || layoutFrame !== null) return;
+		layoutFrame = requestAnimationFrame(measureLayout);
 	};
 
-	scroller.addEventListener('scroll', refresh, { passive: true, signal });
-	signal.addEventListener('abort', () => {
-		if (frame !== null) cancelAnimationFrame(frame);
-	}, { once: true });
+	const onScroll = () => refreshActive();
+	scroller.addEventListener('scroll', onScroll, { passive: true });
+	measureLayout();
 
-	return { refresh, setActive };
+	return {
+		lock(id) {
+			if (destroyed) return;
+			lockedId = id;
+			setActive(id);
+		},
+		unlock() {
+			if (destroyed) return;
+			lockedId = null;
+		},
+		refreshLayout,
+		refreshActive,
+		resolveIdForTarget(target) {
+			if (destroyed) return '';
+			const containerTop = scroller.getBoundingClientRect().top;
+			const targetPosition = scroller.scrollTop + target.getBoundingClientRect().top - containerTop;
+			const index = findActiveHeadingIndex(positions, targetPosition);
+			return index >= 0 ? resolveTocId(headings[index]?.id ?? '') : '';
+		},
+		destroy() {
+			destroyed = true;
+			scroller.removeEventListener('scroll', onScroll);
+			if (activeFrame !== null) cancelAnimationFrame(activeFrame);
+			if (layoutFrame !== null) cancelAnimationFrame(layoutFrame);
+		},
+	};
 }

@@ -293,10 +293,10 @@ const articleSchema = {
             import { setupSearchLanding } from '../scripts/search/landing';
 
             const runEnhancements = () => {
-                setupToc?.();
                 setupCodeBlocks?.();
+                const articleNavigation = setupToc?.() ?? null;
                 setupLightbox?.();
-                setupSearchLanding?.();
+                setupSearchLanding?.(articleNavigation);
             };
 
             const runtimeWindow = window as Window & {

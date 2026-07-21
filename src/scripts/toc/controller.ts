@@ -1,5 +1,15 @@
 import { createActiveHeadingTracker } from './active-heading';
-import { createScrollAnchor } from './scroll-anchor';
+import {
+	createArticleScrollNavigator,
+	type ScrollNavigationOptions,
+	type ScrollNavigationResult,
+} from './scroll-navigator';
+
+export interface ArticleNavigationController {
+	navigate(target: HTMLElement, options: ScrollNavigationOptions): Promise<ScrollNavigationResult>;
+	cancel(): void;
+	destroy(): void;
+}
 
 let cleanupCurrentController: (() => void) | null = null;
 
@@ -12,24 +22,24 @@ function decodeHash(hash: string) {
 	}
 }
 
-function prefersReducedMotion() {
-	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function preferredBehavior(): ScrollNavigationOptions['behavior'] {
+	return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
 }
 
-export function setupToc() {
+export function setupToc(): ArticleNavigationController | null {
 	cleanupCurrentController?.();
 	cleanupCurrentController = null;
 
 	const tocRoot = document.getElementById('toc-root');
 	const scroller = document.getElementById('main-content');
 	const article = document.querySelector<HTMLElement>('article .prose');
-	if (!tocRoot || !scroller || !article) return;
+	if (!tocRoot || !scroller || !article) return null;
 
 	const headings = Array.from(
 		article.querySelectorAll<HTMLElement>('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'),
 	);
 	const tocLinks = Array.from(tocRoot.querySelectorAll<HTMLAnchorElement>('.toc-link'));
-	if (headings.length === 0 || tocLinks.length === 0) return;
+	if (headings.length === 0 || tocLinks.length === 0) return null;
 
 	const abortController = new AbortController();
 	const { signal } = abortController;
@@ -49,7 +59,6 @@ export function setupToc() {
 			headingStack.pop();
 		}
 		headingStack.push(heading);
-
 		for (let index = headingStack.length - 1; index >= 0; index -= 1) {
 			const candidateId = headingStack[index].id;
 			if (linksById.has(candidateId)) {
@@ -71,24 +80,59 @@ export function setupToc() {
 		) || 16;
 		return headerHeight + gap;
 	};
+	const getActivationOffset = () => Math.max(
+		getBaseOffset(),
+		Math.min(Math.round(scroller.clientHeight * 0.36), 360),
+	);
 	updateHeaderHeight();
 
-	const anchor = createScrollAnchor(scroller, getBaseOffset);
+	const navigator = createArticleScrollNavigator(scroller, getBaseOffset);
 	const tracker = createActiveHeadingTracker({
 		headings,
 		linksById,
 		resolveTocId: (id) => resolvedTocIdByHeadingId.get(id) ?? id,
 		scroller,
 		tocContainer: document.getElementById('toc'),
-		getBaseOffset,
-		signal,
+		getActivationOffset,
 	});
+	let navigationSequence = 0;
+	let layoutFrame: number | null = null;
+	let initialFrame: number | null = null;
+	let cleanedUp = false;
 
-	const navigateToId = (id: string, behavior: ScrollBehavior) => {
+	const scheduleLayoutRefresh = () => {
+		if (cleanedUp || layoutFrame !== null) return;
+		layoutFrame = requestAnimationFrame(() => {
+			layoutFrame = null;
+			tracker.refreshLayout();
+		});
+	};
+
+	const controller: ArticleNavigationController = {
+		async navigate(target, options) {
+			if (cleanedUp) return 'interrupted';
+			const sequence = ++navigationSequence;
+			const activeId = tracker.resolveIdForTarget(target);
+			if (activeId) tracker.lock(activeId);
+			const result = await navigator.navigate(target, options);
+			if (sequence === navigationSequence && result !== 'superseded') {
+				tracker.unlock();
+				tracker.refreshLayout();
+				tracker.refreshActive();
+			}
+			return result;
+		},
+		cancel() {
+			navigator.cancel('interrupted');
+		},
+		destroy() {
+			cleanup();
+		},
+	};
+
+	const navigateToId = (id: string, behavior: ScrollNavigationOptions['behavior']) => {
 		const target = document.getElementById(id);
-		if (!target) return;
-		tracker.setActive(resolvedTocIdByHeadingId.get(id) ?? id);
-		anchor.scrollTo(target, behavior);
+		if (target) void controller.navigate(target, { behavior });
 	};
 
 	tocRoot.addEventListener('click', (event) => {
@@ -97,52 +141,63 @@ export function setupToc() {
 		const id = decodeHash(link.hash);
 		if (!id) return;
 		event.preventDefault();
-		if (location.hash !== link.hash) history.pushState(null, '', link.hash);
-		navigateToId(id, prefersReducedMotion() ? 'auto' : 'smooth');
+		if (location.hash !== link.hash) history.pushState({ ...history.state }, '', link.hash);
+		navigateToId(id, preferredBehavior());
 	}, { signal });
 
 	window.addEventListener('hashchange', () => {
 		const id = decodeHash(location.hash);
-		if (id) navigateToId(id, prefersReducedMotion() ? 'auto' : 'smooth');
+		if (id) navigateToId(id, preferredBehavior());
 	}, { signal });
 
-	const cancelAnchorOnUserInput = () => anchor.cancel();
-	scroller.addEventListener('wheel', cancelAnchorOnUserInput, { passive: true, signal });
-	scroller.addEventListener('touchstart', cancelAnchorOnUserInput, { passive: true, signal });
+	const cancelOnUserInput = () => controller.cancel();
+	scroller.addEventListener('wheel', cancelOnUserInput, { passive: true, signal });
+	scroller.addEventListener('touchstart', cancelOnUserInput, { passive: true, signal });
+	scroller.addEventListener('pointerdown', cancelOnUserInput, { passive: true, signal });
 	window.addEventListener('keydown', (event) => {
 		if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) {
-			anchor.cancel();
+			controller.cancel();
 		}
 	}, { signal });
 
-	const onLayoutChange = () => {
-		anchor.notifyLayoutChange();
-		tracker.refresh();
-	};
-	article.addEventListener('load', onLayoutChange, { capture: true, signal });
+	article.addEventListener('load', scheduleLayoutRefresh, { capture: true, signal });
 	window.addEventListener('resize', () => {
 		updateHeaderHeight();
-		onLayoutChange();
+		scheduleLayoutRefresh();
 	}, { signal });
-
-	const articleObserver = new ResizeObserver(onLayoutChange);
+	const articleObserver = new ResizeObserver(scheduleLayoutRefresh);
 	articleObserver.observe(article);
-	const headerObserver = header ? new ResizeObserver(updateHeaderHeight) : null;
+	const headerObserver = header ? new ResizeObserver(() => {
+		updateHeaderHeight();
+		scheduleLayoutRefresh();
+	}) : null;
 	headerObserver?.observe(header as HTMLElement);
+	void document.fonts?.ready.then(scheduleLayoutRefresh).catch(() => {});
 
-	void document.fonts?.ready.then(onLayoutChange).catch(() => {});
-	requestAnimationFrame(() => {
-		const initialId = decodeHash(location.hash);
-		if (initialId) navigateToId(initialId, 'auto');
-		else tracker.refresh();
+	initialFrame = requestAnimationFrame(() => {
+		initialFrame = null;
+		if (cleanedUp) return;
+		const hasSearchLanding = new URLSearchParams(location.search).has('block');
+		const initialId = hasSearchLanding ? '' : decodeHash(location.hash);
+		if (initialId) navigateToId(initialId, 'instant');
+		else tracker.refreshActive();
 	});
 
-	const cleanup = () => {
+	function cleanup() {
+		if (cleanedUp) return;
+		cleanedUp = true;
+		navigationSequence += 1;
 		abortController.abort();
 		articleObserver.disconnect();
 		headerObserver?.disconnect();
-		anchor.destroy();
-	};
+		if (layoutFrame !== null) cancelAnimationFrame(layoutFrame);
+		if (initialFrame !== null) cancelAnimationFrame(initialFrame);
+		navigator.destroy();
+		tracker.destroy();
+		if (cleanupCurrentController === cleanup) cleanupCurrentController = null;
+	}
+
 	document.addEventListener('astro:before-swap', cleanup, { once: true, signal });
 	cleanupCurrentController = cleanup;
+	return controller;
 }
