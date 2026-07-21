@@ -1,30 +1,15 @@
 import { getBlogPosts } from '../lib/content/blog';
-import { extractExcerpt } from '../lib/content/text';
+import { createSearchIndex } from '../lib/search/indexer';
 
 export async function GET() {
     const posts = await getBlogPosts();
 
-    const searchIndex = posts.map((post) => {
-        const categories = Array.isArray(post.data.categories)
-            ? post.data.categories
-            : post.data.categories
-                ? [post.data.categories]
-                : [];
+	const searchIndex = createSearchIndex(posts);
 
-        return {
-            id: post.id,
-            title: post.data.title,
-            excerpt: extractExcerpt(post.body || '', 200),
-            tags: post.data.tags || [],
-            categories,
-            url: `/blog/${post.id}/`
-        };
-    });
-
-    return new Response(JSON.stringify(searchIndex), {
-        headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=3600'
-        }
-    });
+	return new Response(JSON.stringify(searchIndex), {
+		headers: {
+			'Content-Type': 'application/json',
+			'Cache-Control': 'public, max-age=3600',
+		},
+	});
 }
