@@ -4,6 +4,7 @@ import HeroHeader from '../../components/HeroHeader.astro';
 import PageShell from '../../layouts/PageShell.astro';
 import { heroConfig, siteTitle } from '../../config';
 import { getTagStats, getBlogPosts } from '../../lib/content/blog';
+import { getTagPath } from '../../lib/content/tag-path';
 import { extractExcerpt } from '../../lib/content/text';
 
 const sortedTags = await getTagStats();
@@ -531,7 +532,7 @@ const tagsHero = heroConfig.tags;
               
               return (
                 <a 
-                  href={`/tags/${tag}/`}
+                  href={getTagPath(tag)}
                   class="tag-pill" 
                   data-tag={tag}
                   data-count={count}
