@@ -1,3 +1,4 @@
+import type { ImageMetadata } from 'astro';
 import defaultAvatar from '../assets/profile.jpg';
 
 /**
@@ -21,7 +22,7 @@ export interface ProfileConfig {
   /**
    * Optional avatar URL for About page and structured data.
    */
-  avatar?: string;
+  avatar?: string | ImageMetadata;
   /**
    * Display name used across the site.
    */
@@ -53,7 +54,7 @@ export interface ProfileConfig {
 }
 
 export const profileConfig: ProfileConfig = {
-  avatar: defaultAvatar.src,
+  avatar: defaultAvatar,
   name: 'Your Name',
   title: 'Your Role / Focus',
   bio: 'Write a short self-introduction here. This content is used in About and article schema.',
