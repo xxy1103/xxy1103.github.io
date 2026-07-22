@@ -2,29 +2,30 @@
 import ArchiveCard from '../../components/ArchiveCard.astro';
 import HeroHeader from '../../components/HeroHeader.astro';
 import PageShell from '../../layouts/PageShell.astro';
-import PostListItem from '../../components/PostListItem.astro';
 import { heroConfig, siteTitle } from '../../config';
-import { getBlogPosts } from '../../lib/content/blog';
+import { getBlogPosts, getTagStats } from '../../lib/content/blog';
 import { extractExcerpt } from '../../lib/content/text';
+import { getTagPath } from '../../lib/content/tag-path';
 
 export async function getStaticPaths() {
   const posts = await getBlogPosts();
-  const tags = new Set<string>();
+  const sortedTags = await getTagStats();
+  const tags = sortedTags.map(([tag]) => tag);
 
-  posts.forEach((post) => {
-    post.data.tags.forEach((tag: string) => tags.add(tag));
+  return tags.map((tag) => {
+    const matchingPosts = posts.filter((post) => post.data.tags.includes(tag));
+    return {
+      params: { tag },
+      props: {
+        tag,
+        posts: matchingPosts,
+        sortedTags,
+      },
+    };
   });
-
-  return Array.from(tags).map((tag) => ({
-    params: { tag },
-    props: {
-      tag,
-      posts: posts.filter((post) => post.data.tags.includes(tag)),
-    },
-  }));
 }
 
-const { tag, posts } = Astro.props;
+const { tag, posts, sortedTags } = Astro.props;
 const tagsHero = heroConfig.tags;
 ---
 
@@ -33,169 +34,435 @@ const tagsHero = heroConfig.tags;
   description={`所有标记为 "${tag}" 的博客文章`}
   transparentHeader={true}
   pageId="tag-detail"
+  useMainWrapper={false}
 >
   <Fragment slot="head">
     <style>
+      .tags-workspace {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 2.5rem;
+        padding-top: 1.5rem;
+      }
+
+      .back-btn-container {
+        margin-bottom: 1rem;
+      }
+
       .back-link {
         display: inline-flex;
         align-items: center;
-        gap: 0.5em;
-        padding: 0.5em 1.2em;
-        margin-bottom: 2em;
-        background: var(--color-surface);
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: var(--color-surface-hover);
         color: var(--color-text-secondary);
         border: 1px solid var(--color-border);
         border-radius: 50px;
         text-decoration: none;
-        font-size: 0.9em;
+        font-size: 0.85rem;
         font-weight: 500;
-        transition:
-          color 0.2s ease,
-          background-color 0.2s ease,
-          border-color 0.2s ease,
-          box-shadow 0.2s ease,
-          transform 0.2s ease;
-        box-shadow: 0 2px 8px rgba(var(--shadow-color), 0.04);
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(var(--shadow-color), 0.02);
       }
 
       .back-link:hover {
         color: var(--accent);
-        border-color: var(--accent);
-        transform: translateX(-3px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-color: rgba(var(--accent-rgb), 0.3);
+        transform: translateX(-4px);
+        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.08);
       }
 
-      .post-anim-wrapper {
-        opacity: 0;
-        animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        animation-delay: calc(var(--i) * 0.1s);
+      /* Left Sidebar / Control Panel */
+      .tags-sidebar {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        padding: 1.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+        height: fit-content;
+        position: sticky;
+        top: calc(var(--header-height) + 1.5rem);
+        box-shadow: 
+          0 10px 30px rgba(var(--shadow-color), 0.04),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        transition: var(--theme-transition);
+        backdrop-filter: blur(10px);
       }
 
-      .tag-posts-list :global(.tag-post-item) {
-        padding: 1.2em 1em;
-        margin: 0 -1em;
-        border: none;
-        border-bottom: 1px solid var(--color-border-subtle);
-        border-radius: 12px;
+      /* Search Bar */
+      .search-box {
         position: relative;
-        transition:
-          color 0.2s cubic-bezier(0.2, 0, 0, 1),
-          background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
-          border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
-          box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-          transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-        background: transparent;
+        display: flex;
+        align-items: center;
       }
 
-      .tag-posts-list :global(.tag-post-item:last-child) {
-        border-bottom: none;
-        margin-bottom: 0;
+      .search-box input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--color-border);
+        background: var(--color-surface-input);
+        color: var(--color-text);
+        font-size: 0.9rem;
+        outline: none;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        box-shadow: inset 0 1px 2px rgba(var(--shadow-color), 0.02);
       }
 
-      .tag-posts-list :global(.tag-post-item)::before {
+      .search-box input:focus {
+        border-color: var(--accent);
+        background: var(--color-surface);
+        box-shadow: 
+          0 0 0 3px rgba(var(--accent-rgb), 0.15),
+          0 4px 12px rgba(var(--accent-rgb), 0.05);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 0.85rem;
+        width: 1.1rem;
+        height: 1.1rem;
+        color: var(--color-text-tertiary);
+        pointer-events: none;
+        transition: color 0.3s;
+      }
+
+      .search-box input:focus + .search-icon {
+        color: var(--accent);
+      }
+
+      .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding-bottom: 0.75rem;
+      }
+
+      .sidebar-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--color-text);
+        letter-spacing: 0.5px;
+      }
+
+      .tags-count-badge {
+        font-size: 0.75rem;
+        color: var(--color-text-secondary);
+        background: var(--color-surface-hover);
+        padding: 2px 8px;
+        border-radius: 20px;
+        border: 1px solid var(--color-border-subtle);
+      }
+
+      /* Weighted Tag Cloud */
+      .tags-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.8rem;
+        border-radius: 8px;
+        background: var(--color-surface-hover);
+        border: 1px solid var(--color-border);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 1.2;
+        transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        cursor: pointer;
+        user-select: none;
+        opacity: 0;
+        animation: fadeInUp 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        animation-delay: calc(var(--i) * 0.03s);
+      }
+
+      .tag-pill:hover {
+        border-color: rgba(255, 255, 255, 0.4);
+        color: white !important;
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 
+          0 8px 16px -4px rgba(var(--accent-rgb), 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        background: linear-gradient(135deg, var(--accent), #9ba9ff);
+      }
+
+      .tag-pill:hover .tag-hash {
+        color: white;
+      }
+
+      .tag-pill:hover .tag-badge {
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+      }
+
+      .tag-pill.active-tag {
+        color: white !important;
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--accent), #7b8cff);
+        box-shadow: 
+          0 8px 20px -4px rgba(var(--accent-rgb), 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .tag-pill.active-tag .tag-hash,
+      .tag-pill.active-tag .tag-badge {
+        color: white;
+      }
+
+      .tag-pill.active-tag .tag-badge {
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .tag-hash {
+        color: var(--accent);
+        margin-right: 0.2rem;
+        font-weight: 700;
+        transition: color 0.3s;
+      }
+
+      .tag-name {
+        margin-right: 0.3rem;
+      }
+
+      .tag-badge {
+        font-size: 0.7em;
+        background: rgba(var(--shadow-color), 0.04);
+        color: var(--color-text-muted);
+        padding: 1px 6px;
+        border-radius: 20px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      /* Right content explorer */
+      .posts-explorer {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .explorer-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding-bottom: 0.75rem;
+      }
+
+      .explorer-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--color-text);
+        transition: color 0.3s;
+      }
+
+      .posts-count-badge {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        font-weight: 500;
+      }
+
+      .tag-posts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .post-card-wrapper {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        animation-delay: calc(var(--i) * 0.05s);
+      }
+
+      /* Premium Card Look */
+      .tag-post-item {
+        padding: 1.6rem;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .tag-post-item::before {
         content: '';
         position: absolute;
         left: 0;
-        top: 50%;
-        transform: translateY(-50%) scaleY(0);
-        width: 3px;
-        height: 60%;
-        background: var(--accent);
-        border-radius: 0 3px 3px 0;
-        transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(to bottom, var(--accent), #a1c4fd);
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
 
-      .tag-posts-list :global(.tag-post-item:hover) {
+      .tag-post-item:hover {
         background: var(--color-surface-hover);
-        box-shadow: var(--shadow-card-hover);
-        transform: translateX(4px);
+        transform: translateY(-3px);
+        box-shadow: 
+          0 12px 28px rgba(var(--shadow-color), 0.06),
+          0 4px 10px rgba(var(--shadow-color), 0.04);
+        border-color: rgba(var(--accent-rgb), 0.18);
       }
 
-      .tag-posts-list :global(.tag-post-item:hover)::before {
-        transform: translateY(-50%) scaleY(1);
+      .tag-post-item:hover::before {
+        opacity: 1;
       }
 
-      .tag-posts-list :global(.tag-post-title) {
-        font-size: 1.4em;
+      .tag-post-title {
+        font-size: 1.25rem;
         font-weight: 700;
-        margin: 0 0 0.5em 0;
-        color: var(--color-text);
+        margin: 0 0 0.6rem 0;
+        line-height: 1.4;
       }
 
-      .tag-posts-list :global(.tag-post-title a) {
-        color: inherit;
+      .tag-post-title a {
+        color: var(--color-text-strong);
         text-decoration: none;
         transition: color 0.2s;
       }
 
-      .tag-posts-list :global(.tag-post-title a:hover) {
+      .tag-post-title a:hover {
         color: var(--accent);
       }
 
-      .tag-posts-list :global(.tag-post-excerpt) {
+      .tag-post-excerpt {
         color: var(--color-text-secondary);
-        font-size: 0.95em;
+        font-size: 0.92rem;
         line-height: 1.6;
-        margin: 0 0 1em 0;
+        margin: 0 0 1rem 0;
       }
 
-      .tag-posts-list :global(.tag-post-meta) {
+      .tag-post-meta {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 1em;
-        font-size: 0.85em;
+        gap: 1.2rem;
+        font-size: 0.82rem;
         color: var(--color-text-tertiary);
+        border-top: 1px solid var(--color-border-subtle);
+        padding-top: 0.8rem;
       }
 
-      .tag-posts-list :global(.tag-meta-item) {
-        display: flex;
+      .tag-meta-item {
+        display: inline-flex;
         align-items: center;
-        gap: 0.3em;
-        padding: 2px 6px;
-        border-radius: 4px;
-        transition:
-          color 0.25s cubic-bezier(0.2, 0, 0, 1),
-          background-color 0.25s cubic-bezier(0.2, 0, 0, 1),
-          border-color 0.25s cubic-bezier(0.2, 0, 0, 1);
+        gap: 0.4rem;
+        transition: color 0.2s;
       }
 
-      .tag-posts-list :global(.tag-meta-item:hover) {
-        background: rgba(var(--accent-rgb), 0.08);
-        color: var(--accent);
+      .tag-meta-item:hover {
+        color: var(--color-text-secondary);
       }
 
-      .tag-posts-list :global(.tag-meta-item svg) {
+      .tag-meta-item svg {
         width: 14px;
         height: 14px;
+        opacity: 0.75;
       }
 
+      .post-item-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-left: auto;
+      }
+
+      .post-item-tag-badge {
+        font-size: 0.7rem;
+        background: var(--color-surface-input);
+        border: 1px solid var(--color-border);
+        padding: 2px 8px;
+        border-radius: 20px;
+        color: var(--color-text-secondary);
+        transition: all 0.25s;
+      }
+
+      .post-item-tag-badge:hover {
+        color: var(--accent);
+        border-color: rgba(var(--accent-rgb), 0.3);
+      }
+
+      /* Empty State */
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        background: var(--color-surface);
+        border: 1px dashed var(--color-border);
+        border-radius: 16px;
+        color: var(--color-text-secondary);
+        gap: 1rem;
+      }
+
+      .empty-state svg {
+        color: var(--color-text-muted);
+        opacity: 0.6;
+      }
+
+      .empty-state p {
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeInUp 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+      }
+
+      /* Responsive Media Queries */
       @media (max-width: 900px) {
-        .tag-posts-list :global(.tag-post-item) {
-          margin: 0;
-          padding: 1em 0.75em;
+        .tags-workspace {
+          grid-template-columns: 1fr;
+          gap: 1.8rem;
+        }
+
+        .tags-sidebar {
+          position: relative;
+          top: 0;
+          padding: 1.4rem;
         }
       }
 
       @media (max-width: 720px) {
-        .tag-posts-list :global(.tag-post-title) {
-          font-size: 1.2em;
+        .tags-sidebar {
+          border-radius: 12px;
+          padding: 1rem;
+        }
+        
+        .tag-post-item {
+          padding: 1.2rem;
+          border-radius: 12px;
         }
 
-        .tag-posts-list :global(.tag-post-meta) {
-          gap: 0.6em;
-        }
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        .post-item-tags {
+          width: 100%;
+          margin-left: 0;
+          margin-top: 0.4rem;
         }
       }
     </style>
@@ -212,31 +479,192 @@ const tagsHero = heroConfig.tags;
     number="Tag"
     title={`#${tag}`}
     intro={`包含此标签的文章共 ${posts.length} 篇`}
+    minHeight={true}
   >
-        <a href="/tags/" class="back-link hover-scale">← 返回所有标签</a>
-
-        <div class="tag-posts-list">
-          {posts.length > 0 ? (
-            posts.map((post, index) => (
-              <div class="post-anim-wrapper" style={`--i: ${index}`}>
-                <PostListItem
-                  post={post}
-                  titleTag="h2"
-                  articleClass="tag-post-item"
-                  titleClass="tag-post-title"
-                  excerptClass="tag-post-excerpt"
-                  showExcerpt={true}
-                  excerpt={extractExcerpt(post.body || '', 160)}
-                  showTags={false}
-                  metaContainerClass="tag-post-meta"
-                  metaItemClass="tag-meta-item"
-                />
-              </div>
-            ))
-          ) : (
-            <p style="text-align:center;color:var(--color-text-secondary);padding:2em;">暂无文章</p>
-          )}
+    <div class="tags-workspace">
+      {/* Left Column: Sidebar Dashboard */}
+      <aside class="tags-sidebar">
+        <div class="search-box">
+          <input type="text" id="tag-search" placeholder={`在 #${tag} 中搜索...`} autocomplete="off" />
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
         </div>
+
+        <div class="sidebar-header">
+          <span class="sidebar-title">主题清单</span>
+          <span class="tags-count-badge">共 {sortedTags.length} 个</span>
+        </div>
+
+        <div class="tags-cloud">
+          {sortedTags.map(([t, count], index) => {
+            const maxCount = sortedTags[0] ? sortedTags[0][1] : 1;
+            const ratio = count / maxCount;
+            const fontSize = 0.85 + ratio * 0.3;
+            const isActive = t === tag;
+            
+            return (
+              <a 
+                href={getTagPath(t)} 
+                class={`tag-pill ${isActive ? 'active-tag' : ''}`}
+                data-tag={t}
+                data-count={count}
+                style={`--i: ${index}; font-size: ${fontSize}rem;`}
+              >
+                <span class="tag-hash">#</span>
+                <span class="tag-name">{t}</span>
+                <span class="tag-badge">{count}</span>
+              </a>
+            );
+          })}
+        </div>
+      </aside>
+
+      {/* Right Column: Dynamic Explorer */}
+      <section class="posts-explorer">
+        <div class="back-btn-container">
+          <a href="/tags/" class="back-link">← 返回所有标签</a>
+        </div>
+
+        <div class="explorer-header">
+          <h3 class="explorer-title">#{tag}</h3>
+          <span class="posts-count-badge" id="active-posts-count">共 {posts.length} 篇</span>
+        </div>
+
+        <div class="tag-posts-list" id="posts-list">
+          {posts.map((post, index) => {
+            const excerpt = extractExcerpt(post.body || '', 160);
+            return (
+              <div 
+                class="post-card-wrapper" 
+                data-tags={post.data.tags.join(',')}
+                style={`--i: ${index}`}
+              >
+                <article class="tag-post-item">
+                  <h4 class="tag-post-title">
+                    <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                  </h4>
+                  {excerpt && <p class="tag-post-excerpt">{excerpt}</p>}
+                  
+                  <div class="tag-post-meta">
+                    <span class="tag-meta-item">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      {post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </span>
+                    
+                    {post.data.categories && post.data.categories.length > 0 && (
+                      <span class="tag-meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        {post.data.categories.join(', ')}
+                      </span>
+                    )}
+                    
+                    <div class="post-item-tags">
+                      {post.data.tags.map((t: string) => (
+                        <span class="post-item-tag-badge">#{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              </div>
+            );
+          })}
+        </div>
+
+        <div id="empty-state" class="empty-state" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          <p>没有找到与搜索或选择匹配的文章</p>
+        </div>
+      </section>
+    </div>
   </ArchiveCard>
 
+  <script is:inline>
+    (function() {
+      let isInitialized = false;
+      
+      function setupTagDetailWorkspace() {
+        if (isInitialized) return;
+
+        const searchInput = document.getElementById('tag-search');
+        const tagPills = document.querySelectorAll('.tag-pill');
+        const postCards = document.querySelectorAll('.post-card-wrapper');
+        const activePostsCount = document.getElementById('active-posts-count');
+        const emptyState = document.getElementById('empty-state');
+        
+        if (!tagPills.length && !postCards.length) return;
+
+        let searchQuery = '';
+
+        function filterPosts() {
+          let visibleCount = 0;
+
+          postCards.forEach(card => {
+            const titleText = card.querySelector('.tag-post-title')?.textContent?.toLowerCase() || '';
+            const excerptText = card.querySelector('.tag-post-excerpt')?.textContent?.toLowerCase() || '';
+            const postTagsStr = card.dataset.tags || '';
+            
+            const matchesSearch = !searchQuery || 
+              titleText.includes(searchQuery) || 
+              excerptText.includes(searchQuery) ||
+              postTagsStr.toLowerCase().includes(searchQuery);
+
+            if (matchesSearch) {
+              card.style.display = 'block';
+              card.style.animationDelay = `${visibleCount * 0.03}s`;
+              card.classList.remove('animate-fade-in');
+              void card.offsetWidth; // trigger reflow
+              card.classList.add('animate-fade-in');
+              visibleCount++;
+            } else {
+              card.style.display = 'none';
+            }
+          });
+
+          if (activePostsCount) {
+            activePostsCount.textContent = `共 ${visibleCount} 篇`;
+          }
+
+          if (emptyState) {
+            emptyState.style.display = visibleCount === 0 ? 'flex' : 'none';
+          }
+        }
+
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            filterPosts();
+          });
+        }
+
+        const activePill = document.querySelector('.tag-pill.active-tag');
+        if (activePill) {
+          activePill.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = '/tags/';
+          });
+        }
+
+        isInitialized = true;
+      }
+
+      document.addEventListener('astro:page-load', () => {
+        isInitialized = false;
+        setupTagDetailWorkspace();
+      });
+      
+      setupTagDetailWorkspace();
+    })();
+  </script>
 </PageShell>
