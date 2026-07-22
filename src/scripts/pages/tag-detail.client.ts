@@ -1,4 +1,5 @@
 import { setupParallax } from './parallax';
+import { initTagSearch } from './tag-search';
 
 function setupBackLinkMagnet() {
 	const backLink = document.querySelector<HTMLElement>('.back-link');
@@ -40,4 +41,5 @@ function setupBackLinkMagnet() {
 export function initTagDetailPage() {
 	setupBackLinkMagnet();
 	setupParallax({ desktopRise: 180, coarsePointerRise: 72 });
+	initTagSearch('detail');
 }
