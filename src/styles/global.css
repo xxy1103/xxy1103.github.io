@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
 /*
   The CSS in this style tag is based off of Bear Blog's default CSS.
   https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
@@ -243,8 +245,7 @@ html {
 }
 
 body {
-	font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-		-apple-system, BlinkMacSystemFont, sans-serif;
+	font-family: 'Plus Jakarta Sans', "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
 	margin: 0;
 	padding: 0;
 	height: 100%;
@@ -255,7 +256,10 @@ body {
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
 	font-size: 16px;
-	line-height: 1.7;
+	line-height: 1.75;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
 	/* Lock body scroll, delegate to #main-content */
 	overflow: hidden;
 	max-width: 100%;
@@ -321,38 +325,42 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
+	font-family: 'Outfit', "Segoe UI", "PingFang SC", -apple-system, sans-serif;
+	margin: 0 0 0.6rem 0;
 	color: rgb(var(--black));
-	line-height: 1.2;
+	line-height: 1.25;
+	letter-spacing: -0.02em;
+	font-weight: 700;
 }
 
 .prose h1,
 .prose h2 {
+	max-width: 72ch;
 	border-bottom: 1px solid var(--color-border);
-	padding-bottom: 0.3em;
-	margin-bottom: 1em;
-	margin-top: 1.5em;
-	/* 增加顶部间距以区分段落 */
+	padding-bottom: 0.4em;
+	margin-bottom: 1rem;
+	margin-top: 2.2em;
 }
 
 h1 {
-	font-size: 2.2em;
+	font-size: 2.25rem;
+	font-weight: 800;
 }
 
 h2 {
-	font-size: 1.8em;
+	font-size: 1.8rem;
 }
 
 h3 {
-	font-size: 1.5em;
+	font-size: 1.45rem;
 }
 
 h4 {
-	font-size: 1.25em;
+	font-size: 1.2rem;
 }
 
 h5 {
-	font-size: 1.1em;
+	font-size: 1.1rem;
 }
 
 strong,
@@ -372,8 +380,37 @@ p {
 	margin-bottom: 1em;
 }
 
+/* Prose layout constraints for ideal reading length */
+.prose {
+	font-size: 1.05rem;
+	line-height: 1.8;
+}
+
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > blockquote,
+.prose > h3,
+.prose > h4,
+.prose > h5,
+.prose > h6 {
+	max-width: 72ch;
+	margin-left: 0;
+	margin-right: auto;
+}
+
 .prose p {
-	margin-bottom: 1.2em;
+	margin-bottom: 1.4rem;
+}
+
+.prose ul,
+.prose ol {
+	margin-bottom: 1.4rem;
+	padding-left: 1.5rem;
+}
+
+.prose li {
+	margin-bottom: 0.5rem;
 }
 
 .prose img {
@@ -665,11 +702,20 @@ pre.astro-code code {
 }
 
 blockquote {
-	border-left: 4px solid var(--color-blockquote-border);
-	padding: 0 0 0 20px;
+	border-left: 4px solid var(--accent);
+	padding: 0.8rem 1.5rem;
+	margin: 1.6rem 0;
+	font-size: 1.05rem;
+	font-style: italic;
+	background: var(--color-surface-hover);
+	border-radius: 4px 12px 12px 4px;
+	color: var(--color-text-secondary);
+	box-shadow: inset 0 1px 2px rgba(var(--shadow-color), 0.02);
+	transition: var(--theme-transition);
+}
+
+blockquote p {
 	margin: 0;
-	font-size: 1em;
-	color: var(--color-blockquote-text);
 }
 
 hr {
