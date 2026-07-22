@@ -141,7 +141,7 @@ export function setupToc(): ArticleNavigationController | null {
 		const id = decodeHash(link.hash);
 		if (!id) return;
 		event.preventDefault();
-		if (location.hash !== link.hash) history.pushState({ ...history.state }, '', link.hash);
+		if (location.hash !== link.hash) history.replaceState({ ...history.state }, '', link.hash);
 		navigateToId(id, preferredBehavior());
 	}, { signal });
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { SearchHit } from '../../lib/search/types';
-import { filterTagSearchHits } from './tag-search';
+import { createTagFilterHistoryUpdate, filterTagSearchHits } from './tag-search';
 
 function hit(id: string): SearchHit {
 	return {
@@ -29,5 +29,25 @@ describe('filterTagSearchHits', () => {
 	it('applies the result limit after scope filtering', () => {
 		const results = filterTagSearchHits([hit('outside'), hit('first'), hit('second')], new Set(['first', 'second']), 1);
 		expect(results.map((result) => result.document.id)).toEqual(['first']);
+	});
+});
+
+describe('createTagFilterHistoryUpdate', () => {
+	it('preserves Astro and custom history fields while replacing the tag hash', () => {
+		const original = { index: 4, scrollX: 0, scrollY: 120, __ulboMainScrollTop: 640 };
+		const update = createTagFilterHistoryUpdate(original, 'C#');
+
+		expect(update).toEqual({
+			state: original,
+			url: '/tags/#C%23',
+		});
+		expect(update.state).not.toBe(original);
+	});
+
+	it('clears the filter without clearing the current history state', () => {
+		expect(createTagFilterHistoryUpdate({ index: 2 }, null)).toEqual({
+			state: { index: 2 },
+			url: '/tags/',
+		});
 	});
 });

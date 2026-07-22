@@ -6,6 +6,11 @@ import PageShell from '../../layouts/PageShell.astro';
 import PostListItem from '../../components/PostListItem.astro';
 import { heroConfig, siteTitle } from '../../config';
 import { getBlogPosts, type BlogPost } from '../../lib/content/blog';
+import {
+  getBlogPageParam,
+  getBlogPagePath,
+  getBlogPageUrls,
+} from '../../lib/content/blog-page-path';
 import { extractExcerpt } from '../../lib/content/text';
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
@@ -24,18 +29,31 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
             total: 0,
             currentPage: 1,
             lastPage: 1,
-            url: {
-              current: '/blog',
-              prev: undefined,
-              next: undefined,
-            },
+            url: getBlogPageUrls(1, 1),
           },
         },
       },
     ];
   }
 
-  return paginate(posts, { pageSize: 15 });
+  return paginate(posts, { pageSize: 15 }).map((entry) => {
+    const currentPage = entry.props.page.currentPage;
+    const lastPage = entry.props.page.lastPage;
+    return {
+      ...entry,
+      params: {
+        ...entry.params,
+        page: getBlogPageParam(currentPage),
+      },
+      props: {
+        ...entry.props,
+        page: {
+          ...entry.props.page,
+          url: getBlogPageUrls(currentPage, lastPage),
+        },
+      },
+    };
+  });
 };
 
 const { page } = Astro.props as { page: Page<BlogPost> };
@@ -53,7 +71,7 @@ const pageDescription =
     ? `按发布时间倒序浏览全部 ${page.total} 篇文章。`
     : `博客归档第 ${page.currentPage} 页（共 ${page.lastPage} 页），收录 ${page.total} 篇文章。`;
 const shouldNoindex = page.currentPage > 1;
-const canonicalPath = page.currentPage === 1 ? '/blog/' : `/blog/${page.currentPage}/`;
+const canonicalPath = getBlogPagePath(page.currentPage);
 const canonicalURL = new URL(canonicalPath, siteURL);
 const prevURL = page.url.prev ? new URL(page.url.prev, siteURL).toString() : undefined;
 const nextURL = page.url.next ? new URL(page.url.next, siteURL).toString() : undefined;
@@ -452,7 +470,7 @@ if (last > 1) paginationList.push(last);
                   return <span class="page-ellipsis">...</span>;
                 }
                 return (
-                  <a href={num === 1 ? '/blog' : `/blog/${num}`} class={`page-btn ${page.currentPage === num ? 'active' : ''}`}>
+                  <a href={getBlogPagePath(num)} class={`page-btn ${page.currentPage === num ? 'active' : ''}`}>
                     {num}
                   </a>
                 );

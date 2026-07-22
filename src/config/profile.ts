@@ -1,3 +1,4 @@
+import type { ImageMetadata } from 'astro';
 import defaultAvatar from '../assets/avatar.webp';
 
 /**
@@ -21,7 +22,7 @@ export interface ProfileConfig {
   /**
    * Optional avatar URL for About page and structured data.
    */
-  avatar?: string;
+  avatar?: string | ImageMetadata;
   /**
    * Display name used across the site.
    */

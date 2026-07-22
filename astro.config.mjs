@@ -56,7 +56,7 @@ export default defineConfig({
 			filter: (page) => {
 				const pathname = new URL(page).pathname;
 				if (pathname === '/tags/' || pathname.startsWith('/tags/')) return false;
-				if (/^\/blog\/\d+\/?$/.test(pathname)) return false;
+				if (/^\/blog\/page\/\d+\/?$/.test(pathname)) return false;
 				return true;
 			},
 		}),

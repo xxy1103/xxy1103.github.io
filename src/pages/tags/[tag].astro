@@ -575,7 +575,7 @@ const tagsHero = heroConfig.tags;
             
             return (
               <a 
-                href={getTagPath(t)} 
+                href={isActive ? '/tags/' : getTagPath(t)}
                 class={`tag-pill ${isActive ? 'active-tag' : ''}`}
                 data-tag={t}
                 data-count={count}

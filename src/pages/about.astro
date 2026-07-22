@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import ContentCard from '../components/ContentCard.astro';
 import HeroHeader from '../components/HeroHeader.astro';
 import PageShell from '../layouts/PageShell.astro';
@@ -11,6 +12,8 @@ const siteURL = Astro.site ?? Astro.url;
 const profileInitial = profile.name.trim().charAt(0).toUpperCase() || 'U';
 const socials = getRenderableSocials(profile.socials);
 const sameAs = buildSameAsLinks(profile);
+const profileAvatar = profile.avatar;
+const profileAvatarSrc = typeof profileAvatar === 'string' ? profileAvatar : profileAvatar?.src;
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -20,7 +23,7 @@ const personSchema = {
   description: profile.bio,
   jobTitle: profile.title,
   url: new URL('/about/', siteURL).toString(),
-  ...(profile.avatar ? { image: new URL(profile.avatar, siteURL).toString() } : {}),
+  ...(profileAvatarSrc ? { image: new URL(profileAvatarSrc, siteURL).toString() } : {}),
   ...(profile.location ? { homeLocation: { '@type': 'Place', name: profile.location } } : {}),
   ...(sameAs.length > 0 ? { sameAs } : {}),
 };
@@ -65,13 +68,11 @@ const personSchema = {
         grid-template-columns: 240px minmax(0, 1fr);
         gap: 2em;
         padding: 2.2em;
-        background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+        background: var(--color-surface);
         border: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
         border-radius: 18px;
         box-shadow: var(--shadow-card);
         overflow: hidden;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
       }
 
       .profile-card::before {
@@ -261,8 +262,31 @@ const personSchema = {
         </div>
         <article class="profile-card">
           <div class="profile-media">
-            {profile.avatar ? (
-              <img class="avatar" src={profile.avatar} alt={profile.name} loading="lazy" />
+            {profileAvatar ? (
+              typeof profileAvatar === 'string' ? (
+                <img
+                  class="avatar"
+                  src={profileAvatar}
+                  alt={profile.name}
+                  width="440"
+                  height="440"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              ) : (
+                <Image
+                  class="avatar"
+                  src={profileAvatar}
+                  alt={profile.name}
+                  width={440}
+                  height={440}
+                  fit="cover"
+                  format="webp"
+                  quality={80}
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              )
             ) : (
               <div class="avatar-placeholder" aria-label={profile.name}>{profileInitial}</div>
             )}

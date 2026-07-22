@@ -7,6 +7,19 @@ const RESULT_LIMIT = 20;
 
 type SearchMode = 'index' | 'detail';
 
+type HistoryRecord = Record<string, unknown>;
+
+function isHistoryRecord(value: unknown): value is HistoryRecord {
+	return typeof value === 'object' && value !== null;
+}
+
+export function createTagFilterHistoryUpdate(state: unknown, tag: string | null) {
+	return {
+		state: { ...(isHistoryRecord(state) ? state : {}) },
+		url: tag ? `/tags/#${encodeURIComponent(tag)}` : '/tags/',
+	};
+}
+
 interface CardState {
 	card: HTMLElement;
 	id: string;
@@ -125,11 +138,6 @@ export class TagSearchController {
 		if (this.mode === 'index') {
 			this.tagPills.forEach((pill) => pill.addEventListener('click', (event) => this.handleTagClick(event, pill), { signal }));
 			window.addEventListener('hashchange', () => this.syncActiveTagFromHash(), { signal });
-		} else {
-			this.root.querySelector<HTMLElement>('.tag-pill.active-tag')?.addEventListener('click', (event) => {
-				event.preventDefault();
-				window.location.assign('/tags/');
-			}, { signal });
 		}
 	}
 
@@ -250,11 +258,8 @@ export class TagSearchController {
 		const tag = pill.dataset.tag;
 		if (!tag) return;
 		this.activeTag = this.activeTag === tag ? null : tag;
-		if (this.activeTag) {
-			window.history.replaceState({ ...window.history.state }, '', `#${encodeURIComponent(this.activeTag)}`);
-		} else {
-			window.history.replaceState({ ...window.history.state }, '', window.location.pathname);
-		}
+		const historyUpdate = createTagFilterHistoryUpdate(window.history.state, this.activeTag);
+		window.history.replaceState(historyUpdate.state, '', historyUpdate.url);
 		this.syncActiveTagUI();
 		if (this.query) void this.searchArticles(this.query);
 		else this.renderInitialCards();
