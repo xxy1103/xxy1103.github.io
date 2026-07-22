@@ -4,7 +4,6 @@ import HeroHeader from '../../components/HeroHeader.astro';
 import PageShell from '../../layouts/PageShell.astro';
 import { heroConfig, siteTitle } from '../../config';
 import { getTagStats, getBlogPosts } from '../../lib/content/blog';
-import { getTagPath } from '../../lib/content/tag-path';
 import { extractExcerpt } from '../../lib/content/text';
 
 const sortedTags = await getTagStats();
@@ -40,8 +39,7 @@ const tagsHero = heroConfig.tags;
         position: sticky;
         top: calc(var(--header-height) + 1.5rem);
         max-height: calc(100dvh - var(--header-height) - 3rem);
-        overflow-y: auto;
-        overscroll-behavior: contain;
+        overflow: hidden;
         box-shadow: 
           0 10px 30px rgba(var(--shadow-color), 0.04),
           inset 0 1px 0 rgba(255, 255, 255, 0.6);
@@ -54,6 +52,7 @@ const tagsHero = heroConfig.tags;
         position: relative;
         display: flex;
         align-items: center;
+        flex: 0 0 auto;
       }
 
       .search-box input {
@@ -91,10 +90,19 @@ const tagsHero = heroConfig.tags;
         color: var(--accent);
       }
 
+      .tag-search-status {
+        min-height: 1.1rem;
+        margin: -1.15rem 0 0;
+        color: var(--color-text-muted);
+        font-size: 0.75rem;
+        line-height: 1.1rem;
+      }
+
       .sidebar-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex: 0 0 auto;
         border-bottom: 1px solid var(--color-border-subtle);
         padding-bottom: 0.75rem;
       }
@@ -115,11 +123,46 @@ const tagsHero = heroConfig.tags;
         border: 1px solid var(--color-border-subtle);
       }
 
+      .article-search-status {
+        margin: 0.35rem 0 0;
+        color: var(--color-text-muted);
+        font-size: 0.78rem;
+        line-height: 1.2;
+      }
+
       /* Weighted Tag Cloud */
       .tags-cloud {
         display: flex;
         flex-wrap: wrap;
         gap: 0.6rem;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding-right: 0.35rem;
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+        -webkit-mask-image: linear-gradient(to bottom, transparent, #000 0.7rem, #000 calc(100% - 0.7rem), transparent);
+        mask-image: linear-gradient(to bottom, transparent, #000 0.7rem, #000 calc(100% - 0.7rem), transparent);
+      }
+
+      .tags-sidebar:hover .tags-cloud,
+      .tags-cloud:focus-within {
+        scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent;
+      }
+
+      .tags-cloud::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .tags-cloud::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      .tags-sidebar:hover .tags-cloud::-webkit-scrollbar-thumb,
+      .tags-cloud:focus-within::-webkit-scrollbar-thumb {
+        background: rgba(var(--accent-rgb), 0.5);
       }
 
       .tag-pill {
@@ -127,8 +170,8 @@ const tagsHero = heroConfig.tags;
         align-items: center;
         padding: 0.4rem 0.8rem;
         border-radius: 8px;
-        background: var(--color-surface-hover);
-        border: 1px solid var(--color-border);
+        background: color-mix(in srgb, var(--color-surface-hover) 82%, transparent);
+        border: 1px solid var(--color-border-subtle);
         color: var(--color-text-secondary);
         text-decoration: none;
         font-weight: 500;
@@ -188,6 +231,13 @@ const tagsHero = heroConfig.tags;
 
       .tag-name {
         margin-right: 0.3rem;
+      }
+
+      .tag-name mark {
+        padding: 0;
+        color: inherit;
+        background: color-mix(in srgb, var(--accent) 28%, transparent);
+        border-radius: 2px;
       }
 
       .tag-badge {
@@ -293,6 +343,13 @@ const tagsHero = heroConfig.tags;
 
       .tag-post-title a:hover {
         color: var(--accent);
+      }
+
+      :global(.tag-post-item .search-highlight) {
+        color: var(--color-search-highlight-text);
+        background: var(--color-search-highlight-bg);
+        border-radius: 2px;
+        padding: 0 2px;
       }
 
       .tag-post-excerpt {
@@ -404,7 +461,13 @@ const tagsHero = heroConfig.tags;
           top: 0;
           padding: 1.4rem;
           max-height: none;
-          overflow-y: visible;
+          overflow: visible;
+        }
+
+        .tags-cloud {
+          flex: none;
+          overflow: visible;
+          padding-right: 0;
           overscroll-behavior: auto;
         }
       }
@@ -452,6 +515,7 @@ const tagsHero = heroConfig.tags;
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </div>
+          <p id="tag-search-status" class="tag-search-status" aria-live="polite"></p>
 
           <div class="sidebar-header">
             <span class="sidebar-title">主题清单</span>
@@ -488,6 +552,7 @@ const tagsHero = heroConfig.tags;
             <h3 class="explorer-title" id="active-tag-title">所有文章</h3>
             <span class="posts-count-badge" id="active-posts-count">共 {posts.length} 篇</span>
           </div>
+          <p id="article-search-status" class="article-search-status" aria-live="polite"></p>
 
           <div class="tag-posts-list" id="posts-list">
             {posts.map((post, index) => {
@@ -495,6 +560,7 @@ const tagsHero = heroConfig.tags;
               return (
                 <div 
                   class="post-card-wrapper" 
+                  data-post-id={post.id}
                   data-tags={post.data.tags.join(',')}
                   style={`--i: ${index}`}
                 >
@@ -541,7 +607,7 @@ const tagsHero = heroConfig.tags;
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="8" y1="12" x2="16" y2="12"></line>
             </svg>
-            <p>没有找到与搜索或选择匹配的文章</p>
+            <p id="empty-state-message">没有找到与搜索或选择匹配的文章</p>
           </div>
         </section>
       </div>
@@ -550,135 +616,4 @@ const tagsHero = heroConfig.tags;
     )}
   </ArchiveCard>
 
-  <script is:inline>
-    (function() {
-      let isInitialized = false;
-      
-      function setupTagWorkspace() {
-        if (isInitialized) return;
-        
-        const searchInput = document.getElementById('tag-search');
-        const tagPills = document.querySelectorAll('.tag-pill');
-        const postCards = document.querySelectorAll('.post-card-wrapper');
-        const activeTagTitle = document.getElementById('active-tag-title');
-        const activePostsCount = document.getElementById('active-posts-count');
-        const emptyState = document.getElementById('empty-state');
-        
-        if (!tagPills.length && !postCards.length) return;
-
-        let activeTag = null;
-        let searchQuery = '';
-
-        function filterPosts() {
-          let visibleCount = 0;
-
-          postCards.forEach(card => {
-            const postTagsStr = card.dataset.tags || '';
-            const postTags = postTagsStr.split(',');
-            
-            const matchesTag = !activeTag || postTags.includes(activeTag);
-            
-            const titleText = card.querySelector('.tag-post-title')?.textContent?.toLowerCase() || '';
-            const excerptText = card.querySelector('.tag-post-excerpt')?.textContent?.toLowerCase() || '';
-            const matchesSearch = !searchQuery || 
-              titleText.includes(searchQuery) || 
-              excerptText.includes(searchQuery) || 
-              postTagsStr.toLowerCase().includes(searchQuery);
-
-            if (matchesTag && matchesSearch) {
-              card.style.display = 'block';
-              card.style.animationDelay = `${visibleCount * 0.03}s`;
-              card.classList.remove('animate-fade-in');
-              void card.offsetWidth; // trigger reflow
-              card.classList.add('animate-fade-in');
-              visibleCount++;
-            } else {
-              card.style.display = 'none';
-            }
-          });
-
-          if (activePostsCount) {
-            activePostsCount.textContent = `共 ${visibleCount} 篇`;
-          }
-
-          if (emptyState) {
-            emptyState.style.display = visibleCount === 0 ? 'flex' : 'none';
-          }
-        }
-
-        // Tag Pills click handling
-        tagPills.forEach(pill => {
-          pill.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            const clickedTag = pill.dataset.tag;
-            
-            if (activeTag === clickedTag) {
-              // Deselect
-              activeTag = null;
-              pill.classList.remove('active-tag');
-              if (activeTagTitle) activeTagTitle.textContent = '所有文章';
-              history.replaceState(null, '', ' ');
-            } else {
-              // Select
-              tagPills.forEach(p => p.classList.remove('active-tag'));
-              pill.classList.add('active-tag');
-              activeTag = clickedTag;
-              if (activeTagTitle) activeTagTitle.textContent = `# ${clickedTag}`;
-              window.location.hash = encodeURIComponent(clickedTag);
-            }
-            
-            filterPosts();
-          });
-        });
-
-        // Search Input filter
-        if (searchInput) {
-          searchInput.addEventListener('input', (e) => {
-            searchQuery = e.target.value.toLowerCase().trim();
-            
-            tagPills.forEach(pill => {
-              const tagName = pill.dataset.tag?.toLowerCase() || '';
-              if (!searchQuery || tagName.includes(searchQuery)) {
-                pill.style.display = 'inline-flex';
-              } else {
-                pill.style.display = 'none';
-              }
-            });
-
-            filterPosts();
-          });
-        }
-
-        // Support URL Hash navigation (e.g. /tags/#React)
-        const checkHash = () => {
-          const hash = decodeURIComponent(window.location.hash.substring(1));
-          if (hash) {
-            const matchingPill = Array.from(tagPills).find(p => p.dataset.tag === hash);
-            if (matchingPill) {
-              tagPills.forEach(p => p.classList.remove('active-tag'));
-              matchingPill.classList.add('active-tag');
-              activeTag = hash;
-              if (activeTagTitle) activeTagTitle.textContent = `# ${hash}`;
-              filterPosts();
-            }
-          }
-        };
-
-        checkHash();
-        window.addEventListener('hashchange', checkHash);
-        
-        isInitialized = true;
-      }
-
-      // Reset initialized flag and setup on page swap for view-transitions
-      document.addEventListener('astro:page-load', () => {
-        isInitialized = false;
-        setupTagWorkspace();
-      });
-      
-      // Run once immediately
-      setupTagWorkspace();
-    })();
-  </script>
 </PageShell>
