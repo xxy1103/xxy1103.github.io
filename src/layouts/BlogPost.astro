@@ -289,10 +289,12 @@ const articleSchema = {
 		<script>
             import { setupToc } from '../scripts/toc';
             import { setupCodeBlocks } from '../scripts/code-block';
+            import { setupMermaid } from '../scripts/mermaid';
             import { setupLightbox } from '../scripts/lightbox';
             import { setupSearchLanding } from '../scripts/search/landing';
 
-            const runEnhancements = () => {
+            const runEnhancements = async () => {
+                await setupMermaid?.();
                 setupCodeBlocks?.();
                 const articleNavigation = setupToc?.() ?? null;
                 setupLightbox?.();

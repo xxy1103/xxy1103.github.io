@@ -14,6 +14,7 @@ function getLanguage(pre: HTMLPreElement) {
 
 function enhanceBlock(pre: HTMLPreElement) {
 	if (pre.dataset.codeBlockEnhanced === 'true' || pre.closest('.code-block-wrapper')) return;
+	if (getLanguage(pre).toLowerCase() === 'mermaid') return;
 	const codeContent = pre.querySelector('code')?.textContent || pre.textContent || '';
 	const lines = codeContent.replace(/\n$/, '').split('\n');
 

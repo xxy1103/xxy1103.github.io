@@ -27,6 +27,7 @@
     "astro": "^6.4.8",
     "fuse.js": "^7.1.0",
     "katex": "^0.16.28",
+    "mermaid": "^11.16.0",
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",

@@ -701,6 +701,92 @@ pre.astro-code code {
 	background-color: transparent !important;
 }
 
+/* Mermaid v11 diagrams */
+.mermaid-diagram {
+	margin: 1.8rem 0;
+	overflow: hidden;
+	border: 1px solid rgb(var(--gray-light));
+	border-radius: 14px;
+	background:
+		radial-gradient(circle at top right, rgba(var(--accent-rgb), 0.08), transparent 38%),
+		var(--color-surface);
+	box-shadow: 0 10px 30px rgba(var(--shadow-color), 0.08);
+	transition: var(--theme-transition);
+}
+
+.mermaid-diagram__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 42px;
+	padding: 0 0.9rem;
+	border-bottom: 1px solid rgb(var(--gray-light));
+	background: rgba(var(--gray-light), 0.12);
+	color: var(--color-text-secondary);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.mermaid-diagram__label {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+}
+
+.mermaid-diagram__label svg {
+	width: 17px;
+	height: 17px;
+	fill: none;
+	stroke: var(--accent);
+	stroke-width: 1.8;
+	stroke-linejoin: round;
+}
+
+.mermaid-diagram__status {
+	color: var(--color-text-secondary);
+	font-weight: 500;
+	letter-spacing: normal;
+	text-transform: none;
+}
+
+.mermaid-diagram__canvas {
+	display: grid;
+	min-height: 160px;
+	padding: 1.5rem;
+	place-items: center;
+	overflow-x: auto;
+}
+
+.mermaid-diagram__canvas svg {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	margin: auto;
+}
+
+.mermaid-diagram--error {
+	border-color: #d1242f;
+}
+
+.mermaid-diagram__error {
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0;
+	padding: 1rem;
+	border-radius: 8px;
+	background: rgba(209, 36, 47, 0.08);
+	color: #cf222e;
+	font: 13px/1.6 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+	white-space: pre-wrap;
+}
+
+[data-theme="dark"] .mermaid-diagram__error {
+	color: #ff7b72;
+}
+
 blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 0.8rem 1.5rem;
@@ -756,6 +842,23 @@ hr {
 	.code-block-wrapper {
 		margin: 1.25em 0;
 		border-radius: 10px;
+	}
+
+	.mermaid-diagram {
+		margin: 1.35rem 0;
+		border-radius: 10px;
+	}
+
+	.mermaid-diagram__canvas {
+		justify-content: start;
+		min-height: 120px;
+		padding: 1rem 0.75rem;
+	}
+
+	.mermaid-diagram__canvas svg {
+		width: 100%;
+		min-width: 680px;
+		max-width: none;
 	}
 
 	.line-numbers {
