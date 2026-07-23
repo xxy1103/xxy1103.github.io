@@ -38,21 +38,21 @@ const tagsHero = heroConfig.tags;
 >
     <style>
       .tags-workspace {
-        display: grid;
-        grid-template-columns: 300px 1fr;
-        gap: 2.5rem;
-        padding-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding-top: 1rem;
       }
 
       .back-btn-container {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
       }
 
       .back-link {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 1.2rem;
+        padding: 0.45rem 1.1rem;
         background: var(--color-surface-hover);
         color: var(--color-text-secondary);
         border: 1px solid var(--color-border);
@@ -60,54 +60,58 @@ const tagsHero = heroConfig.tags;
         text-decoration: none;
         font-size: 0.85rem;
         font-weight: 500;
-        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
         box-shadow: 0 2px 8px rgba(var(--shadow-color), 0.02);
       }
 
       .back-link:hover {
         color: var(--accent);
         border-color: rgba(var(--accent-rgb), 0.3);
-        transform: translateX(-4px);
+        transform: translateX(-3px);
         box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.08);
       }
 
-      /* Left Sidebar / Control Panel */
-      .tags-sidebar {
+      /* Control Panel */
+      .tags-control-panel {
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         border-radius: 16px;
-        padding: 1.8rem;
+        padding: 1.5rem 1.8rem;
         display: flex;
         flex-direction: column;
-        gap: 1.8rem;
-        height: fit-content;
-        position: sticky;
-        top: calc(var(--header-height) + 1.5rem);
-        max-height: calc(100dvh - var(--header-height) - 3rem);
-        overflow: hidden;
+        gap: 1.25rem;
         box-shadow: 
-          0 10px 30px rgba(var(--shadow-color), 0.04),
+          0 10px 30px rgba(var(--shadow-color), 0.03),
           inset 0 1px 0 rgba(255, 255, 255, 0.6);
-        transition: var(--theme-transition);
         backdrop-filter: blur(10px);
+        transition: var(--theme-transition);
       }
 
-      /* Search Bar */
+      /* Search Box */
+      .search-box-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        width: 100%;
+        max-width: 540px;
+        margin: 0 auto;
+      }
+
       .search-box {
         position: relative;
         display: flex;
         align-items: center;
-        flex: 0 0 auto;
+        width: 100%;
       }
 
       .search-box input {
         width: 100%;
-        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        padding: 0.8rem 2.8rem 0.8rem 2.6rem;
         border-radius: 12px;
         border: 1px solid var(--color-border);
         background: var(--color-surface-input);
         color: var(--color-text);
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         outline: none;
         transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
         box-shadow: inset 0 1px 2px rgba(var(--shadow-color), 0.02);
@@ -118,14 +122,14 @@ const tagsHero = heroConfig.tags;
         background: var(--color-surface);
         box-shadow: 
           0 0 0 3px rgba(var(--accent-rgb), 0.15),
-          0 4px 12px rgba(var(--accent-rgb), 0.05);
+          0 4px 14px rgba(var(--accent-rgb), 0.08);
       }
 
       .search-icon {
         position: absolute;
-        left: 0.85rem;
-        width: 1.1rem;
-        height: 1.1rem;
+        left: 0.9rem;
+        width: 1.15rem;
+        height: 1.15rem;
         color: var(--color-text-tertiary);
         pointer-events: none;
         transition: color 0.3s;
@@ -135,44 +139,59 @@ const tagsHero = heroConfig.tags;
         color: var(--accent);
       }
 
-      .tag-search-status {
-        min-height: 1.1rem;
-        margin: -1.15rem 0 0;
+      .clear-btn {
+        position: absolute;
+        right: 0.75rem;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border: none;
+        background: var(--color-surface-hover);
         color: var(--color-text-muted);
-        font-size: 0.75rem;
-        line-height: 1.1rem;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 0;
       }
 
-      .sidebar-header {
+      .clear-btn:hover {
+        background: var(--color-border);
+        color: var(--color-text);
+      }
+
+      .tag-search-status {
+        min-height: 1.1rem;
+        margin: 0;
+        text-align: center;
+        color: var(--color-text-muted);
+        font-size: 0.78rem;
+      }
+
+      /* Chips Header */
+      .chips-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        flex: 0 0 auto;
         border-bottom: 1px solid var(--color-border-subtle);
-        padding-bottom: 0.75rem;
+        padding-bottom: 0.6rem;
       }
 
-      .sidebar-title {
-        font-size: 1rem;
+      .chips-title {
+        font-size: 0.9rem;
         font-weight: 700;
-        color: var(--color-text);
+        color: var(--color-text-secondary);
         letter-spacing: 0.5px;
       }
 
       .tags-count-badge {
         font-size: 0.75rem;
-        color: var(--color-text-secondary);
+        color: var(--color-text-tertiary);
         background: var(--color-surface-hover);
-        padding: 2px 8px;
+        padding: 2px 9px;
         border-radius: 20px;
         border: 1px solid var(--color-border-subtle);
-      }
-
-      .article-search-status {
-        margin: 0.35rem 0 0;
-        color: var(--color-text-muted);
-        font-size: 0.78rem;
-        line-height: 1.2;
       }
 
       /* Weighted Tag Cloud */
@@ -180,72 +199,31 @@ const tagsHero = heroConfig.tags;
         display: flex;
         flex-wrap: wrap;
         gap: 0.6rem;
-        flex: 1 1 auto;
-        min-height: 0;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        padding-right: 0.35rem;
-        scrollbar-width: thin;
-        scrollbar-color: transparent transparent;
-        -webkit-mask-image: linear-gradient(to bottom, transparent, #000 0.7rem, #000 calc(100% - 0.7rem), transparent);
-        mask-image: linear-gradient(to bottom, transparent, #000 0.7rem, #000 calc(100% - 0.7rem), transparent);
-      }
-
-      .tags-sidebar:hover .tags-cloud,
-      .tags-cloud:focus-within {
-        scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent;
-      }
-
-      .tags-cloud::-webkit-scrollbar {
-        width: 5px;
-      }
-
-      .tags-cloud::-webkit-scrollbar-thumb {
-        border-radius: 999px;
-        background: transparent;
-      }
-
-      .tags-sidebar:hover .tags-cloud::-webkit-scrollbar-thumb,
-      .tags-cloud:focus-within::-webkit-scrollbar-thumb {
-        background: rgba(var(--accent-rgb), 0.5);
+        align-items: center;
       }
 
       .tag-pill {
         display: inline-flex;
         align-items: center;
-        padding: 0.4rem 0.8rem;
-        border-radius: 8px;
+        padding: 0.4rem 0.85rem;
+        border-radius: 10px;
         background: color-mix(in srgb, var(--color-surface-hover) 82%, transparent);
         border: 1px solid var(--color-border-subtle);
         color: var(--color-text-secondary);
         text-decoration: none;
         font-weight: 500;
-        line-height: 1.2;
-        transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        line-height: 1.3;
+        transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
         cursor: pointer;
         user-select: none;
-        opacity: 0;
-        animation: fadeInUp 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-        animation-delay: calc(var(--i) * 0.03s);
       }
 
       .tag-pill:hover {
-        border-color: rgba(255, 255, 255, 0.4);
-        color: white !important;
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 
-          0 8px 16px -4px rgba(var(--accent-rgb), 0.25),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        background: linear-gradient(135deg, var(--accent), #9ba9ff);
-      }
-
-      .tag-pill:hover .tag-hash {
-        color: white;
-      }
-
-      .tag-pill:hover .tag-badge {
-        background: rgba(255, 255, 255, 0.25);
-        color: white;
+        border-color: rgba(var(--accent-rgb), 0.4);
+        color: var(--accent) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.12);
+        background: var(--color-surface);
       }
 
       .tag-pill.active-tag {
@@ -253,7 +231,7 @@ const tagsHero = heroConfig.tags;
         border-color: transparent;
         background: linear-gradient(135deg, var(--accent), #7b8cff);
         box-shadow: 
-          0 8px 20px -4px rgba(var(--accent-rgb), 0.35),
+          0 6px 18px -3px rgba(var(--accent-rgb), 0.35),
           inset 0 1px 0 rgba(255, 255, 255, 0.2);
         transform: translateY(-1px);
       }
@@ -271,35 +249,35 @@ const tagsHero = heroConfig.tags;
         color: var(--accent);
         margin-right: 0.2rem;
         font-weight: 700;
-        transition: color 0.3s;
+        transition: color 0.25s;
       }
 
       .tag-name {
-        margin-right: 0.3rem;
+        margin-right: 0.35rem;
       }
 
       .tag-name mark {
-        padding: 0;
+        padding: 0 2px;
         color: inherit;
-        background: color-mix(in srgb, var(--accent) 28%, transparent);
+        background: color-mix(in srgb, var(--accent) 25%, transparent);
         border-radius: 2px;
       }
 
       .tag-badge {
-        font-size: 0.7em;
-        background: rgba(var(--shadow-color), 0.04);
+        font-size: 0.72em;
+        background: rgba(var(--shadow-color), 0.05);
         color: var(--color-text-muted);
-        padding: 1px 6px;
+        padding: 1px 7px;
         border-radius: 20px;
         font-weight: 600;
-        transition: all 0.3s;
+        transition: all 0.25s;
       }
 
-      /* Right content explorer */
+      /* Content Explorer */
       .posts-explorer {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1.25rem;
       }
 
       .explorer-header {
@@ -311,7 +289,7 @@ const tagsHero = heroConfig.tags;
       }
 
       .explorer-title {
-        font-size: 1.4rem;
+        font-size: 1.35rem;
         font-weight: 700;
         margin: 0;
         color: var(--color-text);
@@ -324,6 +302,13 @@ const tagsHero = heroConfig.tags;
         font-weight: 500;
       }
 
+      .article-search-status {
+        margin: 0.25rem 0 0;
+        color: var(--color-text-muted);
+        font-size: 0.8rem;
+        line-height: 1.2;
+      }
+
       .tag-posts-list {
         display: flex;
         flex-direction: column;
@@ -331,15 +316,12 @@ const tagsHero = heroConfig.tags;
       }
 
       .post-card-wrapper {
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-        animation-delay: calc(var(--i) * 0.05s);
+        transition: opacity 0.3s ease, transform 0.3s ease;
       }
 
       /* Premium Card Look */
       .tag-post-item {
-        padding: 1.6rem;
+        padding: 1.5rem 1.8rem;
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         border-radius: 16px;
@@ -362,11 +344,11 @@ const tagsHero = heroConfig.tags;
 
       .tag-post-item:hover {
         background: var(--color-surface-hover);
-        transform: translateY(-3px);
+        transform: translateY(-2px);
         box-shadow: 
-          0 12px 28px rgba(var(--shadow-color), 0.06),
-          0 4px 10px rgba(var(--shadow-color), 0.04);
-        border-color: rgba(var(--accent-rgb), 0.18);
+          0 10px 24px rgba(var(--shadow-color), 0.05),
+          0 4px 8px rgba(var(--shadow-color), 0.03);
+        border-color: rgba(var(--accent-rgb), 0.2);
       }
 
       .tag-post-item:hover::before {
@@ -374,9 +356,9 @@ const tagsHero = heroConfig.tags;
       }
 
       .tag-post-title {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         font-weight: 700;
-        margin: 0 0 0.6rem 0;
+        margin: 0 0 0.5rem 0;
         line-height: 1.4;
       }
 
@@ -478,49 +460,10 @@ const tagsHero = heroConfig.tags;
         font-size: 0.95rem;
       }
 
-      /* Animations */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .animate-fade-in {
-        animation: fadeInUp 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-      }
-
-      /* Responsive Media Queries */
-      @media (max-width: 900px) {
-        .tags-workspace {
-          grid-template-columns: 1fr;
-          gap: 1.8rem;
-        }
-
-        .tags-sidebar {
-          position: relative;
-          top: 0;
-          padding: 1.4rem;
-          max-height: none;
-          overflow: visible;
-        }
-
-        .tags-cloud {
-          flex: none;
-          overflow: visible;
-          padding-right: 0;
-          overscroll-behavior: auto;
-        }
-      }
-
       @media (max-width: 720px) {
-        .tags-sidebar {
+        .tags-control-panel {
+          padding: 1.2rem 1rem;
           border-radius: 12px;
-          padding: 1rem;
         }
         
         .tag-post-item {
@@ -550,27 +493,48 @@ const tagsHero = heroConfig.tags;
     minHeight={true}
   >
     <div class="tags-workspace">
-      {/* Left Column: Sidebar Dashboard */}
-      <aside class="tags-sidebar">
+      <div class="back-btn-container">
+        <a href="/tags/" class="back-link">← 查看全部标签归档</a>
+      </div>
+
+      {/* Control Panel */}
+      <div class="tags-control-panel">
+        <div class="search-box-wrapper">
           <div class="search-box">
-          <input type="text" id="tag-search" placeholder={`在 #${tag} 中搜索...`} autocomplete="off" />
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <input type="text" id="tag-search" placeholder={`在 #${tag} 分类内搜索文章...`} autocomplete="off" />
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
+            <button id="clear-search" class="clear-btn" aria-label="清除搜索">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
           <p id="tag-search-status" class="tag-search-status" aria-live="polite"></p>
+        </div>
 
-        <div class="sidebar-header">
-          <span class="sidebar-title">主题清单</span>
-          <span class="tags-count-badge">共 {sortedTags.length} 个</span>
+        <div class="chips-header">
+          <span class="chips-title">相关主题标签</span>
+          <span class="tags-count-badge">共 {sortedTags.length} 个标签</span>
         </div>
 
         <div class="tags-cloud">
-          {sortedTags.map(([t, count], index) => {
+          <a 
+            href="/tags/"
+            class="tag-pill" 
+            data-tag="all"
+            style="font-size: 0.95rem;"
+          >
+            <span class="tag-name">全部文章</span>
+          </a>
+
+          {sortedTags.map(([t, count]) => {
             const maxCount = sortedTags[0] ? sortedTags[0][1] : 1;
             const ratio = count / maxCount;
-            const fontSize = 0.85 + ratio * 0.3;
+            const fontSize = 0.85 + ratio * 0.25;
             const isActive = t === tag;
             
             return (
@@ -579,7 +543,7 @@ const tagsHero = heroConfig.tags;
                 class={`tag-pill ${isActive ? 'active-tag' : ''}`}
                 data-tag={t}
                 data-count={count}
-                style={`--i: ${index}; font-size: ${fontSize}rem;`}
+                style={`font-size: ${fontSize}rem;`}
               >
                 <span class="tag-hash">#</span>
                 <span class="tag-name">{t}</span>
@@ -588,14 +552,10 @@ const tagsHero = heroConfig.tags;
             );
           })}
         </div>
-      </aside>
+      </div>
 
-      {/* Right Column: Dynamic Explorer */}
+      {/* Explorer */}
       <section class="posts-explorer">
-        <div class="back-btn-container">
-          <a href="/tags/" class="back-link">← 返回所有标签</a>
-        </div>
-
         <div class="explorer-header">
           <h3 class="explorer-title">#{tag}</h3>
           <span class="posts-count-badge" id="active-posts-count">共 {posts.length} 篇</span>
@@ -603,14 +563,13 @@ const tagsHero = heroConfig.tags;
         <p id="article-search-status" class="article-search-status" aria-live="polite"></p>
 
         <div class="tag-posts-list" id="posts-list">
-          {posts.map((post, index) => {
+          {posts.map((post) => {
             const excerpt = extractExcerpt(post.body || '', 160);
             return (
               <div 
                 class="post-card-wrapper" 
                 data-post-id={post.id}
                 data-tags={post.data.tags.join(',')}
-                style={`--i: ${index}`}
               >
                 <article class="tag-post-item">
                   <h4 class="tag-post-title">
