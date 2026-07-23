@@ -496,10 +496,10 @@ input {
    Markdown 表格 - 现代优雅设计 (Modern Table UI)
    ========================================================================== */
 .prose table {
-	display: block;
-	width: fit-content;
+	display: table;
+	width: 100%;
 	max-width: 100%;
-	margin: 2.2rem auto;
+	margin: 2.2rem 0;
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
 	border-collapse: collapse;
@@ -525,21 +525,22 @@ input {
 	font-weight: 600;
 	text-align: left;
 	letter-spacing: 0.02em;
+	overflow-wrap: anywhere;
 	border-bottom: 2px solid var(--color-border-strong);
 }
 
 /* 适配 Markdown 渲染生成的 align 属性对齐方式 */
-.prose table th[align="center"], 
-.prose table td[align="center"] { 
-	text-align: center; 
+.prose table th[align="center"],
+.prose table td[align="center"] {
+	text-align: center;
 }
-.prose table th[align="right"], 
-.prose table td[align="right"] { 
-	text-align: right; 
+.prose table th[align="right"],
+.prose table td[align="right"] {
+	text-align: right;
 }
-.prose table th[align="left"], 
-.prose table td[align="left"] { 
-	text-align: left; 
+.prose table th[align="left"],
+.prose table td[align="left"] {
+	text-align: left;
 }
 
 /* 数据行样式 */
@@ -567,6 +568,7 @@ input {
 .prose table td {
 	padding: 12px 16px;
 	vertical-align: middle;
+	overflow-wrap: anywhere;
 }
 
 /* 首尾列单元格增加额外内边距以对齐视觉边界 */
