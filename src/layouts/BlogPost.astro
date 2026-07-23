@@ -182,10 +182,6 @@ const articleSchema = {
 				display: none;
 			}
 
-			.pdf-print-footer {
-				display: none;
-			}
-
 			/* 布局容器 */
 			.layout-container {
 				display: grid;
@@ -357,10 +353,26 @@ const articleSchema = {
 				}
 
 				:global(.prose) {
+					width: 100%;
+					max-width: none;
 					color: #1f2937 !important;
 					font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
 					font-size: 10.7pt;
 					line-height: 1.68;
+				}
+
+				:global(.prose > p),
+				:global(.prose > ul),
+				:global(.prose > ol),
+				:global(.prose > blockquote),
+				:global(.prose > h1),
+				:global(.prose > h2),
+				:global(.prose > h3),
+				:global(.prose > h4),
+				:global(.prose > h5),
+				:global(.prose > h6) {
+					max-width: none;
+					margin-right: 0;
 				}
 
 				:global(.prose h1),
@@ -418,7 +430,6 @@ const articleSchema = {
 					text-underline-offset: 0.16em;
 				}
 
-				:global(.prose pre),
 				:global(.prose blockquote),
 				:global(.prose table) {
 					break-inside: avoid;
@@ -445,8 +456,24 @@ const articleSchema = {
 					background: #f8fafc;
 					border-color: #cbd5e1;
 					box-shadow: none;
-					break-inside: avoid;
-					page-break-inside: avoid;
+					overflow: visible;
+					break-inside: auto;
+					page-break-inside: auto;
+					box-decoration-break: clone;
+					-webkit-box-decoration-break: clone;
+				}
+
+				:global(.code-body),
+				:global(.prose pre) {
+					overflow: visible !important;
+				}
+
+				:global(.prose pre),
+				:global(.prose pre code),
+				:global(.prose pre .line) {
+					white-space: pre-wrap !important;
+					overflow-wrap: anywhere;
+					word-break: break-word;
 				}
 
 				:global(.code-copy-btn),
@@ -524,16 +551,6 @@ const articleSchema = {
 					stroke: #57606a !important;
 				}
 
-				.pdf-print-footer {
-					display: block;
-					margin-top: 4em;
-					padding-top: 1em;
-					border-top: 1px solid #dbe2ea;
-					color: #64748b;
-					font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
-					font-size: 8.5pt;
-					line-height: 1.6;
-				}
 			}
 		</style>
 	</Fragment>
@@ -588,10 +605,6 @@ const articleSchema = {
 								Last updated on <FormattedDate date={updatedDate} />
 							</div>
 						)}
-						<footer class="pdf-print-footer">
-							<p>本文导出自 {siteTitle} · 作者：{authorName}</p>
-							<p>{canonicalURL}</p>
-						</footer>
 					</div>
 				</article>
 			</main>
