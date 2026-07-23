@@ -482,8 +482,56 @@ const articleSchema = {
 				}
 
 				:global(.prose table) {
+					display: table;
+					width: 100%;
+					max-width: 100%;
+					margin: 1.25em 0;
 					font-size: 9pt;
+					line-height: 1.5;
+					color: #334155;
+					border: 1px solid #bfdbfe;
+					border-collapse: collapse;
+					border-radius: 0;
 					overflow: visible;
+					-webkit-print-color-adjust: exact;
+					print-color-adjust: exact;
+				}
+
+				:global(.prose table thead) {
+					display: table-header-group;
+					background: #eaf3ff !important;
+					color: #172554 !important;
+					border-bottom: 2px solid #93c5fd;
+				}
+
+				:global(.prose table th) {
+					padding: 0.65em 0.8em;
+					background: #eaf3ff !important;
+					color: #172554 !important;
+					border: 1px solid #bfdbfe;
+					font-weight: 700;
+				}
+
+				:global(.prose table td) {
+					padding: 0.58em 0.8em;
+					color: #334155 !important;
+					border: 1px solid #dbeafe;
+					vertical-align: top;
+					overflow-wrap: anywhere;
+				}
+
+				:global(.prose table tbody tr) {
+					background: white !important;
+					break-inside: avoid;
+					page-break-inside: avoid;
+				}
+
+				:global(.prose table tbody tr:nth-child(even)) {
+					background: #f7fbff !important;
+				}
+
+				:global(.prose table td code) {
+					white-space: normal;
 				}
 
 				:global(.mermaid-diagram) {
