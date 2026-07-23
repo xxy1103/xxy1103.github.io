@@ -492,15 +492,99 @@ input {
 	font-size: 16px;
 }
 
-table {
-	width: 100%;
-}
-
+/* ==========================================================================
+   Markdown 表格 - 现代优雅设计 (Modern Table UI)
+   ========================================================================== */
 .prose table {
 	display: block;
-	width: 100%;
+	width: fit-content;
+	max-width: 100%;
+	margin: 2.2rem auto;
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
+	border-collapse: collapse;
+	border-spacing: 0;
+	font-size: 0.925rem;
+	line-height: 1.6;
+	color: var(--color-text);
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	transition: border-color var(--theme-color-transition-duration) var(--theme-color-transition-ease);
+}
+
+/* 表头样式 */
+.prose table thead {
+	background-color: var(--color-surface-input);
+	border-bottom: 2px solid var(--color-border-strong);
+	color: var(--color-text-strong);
+	font-family: 'Outfit', sans-serif;
+}
+
+.prose table th {
+	padding: 14px 16px;
+	font-weight: 600;
+	text-align: left;
+	letter-spacing: 0.02em;
+	border-bottom: 2px solid var(--color-border-strong);
+}
+
+/* 适配 Markdown 渲染生成的 align 属性对齐方式 */
+.prose table th[align="center"], 
+.prose table td[align="center"] { 
+	text-align: center; 
+}
+.prose table th[align="right"], 
+.prose table td[align="right"] { 
+	text-align: right; 
+}
+.prose table th[align="left"], 
+.prose table td[align="left"] { 
+	text-align: left; 
+}
+
+/* 数据行样式 */
+.prose table tbody tr {
+	border-bottom: 1px solid var(--color-border-subtle);
+	background-color: var(--color-surface);
+	transition: background-color 0.2s ease;
+}
+
+.prose table tbody tr:last-child {
+	border-bottom: none;
+}
+
+/* 斑马纹交替背景 */
+.prose table tbody tr:nth-child(even) {
+	background-color: var(--color-surface-hover);
+}
+
+/* 数据行悬停高亮 */
+.prose table tbody tr:hover {
+	background-color: var(--color-surface-elevated);
+}
+
+/* 单元格与间距 */
+.prose table td {
+	padding: 12px 16px;
+	vertical-align: middle;
+}
+
+/* 首尾列单元格增加额外内边距以对齐视觉边界 */
+.prose table th:first-child,
+.prose table td:first-child {
+	padding-left: 20px;
+}
+
+.prose table th:last-child,
+.prose table td:last-child {
+	padding-right: 20px;
+}
+
+/* 表格内包含的行内代码（code）处理 */
+.prose table td code {
+	font-size: 0.85em;
+	padding: 2px 6px;
+	white-space: nowrap;
 }
 
 img {
