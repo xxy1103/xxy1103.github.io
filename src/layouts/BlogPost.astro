@@ -361,6 +361,10 @@ const articleSchema = {
 					line-height: 1.68;
 				}
 
+				:global(.pdf-print-excerpt) {
+					display: none !important;
+				}
+
 				:global(.prose > p),
 				:global(.prose > ul),
 				:global(.prose > ol),
@@ -696,6 +700,38 @@ const articleSchema = {
 				};
 			};
 
+			const markPrintExcerpt = () => {
+				document.querySelectorAll('.pdf-print-excerpt').forEach((element) => {
+					element.classList.remove('pdf-print-excerpt');
+				});
+
+				document.querySelectorAll<HTMLElement>('.prose').forEach((prose) => {
+					const comments = document.createTreeWalker(prose, NodeFilter.SHOW_COMMENT);
+					let moreMarker: Comment | null = null;
+					let comment = comments.nextNode();
+
+					while (comment) {
+						if (comment.nodeValue?.trim().toLowerCase() === 'more') {
+							moreMarker = comment as Comment;
+							break;
+						}
+						comment = comments.nextNode();
+					}
+
+					if (!moreMarker || moreMarker.parentNode !== prose) return;
+
+					for (const node of Array.from(prose.childNodes)) {
+						if (node === moreMarker) break;
+						if (
+							node instanceof HTMLElement
+							&& !node.classList.contains('pdf-print-heading')
+						) {
+							node.classList.add('pdf-print-excerpt');
+						}
+					}
+				});
+			};
+
 			const setupPdfExport = () => {
 				document.querySelectorAll<HTMLButtonElement>('[data-pdf-export]').forEach((button) => {
 					if (button.dataset.pdfExportReady) return;
@@ -735,6 +771,7 @@ const articleSchema = {
                 const articleNavigation = setupToc?.() ?? null;
                 setupLightbox?.();
                 setupSearchLanding?.(articleNavigation);
+				markPrintExcerpt();
 				setupPdfExport();
             };
 
