@@ -152,6 +152,40 @@ const articleSchema = {
 				gap: 0.4em;
 			}
 
+			.pdf-export-button {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4em;
+				padding: 0.5em 0.85em;
+				color: inherit;
+				font: inherit;
+				font-size: 0.92em;
+				line-height: 1;
+				background: rgba(255, 255, 255, 0.14);
+				border: 1px solid rgba(255, 255, 255, 0.52);
+				border-radius: 999px;
+				cursor: pointer;
+				transition: background-color 0.2s ease, transform 0.2s ease;
+			}
+
+			.pdf-export-button:hover {
+				background: rgba(255, 255, 255, 0.26);
+				transform: translateY(-1px);
+			}
+
+			.pdf-export-button:focus-visible {
+				outline: 2px solid white;
+				outline-offset: 3px;
+			}
+
+			.pdf-print-heading {
+				display: none;
+			}
+
+			.pdf-print-footer {
+				display: none;
+			}
+
 			/* 布局容器 */
 			.layout-container {
 				display: grid;
@@ -212,10 +246,14 @@ const articleSchema = {
 						gap: 0;
 					}
 
-					.meta-row {
-						gap: 0.85em;
-						flex-wrap: wrap;
-					}
+				.meta-row {
+					gap: 0.85em;
+					flex-wrap: wrap;
+				}
+
+				.pdf-export-button {
+					font-size: 0.88em;
+				}
 
 					.content-card {
 						padding: 1.2em 1em;
@@ -226,6 +264,275 @@ const articleSchema = {
 				.meta-item svg {
 					width: 16px;
 					height: 16px;
+				}
+			}
+
+			@media print {
+				@page {
+					margin: 15mm 16mm 18mm;
+				}
+
+				:global(html),
+				:global(body) {
+					height: auto !important;
+					background: white !important;
+					color: #1f2937 !important;
+					color-scheme: light !important;
+					overflow: visible !important;
+				}
+
+				:global([data-theme="dark"]) {
+					--black: 31, 41, 55 !important;
+					--gray-dark: 55, 65, 81 !important;
+					--color-bg: #ffffff !important;
+					--color-surface: #ffffff !important;
+					--color-text: #1f2937 !important;
+					--color-text-secondary: #4b5563 !important;
+					--color-text-tertiary: #6b7280 !important;
+					--color-text-strong: #111827 !important;
+					--color-border: #dbe2ea !important;
+					--color-code-block-bg: #f6f8fa !important;
+					--color-code-block-text: #1f2937 !important;
+					--color-code-inline-bg: #f3f4f6 !important;
+					--color-code-inline-text: #9d174d !important;
+					--color-blockquote-border: #93c5fd !important;
+					--color-blockquote-text: #475569 !important;
+				}
+
+				:global(#main-content) {
+					height: auto !important;
+					overflow: visible !important;
+				}
+
+				:global(body > header),
+				:global(#main-content > footer),
+				:global(.hero-header),
+				:global(.sidebar-container),
+				:global(#lightbox),
+				:global(.search-overlay) {
+					display: none !important;
+				}
+
+				.stats-wrapper::before {
+					display: none;
+				}
+
+				.layout-container {
+					display: block;
+					max-width: none;
+					padding: 0;
+				}
+
+				.content-card {
+					padding: 0;
+					background: transparent;
+					box-shadow: none;
+					border-radius: 0;
+					animation: none;
+					opacity: 1;
+					transform: none;
+				}
+
+				.pdf-print-heading {
+					display: block;
+					margin: 0 0 2.2em;
+					padding: 0 0 1em 1.1em;
+					border-bottom: 2px solid #bfdbfe;
+					border-left: 5px solid #2563eb;
+				}
+
+				.pdf-print-heading h1 {
+					margin: 0 0 0.45em;
+					color: #172554;
+					font-size: 25pt;
+					line-height: 1.3;
+					letter-spacing: -0.025em;
+				}
+
+				.pdf-print-heading p {
+					margin: 0;
+					color: #64748b;
+					font-size: 10pt;
+					letter-spacing: 0.02em;
+				}
+
+				:global(.prose) {
+					color: #1f2937 !important;
+					font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+					font-size: 10.7pt;
+					line-height: 1.68;
+				}
+
+				:global(.prose h1),
+				:global(.prose h2),
+				:global(.prose h3),
+				:global(.prose h4),
+				:global(.prose h5),
+				:global(.prose h6) {
+					color: #172554 !important;
+					break-after: avoid;
+					page-break-after: avoid;
+				}
+
+				:global(.prose h2) {
+					margin-top: 2.35em;
+					padding-bottom: 0.38em;
+					border-bottom-color: #bfdbfe;
+				}
+
+				:global(.prose h3) {
+					margin-top: 1.8em;
+				}
+
+				:global(.prose p) {
+					margin-bottom: 1em;
+				}
+
+				:global(.prose ul),
+				:global(.prose ol) {
+					margin-bottom: 1em;
+				}
+
+				:global(.prose li) {
+					margin-bottom: 0.3em;
+				}
+
+				:global(.prose p),
+				:global(.prose li),
+				:global(.prose blockquote) {
+					color: #334155 !important;
+				}
+
+				:global(.prose blockquote) {
+					margin: 0.65em 0 1em;
+					padding: 0.6em 1.1em;
+					background: #eff6ff !important;
+					border-color: #60a5fa !important;
+					box-shadow: none;
+				}
+
+				:global(.prose a) {
+					color: #1d4ed8 !important;
+					text-decoration: underline;
+					text-decoration-color: #93c5fd;
+					text-underline-offset: 0.16em;
+				}
+
+				:global(.prose pre),
+				:global(.prose blockquote),
+				:global(.prose table) {
+					break-inside: avoid;
+					page-break-inside: avoid;
+				}
+
+				:global(.prose img) {
+					max-height: 160mm;
+					filter: none !important;
+					box-shadow: none;
+					border: 1px solid #e2e8f0;
+					border-radius: 4px;
+					break-inside: avoid;
+					page-break-inside: avoid;
+				}
+
+				:global(.prose code) {
+					background: #f1f5f9;
+					color: #9d174d;
+					border-color: #e2e8f0;
+				}
+
+				:global(.code-block-wrapper) {
+					background: #f8fafc;
+					border-color: #cbd5e1;
+					box-shadow: none;
+					break-inside: avoid;
+					page-break-inside: avoid;
+				}
+
+				:global(.code-copy-btn),
+				:global(.code-toolbar) {
+					display: none !important;
+				}
+
+				:global(.prose table) {
+					font-size: 9pt;
+					overflow: visible;
+				}
+
+				:global(.mermaid-diagram) {
+					margin: 1.5em 0;
+					break-inside: avoid;
+					page-break-inside: avoid;
+				}
+
+				:global(.mermaid-diagram__header) {
+					display: none;
+				}
+
+				:global(.mermaid-diagram__canvas) {
+					display: block;
+					min-height: 0;
+					padding: 0;
+					overflow: visible !important;
+					scrollbar-width: none;
+				}
+
+				:global(.mermaid-diagram__canvas::-webkit-scrollbar) {
+					display: none;
+					width: 0;
+					height: 0;
+				}
+
+				:global(.mermaid-diagram__canvas svg) {
+					width: 100% !important;
+					min-width: 0 !important;
+					max-width: 100% !important;
+					height: auto !important;
+					background: white !important;
+				}
+
+				:global(.mermaid-diagram__canvas .node rect),
+				:global(.mermaid-diagram__canvas .node circle),
+				:global(.mermaid-diagram__canvas .node ellipse),
+				:global(.mermaid-diagram__canvas .node polygon),
+				:global(.mermaid-diagram__canvas .node path) {
+					fill: #edf4ff !important;
+					stroke: #4f7fcf !important;
+				}
+
+				:global(.mermaid-diagram__canvas .nodeLabel),
+				:global(.mermaid-diagram__canvas .nodeLabel p),
+				:global(.mermaid-diagram__canvas .label text),
+				:global(.mermaid-diagram__canvas .edgeLabel) {
+					color: #24292f !important;
+					fill: #24292f !important;
+				}
+
+				:global(.mermaid-diagram__canvas .edgeLabel rect),
+				:global(.mermaid-diagram__canvas .labelBkg) {
+					fill: white !important;
+					opacity: 1 !important;
+				}
+
+				:global(.mermaid-diagram__canvas .flowchart-link),
+				:global(.mermaid-diagram__canvas .edgePath path) {
+					stroke: #57606a !important;
+				}
+
+				:global(.mermaid-diagram__canvas marker path) {
+					fill: #57606a !important;
+					stroke: #57606a !important;
+				}
+
+				.pdf-print-footer {
+					display: block;
+					margin-top: 4em;
+					padding-top: 1em;
+					border-top: 1px solid #dbe2ea;
+					color: #64748b;
+					font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+					font-size: 8.5pt;
+					line-height: 1.6;
 				}
 			}
 		</style>
@@ -257,6 +564,12 @@ const articleSchema = {
                         </div>
                     )}
                 </div>
+				<div class="meta-row">
+					<button class="pdf-export-button" type="button" data-pdf-export data-pdf-title={title} aria-label={`将《${title}》导出为 PDF`}>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+						<span>下载 PDF</span>
+					</button>
+				</div>
             </div>
 	</HeroHeader>
 		
@@ -265,12 +578,20 @@ const articleSchema = {
 			<main class="content-card" transition:name="page-content">
 				<article>
 					<div class="prose">
+						<header class="pdf-print-heading">
+							<h1>{title}</h1>
+							<p>发布于 <FormattedDate date={pubDate} /></p>
+						</header>
 						<slot />
 						{updatedDate && (
 							<div class="last-updated-on">
 								Last updated on <FormattedDate date={updatedDate} />
 							</div>
 						)}
+						<footer class="pdf-print-footer">
+							<p>本文导出自 {siteTitle} · 作者：{authorName}</p>
+							<p>{canonicalURL}</p>
+						</footer>
 					</div>
 				</article>
 			</main>
@@ -289,9 +610,63 @@ const articleSchema = {
 		<script>
             import { setupToc } from '../scripts/toc';
             import { setupCodeBlocks } from '../scripts/code-block';
-            import { setupMermaid } from '../scripts/mermaid';
+            import { prepareMermaidForPrint, setupMermaid } from '../scripts/mermaid';
             import { setupLightbox } from '../scripts/lightbox';
             import { setupSearchLanding } from '../scripts/search/landing';
+
+			const prepareCodeHighlightForPrint = () => {
+				const tokens = Array.from(
+					document.querySelectorAll<HTMLElement>('pre.astro-code span[style*="color"]'),
+				);
+				const originalPriorities = tokens.map((token) =>
+					token.style.getPropertyPriority('color'),
+				);
+
+				tokens.forEach((token) => {
+					const lightColor = token.style.getPropertyValue('color');
+					if (lightColor) token.style.setProperty('color', lightColor, 'important');
+				});
+
+				return () => {
+					tokens.forEach((token, index) => {
+						const lightColor = token.style.getPropertyValue('color');
+						token.style.setProperty('color', lightColor, originalPriorities[index]);
+					});
+				};
+			};
+
+			const setupPdfExport = () => {
+				document.querySelectorAll<HTMLButtonElement>('[data-pdf-export]').forEach((button) => {
+					if (button.dataset.pdfExportReady) return;
+					button.dataset.pdfExportReady = 'true';
+
+					button.addEventListener('click', async () => {
+						if (button.disabled) return;
+						button.disabled = true;
+						const originalTitle = document.title;
+						const pdfTitle = button.dataset.pdfTitle?.trim();
+						if (pdfTitle) document.title = pdfTitle;
+						let restoreMermaid: () => Promise<void> = async () => {};
+						const restoreCodeHighlight = prepareCodeHighlightForPrint();
+
+						const restorePage = () => {
+							document.title = originalTitle;
+							button.disabled = false;
+							restoreCodeHighlight();
+							void restoreMermaid();
+						};
+
+						try {
+							restoreMermaid = await prepareMermaidForPrint();
+							window.addEventListener('afterprint', restorePage, { once: true });
+							window.print();
+						} catch (error) {
+							restorePage();
+							console.error('PDF export preparation failed', error);
+						}
+					});
+				});
+			};
 
             const runEnhancements = async () => {
                 await setupMermaid?.();
@@ -299,6 +674,7 @@ const articleSchema = {
                 const articleNavigation = setupToc?.() ?? null;
                 setupLightbox?.();
                 setupSearchLanding?.(articleNavigation);
+				setupPdfExport();
             };
 
             const runtimeWindow = window as Window & {

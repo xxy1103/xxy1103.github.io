@@ -5,6 +5,7 @@ type MermaidApi = typeof import('mermaid')['default'];
 let cleanupCurrentMermaid: (() => void) | null = null;
 let mermaidApiPromise: Promise<MermaidApi> | null = null;
 let renderGeneration = 0;
+let currentFigures: HTMLElement[] = [];
 
 function loadMermaid() {
 	mermaidApiPromise ??= import('mermaid').then(({ default: mermaid }) => mermaid);
@@ -15,8 +16,8 @@ function isDarkTheme() {
 	return document.documentElement.dataset.theme === 'dark';
 }
 
-function getConfig(): MermaidConfig {
-	const dark = isDarkTheme();
+function getConfig(forceLight = false): MermaidConfig {
+	const dark = !forceLight && isDarkTheme();
 	return {
 		startOnLoad: false,
 		securityLevel: 'strict',
@@ -77,12 +78,7 @@ function createDiagram(pre: HTMLPreElement, index: number) {
 
 	const header = document.createElement('figcaption');
 	header.className = 'mermaid-diagram__header';
-	header.innerHTML = `
-		<span class="mermaid-diagram__label">
-			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5 9 3l3 3 3-3 5 2.5v5L12 21 4 10.5v-5Z"/></svg>
-			Mermaid
-		</span>
-		<span class="mermaid-diagram__status" aria-live="polite">正在渲染…</span>`;
+	header.innerHTML = '<span class="mermaid-diagram__status" aria-live="polite">正在渲染…</span>';
 
 	const canvas = document.createElement('div');
 	canvas.className = 'mermaid-diagram__canvas';
@@ -117,18 +113,31 @@ async function renderFigure(mermaid: MermaidApi, figure: HTMLElement, generation
 	}
 }
 
-async function renderAll(figures: HTMLElement[], generation: number) {
+async function renderAll(figures: HTMLElement[], generation: number, forceLight = false) {
 	const mermaid = await loadMermaid();
 	if (generation !== renderGeneration) return;
-	mermaid.initialize(getConfig());
+	mermaid.initialize(getConfig(forceLight));
 	for (const figure of figures) {
 		await renderFigure(mermaid, figure, generation);
 	}
 }
 
+export async function prepareMermaidForPrint() {
+	if (currentFigures.length === 0 || !isDarkTheme()) return async () => {};
+
+	const printGeneration = ++renderGeneration;
+	await renderAll(currentFigures, printGeneration, true);
+
+	return async () => {
+		const restoreGeneration = ++renderGeneration;
+		await renderAll(currentFigures, restoreGeneration);
+	};
+}
+
 export async function setupMermaid() {
 	cleanupCurrentMermaid?.();
 	cleanupCurrentMermaid = null;
+	currentFigures = [];
 
 	const article = document.querySelector<HTMLElement>('article .prose');
 	if (!article) return;
@@ -144,6 +153,7 @@ export async function setupMermaid() {
 	const blocks = Array.from(new Set([...dataLanguageBlocks, ...classLanguageBlocks]));
 	const figures = blocks.map(createDiagram);
 	if (figures.length === 0) return;
+	currentFigures = figures;
 
 	let generation = ++renderGeneration;
 	await renderAll(figures, generation);
@@ -162,6 +172,7 @@ export async function setupMermaid() {
 		observer.disconnect();
 		lifecycleController.abort();
 		renderGeneration += 1;
+		currentFigures = [];
 		if (cleanupCurrentMermaid === cleanup) cleanupCurrentMermaid = null;
 	};
 	document.addEventListener('astro:before-swap', cleanup, {
