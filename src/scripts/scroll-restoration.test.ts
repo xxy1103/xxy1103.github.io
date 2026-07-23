@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+	createRateLimitedSaver,
 	getMainScrollTop,
 	normalizeMainScrollTop,
 	withMainScrollTop,
@@ -24,5 +25,49 @@ describe('main scroll history state', () => {
 	it('clamps and rounds scroll positions before saving', () => {
 		expect(normalizeMainScrollTop(-20)).toBe(0);
 		expect(normalizeMainScrollTop(12.7)).toBe(13);
+	});
+});
+
+describe('rate-limited history saving', () => {
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
+	it('coalesces rapid scroll saves and keeps a trailing save', () => {
+		vi.useFakeTimers();
+		let now = 1_000;
+		let saves = 0;
+		const saver = createRateLimitedSaver(() => {
+			saves += 1;
+		}, 500, () => now);
+
+		saver.schedule();
+		expect(saves).toBe(1);
+
+		now += 100;
+		saver.schedule();
+		saver.schedule();
+		expect(saves).toBe(1);
+
+		now += 400;
+		vi.advanceTimersByTime(400);
+		expect(saves).toBe(2);
+	});
+
+	it('cancels a pending save before history traversal', () => {
+		vi.useFakeTimers();
+		let now = 1_000;
+		let saves = 0;
+		const saver = createRateLimitedSaver(() => {
+			saves += 1;
+		}, 500, () => now);
+
+		saver.schedule();
+		now += 100;
+		saver.schedule();
+		saver.cancel();
+		now += 500;
+		vi.advanceTimersByTime(500);
+		expect(saves).toBe(1);
 	});
 });
