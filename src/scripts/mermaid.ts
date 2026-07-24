@@ -6,6 +6,7 @@ let cleanupCurrentMermaid: (() => void) | null = null;
 let mermaidApiPromise: Promise<MermaidApi> | null = null;
 let renderGeneration = 0;
 let currentFigures: HTMLElement[] = [];
+let restoreNativePrintSize: (() => void) | null = null;
 
 // A4 竖向页面在当前打印边距下的正文可用区域（CSS 像素）。
 const PRINT_MAX_WIDTH_PX = (178 / 25.4) * 96;
@@ -140,6 +141,27 @@ async function renderAll(figures: HTMLElement[], generation: number, forceLight 
 	}
 }
 
+function applyMermaidPrintSizes(figures: HTMLElement[]) {
+	for (const figure of figures) {
+		const svg = figure.querySelector<SVGSVGElement>('.mermaid-diagram__canvas svg');
+		if (!svg) continue;
+
+		const { width, height } = svg.getBoundingClientRect();
+		if (width <= 0 || height <= 0) continue;
+
+		const proseWidth = figure.closest<HTMLElement>('.prose')?.getBoundingClientRect().width ?? width;
+		const relativeWidth = Math.min(1, width / proseWidth);
+		const targetWidth = PRINT_MAX_WIDTH_PX * relativeWidth;
+		const targetHeight = targetWidth * (height / width);
+		const scale = Math.min(
+			1,
+			PRINT_MAX_HEIGHT_PX / targetHeight,
+		);
+		figure.style.setProperty('--mermaid-print-width', `${Math.round(targetWidth * scale)}px`);
+		figure.classList.add('mermaid-diagram--print-sized');
+	}
+}
+
 function preserveMermaidSizeForPrint(figures: HTMLElement[]) {
 	const snapshots = figures.map((figure) => ({
 		figure,
@@ -148,21 +170,7 @@ function preserveMermaidSizeForPrint(figures: HTMLElement[]) {
 		wasPrepared: figure.classList.contains('mermaid-diagram--print-sized'),
 	}));
 
-	for (const figure of figures) {
-		const svg = figure.querySelector<SVGSVGElement>('.mermaid-diagram__canvas svg');
-		if (!svg) continue;
-
-		const { width, height } = svg.getBoundingClientRect();
-		if (width <= 0 || height <= 0) continue;
-
-		const scale = Math.min(
-			1,
-			PRINT_MAX_WIDTH_PX / width,
-			PRINT_MAX_HEIGHT_PX / height,
-		);
-		figure.style.setProperty('--mermaid-print-width', `${Math.round(width * scale)}px`);
-		figure.classList.add('mermaid-diagram--print-sized');
-	}
+	applyMermaidPrintSizes(figures);
 
 	return () => {
 		for (const snapshot of snapshots) {
@@ -179,6 +187,16 @@ function preserveMermaidSizeForPrint(figures: HTMLElement[]) {
 		}
 	};
 }
+
+window.addEventListener('beforeprint', () => {
+	restoreNativePrintSize?.();
+	restoreNativePrintSize = preserveMermaidSizeForPrint(currentFigures);
+});
+
+window.addEventListener('afterprint', () => {
+	restoreNativePrintSize?.();
+	restoreNativePrintSize = null;
+});
 
 export async function prepareMermaidForPrint() {
 	if (currentFigures.length === 0) return async () => {};
@@ -219,10 +237,11 @@ export async function setupMermaid() {
 
 	let generation = ++renderGeneration;
 	await renderAll(figures, generation);
+	applyMermaidPrintSizes(figures);
 
 	const observer = new MutationObserver(() => {
 		generation = ++renderGeneration;
-		void renderAll(figures, generation);
+		void renderAll(figures, generation).then(() => applyMermaidPrintSizes(figures));
 	});
 	observer.observe(document.documentElement, {
 		attributes: true,
@@ -230,6 +249,9 @@ export async function setupMermaid() {
 	});
 
 	const lifecycleController = new AbortController();
+	window.addEventListener('resize', () => applyMermaidPrintSizes(figures), {
+		signal: lifecycleController.signal,
+	});
 	const cleanup = () => {
 		observer.disconnect();
 		lifecycleController.abort();
