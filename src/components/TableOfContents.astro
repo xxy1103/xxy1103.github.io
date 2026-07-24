@@ -114,7 +114,7 @@ const tocTree = buildTocTree(Astro.props.headings);
 	#toc-root { counter-reset: level1; }
 	#toc-root > .toc-item { counter-increment: level1; }
 	#toc-root > .toc-item > .toc-link .toc-text::before {
-		content: "第" counter(level1, cjk-decimal) "章 ";
+		content: counter(level1) ". ";
 		color: var(--color-text-tertiary);
 		font-weight: normal;
 		margin-right: 4px;

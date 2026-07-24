@@ -928,6 +928,16 @@ hr {
 		max-width: none;
 	}
 
+	/* 横向图保留滚动空间；竖向图随正文宽度收窄，避免在手机上被 680px 下限放大。 */
+	.mermaid-diagram--portrait .mermaid-diagram__canvas {
+		justify-content: center;
+	}
+
+	.mermaid-diagram--portrait .mermaid-diagram__canvas svg {
+		min-width: 0;
+		max-width: 100% !important;
+	}
+
 	.line-numbers {
 		display: none;
 	}
