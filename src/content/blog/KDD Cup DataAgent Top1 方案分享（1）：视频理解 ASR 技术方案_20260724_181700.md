@@ -10,11 +10,11 @@ tags: ['kddcup', 'agent']
  <!-- more --> 
 
 
-> 整理日期：2026-07-23
-> 原始材料：小红书笔记《KDD Cup DataAgent Top1🥇方案分享(1)》及其 8 张配图
-> 原文链接：[KDD Cup DataAgent Top1 方案分享（1）：视频理解 ASR 技术方案](http://xhslink.cn/o/lMS7TZJ4Kg)
-> 适用范围：KDD Cup DataAgent briefing 视频的语音识别、方案复盘与工程参考
-> 重要说明：本文整理的是 Top1 团队公开分享的 **ASR 子方案**，不是其完整 DataAgent 系统。
+> 整理日期：2026-07-23  
+> 原始材料：小红书笔记《KDD Cup DataAgent Top1🥇方案分享(1)》及其 8 张配图  
+> 原文链接：[KDD Cup DataAgent Top1 方案分享（1）：视频理解 ASR 技术方案](http://xhslink.cn/o/lMS7TZJ4Kg)  
+> 适用范围：KDD Cup DataAgent briefing 视频的语音识别、方案复盘与工程参考  
+> 重要说明：本文整理的是 Top1 团队公开分享的 **ASR 子方案**，不是其完整 DataAgent 系统。  
 
 # 技术摘要
 

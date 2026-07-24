@@ -8,11 +8,11 @@ tags: ['kddcup', 'agent']
 
 <!-- more -->
 
-> 整理日期：2026-07-24
-> 原始材料：小红书笔记《KDD Cup DataAgent Top1 🥇 分享（2）》及其 6 张配图
-> 原文链接：[KDD Cup DataAgent Top1 方案分享（2）：基于 H.264 码流的关键帧抽取](http://xhslink.cn/o/438Ipd4Vymo)
-> 适用范围：KDD Cup DataAgent briefing 视频、PPT 式录屏、软件操作演示的关键帧抽取与多模态输入组织
-> 重要说明：本文整理的是 Top1 团队公开分享的**视频抽帧子方案**，不是其完整 DataAgent 系统，也不代表本仓库当前已经实现这些能力。
+> 整理日期：2026-07-24  
+> 原始材料：小红书笔记《KDD Cup DataAgent Top1 🥇 分享（2）》及其 6 张配图  
+> 原文链接：[KDD Cup DataAgent Top1 方案分享（2）：基于 H.264 码流的关键帧抽取](http://xhslink.cn/o/438Ipd4Vymo)  
+> 适用范围：KDD Cup DataAgent briefing 视频、PPT 式录屏、软件操作演示的关键帧抽取与多模态输入组织  
+> 重要说明：本文整理的是 Top1 团队公开分享的**视频抽帧子方案**，不是其完整 DataAgent 系统，也不代表本仓库当前已经实现这些能力。  
 
 # 技术摘要
 
