@@ -400,12 +400,12 @@ const articleSchema = {
 				/* 打印时为前三级正文标题添加与目录一致的层级编号。 */
 				:global(.prose > h2) {
 					counter-increment: pdf-section;
-					counter-reset: pdf-subsection pdf-subsubsection;
+					counter-set: pdf-subsection 0 pdf-subsubsection 0;
 				}
 
 				:global(.prose > h3) {
 					counter-increment: pdf-subsection;
-					counter-reset: pdf-subsubsection;
+					counter-set: pdf-subsubsection 0;
 				}
 
 				:global(.prose > h4) {
