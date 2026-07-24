@@ -776,6 +776,48 @@ const articleSchema = {
 				});
 			};
 
+			const prepareImagesForPrint = async () => {
+				const images = Array.from(document.querySelectorAll<HTMLImageElement>('.prose img'));
+				const snapshots = images.map((image) => ({
+					image,
+					loading: image.loading,
+					decoding: image.decoding,
+				}));
+
+				const waitForImage = async (image: HTMLImageElement) => {
+					if (!image.complete) {
+						await new Promise<void>((resolve) => {
+							const finish = () => {
+								window.clearTimeout(timeout);
+								resolve();
+							};
+							const timeout = window.setTimeout(finish, 15_000);
+							image.addEventListener('load', finish, { once: true });
+							image.addEventListener('error', finish, { once: true });
+						});
+					}
+
+					if (image.naturalWidth > 0) await image.decode().catch(() => undefined);
+				};
+
+				images.forEach((image) => {
+					image.loading = 'eager';
+					image.decoding = 'sync';
+				});
+
+				await Promise.all(images.map(waitForImage));
+				await new Promise<void>((resolve) =>
+					window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve())),
+				);
+
+				return () => {
+					snapshots.forEach(({ image, loading, decoding }) => {
+						image.loading = loading;
+						image.decoding = decoding;
+					});
+				};
+			};
+
 			const setupPdfExport = () => {
 				document.querySelectorAll<HTMLButtonElement>('[data-pdf-export]').forEach((button) => {
 					if (button.dataset.pdfExportReady) return;
@@ -788,16 +830,19 @@ const articleSchema = {
 						const pdfTitle = button.dataset.pdfTitle?.trim();
 						if (pdfTitle) document.title = pdfTitle;
 						let restoreMermaid: () => Promise<void> = async () => {};
+						let restoreImages = () => {};
 						const restoreCodeHighlight = prepareCodeHighlightForPrint();
 
 						const restorePage = () => {
 							document.title = originalTitle;
 							button.disabled = false;
 							restoreCodeHighlight();
+							restoreImages();
 							void restoreMermaid();
 						};
 
 						try {
+							restoreImages = await prepareImagesForPrint();
 							restoreMermaid = await prepareMermaidForPrint();
 							window.addEventListener('afterprint', restorePage, { once: true });
 							window.print();
