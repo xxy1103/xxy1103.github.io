@@ -4,6 +4,7 @@ import { SearchIndexRepository } from '../search/repository';
 
 const SEARCH_DEBOUNCE_MS = 100;
 const RESULT_LIMIT = 20;
+const PAGE_SIZE = 15;
 
 type SearchMode = 'index' | 'detail';
 
@@ -81,7 +82,13 @@ export class TagSearchController {
 	private readonly emptyState: HTMLElement | null;
 	private readonly emptyMessage: HTMLElement | null;
 	private readonly activeTagTitle: HTMLElement | null;
+	private readonly pagination: HTMLElement | null;
+	private readonly pageNumbers: HTMLElement | null;
+	private readonly prevPageButton: HTMLButtonElement | null;
+	private readonly nextPageButton: HTMLButtonElement | null;
 	private readonly originalPostIds: Set<string>;
+	private visibleCards: CardState[] = [];
+	private currentPage = 1;
 	private engine: SearchEngine | null = null;
 	private activeTag: string | null = null;
 	private query = '';
@@ -100,6 +107,10 @@ export class TagSearchController {
 		this.emptyState = root.querySelector<HTMLElement>('#empty-state');
 		this.emptyMessage = root.querySelector<HTMLElement>('#empty-state-message');
 		this.activeTagTitle = root.querySelector<HTMLElement>('#active-tag-title');
+		this.pagination = root.querySelector<HTMLElement>('#tag-pagination');
+		this.pageNumbers = root.querySelector<HTMLElement>('#tag-page-numbers');
+		this.prevPageButton = root.querySelector<HTMLButtonElement>('#tag-prev-page');
+		this.nextPageButton = root.querySelector<HTMLButtonElement>('#tag-next-page');
 		this.cards = Array.from(root.querySelectorAll<HTMLElement>('.post-card-wrapper')).flatMap((card) => {
 			const id = card.dataset.postId;
 			const title = card.querySelector<HTMLElement>('.tag-post-title');
@@ -143,6 +154,12 @@ export class TagSearchController {
 				this.input.focus();
 			}, { signal });
 		}
+		this.prevPageButton?.addEventListener('click', () => this.goToPage(this.currentPage - 1), { signal });
+		this.nextPageButton?.addEventListener('click', () => this.goToPage(this.currentPage + 1), { signal });
+		this.pageNumbers?.addEventListener('click', (event) => {
+			const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-page]');
+			if (button) this.goToPage(Number(button.dataset.page));
+		}, { signal });
 		if (this.mode === 'index') {
 			this.tagPills.forEach((pill) => pill.addEventListener('click', (event) => this.handleTagClick(event, pill), { signal }));
 			window.addEventListener('hashchange', () => this.syncActiveTagFromHash(), { signal });
@@ -158,7 +175,7 @@ export class TagSearchController {
 		this.renderTagMatches();
 		if (this.timer !== null) window.clearTimeout(this.timer);
 		if (!this.query) {
-			this.renderInitialCards();
+			this.renderInitialCards(true);
 			return;
 		}
 		this.articleStatus && (this.articleStatus.textContent = '正在搜索文章…');
@@ -187,16 +204,16 @@ export class TagSearchController {
 	}
 
 	private renderHits(hits: SearchHit[]) {
-		const hitIds = new Set(hits.map((hit) => hit.document.id));
-		this.cards.forEach((card) => {
-			card.card.style.display = hitIds.has(card.id) ? 'block' : 'none';
-		});
+		this.currentPage = 1;
 		hits.forEach((hit) => {
 			const card = this.cardsById.get(hit.document.id);
 			if (!card) return;
 			this.renderHitCard(card, hit);
-			this.list.append(card.card);
 		});
+		this.renderCardPage(hits.flatMap((hit) => {
+			const card = this.cardsById.get(hit.document.id);
+			return card ? [card] : [];
+		}));
 		this.updateArticleState(hits.length, true);
 	}
 
@@ -208,19 +225,82 @@ export class TagSearchController {
 		excerpt.hidden = false;
 	}
 
-	private renderInitialCards() {
+	private renderInitialCards(resetPage = false) {
+		if (resetPage) this.currentPage = 1;
 		const allowedPostIds = this.getAllowedPostIds();
-		let visibleCount = 0;
-		this.cards.forEach((card) => {
-			const visible = allowedPostIds.has(card.id);
-			card.card.style.display = visible ? 'block' : 'none';
-			if (visible) {
+		const visibleCards = this.cards.filter((card) => {
+			if (allowedPostIds.has(card.id)) {
 				this.restoreCard(card);
-				visibleCount++;
-				this.list.append(card.card);
+				return true;
 			}
+			return false;
 		});
-		this.updateArticleState(visibleCount, false);
+		this.renderCardPage(visibleCards);
+		this.updateArticleState(visibleCards.length, false);
+	}
+
+	private renderCardPage(cards: CardState[]) {
+		this.visibleCards = cards;
+		const lastPage = Math.max(1, Math.ceil(cards.length / PAGE_SIZE));
+		this.currentPage = Math.min(this.currentPage, lastPage);
+		const start = (this.currentPage - 1) * PAGE_SIZE;
+		const pageCards = new Set(cards.slice(start, start + PAGE_SIZE));
+		this.cards.forEach((card) => {
+			card.card.style.display = pageCards.has(card) ? 'block' : 'none';
+		});
+		cards.slice(start, start + PAGE_SIZE).forEach((card) => this.list.append(card.card));
+		this.renderPagination(lastPage);
+	}
+
+	private goToPage(page: number) {
+		const lastPage = Math.max(1, Math.ceil(this.visibleCards.length / PAGE_SIZE));
+		if (!Number.isInteger(page) || page < 1 || page > lastPage || page === this.currentPage) return;
+		this.currentPage = page;
+		this.renderCardPage(this.visibleCards);
+		this.list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
+
+	private renderPagination(lastPage: number) {
+		if (!this.pagination || !this.pageNumbers || !this.prevPageButton || !this.nextPageButton) return;
+		this.pagination.hidden = lastPage <= 1;
+		this.prevPageButton.disabled = this.currentPage === 1;
+		this.nextPageButton.disabled = this.currentPage === lastPage;
+		this.prevPageButton.classList.toggle('disabled', this.prevPageButton.disabled);
+		this.nextPageButton.classList.toggle('disabled', this.nextPageButton.disabled);
+		this.pageNumbers.replaceChildren();
+		const pages: Array<number | '...'> = [];
+		const rangeStart = Math.max(2, this.currentPage - 2);
+		const rangeEnd = Math.min(lastPage - 1, this.currentPage + 2);
+		pages.push(1);
+		if (rangeStart > 2) pages.push('...');
+		for (let page = rangeStart; page <= rangeEnd; page += 1) pages.push(page);
+		if (rangeEnd < lastPage - 1) pages.push('...');
+		if (lastPage > 1) pages.push(lastPage);
+		pages.forEach((page) => {
+			if (page === '...') {
+				const ellipsis = this.root.createElement('span');
+				ellipsis.className = 'page-ellipsis';
+				ellipsis.textContent = '...';
+				this.applyPaginationScope(ellipsis);
+				this.pageNumbers!.append(ellipsis);
+				return;
+			}
+			const button = this.root.createElement('button');
+			button.type = 'button';
+			button.className = `page-btn ${page === this.currentPage ? 'active' : ''}`;
+			button.dataset.page = String(page);
+			button.textContent = String(page);
+			button.setAttribute('aria-label', `第 ${page} 页`);
+			button.setAttribute('aria-current', page === this.currentPage ? 'page' : 'false');
+			this.applyPaginationScope(button);
+			this.pageNumbers!.append(button);
+		});
+	}
+
+	private applyPaginationScope(element: HTMLElement) {
+		this.prevPageButton?.getAttributeNames()
+			.filter((name) => name.startsWith('data-astro-cid-'))
+			.forEach((name) => element.setAttribute(name, this.prevPageButton?.getAttribute(name) ?? ''));
 	}
 
 	private restoreCard(card: CardState) {
@@ -281,7 +361,7 @@ export class TagSearchController {
 		window.history.replaceState(historyUpdate.state, '', historyUpdate.url);
 		this.syncActiveTagUI();
 		if (this.query) void this.searchArticles(this.query);
-		else this.renderInitialCards();
+		else this.renderInitialCards(true);
 	}
 
 	private getHashTag() {
@@ -294,7 +374,7 @@ export class TagSearchController {
 		this.activeTag = this.tagPills.some((pill) => pill.dataset.tag === candidate && candidate !== 'all') ? candidate : null;
 		this.syncActiveTagUI();
 		if (this.query) void this.searchArticles(this.query);
-		else this.renderInitialCards();
+		else this.renderInitialCards(true);
 	}
 
 	private syncActiveTagUI() {

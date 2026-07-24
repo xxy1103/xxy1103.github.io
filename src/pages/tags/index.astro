@@ -275,6 +275,33 @@ const tagsHero = heroConfig.tags;
         transition: opacity 0.3s ease, transform 0.3s ease;
       }
 
+      /* Matches the blog archive pagination. */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 3em;
+        padding-top: 2em;
+        border-top: 1px solid var(--color-border);
+        gap: 1em;
+      }
+
+      .page-numbers { display: flex; align-items: center; gap: 0.5em; transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1); }
+      .pagination:hover .page-numbers { transform: scale(1.02); }
+      .page-btn {
+        display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+        border-radius: 8px; background: transparent; color: var(--color-text-secondary); text-decoration: none;
+        font-weight: 500; font-size: 0.95em; border: 1px solid transparent; position: relative; overflow: hidden;
+        transform-origin: center; cursor: pointer;
+        transition: color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1), background-color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1), transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1), box-shadow 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+      }
+      .page-btn::after { content: ''; position: absolute; inset: 0; background: var(--accent); opacity: 0; border-radius: inherit; transform: scale(0); transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s cubic-bezier(0.05, 0.7, 0.1, 1); }
+      .page-btn:hover:not(.disabled):not(.active)::after { transform: scale(1); opacity: 0.06; }
+      .page-btn:hover:not(.disabled):not(.active) { color: var(--accent); transform: translateY(-3px) scale(1.05); }
+      .page-btn.active { background: var(--accent); color: white; font-weight: 600; box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.35); transform: scale(1.08); }
+      .page-btn.disabled { opacity: 0.25; cursor: not-allowed; pointer-events: none; }
+      .page-ellipsis { color: var(--color-text-muted); padding: 0 0.15em; }
+
       /* Premium Card Look */
       .tag-post-item {
         padding: 1.5rem 1.8rem;
@@ -433,6 +460,12 @@ const tagsHero = heroConfig.tags;
           margin-top: 0.4rem;
         }
       }
+
+      @media (max-width: 480px) {
+        .pagination { gap: 0.5em; justify-content: flex-start; overflow-x: auto; padding-bottom: 0.4em; }
+        .page-numbers { gap: 0.2em; flex-shrink: 0; }
+        .page-btn { width: 32px; height: 32px; font-size: 0.85em; }
+      }
     </style>
 
   <HeroHeader
@@ -562,6 +595,16 @@ const tagsHero = heroConfig.tags;
               );
             })}
           </div>
+
+          <nav id="tag-pagination" class="pagination" aria-label="文章分页" hidden>
+            <button id="tag-prev-page" type="button" class="page-btn prev-btn" aria-label="上一页">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <div id="tag-page-numbers" class="page-numbers"></div>
+            <button id="tag-next-page" type="button" class="page-btn next-btn" aria-label="下一页">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+            </button>
+          </nav>
 
           <div id="empty-state" class="empty-state" style="display: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
