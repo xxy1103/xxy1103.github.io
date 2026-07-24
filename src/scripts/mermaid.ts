@@ -7,6 +7,10 @@ let mermaidApiPromise: Promise<MermaidApi> | null = null;
 let renderGeneration = 0;
 let currentFigures: HTMLElement[] = [];
 
+// A4 竖向页面在当前打印边距下的正文可用区域（CSS 像素）。
+const PRINT_MAX_WIDTH_PX = (178 / 25.4) * 96;
+const PRINT_MAX_HEIGHT_PX = (225 / 25.4) * 96;
+
 function loadMermaid() {
 	mermaidApiPromise ??= import('mermaid').then(({ default: mermaid }) => mermaid);
 	return mermaidApiPromise;
@@ -99,11 +103,25 @@ async function renderFigure(mermaid: MermaidApi, figure: HTMLElement, generation
 		if (generation !== renderGeneration || !figure.isConnected) return;
 		canvas.innerHTML = svg;
 		bindFunctions?.(canvas);
+		const renderedSvg = canvas.querySelector<SVGSVGElement>('svg');
+		const viewBox = renderedSvg
+			?.getAttribute('viewBox')
+			?.trim()
+			.split(/[\s,]+/)
+			.map(Number);
+		const viewBoxWidth = viewBox?.[2] ?? 0;
+		const viewBoxHeight = viewBox?.[3] ?? 0;
+		const isPortrait = Boolean(
+			viewBoxWidth > 0
+			&& viewBoxHeight > viewBoxWidth * 1.05,
+		);
+		figure.classList.toggle('mermaid-diagram--portrait', isPortrait);
 		status.textContent = '';
 		figure.classList.remove('mermaid-diagram--error');
 	} catch (error) {
 		if (generation !== renderGeneration || !figure.isConnected) return;
 		figure.classList.add('mermaid-diagram--error');
+		figure.classList.remove('mermaid-diagram--portrait');
 		status.textContent = '图表语法有误';
 		canvas.replaceChildren();
 		const message = document.createElement('pre');
@@ -122,13 +140,57 @@ async function renderAll(figures: HTMLElement[], generation: number, forceLight 
 	}
 }
 
+function preserveMermaidSizeForPrint(figures: HTMLElement[]) {
+	const snapshots = figures.map((figure) => ({
+		figure,
+		width: figure.style.getPropertyValue('--mermaid-print-width'),
+		widthPriority: figure.style.getPropertyPriority('--mermaid-print-width'),
+		wasPrepared: figure.classList.contains('mermaid-diagram--print-sized'),
+	}));
+
+	for (const figure of figures) {
+		const svg = figure.querySelector<SVGSVGElement>('.mermaid-diagram__canvas svg');
+		if (!svg) continue;
+
+		const { width, height } = svg.getBoundingClientRect();
+		if (width <= 0 || height <= 0) continue;
+
+		const scale = Math.min(
+			1,
+			PRINT_MAX_WIDTH_PX / width,
+			PRINT_MAX_HEIGHT_PX / height,
+		);
+		figure.style.setProperty('--mermaid-print-width', `${Math.round(width * scale)}px`);
+		figure.classList.add('mermaid-diagram--print-sized');
+	}
+
+	return () => {
+		for (const snapshot of snapshots) {
+			if (snapshot.width) {
+				snapshot.figure.style.setProperty(
+					'--mermaid-print-width',
+					snapshot.width,
+					snapshot.widthPriority,
+				);
+			} else {
+				snapshot.figure.style.removeProperty('--mermaid-print-width');
+			}
+			snapshot.figure.classList.toggle('mermaid-diagram--print-sized', snapshot.wasPrepared);
+		}
+	};
+}
+
 export async function prepareMermaidForPrint() {
-	if (currentFigures.length === 0 || !isDarkTheme()) return async () => {};
+	if (currentFigures.length === 0) return async () => {};
+
+	const restorePrintSize = preserveMermaidSizeForPrint(currentFigures);
+	if (!isDarkTheme()) return async () => restorePrintSize();
 
 	const printGeneration = ++renderGeneration;
 	await renderAll(currentFigures, printGeneration, true);
 
 	return async () => {
+		restorePrintSize();
 		const restoreGeneration = ++renderGeneration;
 		await renderAll(currentFigures, restoreGeneration);
 	};

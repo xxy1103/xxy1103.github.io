@@ -135,6 +135,14 @@ export class TagSearchController {
 	private bindEvents() {
 		const { signal } = this.abortController;
 		this.input.addEventListener('input', () => this.handleInput(), { signal });
+		const clearBtn = this.root.querySelector<HTMLElement>('#clear-search');
+		if (clearBtn) {
+			clearBtn.addEventListener('click', () => {
+				this.input.value = '';
+				this.handleInput();
+				this.input.focus();
+			}, { signal });
+		}
 		if (this.mode === 'index') {
 			this.tagPills.forEach((pill) => pill.addEventListener('click', (event) => this.handleTagClick(event, pill), { signal }));
 			window.addEventListener('hashchange', () => this.syncActiveTagFromHash(), { signal });
@@ -143,6 +151,10 @@ export class TagSearchController {
 
 	private handleInput() {
 		this.query = this.input.value.trim();
+		const clearBtn = this.root.querySelector<HTMLElement>('#clear-search');
+		if (clearBtn) {
+			clearBtn.style.display = this.query ? 'flex' : 'none';
+		}
 		this.renderTagMatches();
 		if (this.timer !== null) window.clearTimeout(this.timer);
 		if (!this.query) {
@@ -179,11 +191,10 @@ export class TagSearchController {
 		this.cards.forEach((card) => {
 			card.card.style.display = hitIds.has(card.id) ? 'block' : 'none';
 		});
-		hits.forEach((hit, index) => {
+		hits.forEach((hit) => {
 			const card = this.cardsById.get(hit.document.id);
 			if (!card) return;
 			this.renderHitCard(card, hit);
-			card.card.style.animationDelay = `${index * 0.03}s`;
 			this.list.append(card.card);
 		});
 		this.updateArticleState(hits.length, true);
@@ -205,7 +216,7 @@ export class TagSearchController {
 			card.card.style.display = visible ? 'block' : 'none';
 			if (visible) {
 				this.restoreCard(card);
-				card.card.style.animationDelay = `${visibleCount++ * 0.03}s`;
+				visibleCount++;
 				this.list.append(card.card);
 			}
 		});
@@ -245,6 +256,10 @@ export class TagSearchController {
 		const query = this.query.toLowerCase();
 		let visibleCount = 0;
 		this.tagPills.forEach((pill) => {
+			if (pill.dataset.tag === 'all') {
+				pill.style.display = 'inline-flex';
+				return;
+			}
 			const matches = !query || (pill.dataset.tag ?? '').toLowerCase().includes(query);
 			pill.style.display = matches ? 'inline-flex' : 'none';
 			if (matches) visibleCount++;
@@ -257,7 +272,11 @@ export class TagSearchController {
 		event.preventDefault();
 		const tag = pill.dataset.tag;
 		if (!tag) return;
-		this.activeTag = this.activeTag === tag ? null : tag;
+		if (tag === 'all') {
+			this.activeTag = null;
+		} else {
+			this.activeTag = this.activeTag === tag ? null : tag;
+		}
 		const historyUpdate = createTagFilterHistoryUpdate(window.history.state, this.activeTag);
 		window.history.replaceState(historyUpdate.state, '', historyUpdate.url);
 		this.syncActiveTagUI();
@@ -272,14 +291,18 @@ export class TagSearchController {
 	private syncActiveTagFromHash() {
 		if (this.mode !== 'index') return;
 		const candidate = this.getHashTag();
-		this.activeTag = this.tagPills.some((pill) => pill.dataset.tag === candidate) ? candidate : null;
+		this.activeTag = this.tagPills.some((pill) => pill.dataset.tag === candidate && candidate !== 'all') ? candidate : null;
 		this.syncActiveTagUI();
 		if (this.query) void this.searchArticles(this.query);
 		else this.renderInitialCards();
 	}
 
 	private syncActiveTagUI() {
-		this.tagPills.forEach((pill) => pill.classList.toggle('active-tag', pill.dataset.tag === this.activeTag));
+		this.tagPills.forEach((pill) => {
+			const isAll = pill.dataset.tag === 'all';
+			const isActive = isAll ? !this.activeTag : pill.dataset.tag === this.activeTag;
+			pill.classList.toggle('active-tag', isActive);
+		});
 		if (this.activeTagTitle) this.activeTagTitle.textContent = this.activeTag ? `# ${this.activeTag}` : '所有文章';
 	}
 }

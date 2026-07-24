@@ -549,7 +549,8 @@ const articleSchema = {
 				}
 
 				:global(.mermaid-diagram__canvas) {
-					display: block;
+					display: flex;
+					justify-content: center;
 					min-height: 0;
 					padding: 0;
 					overflow: visible !important;
@@ -563,7 +564,7 @@ const articleSchema = {
 				}
 
 				:global(.mermaid-diagram__canvas svg) {
-					width: 100% !important;
+					width: var(--mermaid-print-width, auto) !important;
 					min-width: 0 !important;
 					max-width: 100% !important;
 					height: auto !important;
