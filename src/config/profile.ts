@@ -60,10 +60,10 @@ export const profileConfig: ProfileConfig = {
   bio: 'Write a short self-introduction here. This content is used in About and article schema.',
   location: 'Your City',
   email: 'you@example.com',
-  githubProfileUrl: 'https://github.com/your-username',
+  githubProfileUrl: 'https://example.com',
   socials: [
-    { key: 'github', label: 'GitHub', url: 'https://github.com/your-username' },
-    { key: 'x', label: 'X', url: 'https://x.com/your-handle' },
-    { key: 'website', label: 'Website', url: 'https://your-site.example.com' },
+    { key: 'github', label: 'GitHub', url: 'https://example.com' },
+    { key: 'x', label: 'X', url: 'https://example.com' },
+    { key: 'website', label: 'Website', url: 'https://example.com' },
   ],
 };
