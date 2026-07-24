@@ -355,6 +355,7 @@ const articleSchema = {
 				:global(.prose) {
 					width: 100%;
 					max-width: none;
+					counter-reset: pdf-section pdf-subsection pdf-subsubsection;
 					color: #1f2937 !important;
 					font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
 					font-size: 10.7pt;
@@ -394,6 +395,33 @@ const articleSchema = {
 					margin-top: 2.35em;
 					padding-bottom: 0.38em;
 					border-bottom-color: #bfdbfe;
+				}
+
+				/* 打印时为前三级正文标题添加与目录一致的层级编号。 */
+				:global(.prose > h2) {
+					counter-increment: pdf-section;
+					counter-reset: pdf-subsection pdf-subsubsection;
+				}
+
+				:global(.prose > h3) {
+					counter-increment: pdf-subsection;
+					counter-reset: pdf-subsubsection;
+				}
+
+				:global(.prose > h4) {
+					counter-increment: pdf-subsubsection;
+				}
+
+				:global(.prose > h2)::before {
+					content: counter(pdf-section) ". ";
+				}
+
+				:global(.prose > h3)::before {
+					content: counter(pdf-section) "." counter(pdf-subsection) " ";
+				}
+
+				:global(.prose > h4)::before {
+					content: counter(pdf-section) "." counter(pdf-subsection) "." counter(pdf-subsubsection) " ";
 				}
 
 				:global(.prose h3) {
