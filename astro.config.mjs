@@ -6,6 +6,7 @@ import { defineConfig } from 'astro/config';
 import remarkHexoImages from './src/plugins/remark-hexo-images.mjs';
 import remarkSearchBlocks from './src/plugins/remark-search-blocks';
 import remarkMath from 'remark-math';
+import rehypeImageCaptions from './src/plugins/rehype-image-captions.mjs';
 import rehypeKatex from 'rehype-katex';
 import rehypeLazyImages from './src/plugins/rehype-lazy-images.mjs';
 import { siteUrl } from './src/config/site';
@@ -69,7 +70,7 @@ export default defineConfig({
 		// 支持 Hexo 相对图片路径 image/xxx/ 自动转换为 /image/xxx/
 		remarkPlugins: [remarkHexoImages, remarkMath, remarkSearchBlocks],
 		// 使用 KaTeX 渲染数学公式，图片懒加载
-		rehypePlugins: [rehypeKatex, rehypeLazyImages],
+		rehypePlugins: [rehypeKatex, rehypeLazyImages, rehypeImageCaptions],
 		// 使用双主题支持代码高亮
 		shikiConfig: {
 			themes: {

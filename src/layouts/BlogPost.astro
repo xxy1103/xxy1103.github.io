@@ -478,12 +478,18 @@ const articleSchema = {
 				}
 
 				:global(.prose blockquote),
-				:global(.prose table) {
+				:global(.prose table),
+				:global(.prose figure.markdown-image) {
+					margin-left: auto;
+					margin-right: auto;
 					break-inside: avoid;
 					page-break-inside: avoid;
 				}
 
 				:global(.prose img) {
+					display: block;
+					margin-left: auto;
+					margin-right: auto;
 					max-height: 160mm;
 					filter: none !important;
 					box-shadow: none;
@@ -491,6 +497,14 @@ const articleSchema = {
 					border-radius: 4px;
 					break-inside: avoid;
 					page-break-inside: avoid;
+				}
+
+				:global(.prose img.pdf-print-portrait) {
+					border: 0;
+				}
+
+				:global(.prose figure.markdown-image figcaption) {
+					color: #64748b !important;
 				}
 
 				:global(.prose code) {
@@ -581,8 +595,11 @@ const articleSchema = {
 					white-space: normal;
 				}
 
-				:global(.mermaid-diagram) {
-					margin: 1.5em 0;
+				:global(.prose > .mermaid-diagram) {
+					margin: 1.5em auto;
+					width: 100%;
+					max-width: none;
+					text-align: center;
 					break-inside: avoid;
 					page-break-inside: avoid;
 				}
@@ -607,6 +624,9 @@ const articleSchema = {
 				}
 
 				:global(.mermaid-diagram__canvas svg) {
+					display: block;
+					margin-left: auto;
+					margin-right: auto;
 					width: var(--mermaid-print-width, auto) !important;
 					min-width: 0 !important;
 					max-width: 100% !important;
@@ -782,6 +802,7 @@ const articleSchema = {
 					image,
 					loading: image.loading,
 					decoding: image.decoding,
+					wasPortrait: image.classList.contains('pdf-print-portrait'),
 				}));
 
 				const waitForImage = async (image: HTMLImageElement) => {
@@ -806,16 +827,27 @@ const articleSchema = {
 				});
 
 				await Promise.all(images.map(waitForImage));
+				markPortraitImagesForPrint();
 				await new Promise<void>((resolve) =>
 					window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve())),
 				);
 
 				return () => {
-					snapshots.forEach(({ image, loading, decoding }) => {
+					snapshots.forEach(({ image, loading, decoding, wasPortrait }) => {
 						image.loading = loading;
 						image.decoding = decoding;
+						image.classList.toggle('pdf-print-portrait', wasPortrait);
 					});
 				};
+			};
+
+			const markPortraitImagesForPrint = () => {
+				document.querySelectorAll<HTMLImageElement>('.prose img').forEach((image) => {
+					image.classList.toggle(
+						'pdf-print-portrait',
+						image.naturalHeight > image.naturalWidth,
+					);
+				});
 			};
 
 			const setupPdfExport = () => {
@@ -866,6 +898,7 @@ const articleSchema = {
 
             const runtimeWindow = window as Window & {
                 __blogEnhancementsHandler?: () => void;
+				__blogBeforePrintHandler?: () => void;
             };
 
             if (runtimeWindow.__blogEnhancementsHandler) {
@@ -873,6 +906,11 @@ const articleSchema = {
             }
             runtimeWindow.__blogEnhancementsHandler = runEnhancements;
             document.addEventListener('astro:page-load', runEnhancements);
+			if (runtimeWindow.__blogBeforePrintHandler) {
+				window.removeEventListener('beforeprint', runtimeWindow.__blogBeforePrintHandler);
+			}
+			runtimeWindow.__blogBeforePrintHandler = markPortraitImagesForPrint;
+			window.addEventListener('beforeprint', runtimeWindow.__blogBeforePrintHandler);
             runEnhancements();
 		</script>
 	</Fragment>
