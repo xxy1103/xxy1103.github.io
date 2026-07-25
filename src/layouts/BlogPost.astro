@@ -479,7 +479,9 @@ const articleSchema = {
 
 				:global(.prose blockquote),
 				:global(.prose table),
-				:global(.prose figure.markdown-image) {
+				:global(.prose > figure.markdown-image) {
+					width: 100%;
+					max-width: none;
 					margin-left: auto;
 					margin-right: auto;
 					break-inside: avoid;
