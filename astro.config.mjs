@@ -3,6 +3,7 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
+import remarkBlockquoteLineBreaks from './src/plugins/remark-blockquote-line-breaks.mjs';
 import remarkHexoImages from './src/plugins/remark-hexo-images.mjs';
 import remarkSearchBlocks from './src/plugins/remark-search-blocks';
 import remarkMath from 'remark-math';
@@ -68,7 +69,7 @@ export default defineConfig({
 	},
 	markdown: {
 		// 支持 Hexo 相对图片路径 image/xxx/ 自动转换为 /image/xxx/
-		remarkPlugins: [remarkHexoImages, remarkMath, remarkSearchBlocks],
+		remarkPlugins: [remarkHexoImages, remarkMath, remarkBlockquoteLineBreaks, remarkSearchBlocks],
 		// 使用 KaTeX 渲染数学公式，图片懒加载
 		rehypePlugins: [rehypeKatex, rehypeLazyImages, rehypeImageCaptions],
 		// 使用双主题支持代码高亮
