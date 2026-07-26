@@ -4,17 +4,15 @@ date: 2026-07-24 18:17:00
 categories: 笔记
 tags: ['kddcup', 'agent']
 ---
-
 谢谢 一直都最喜欢你 我是星星 会永远守护着你
 
- <!-- more --> 
+<!-- more -->
 
-
-> 整理日期：2026-07-23  
-> 原始材料：小红书笔记《KDD Cup DataAgent Top1🥇方案分享(1)》及其 8 张配图  
-> 原文链接：[KDD Cup DataAgent Top1 方案分享（1）：视频理解 ASR 技术方案](http://xhslink.cn/o/lMS7TZJ4Kg)  
-> 适用范围：KDD Cup DataAgent briefing 视频的语音识别、方案复盘与工程参考  
-> 重要说明：本文整理的是 Top1 团队公开分享的 **ASR 子方案**，不是其完整 DataAgent 系统。  
+> 整理日期：2026-07-23
+> 原始材料：小红书笔记《KDD Cup DataAgent Top1🥇方案分享(1)》及其 8 张配图
+> 原文链接：[KDD Cup DataAgent Top1 方案分享（1）：视频理解 ASR 技术方案](http://xhslink.cn/o/lMS7TZJ4Kg)
+> 适用范围：KDD Cup DataAgent briefing 视频的语音识别、方案复盘与工程参考
+> 重要说明：本文整理的是 Top1 团队公开分享的 **ASR 子方案**，不是其完整 DataAgent 系统。
 
 # 技术摘要
 
@@ -188,10 +186,9 @@ Qwen 不负责转写音频，只负责为 Whisper 生成少量高价值词汇。
 
 作者总结了三条核心规则：
 
-1. **以任务问题为主要线索。**问题中的看板名、字段名、路径和业务对象最可能在旁白中出现。
-2. **knowledge.md 只用于确认规范写法。**不把整个数据库字段列表复制进 Prompt，否则大量无关词会成为噪声。
-3. **只保留 8～15 个正确标准词。**
-   Prompt 应少而准，不应堆砌领域词库。
+1. **以任务问题为主要线索**。问题中的看板名、字段名、路径和业务对象最可能在旁白中出现。
+2. **knowledge.md 只用于确认规范写法**。不把整个数据库字段列表复制进 Prompt，否则大量无关词会成为噪声。
+3. **只保留 8～15 个正确标准词**。Prompt 应少而准，不应堆砌领域词库。
 
 ## 中文两段式 Prompt
 
