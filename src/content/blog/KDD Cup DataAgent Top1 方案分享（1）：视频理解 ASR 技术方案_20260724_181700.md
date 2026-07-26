@@ -1,6 +1,6 @@
 ---
 title: KDD Cup DataAgent Top1 方案分享（1）：视频理解 ASR 技术方案
-date: 2026-07-24 18:17:00
+date: 2026-07-22 18:17:00
 categories: 笔记
 tags: ['kddcup', 'agent']
 ---
