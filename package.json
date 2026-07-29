@@ -15,7 +15,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-	"test": "vitest run",
+    "test": "vitest run",
+    "frontmatter:check": "node scripts/normalize-frontmatter.mjs --check",
+    "frontmatter:fix": "node scripts/normalize-frontmatter.mjs --write",
     "optimize:images": "node scripts/optimize-blog-images.mjs",
     "optimize:images:dry-run": "node scripts/optimize-blog-images.mjs --dry-run"
   },
@@ -40,6 +42,7 @@
     "@astrojs/check": "^0.9.9",
     "typescript": "^5.9.2",
     "vitest": "^3.2.7",
-    "wrangler": "4.110.0"
+    "wrangler": "4.110.0",
+    "yaml": "^2.9.0"
   }
 }

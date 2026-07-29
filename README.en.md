@@ -184,12 +184,15 @@ Sample Frontmatter:
 ```md
 ---
 title: "My First Post"
-date: 2026-02-11
-updated: 2026-02-12
+date: "2026-02-11T10:00:00+08:00"
+updated: "2026-02-12T18:30:00+08:00"
 description: "A short description used for SEO and list excerpts."
 draft: false
-categories: ["Tutorial"]
-tags: ["astro", "markdown"]
+categories:
+  - "Tutorial"
+tags:
+  - "astro"
+  - "markdown"
 ---
 
 Post body...
@@ -197,12 +200,28 @@ Post body...
 
 Notes:
 
-- `title`, `date`, `categories`, and `tags` are required; categories and tags must be YAML arrays.
+- `title`, `date`, `categories`, and `tags` are required; categories and tags must use YAML block arrays.
+- Dates use ISO 8601 strings with an explicit `+08:00` timezone.
 - `draft` can be omitted and defaults to `false`.
 - `draft: true` allows `categories: []` and `tags: []`.
 - Published posts require exactly one category, at least one tag, and no duplicate tags.
 - `pubDate`, `updatedDate`, string categories/tags, and other legacy fields are no longer supported.
 - All posts use the default background configured in `src/config/hero.ts`; per-post `heroImage` is not supported.
+- See `standard/frontmatter.md` for the complete contract.
+
+Check all article Frontmatter without writing files:
+
+```bash
+npm run frontmatter:check
+```
+
+After reviewing the result, explicitly normalize the files with:
+
+```bash
+npm run frontmatter:fix
+```
+
+The fixer rewrites Frontmatter only and verifies the article body hash before writing.
 
 ### 6) Images and WebP optimization flow
 
@@ -359,6 +378,8 @@ These commands match `package.json` exactly:
 | `npm run build`                 | Build the site without modifying posts or image assets  |
 | `npm run build:astro`           | Explicit alias for `astro build`                        |
 | `npm run check`                 | Run `astro check` for type/template validation          |
+| `npm run frontmatter:check`     | Read-only validation of all article Frontmatter         |
+| `npm run frontmatter:fix`       | Normalize Frontmatter without changing article bodies   |
 | `npm run preview`               | Preview the production output                           |
 | `npm run astro`                 | Native Astro CLI entry                                  |
 | `npm run optimize:images`       | Generate WebP files and replace blog image references   |
