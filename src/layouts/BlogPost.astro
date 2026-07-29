@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import DraftBadge from '../components/DraftBadge.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import HeroHeader from '../components/HeroHeader.astro';
 import TableOfContents from '../components/TableOfContents.astro';
@@ -30,6 +31,7 @@ const {
 	updatedDate,
 	categories,
 	tags,
+	draft,
 	headings = [],
 	wordCount,
 	readingTime,
@@ -40,9 +42,9 @@ const metaDescription = (seoDescription || description || title).trim();
 const siteURL = Astro.site ?? Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
 
-// 所有文章统一使用配置中的默认背景图。
-const displayHeroImage = heroConfig.postDefaultBackground;
-const displayHeroImageSrc = displayHeroImage;
+// 严格文章契约统一使用配置中的默认背景图。
+const defaultHeroImage = heroConfig.postDefaultBackground;
+const displayHeroImageSrc = defaultHeroImage;
 const articleSection =
 	Array.isArray(categories) && categories.length > 0
 		? categories[0]
@@ -81,7 +83,7 @@ const articleSchema = {
 <PageShell
 	title={title}
 	description={metaDescription}
-	image={displayHeroImage}
+	image={defaultHeroImage}
 	type="article"
 	publishedTime={pubDate}
 	modifiedTime={updatedDate}
@@ -676,6 +678,11 @@ const articleSchema = {
             compact={true}
         >
             <div class="hero-meta">
+				{import.meta.env.DEV && draft && (
+					<div class="meta-row">
+						<DraftBadge {draft} overlay={true} />
+					</div>
+				)}
                 <div class="meta-row">
                     <div class="meta-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>

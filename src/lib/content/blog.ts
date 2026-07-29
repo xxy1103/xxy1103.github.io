@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { filterVisiblePosts } from './visibility';
 
 export type BlogPost = CollectionEntry<'blog'>;
 
@@ -8,7 +9,7 @@ export function sortPostsByDateDesc(posts: BlogPost[]): BlogPost[] {
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
 	const posts = await getCollection('blog');
-	return sortPostsByDateDesc(posts);
+	return sortPostsByDateDesc(filterVisiblePosts(posts, import.meta.env.PROD));
 }
 
 export async function getTagStats(): Promise<Array<[string, number]>> {

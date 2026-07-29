@@ -20,12 +20,14 @@
 
    - 页面级断点与移动端适配：`src/pages/*.astro`、`src/styles/global.css`
    - 移动端导航抽屉：`src/components/Header.astro`
-2. 统一的博客 Frontmatter
+2. 严格文章契约与草稿保护
 
-   - 文章统一使用 `title`、`date`、`updated`、`description`、`categories` 和 `tags`
+   - Frontmatter 使用统一的 `title/date/updated/description/draft/categories/tags` 字段
    - 日期统一为包含 `+08:00` 时区的 ISO 8601 字符串
    - `categories`、`tags` 始终使用 YAML 块数组
-   - Schema 校验入口：`src/content.config.ts`
+   - 草稿在开发环境中可见并带“草稿”标识，生产构建从所有内容出口排除
+   - 分类固定为数组且最多一个；正式文章必须有一个分类和至少一个标签
+   - 严格 Schema 与条件校验入口：`src/lib/content/frontmatter-schema.ts`
    - Hexo 图片相对路径兼容（`image/...` -> `/image/...`）：`src/plugins/remark-hexo-images.mjs`
 3. 流畅动画设计（Material Design 曲线）
 
@@ -168,11 +170,12 @@ title: "我的第一篇文章"
 date: "2026-02-11T10:00:00+08:00"
 updated: "2026-02-12T18:30:00+08:00"
 description: "一段用于 SEO 与列表摘要的描述。"
+draft: false
 categories:
   - "教程"
 tags:
   - "astro"
-  - "blog"
+  - "markdown"
 ---
 
 正文内容...
@@ -180,12 +183,15 @@ tags:
 
 说明：
 
-- `title`、`date`、`categories` 和 `tags` 为必填。
+- `title`、`date`、`categories` 和 `tags` 必填；分类与标签必须使用 YAML 数组。
 - `updated` 和 `description` 可选；没有值时直接省略。
-- `categories` 当前只允许一个分类。
-- `tags` 至少一个，英文标签统一使用小写规范名。
+- `draft` 可省略，缺省为 `false`。
+- `draft: true` 时允许 `categories: []` 和 `tags: []`。
+- 正式文章必须恰好有一个分类、至少一个标签，且标签不得重复。
 - 日期使用包含 `+08:00` 时区的 ISO 8601 字符串。
-- 文章不设置 `heroImage`，统一使用主题配置中的默认文章背景。
+- 英文标签统一使用小写规范名。
+- `pubDate`、`updatedDate`、字符串形式分类/标签及其他旧字段不再兼容。
+- 文章统一使用 `src/config/hero.ts` 中的默认背景，不设置文章级 `heroImage`。
 
 ### 6) 图片与 WebP 压缩流程
 
@@ -271,19 +277,20 @@ npm run deploy
 - `about.text` / `about.subtitle` / `about.backgroundImage`
 - `postDefaultBackground`: 所有文章页统一使用的默认背景
 
-### `src/content.config.ts`（博客 Frontmatter 校验）
+### `src/content.config.ts`（严格博客 Frontmatter 契约）
 
 必填字段：
 
 - `title`
 - `date`
-- `categories`（仅包含一个字符串的数组）
-- `tags`（至少包含一个字符串的数组）
+- `categories`（字符串数组，最多一个）
+- `tags`（字符串数组）
 
 可选字段：
 
 - `description`
 - `updated`
+- `draft`（布尔值，缺省为 `false`）
 
 页面层派生字段：
 
@@ -291,6 +298,14 @@ npm run deploy
 - `updatedDate = updated`
 
 文章页不读取 `heroImage`，统一使用 `postDefaultBackground`。
+
+条件校验：
+
+- 草稿允许空分类和空标签，但分类仍不能超过一个。
+- 正式文章必须恰好有一个分类和至少一个标签。
+- 所有分类、标签及文本字段会去除首尾空格，并拒绝空字符串。
+- 重复标签及 Schema 未声明的旧字段会导致内容校验失败。
+- 生产环境通过 `getBlogPosts()` 统一排除草稿，覆盖首页、归档、详情路由、标签、搜索索引和 RSS。
 
 ## 项目命令
 
