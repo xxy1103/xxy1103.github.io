@@ -1,8 +1,12 @@
 ---
-title: c++基础
-date: 2024-07-13 22:13:56
-tags: "c++"
+title: "c++基础"
+date: "2024-07-13T22:13:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "c++"
 ---
+
 # [c++命名空间](https://www.runoob.com/cplusplus/cpp-namespaces.html)
 
 命名空间可以实现对同一个名字的函数多次定义，并且在使用时，可以通过命名空间来指定使用的哪一个函数。

@@ -1,7 +1,10 @@
 ---
-title: termux 备份与恢复
-date: 2024-07-07 15:14:41
-tags: "termux"
+title: "termux 备份与恢复"
+date: "2024-07-07T15:14:41+08:00"
+categories:
+  - "未分类"
+tags:
+  - "termux"
 ---
 
 ## 备份termux

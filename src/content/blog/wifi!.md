@@ -1,10 +1,12 @@
 ---
-title: 原生安卓wifi去除感叹号
-
-date: 2024-09-10 12:13:56
-
-tags: "android"
+title: "原生安卓wifi去除感叹号"
+date: "2024-09-10T12:13:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "android"
 ---
+
 通过abd输入两条命令：
 
 ```

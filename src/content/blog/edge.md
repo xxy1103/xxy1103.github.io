@@ -1,10 +1,12 @@
 ---
-title:  "浏览器缓存问题"
-
-date: 2024-10-16 22:00:56
-
-tags: "hexo"
+title: "浏览器缓存问题"
+date: "2024-10-16T22:00:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "hexo"
 ---
+
 # hexo更换主题
 
 今天在上网冲浪时，发现了一个好看的blog主题，githob指路：[viva](https://github.com/saicaca/hexo-theme-vivia)。附效果图一张。

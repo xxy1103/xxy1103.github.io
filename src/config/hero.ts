@@ -19,7 +19,7 @@ export interface HeroSectionConfig {
 }
 
 /**
- * Centralized hero configuration for all top-level pages and post fallback.
+ * Centralized hero configuration for all top-level pages and posts.
  */
 export interface HeroConfig {
   home: HeroSectionConfig;
@@ -27,7 +27,7 @@ export interface HeroConfig {
   tags: HeroSectionConfig;
   about: HeroSectionConfig;
   /**
-   * Default hero image for article pages when frontmatter `heroImage` is empty.
+   * Shared background image for article pages.
    */
   postDefaultBackground: string;
 }

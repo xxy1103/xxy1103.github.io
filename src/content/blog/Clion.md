@@ -1,8 +1,12 @@
 ---
-title: 使用Clion遇到的问题
-date: 2024-09-21 16:44:41
-tags: "Clion"
+title: "使用Clion遇到的问题"
+date: "2024-09-21T16:44:41+08:00"
+categories:
+  - "未分类"
+tags:
+  - "clion"
 ---
+
 # printf()函数语句执行后不打印
 
 首先我们来看一个简单的代码：

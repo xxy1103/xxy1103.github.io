@@ -20,12 +20,13 @@
 
    - 页面级断点与移动端适配：`src/pages/*.astro`、`src/styles/global.css`
    - 移动端导航抽屉：`src/components/Header.astro`
-2. 博客内容迁移（Hexo Frontmatter 部分兼容）
+2. 统一的博客 Frontmatter
 
-   - Frontmatter 兼容字段：`date/pubDate`、`updated/updatedDate`、`categories`、`tags`、`permalink`、`comments`、`layout`、`excerpt`
-   - 兼容入口与归一化：`src/content.config.ts`
+   - 文章统一使用 `title`、`date`、`updated`、`description`、`categories` 和 `tags`
+   - 日期统一为包含 `+08:00` 时区的 ISO 8601 字符串
+   - `categories`、`tags` 始终使用 YAML 块数组
+   - Schema 校验入口：`src/content.config.ts`
    - Hexo 图片相对路径兼容（`image/...` -> `/image/...`）：`src/plugins/remark-hexo-images.mjs`
-   - 说明：当前是“部分兼容”，不是完整 Hexo 语义迁移，欢迎提交 PR 扩展。
 3. 流畅动画设计（Material Design 曲线）
 
    - 页面过渡使用 View Transitions：`src/components/BaseHead.astro`
@@ -159,23 +160,19 @@ npm run dev
 
 将文章放到 `src/content/blog/`，支持 `.md` 与 `.mdx`。
 
-示例 Frontmatter（兼容 Astro + 部分 Hexo 字段）：
+标准 Frontmatter：
 
 ```md
 ---
 title: "我的第一篇文章"
-date: 2026-02-11
-pubDate: 2026-02-11
-updated: 2026-02-12
-updatedDate: 2026-02-12
+date: "2026-02-11T10:00:00+08:00"
+updated: "2026-02-12T18:30:00+08:00"
 description: "一段用于 SEO 与列表摘要的描述。"
-heroImage: "/image/sample-cover.jpg"
-categories: ["Astro", "Template"]
-tags: ["Blog", "Migration"]
-excerpt: "可选摘要字段"
-permalink: "custom-slug"
-comments: true
-layout: "post"
+categories:
+  - "教程"
+tags:
+  - "astro"
+  - "blog"
 ---
 
 正文内容...
@@ -183,11 +180,12 @@ layout: "post"
 
 说明：
 
-- `title` 为必填。
-- `date/pubDate` 会归一化为 `pubDate`（优先 `pubDate`）。
-- `updated/updatedDate` 会归一化为 `updatedDate`。
-- `categories`、`tags` 会归一化为数组。
-- `permalink/comments/layout/excerpt` 当前接受并保留，但不代表全部字段都有完整渲染消费逻辑。
+- `title`、`date`、`categories` 和 `tags` 为必填。
+- `updated` 和 `description` 可选；没有值时直接省略。
+- `categories` 当前只允许一个分类。
+- `tags` 至少一个，英文标签统一使用小写规范名。
+- 日期使用包含 `+08:00` 时区的 ISO 8601 字符串。
+- 文章不设置 `heroImage`，统一使用主题配置中的默认文章背景。
 
 ### 6) 图片与 WebP 压缩流程
 
@@ -271,35 +269,28 @@ npm run deploy
 - `blog.text` / `blog.subtitle` / `blog.backgroundImage`
 - `tags.text` / `tags.subtitle` / `tags.backgroundImage`
 - `about.text` / `about.subtitle` / `about.backgroundImage`
-- `postDefaultBackground`: 文章页默认封面（未设置 `heroImage` 时使用）
+- `postDefaultBackground`: 所有文章页统一使用的默认背景
 
-### `src/content.config.ts`（博客 Frontmatter 兼容与归一化）
+### `src/content.config.ts`（博客 Frontmatter 校验）
 
 必填字段：
 
 - `title`
-
-可选字段（含兼容项）：
-
 - `date`
-- `pubDate`
+- `categories`（仅包含一个字符串的数组）
+- `tags`（至少包含一个字符串的数组）
+
+可选字段：
+
 - `description`
-- `updatedDate`
 - `updated`
-- `heroImage`
-- `categories`（字符串或字符串数组）
-- `tags`（字符串或字符串数组）
-- `permalink`
-- `comments`
-- `layout`
-- `excerpt`
 
-归一化规则：
+页面层派生字段：
 
-- `pubDate = pubDate ?? date ?? new Date()`
-- `updatedDate = updatedDate ?? updated`
-- `categories` 始终转为数组
-- `tags` 始终转为数组
+- `pubDate = date`
+- `updatedDate = updated`
+
+文章页不读取 `heroImage`，统一使用 `postDefaultBackground`。
 
 ## 项目命令
 

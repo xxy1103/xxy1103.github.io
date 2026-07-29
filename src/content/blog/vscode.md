@@ -1,9 +1,12 @@
 ---
-title: vscode tasks.json配置
-date: 2024-010-18 12:13:56
-categories: "记录"
-tags: "vscode"
+title: "vscode tasks.json配置"
+date: "2024-10-18T12:13:56+08:00"
+categories:
+  - "记录"
+tags:
+  - "vscode"
 ---
+
 今天在使用vscode时，需要对多个.c文件进行编译调试，才发现以前只会在vscode中进行单个.c文件的编译调试。这部分内容涉及vscode 中tasks.json文件的配置，遂有本文。
 
 # 认识tasks.json

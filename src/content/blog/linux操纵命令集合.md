@@ -1,8 +1,12 @@
 ---
-title: linux 简单操作命令集合
-date: 2024-07-05 20:44:41
-tags: "Linux"
+title: "linux 简单操作命令集合"
+date: "2024-07-05T20:44:41+08:00"
+categories:
+  - "未分类"
+tags:
+  - "linux"
 ---
+
 ## 文件夹相关
 
 1. 罗列当前目录下文件

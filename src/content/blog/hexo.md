@@ -1,8 +1,12 @@
 ---
-title: hexo搭建
-date: 2024-07-03 23:14:41
-tags: "hexo"
+title: "hexo搭建"
+date: "2024-07-03T23:14:41+08:00"
+categories:
+  - "未分类"
+tags:
+  - "hexo"
 ---
+
 由于我将hexo搭建在闲置手机上，环境是安卓10+安卓终端termux，以下为过程记录：  
 ### termux 安装 nodejs
 

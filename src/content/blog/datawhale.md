@@ -1,10 +1,12 @@
 ---
-title:  "Datawhale AI夏令营 大模型微调 task3 笔记"
-
-date: 2024-08-16 15:58:56
-
-tags: "Datawhale"
+title: "Datawhale AI夏令营 大模型微调 task3 笔记"
+date: "2024-08-16T15:58:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "datawhale"
 ---
+
 # 数据增强
 
 ## 调用大模型

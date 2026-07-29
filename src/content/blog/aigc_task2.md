@@ -1,7 +1,10 @@
 ---
-title: 	"AIGC baseline1 学习"
-date: 2024-08-14 15:56:56
-tags: "Datawhale"
+title: "AIGC baseline1 学习"
+date: "2024-08-14T15:56:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "datawhale"
 ---
 
 # baseline 分析

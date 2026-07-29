@@ -1,12 +1,12 @@
 ---
-title:  "Datawhale AI夏令营 AIGC task3 笔记"
-
-
-date: 2024-08-17 15:58:56
-
-
-tags: "Datawhale"
+title: "Datawhale AI夏令营 AIGC task3 笔记"
+date: "2024-08-17T15:58:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "datawhale"
 ---
+
 # Lora 微调
 
 在人工智能生成内容（AIGC）领域，LoRA（Low-Rank Adaptation）是一种用于高效微调大型语言模型的方法。LoRA 的主要目标是通过引入低秩矩阵来减少微调过程中需要更新的参数数量，从而降低计算和存储成本。

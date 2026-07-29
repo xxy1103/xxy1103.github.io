@@ -1,8 +1,12 @@
 ---
-title: win11 开启iis
-date: 2024-09-14 21:14:41
-tags: "win11"
+title: "win11 开启iis"
+date: "2024-09-14T21:14:41+08:00"
+categories:
+  - "未分类"
+tags:
+  - "win11"
 ---
+
 # 启用iis功能
 
 首先打开控制面板，点击程序。

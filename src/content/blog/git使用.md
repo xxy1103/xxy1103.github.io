@@ -1,8 +1,12 @@
 ---
-title: git使用
-date: 2024-07-10 14:45:56
-tags: "git"
+title: "git使用"
+date: "2024-07-10T14:45:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "git"
 ---
+
 # [git](https://git-scm.com/)的官方网站
 
 ## 首次使用Git

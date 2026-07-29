@@ -1,10 +1,12 @@
 ---
-title:  "openwrt 软路由设置"
-
-date: 2024-08-28 21:13:56
-
-tags: "openwrt"
+title: "openwrt 软路由设置"
+date: "2024-08-28T21:13:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "openwrt"
 ---
+
 本教程使用设备：极路由3 （hc5861).
 
 # 打开端口，装breed，刷openwrt

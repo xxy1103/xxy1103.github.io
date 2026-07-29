@@ -1,7 +1,10 @@
 ---
-title: 	"大模型微调 baseline1 学习"
-date: 2024-08-14 10:46:56
-tags: "Datawhale"
+title: "大模型微调 baseline1 学习"
+date: "2024-08-14T10:46:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "datawhale"
 ---
 
 [原文链接](https://datawhaler.feishu.cn/wiki/Ew1HwldMBiz2O4kbrI3cYkPXnpf)

@@ -28,7 +28,6 @@ const {
 	description,
 	pubDate,
 	updatedDate,
-	heroImage,
 	categories,
 	tags,
 	headings = [],
@@ -41,10 +40,9 @@ const metaDescription = (seoDescription || description || title).trim();
 const siteURL = Astro.site ?? Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
 
-// 使用配置中的文章默认背景图
-const defaultHeroImage = heroConfig.postDefaultBackground;
-const displayHeroImage = heroImage || defaultHeroImage;
-const displayHeroImageSrc = typeof displayHeroImage === 'string' ? displayHeroImage : displayHeroImage.src;
+// 所有文章统一使用配置中的默认背景图。
+const displayHeroImage = heroConfig.postDefaultBackground;
+const displayHeroImageSrc = displayHeroImage;
 const articleSection =
 	Array.isArray(categories) && categories.length > 0
 		? categories[0]

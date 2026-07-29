@@ -1,9 +1,13 @@
 ---
-title: KDD Cup DataAgent Top1 方案分享（2）：基于 H.264 码流的关键帧抽取
-date: 2026-07-24 18:20:45
-categories: 笔记
-tags: ['kddcup', 'agent']
+title: "KDD Cup DataAgent Top1 方案分享（2）：基于 H.264 码流的关键帧抽取"
+date: "2026-07-24T18:20:45+08:00"
+categories:
+  - "笔记"
+tags:
+  - "kddcup"
+  - "agent"
 ---
+
 没关系 我在这里 我是春天 拥抱着你的天空
 
 <!-- more -->

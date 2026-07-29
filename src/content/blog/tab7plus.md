@@ -1,8 +1,12 @@
 ---
-title: 	"利用termux搭建桌面级生产力工具"
-date: 2024-10-10 22:00:56
-tags: "termux"
+title: "利用termux搭建桌面级生产力工具"
+date: "2024-10-10T22:00:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "termux"
 ---
+
 # 前期准备
 
 要想在安卓设备上搭建桌面级别的生产力环境需要借助termux终端以及一些外围组件来完成，本教程参考bilibili视频：[【教程】用Termux搭建桌面级生产力环境](https://www.bilibili.com/video/BV15J4m1g7MW/)

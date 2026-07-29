@@ -1,8 +1,12 @@
 ---
-title: 通过python控制米家中的智能设备
-date: 2024-09-19 20:44:41
-tags: "mi"
+title: "通过python控制米家中的智能设备"
+date: "2024-09-19T20:44:41+08:00"
+categories:
+  - "未分类"
+tags:
+  - "mi"
 ---
+
 # python安装mijiaAPI库
 
 借助函数库的github的地址：`https://github.com/Do1e/mijia-api` 本教程高度依赖此库完成。

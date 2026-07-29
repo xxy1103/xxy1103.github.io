@@ -1,8 +1,12 @@
 ---
-title: termux服务自启动
-date: 2024-07-04 22:35:56
-tags: "termux"
+title: "termux服务自启动"
+date: "2024-07-04T22:35:56+08:00"
+categories:
+  - "未分类"
+tags:
+  - "termux"
 ---
+
 ## 首先安装termux-services服务，用于管理自启动服务
 `pkg install termux-services -y`
 
