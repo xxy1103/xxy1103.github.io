@@ -183,8 +183,8 @@ tags:
 
 说明：
 
-- `title`、`date`、`categories` 和 `tags` 必填；分类与标签必须使用 YAML 数组。
-- `updated` 和 `description` 可选；没有值时直接省略。
+- `title`、`date`、`categories` 和 `tags` 必填；分类与标签必须使用 YAML 块数组。
+- 日期使用包含 `+08:00` 时区的 ISO 8601 字符串。
 - `draft` 可省略，缺省为 `false`。
 - `draft: true` 时允许 `categories: []` 和 `tags: []`。
 - 正式文章必须恰好有一个分类、至少一个标签，且标签不得重复。
@@ -192,6 +192,21 @@ tags:
 - 英文标签统一使用小写规范名。
 - `pubDate`、`updatedDate`、字符串形式分类/标签及其他旧字段不再兼容。
 - 文章统一使用 `src/config/hero.ts` 中的默认背景，不设置文章级 `heroImage`。
+- 完整规范见 `standard/frontmatter.md`。
+
+只读检查全部文章 Frontmatter：
+
+```bash
+npm run frontmatter:check
+```
+
+确认检查结果后，可显式修复格式：
+
+```bash
+npm run frontmatter:fix
+```
+
+修复工具只重写 Frontmatter，并在写入前验证正文哈希。
 
 ### 6) 图片与 WebP 压缩流程
 
@@ -317,6 +332,8 @@ npm run deploy
 | `npm run build`               | 构建网站，不修改文章或图片资源            |
 | `npm run build:astro`         | `astro build` 的显式别名                   |
 | `npm run check`               | 执行 `astro check` 类型与模板校验          |
+| `npm run frontmatter:check`   | 只读检查全部文章 Frontmatter               |
+| `npm run frontmatter:fix`     | 按规范修复 Frontmatter，不修改正文          |
 | `npm run preview`             | 预览生产构建产物                          |
 | `npm run astro`               | Astro CLI 原生命令入口                    |
 | `npm run optimize:images`     | 生成 WebP 并替换博客图片引用              |
