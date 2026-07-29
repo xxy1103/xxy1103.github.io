@@ -21,12 +21,13 @@ Demo: [https://template.ulna520.top](https://template.ulna520.top)
     - Page-level breakpoints and mobile adaptation: `src/pages/*.astro`, `src/styles/global.css`
     - Mobile navigation drawer: `src/components/Header.astro`
 
-2. Blog migration support (partial Hexo Frontmatter compatibility)
+2. Strict article contract and draft protection
 
-    - Compatible Frontmatter fields: `date/pubDate`, `updated/updatedDate`, `categories`, `tags`, `permalink`, `comments`, `layout`, `excerpt`
-    - Compatibility and normalization entry: `src/content.config.ts`
+    - Frontmatter uses the unified `title/date/updated/description/draft/categories/tags` fields
+    - Drafts remain visible with a draft badge in development and are excluded from every production content output
+    - Categories are arrays with at most one item; published posts require one category and at least one tag
+    - Strict schema and conditional validation: `src/lib/content/frontmatter-schema.ts`
     - Hexo-style relative image path compatibility (`image/...` -> `/image/...`): `src/plugins/remark-hexo-images.mjs`
-    - Note: this is partial compatibility, not full Hexo semantic parity. PRs are welcome.
 
 3. Smooth animation design (Material Design curves)
 
@@ -178,23 +179,17 @@ Edit these files first:
 
 Put posts in `src/content/blog/`, with `.md` or `.mdx`.
 
-Sample Frontmatter (Astro + partial Hexo compatibility):
+Sample Frontmatter:
 
 ```md
 ---
 title: "My First Post"
 date: 2026-02-11
-pubDate: 2026-02-11
 updated: 2026-02-12
-updatedDate: 2026-02-12
 description: "A short description used for SEO and list excerpts."
-heroImage: "/image/sample-cover.jpg"
-categories: ["Astro", "Template"]
-tags: ["Blog", "Migration"]
-excerpt: "Optional excerpt field"
-permalink: "custom-slug"
-comments: true
-layout: "post"
+draft: false
+categories: ["Tutorial"]
+tags: ["astro", "markdown"]
 ---
 
 Post body...
@@ -202,11 +197,12 @@ Post body...
 
 Notes:
 
-- `title` is required.
-- `date/pubDate` is normalized into `pubDate` (`pubDate` takes priority).
-- `updated/updatedDate` is normalized into `updatedDate`.
-- `categories` and `tags` are normalized into arrays.
-- `permalink/comments/layout/excerpt` are currently accepted and preserved, but not all of them are fully consumed in rendering logic.
+- `title`, `date`, `categories`, and `tags` are required; categories and tags must be YAML arrays.
+- `draft` can be omitted and defaults to `false`.
+- `draft: true` allows `categories: []` and `tags: []`.
+- Published posts require exactly one category, at least one tag, and no duplicate tags.
+- `pubDate`, `updatedDate`, string categories/tags, and other legacy fields are no longer supported.
+- All posts use the default background configured in `src/config/hero.ts`; per-post `heroImage` is not supported.
 
 ### 6) Images and WebP optimization flow
 
@@ -328,35 +324,30 @@ git cherry-pick <commit_sha>
 - `blog.text` / `blog.subtitle` / `blog.backgroundImage`
 - `tags.text` / `tags.subtitle` / `tags.backgroundImage`
 - `about.text` / `about.subtitle` / `about.backgroundImage`
-- `postDefaultBackground`: default article hero image fallback when `heroImage` is not set
+- `postDefaultBackground`: shared default hero image for every article page
 
-### `src/content.config.ts` (Blog Frontmatter compatibility and normalization)
+### `src/content.config.ts` (Strict blog Frontmatter contract)
 
-Required field:
+Required fields:
 
 - `title`
-
-Optional fields (including compatibility fields):
-
 - `date`
-- `pubDate`
+- `categories` (string array, at most one item)
+- `tags` (string array)
+
+Optional fields:
+
 - `description`
-- `updatedDate`
 - `updated`
-- `heroImage`
-- `categories` (string or string array)
-- `tags` (string or string array)
-- `permalink`
-- `comments`
-- `layout`
-- `excerpt`
+- `draft` (boolean, defaults to `false`)
 
-Normalization rules:
+Conditional validation:
 
-- `pubDate = pubDate ?? date ?? new Date()`
-- `updatedDate = updatedDate ?? updated`
-- `categories` always normalized to array
-- `tags` always normalized to array
+- Drafts may have empty categories and tags, but can never have more than one category.
+- Published posts require exactly one category and at least one tag.
+- Taxonomy and text fields are trimmed and empty strings are rejected.
+- Duplicate tags and undeclared legacy fields fail content validation.
+- Production uses `getBlogPosts()` as the single draft filter for home, archive, detail routes, tags, search index, and RSS.
 
 ## Project Commands
 

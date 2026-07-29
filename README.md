@@ -20,12 +20,13 @@
 
    - 页面级断点与移动端适配：`src/pages/*.astro`、`src/styles/global.css`
    - 移动端导航抽屉：`src/components/Header.astro`
-2. 博客内容迁移（Hexo Frontmatter 部分兼容）
+2. 严格文章契约与草稿保护
 
-   - Frontmatter 兼容字段：`date/pubDate`、`updated/updatedDate`、`categories`、`tags`、`permalink`、`comments`、`layout`、`excerpt`
-   - 兼容入口与归一化：`src/content.config.ts`
+   - Frontmatter 使用统一的 `title/date/updated/description/draft/categories/tags` 字段
+   - 草稿在开发环境中可见并带“草稿”标识，生产构建从所有内容出口排除
+   - 分类固定为数组且最多一个；正式文章必须有一个分类和至少一个标签
+   - 严格 Schema 与条件校验入口：`src/lib/content/frontmatter-schema.ts`
    - Hexo 图片相对路径兼容（`image/...` -> `/image/...`）：`src/plugins/remark-hexo-images.mjs`
-   - 说明：当前是“部分兼容”，不是完整 Hexo 语义迁移，欢迎提交 PR 扩展。
 3. 流畅动画设计（Material Design 曲线）
 
    - 页面过渡使用 View Transitions：`src/components/BaseHead.astro`
@@ -159,23 +160,17 @@ npm run dev
 
 将文章放到 `src/content/blog/`，支持 `.md` 与 `.mdx`。
 
-示例 Frontmatter（兼容 Astro + 部分 Hexo 字段）：
+示例 Frontmatter：
 
 ```md
 ---
 title: "我的第一篇文章"
 date: 2026-02-11
-pubDate: 2026-02-11
 updated: 2026-02-12
-updatedDate: 2026-02-12
 description: "一段用于 SEO 与列表摘要的描述。"
-heroImage: "/image/sample-cover.jpg"
-categories: ["Astro", "Template"]
-tags: ["Blog", "Migration"]
-excerpt: "可选摘要字段"
-permalink: "custom-slug"
-comments: true
-layout: "post"
+draft: false
+categories: ["教程"]
+tags: ["astro", "markdown"]
 ---
 
 正文内容...
@@ -183,11 +178,12 @@ layout: "post"
 
 说明：
 
-- `title` 为必填。
-- `date/pubDate` 会归一化为 `pubDate`（优先 `pubDate`）。
-- `updated/updatedDate` 会归一化为 `updatedDate`。
-- `categories`、`tags` 会归一化为数组。
-- `permalink/comments/layout/excerpt` 当前接受并保留，但不代表全部字段都有完整渲染消费逻辑。
+- `title`、`date`、`categories` 和 `tags` 必填；分类与标签必须使用 YAML 数组。
+- `draft` 可省略，缺省为 `false`。
+- `draft: true` 时允许 `categories: []` 和 `tags: []`。
+- 正式文章必须恰好有一个分类、至少一个标签，且标签不得重复。
+- `pubDate`、`updatedDate`、字符串形式分类/标签及其他旧字段不再兼容。
+- 文章统一使用 `src/config/hero.ts` 中的默认背景，不设置文章级 `heroImage`。
 
 ### 6) 图片与 WebP 压缩流程
 
@@ -271,35 +267,30 @@ npm run deploy
 - `blog.text` / `blog.subtitle` / `blog.backgroundImage`
 - `tags.text` / `tags.subtitle` / `tags.backgroundImage`
 - `about.text` / `about.subtitle` / `about.backgroundImage`
-- `postDefaultBackground`: 文章页默认封面（未设置 `heroImage` 时使用）
+- `postDefaultBackground`: 所有文章页共享的默认封面
 
-### `src/content.config.ts`（博客 Frontmatter 兼容与归一化）
+### `src/content.config.ts`（严格博客 Frontmatter 契约）
 
 必填字段：
 
 - `title`
-
-可选字段（含兼容项）：
-
 - `date`
-- `pubDate`
+- `categories`（字符串数组，最多一个）
+- `tags`（字符串数组）
+
+可选字段：
+
 - `description`
-- `updatedDate`
 - `updated`
-- `heroImage`
-- `categories`（字符串或字符串数组）
-- `tags`（字符串或字符串数组）
-- `permalink`
-- `comments`
-- `layout`
-- `excerpt`
+- `draft`（布尔值，缺省为 `false`）
 
-归一化规则：
+条件校验：
 
-- `pubDate = pubDate ?? date ?? new Date()`
-- `updatedDate = updatedDate ?? updated`
-- `categories` 始终转为数组
-- `tags` 始终转为数组
+- 草稿允许空分类和空标签，但分类仍不能超过一个。
+- 正式文章必须恰好有一个分类和至少一个标签。
+- 所有分类、标签及文本字段会去除首尾空格，并拒绝空字符串。
+- 重复标签及 Schema 未声明的旧字段会导致内容校验失败。
+- 生产环境通过 `getBlogPosts()` 统一排除草稿，覆盖首页、归档、详情路由、标签、搜索索引和 RSS。
 
 ## 项目命令
 

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import DraftBadge from './DraftBadge.astro';
 import PostMeta from './PostMeta.astro';
 
 interface Props {
@@ -42,6 +43,7 @@ const TitleTag = titleTag;
 <article class={articleClass}>
 	<TitleTag class={titleClass}>
 		<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+		<DraftBadge draft={post.data.draft} />
 	</TitleTag>
 	{showExcerpt && excerpt && <p class={excerptClass}>{excerpt}</p>}
 	<PostMeta

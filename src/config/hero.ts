@@ -27,7 +27,7 @@ export interface HeroConfig {
   tags: HeroSectionConfig;
   about: HeroSectionConfig;
   /**
-   * Default hero image for article pages when frontmatter `heroImage` is empty.
+   * Default hero image shared by all article pages.
    */
   postDefaultBackground: string;
 }
