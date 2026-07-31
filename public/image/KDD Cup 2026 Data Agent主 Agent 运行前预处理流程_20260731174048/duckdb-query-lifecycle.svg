@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">DuckDB 临时查询连接生命周期</title>
+  <desc id="desc">源文件、Semantic Catalog 和抽取产物持续保留。每次 execute_probe_query 工具调用创建新的内存 DuckDB，注册逻辑视图，在同一个连接中执行整批查询，然后关闭连接；下一次调用重新创建和注册。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f9fc"/>
+      <stop offset="1" stop-color="#edf3fb"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#58708f"/>
+    </marker>
+    <style>
+      .title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}
+      .subtitle{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}
+      .lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}
+      .node-title{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}
+      .node-text{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}
+      .small{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}
+      .badge{font:700 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#fff}
+      .arrow{stroke:#58708f;stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+      .dashed{stroke:#8195ad;stroke-width:2;stroke-dasharray:8 7;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1280" height="760" rx="24" fill="url(#bg)"/>
+  <text x="56" y="58" class="title">DuckDB 如何服务多次查询？</text>
+  <text x="56" y="88" class="subtitle">持久保留的是源文件、Catalog 和抽取产物；DuckDB 连接及其中的 View 按工具调用临时创建。</text>
+
+  <rect x="42" y="120" width="1196" height="178" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="153" class="lane">持续保留的任务材料</text>
+
+  <rect x="85" y="177" width="195" height="82" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <text x="112" y="209" class="node-title">原始结构化数据</text>
+  <text x="112" y="235" class="node-text">CSV · JSON · SQLite</text>
+
+  <rect x="315" y="177" width="195" height="82" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <text x="345" y="209" class="node-title">Semantic Catalog</text>
+  <text x="345" y="235" class="node-text">表名 · 字段 · 来源映射</text>
+
+  <rect x="545" y="177" width="220" height="82" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <text x="575" y="209" class="node-title">派生 View 定义</text>
+  <text x="575" y="235" class="node-text">关系 · JOIN SQL · 校验信息</text>
+
+  <rect x="800" y="177" width="250" height="82" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <text x="830" y="209" class="node-title">结构化文档抽取产物</text>
+  <text x="830" y="235" class="node-text">生成的 JSONL · manifest</text>
+
+  <rect x="1085" y="177" width="110" height="82" rx="15" fill="#dff3e8" filter="url(#shadow)"/>
+  <text x="1112" y="209" class="node-title">保留</text>
+  <text x="1107" y="235" class="node-text">跨查询复用</text>
+
+  <path d="M182 259 V340" class="dashed"/>
+  <path d="M412 259 V340" class="dashed"/>
+  <path d="M655 259 V340" class="dashed"/>
+  <path d="M925 259 V340" class="dashed"/>
+
+  <rect x="42" y="330" width="1196" height="250" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="363" class="lane">一次 execute_probe_query 工具调用</text>
+
+  <rect x="82" y="402" width="190" height="104" rx="16" fill="#f0eafb" filter="url(#shadow)"/>
+  <circle cx="106" cy="426" r="14" fill="#7655a6"/><text x="102" y="431" class="badge">1</text>
+  <text x="132" y="431" class="node-title">创建内存连接</text>
+  <text x="106" y="461" class="node-text">duckdb.connect</text>
+  <text x="106" y="482" class="node-text">(":memory:")</text>
+
+  <path d="M272 454 H320" class="arrow"/>
+  <rect x="322" y="402" width="205" height="104" rx="16" fill="#e8f1fb" filter="url(#shadow)"/>
+  <circle cx="346" cy="426" r="14" fill="#356aa0"/><text x="342" y="431" class="badge">2</text>
+  <text x="372" y="431" class="node-title">重建逻辑查询面</text>
+  <text x="346" y="461" class="node-text">注册 CSV / JSON View</text>
+  <text x="346" y="482" class="node-text">按需注册 SQLite / 派生 View</text>
+
+  <path d="M527 454 H575" class="arrow"/>
+  <rect x="577" y="402" width="260" height="104" rx="16" fill="#e8f1fb" filter="url(#shadow)"/>
+  <circle cx="601" cy="426" r="14" fill="#356aa0"/><text x="597" y="431" class="badge">3</text>
+  <text x="627" y="431" class="node-title">同一连接执行整批 SQL</text>
+  <text x="601" y="461" class="node-text">query 1 → query 2 → query 3</text>
+  <text x="601" y="482" class="node-text">单条失败不阻断其他查询</text>
+
+  <path d="M837 454 H885" class="arrow"/>
+  <rect x="887" y="402" width="145" height="104" rx="16" fill="#fff1df" filter="url(#shadow)"/>
+  <circle cx="911" cy="426" r="14" fill="#b77b32"/><text x="907" y="431" class="badge">4</text>
+  <text x="937" y="431" class="node-title">返回结果</text>
+  <text x="911" y="461" class="node-text">columns · rows</text>
+  <text x="911" y="482" class="node-text">row_count</text>
+
+  <path d="M1032 454 H1080" class="arrow"/>
+  <rect x="1082" y="402" width="115" height="104" rx="16" fill="#f8e6e6" filter="url(#shadow)"/>
+  <circle cx="1106" cy="426" r="14" fill="#a95353"/><text x="1102" y="431" class="badge">5</text>
+  <text x="1132" y="431" class="node-title">关闭</text>
+  <text x="1106" y="461" class="node-text">conn.close()</text>
+  <text x="1106" y="482" class="node-text">临时 View 消失</text>
+
+  <path d="M1139 506 V630 H178 V609" class="arrow"/>
+  <rect x="82" y="610" width="1115" height="92" rx="18" fill="#eef5fb" stroke="#7a94b1" stroke-width="2"/>
+  <text x="112" y="645" class="node-title">下一次 execute_probe_query</text>
+  <text x="112" y="674" class="node-text">重新创建全新的内存 DuckDB，并根据同一份持久材料重新注册 View；不会复用上一次连接。</text>
+  <text x="985" y="646" class="small">查询批次之间隔离</text>
+  <text x="985" y="675" class="small">结果可以按调用重放</text>
+
+  <text x="56" y="735" class="subtitle">粒度说明：一次工具调用内的多条 SQL 共用一个连接；不是每条 SQL 都重建，也不是整个任务始终共用一个数据库。</text>
+</svg>

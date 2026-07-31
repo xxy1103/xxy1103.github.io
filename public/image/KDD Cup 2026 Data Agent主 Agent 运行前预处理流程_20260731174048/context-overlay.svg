@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="650" viewBox="0 0 1280 650" role="img" aria-labelledby="title desc">
+  <title id="title">ContextView 上下文叠加层</title>
+  <desc id="desc">原始任务素材保持不变，PDF 和视频被转换为派生材料，通过统一的可见路径交给数据巡检和主 Agent。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#617793"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#17324d" flood-opacity=".13"/>
+    </filter>
+    <style>
+      .h1{font:700 29px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}
+      .h2{font:700 18px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}
+      .body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#52677f}
+      .small{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#667b91}
+      .path{font:500 13px Consolas,"Microsoft YaHei",sans-serif;fill:#27445f}
+      .arrow{stroke:#617793;stroke-width:2.4;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1280" height="650" rx="24" fill="#f4f7fb"/>
+  <text x="52" y="58" class="h1">ContextView：不搬动原始文件，只改变 Agent 看见的材料</text>
+  <text x="52" y="87" class="body">源目录保持事实边界；生成目录承载本次运行的派生材料；统一视图把二者组合成一个可检索入口。</text>
+
+  <rect x="52" y="126" width="310" height="420" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <text x="80" y="165" class="h2">① 原始上下文（只读来源）</text>
+  <rect x="80" y="194" width="254" height="54" rx="12" fill="#eef3f9"/>
+  <text x="100" y="218" class="path">sales.csv / records.json</text>
+  <text x="100" y="237" class="small">结构化数据</text>
+  <rect x="80" y="262" width="254" height="54" rx="12" fill="#eef3f9"/>
+  <text x="100" y="286" class="path">knowledge.md / notes.txt</text>
+  <text x="100" y="305" class="small">知识文档</text>
+  <rect x="80" y="330" width="254" height="54" rx="12" fill="#fff1dc"/>
+  <text x="100" y="354" class="path">manual.pdf</text>
+  <text x="100" y="373" class="small">需要文本化</text>
+  <rect x="80" y="398" width="254" height="54" rx="12" fill="#f2eafd"/>
+  <text x="100" y="422" class="path">briefing.mp4</text>
+  <text x="100" y="441" class="small">需要离散化</text>
+  <text x="80" y="500" class="body">原文件不会因预处理被覆盖。</text>
+  <text x="80" y="523" class="body">失败也不会回写源目录。</text>
+
+  <path d="M362 336 H454" class="arrow"/>
+
+  <rect x="456" y="126" width="340" height="420" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <text x="484" y="165" class="h2">② 生成上下文（本次运行）</text>
+  <rect x="484" y="194" width="284" height="76" rx="12" fill="#fff1dc"/>
+  <text x="506" y="219" class="path">manual.md</text>
+  <text x="506" y="240" class="body">PDF 文本、标题与段落</text>
+  <text x="506" y="260" class="small">action: pdf_to_markdown</text>
+  <rect x="484" y="288" width="284" height="128" rx="12" fill="#f2eafd"/>
+  <text x="506" y="313" class="path">briefing_timeline.md</text>
+  <text x="506" y="336" class="path">briefing_video_summary.md</text>
+  <text x="506" y="359" class="path">briefing_stable_frames/*.jpg</text>
+  <text x="506" y="390" class="small">视频时间线、摘要与稳定帧</text>
+  <rect x="484" y="434" width="284" height="76" rx="12" fill="#e8f1fb"/>
+  <text x="506" y="460" class="path">context_preprocessing_manifest.json</text>
+  <text x="506" y="483" class="body">记录来源、可见路径和处理动作</text>
+
+  <path d="M796 336 H888" class="arrow"/>
+
+  <rect x="890" y="126" width="338" height="420" rx="20" fill="#e6f2fb" stroke="#7da5c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="918" y="165" class="h2">③ 统一 ContextView</text>
+  <text x="918" y="198" class="body">主 Agent 按“可见路径”访问材料：</text>
+  <rect x="918" y="218" width="282" height="160" rx="12" fill="#fff" opacity=".9"/>
+  <text x="940" y="247" class="path">sales.csv</text>
+  <text x="940" y="273" class="path">knowledge.md</text>
+  <text x="940" y="299" class="path">manual.md</text>
+  <text x="940" y="325" class="path">video/briefing_timeline.md</text>
+  <text x="940" y="351" class="path">video/briefing_video_summary.md</text>
+  <text x="918" y="411" class="body">同一个视图同时服务于：</text>
+  <text x="940" y="441" class="body">• 全局数据巡检</text>
+  <text x="940" y="468" class="body">• 首轮上下文装配</text>
+  <text x="940" y="495" class="body">• 后续工具按需读取</text>
+
+  <rect x="52" y="578" width="1176" height="42" rx="12" fill="#e8eef6"/>
+  <text x="75" y="604" class="body">关键收益：路径统一、源文件不变、派生材料可追踪，数据巡检与主 Agent 不需要分别理解 PDF 和视频的底层格式。</text>
+</svg>
