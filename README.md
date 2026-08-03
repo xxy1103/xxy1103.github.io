@@ -1,353 +1,123 @@
 # ulBo Astro Theme
 
-[中文](./README.md) | [English](./README.en.md)
+[中文](./README.md) · [English](./README.en.md)
 
-`ulBo` 是一个面向个人博客场景的 Astro 主题模板，强调配置集中、可迁移、可扩展，以及对 SEO/性能的工程化细节优化。
+[![Astro 6](https://img.shields.io/badge/Astro-6-BC52EE?logo=astro)](https://astro.build/)
+[![Node.js 22+](https://img.shields.io/badge/Node.js-22%2B-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
-**Astro v6 Ready**：当前版本基于 Astro 6.4.8 构建并完成兼容验证。
+一个简洁、响应式、开箱即用的 Astro 个人博客主题。
 
-在线示例：[https://template.ulna520.top](https://template.ulna520.top)
+[在线预览](https://template.ulna520.top) · [个人博客示例](https://blog.ulna520.top) · [VS Code 文章管理插件](https://github.com/xxy1103/ulbo_vscode)
 
-## 项目简介
+![ulBo 主题首页预览](./docs/images/preview.png)
 
-- 响应式博客结构：首页、博客归档、标签页、About 页一体化。
-- 配置集中在 `src/config/`，适合模板仓库快速改造成个人站点。
-- 对“空内容仓库”友好：`src/content/blog/` 可为空，基础页面仍可访问。
+## 特点
 
-## 特性总览
-
-1. 响应式博客布局（`/`、`/blog`、`/tags`、`/about`）
-
-   - 页面级断点与移动端适配：`src/pages/*.astro`、`src/styles/global.css`
-   - 移动端导航抽屉：`src/components/Header.astro`
-2. 严格文章契约与草稿保护
-
-   - Frontmatter 使用统一的 `title/date/updated/description/draft/categories/tags` 字段
-   - 草稿在开发环境中可见并带“草稿”标识，生产构建从所有内容出口排除
-   - 分类固定为数组且最多一个；正式文章必须有一个分类和至少一个标签
-   - 严格 Schema 与条件校验入口：`src/lib/content/frontmatter-schema.ts`
-   - Hexo 图片相对路径兼容（`image/...` -> `/image/...`）：`src/plugins/remark-hexo-images.mjs`
-3. 流畅动画设计（Material Design 曲线）
-
-   - 页面过渡使用 View Transitions：`src/components/BaseHead.astro`
-   - Material Design 3 动画曲线（Emphasized/Decelerate/Accelerate）用于页面与交互动画：`src/components/BaseHead.astro`、`src/components/SearchModal.astro`
-4. SEO 优化（仅列当前代码已实现项）
-
-   - 详见下方“SEO 优化（代码对齐）”章节。
-5. KaTeX 数学公式支持
-
-   - Markdown 管线：`remark-math` + `rehype-katex`（`astro.config.mjs`）
-   - 按需加载 KaTeX 样式（仅检测到数学内容时加载）：`src/pages/blog/[...slug].astro`、`src/layouts/BlogPost.astro`
-6. 内置 WebP 图片压缩流程
-
-   - 图片优化与普通构建相互独立，不会在 `npm run build` 时修改文章或资源文件
-   - 使用 `npm run optimize:images:dry-run` 预览，确认后再显式执行 `npm run optimize:images`
-7. Lighthouse 导向性能优化
-
-   - 图片懒加载、异步解码、按需预加载、延迟加载搜索索引、视口外内容渲染优化等
-   - 详见下方“Lighthouse 导向性能优化（代码对齐）”章节
-
-## SEO 优化（代码对齐）
-
-以下条目均可从当前仓库代码直接核对：
-
-1. Canonical、robots、Open Graph、Twitter Card、JSON-LD 注入
-
-   - `src/components/BaseHead.astro`
-2. 首页 `WebSite` 结构化数据
-
-   - `src/pages/index.astro`
-3. About 页 `Person` 结构化数据
-
-   - `src/pages/about.astro`
-4. 文章页 `BlogPosting` 结构化数据 + `article:*` 元信息
-
-   - `src/layouts/BlogPost.astro`
-5. 归档分页 SEO 策略：`/blog/2+` 设为 `noindex,follow`，并输出 `rel=prev/next`
-
-   - `src/pages/blog/[...page].astro`
-6. sitemap 过滤策略：排除标签页与 `/blog/2+` 分页路径
-
-   - `astro.config.mjs`
-7. RSS 输出与 description 回退（frontmatter description -> 正文提取 -> title）
-
-   - `src/pages/rss.xml.js`
-   - `src/utils/seo.ts`
-8. 重要边界说明
-
-   - 当前代码未对标签页显式设置 `noindex`（`/tags` 与 `/tags/[tag]` 页面未传入 `noindex`），README 不做该项声明。
-
-## Lighthouse 导向性能优化（代码对齐）
-
-以下优化项均可在代码中定位：
-
-1. Markdown 图片统一懒加载与异步解码
-
-   - `src/plugins/rehype-lazy-images.mjs`
-2. 构建期图片转 WebP + Markdown 引用自动替换
-
-   - `scripts/optimize-blog-images.mjs`
-3. 显式、可预览的图片优化流程
-
-   - `npm run optimize:images:dry-run` 不写入文件
-   - `npm run optimize:images` 才生成 WebP 并替换 Markdown 引用
-4. 文章首图预加载 + KaTeX 样式按需加载
-
-   - `src/layouts/BlogPost.astro`
-5. KaTeX 字体显示策略 patch（`font-display: block` -> `swap`）
-
-   - `astro.config.mjs`
-6. 搜索索引懒加载（首次打开搜索框时再请求）
-
-   - `src/scripts/search-modal.client.ts`
-7. 主题初始化防闪烁（减少错误主题闪烁）
-
-   - `src/components/BaseHead.astro`
+- **专注阅读**：简洁的文章排版、明暗主题、响应式布局和页面过渡。
+- **内容完整**：内置首页、文章归档、标签、About、全文搜索、RSS 和站点地图。
+- **适合技术写作**：支持 Markdown、MDX、代码高亮、KaTeX 公式和 Mermaid 图表。
+- **草稿安全**：开发环境可查看草稿，生产构建会从页面、搜索和 RSS 中排除草稿。
+- **SEO 友好**：包含 Canonical、Open Graph、Twitter Card 和 JSON-LD。
+- **图片优化**：提供可预览的 WebP 转换流程，普通构建不会修改文章或图片。
+- **方便迁移**：站点、个人资料和首页展示内容集中在 `src/config/`。
 
 ## 快速开始
 
+点击 GitHub 仓库中的 **Use this template** 创建自己的博客，然后运行：
+
 ```bash
 npm install
 npm run dev
 ```
 
-构建：
+默认访问地址为 `http://localhost:4321`。
 
-```bash
-npm run build
-```
-
-预览：
-
-```bash
-npm run preview
-```
-
-## 作为模板使用（详细教程）
-
-### 1) 前置条件
+环境要求：
 
 - Node.js 22.12.0 或更高版本
 - npm 9.6.5 或更高版本
-- 仓库提供 `.nvmrc`，可使用 `nvm use` 切换到项目约定版本
 
-### 2) 从 GitHub Template 创建项目
+## 配置博客
 
-1. 在 GitHub 打开本仓库，点击 **Use this template**。
-2. 创建你自己的新仓库（公开或私有仓库均可）。
-3. 克隆你的新仓库到本地。
+通常只需要修改以下文件：
 
-### 3) 本地初始化与启动
+| 文件 | 用途 |
+| --- | --- |
+| `src/config/site.ts` | 网站地址、标题、描述和仓库链接 |
+| `src/config/profile.ts` | 头像、个人介绍和社交链接 |
+| `src/config/hero.ts` | 首页与各页面的标题、背景图 |
+| `src/content/blog/` | Markdown / MDX 文章 |
+| `public/image/` | 文章与页面图片 |
 
-```bash
-npm install
-npm run dev
-```
+## 写一篇文章
 
-默认开发地址通常为：`http://localhost:4321`
-
-### 4) 修改站点配置
-
-优先修改以下文件：
-
-- `src/config/site.ts`
-- `src/config/profile.ts`
-- `src/config/hero.ts`
-
-`src/config/index.ts` 是聚合导出入口，通常无需直接改动。
-
-### 5) 添加博客内容
-
-将文章放到 `src/content/blog/`，支持 `.md` 与 `.mdx`。
-
-示例 Frontmatter：
+在 `src/content/blog/` 中新建 `.md` 或 `.mdx` 文件：
 
 ```md
 ---
 title: "我的第一篇文章"
-date: "2026-02-11T10:00:00+08:00"
-updated: "2026-02-12T18:30:00+08:00"
-description: "一段用于 SEO 与列表摘要的描述。"
+date: "2026-08-03T10:00:00+08:00"
+description: "介绍如何使用 ulBo 搭建个人博客，包括主题配置、文章写作、本地预览、图片优化与部署流程。"
 draft: false
 categories:
-  - "教程"
+  - "记录"
 tags:
   - "astro"
-  - "markdown"
+  - "blog"
 ---
 
-正文内容...
+正文从这里开始。
 ```
 
-说明：
+完整字段与校验规则见 [Frontmatter 标准](./standard/frontmatter.md)。
 
-- `title`、`date`、`categories` 和 `tags` 必填；分类与标签必须使用 YAML 块数组。
-- 日期使用包含 `+08:00` 时区的 ISO 8601 字符串。
-- `draft` 可省略，缺省为 `false`。
-- `draft: true` 时允许 `categories: []` 和 `tags: []`。
-- 正式文章必须恰好有一个分类、至少一个标签，且标签不得重复。
-- `pubDate`、`updatedDate`、字符串形式分类/标签及其他旧字段不再兼容。
-- 文章统一使用 `src/config/hero.ts` 中的默认背景，不设置文章级 `heroImage`。
-- 完整规范见 `standard/frontmatter.md`。
+## 推荐搭配 ulbo Article Manager
 
-只读检查全部文章 Frontmatter：
+[ulbo Article Manager](https://github.com/xxy1103/ulbo_vscode) 是专门为本主题开发的 VS Code 插件，可以直接在编辑器中：
 
-```bash
-npm run frontmatter:check
-```
+- 新建、搜索和筛选文章；
+- 编辑 Frontmatter，无需手动维护 YAML；
+- 启动本地预览并打开当前文章；
+- 校验文章与图片，准备发布文件。
 
-确认检查结果后，可显式修复格式：
+主题负责博客的展示与构建，插件负责日常写作和文章管理，两者可以独立使用，也可以配合使用。
 
-```bash
-npm run frontmatter:fix
-```
+## 常用命令
 
-修复工具只重写 Frontmatter，并在写入前验证正文哈希。
+| 命令 | 说明 |
+| --- | --- |
+| `npm run dev` | 启动开发服务器 |
+| `npm run build` | 构建生产版本 |
+| `npm run preview` | 预览构建结果 |
+| `npm run check` | 检查 Astro 与 TypeScript |
+| `npm test` | 运行测试 |
+| `npm run frontmatter:check` | 只读检查文章 Frontmatter |
+| `npm run optimize:images:dry-run` | 预览图片优化结果 |
+| `npm run optimize:images` | 转换 WebP 并更新文章引用 |
 
-### 6) 图片与 WebP 压缩流程
+## 部署
 
-1. 将图片放在 `public/`（例如 `public/image/...`）。
-2. 文章中引用 `.png/.jpg/.jpeg` 图片。
-3. 先预览将要发生的转换，不会写入图片或 Markdown：
+项目输出为静态文件，可部署到 Cloudflare、Vercel、Netlify 或 GitHub Pages。
 
-```bash
-npm run optimize:images:dry-run
-```
-
-4. 确认结果后，显式执行转换：
-
-```bash
-npm run optimize:images
-```
-
-`npm run build` 和 `npm run build:astro` 都只构建网站，不会触发图片转换。
-
-可选高级参数（直接执行脚本）：
-
-```bash
-node scripts/optimize-blog-images.mjs --max-width 1600 --quality 78
-```
-
-使用 `--force` 可忽略参数感知缓存并重新生成；缓存位于 `.astro/`，不会提交到仓库。
-
-### 7) 构建与预览
-
-```bash
-npm run build
-npm run preview
-```
-
-### 8) 部署
-
-推荐使用 Cloudflare Workers Static Assets。仓库已包含 `wrangler.jsonc`，连接 GitHub 仓库后配置：
-
-- 构建命令：`npm run build`
-- 部署命令：`npm run deploy`
-- 根目录：`/`
-- Node.js：`22.12.0`（同时由 `.nvmrc` 固定）
-
-推送到生产分支后，Cloudflare 会自动构建并部署 `dist/`。如需手动部署，可在完成 Cloudflare 登录后运行：
+仓库已包含 Cloudflare Workers 配置：
 
 ```bash
 npm run build
 npm run deploy
 ```
 
-也可以部署到 Cloudflare Pages、Vercel 或 Netlify，构建输出目录均为 `dist/`。
+使用其他平台时，将构建命令设为 `npm run build`，输出目录设为 `dist`。
 
-## 可配置项总览
+## 相关项目
 
-### `src/config/site.ts` (`SiteConfig`)
+- [ulbo Article Manager](https://github.com/xxy1103/ulbo_vscode)：配套的 VS Code 文章管理插件。
+- [xxy1103.github.io](https://github.com/xxy1103/xxy1103.github.io)：使用 ulBo 搭建的个人博客仓库。
 
-- `siteUrl`: 生产环境站点 URL（canonical、sitemap、RSS 的基础 URL）
-- `siteTitle`: 站点标题
-- `siteDescription`: 默认描述
-- `locale`: 语言区域（BCP-47，例如 `zh-CN`）
-- `headerGithubRepoUrl`: 顶栏仓库链接
-- `faviconIco`: 全局 favicon 路径（`public/` 下资源）
+## 参与贡献
 
-### `src/config/profile.ts` (`ProfileConfig`, `ProfileSocialLink`)
-
-- `avatar`: 可选头像 URL
-- `name`: 名称（About、结构化数据、页脚）
-- `title`: 个人标题/角色
-- `bio`: 个人简介
-- `location`: 可选位置
-- `email`: 可选邮箱
-- `githubProfileUrl`: 个人 GitHub 地址
-- `socials`: 社交链接数组
-- `socials[].key`: `github | x | email | website`
-- `socials[].label`: 展示名
-- `socials[].url`: 链接地址
-
-### `src/config/hero.ts` (`HeroConfig`, `HeroSectionConfig`)
-
-- `home.text` / `home.subtitle` / `home.backgroundImage`
-- `blog.text` / `blog.subtitle` / `blog.backgroundImage`
-- `tags.text` / `tags.subtitle` / `tags.backgroundImage`
-- `about.text` / `about.subtitle` / `about.backgroundImage`
-- `postDefaultBackground`: 所有文章页共享的默认封面
-
-### `src/content.config.ts`（严格博客 Frontmatter 契约）
-
-必填字段：
-
-- `title`
-- `date`
-- `categories`（字符串数组，最多一个）
-- `tags`（字符串数组）
-
-可选字段：
-
-- `description`
-- `updated`
-- `draft`（布尔值，缺省为 `false`）
-
-条件校验：
-
-- 草稿允许空分类和空标签，但分类仍不能超过一个。
-- 正式文章必须恰好有一个分类和至少一个标签。
-- 所有分类、标签及文本字段会去除首尾空格，并拒绝空字符串。
-- 重复标签及 Schema 未声明的旧字段会导致内容校验失败。
-- 生产环境通过 `getBlogPosts()` 统一排除草稿，覆盖首页、归档、详情路由、标签、搜索索引和 RSS。
-
-## 项目命令
-
-以下命令与 `package.json` 保持一致：
-
-| 命令                          | 说明                                      |
-| :---------------------------- | :---------------------------------------- |
-| `npm run dev`                 | 启动本地开发服务器                        |
-| `npm run build`               | 构建网站，不修改文章或图片资源            |
-| `npm run build:astro`         | `astro build` 的显式别名                   |
-| `npm run check`               | 执行 `astro check` 类型与模板校验          |
-| `npm run frontmatter:check`   | 只读检查全部文章 Frontmatter               |
-| `npm run frontmatter:fix`     | 按规范修复 Frontmatter，不修改正文          |
-| `npm run preview`             | 预览生产构建产物                          |
-| `npm run astro`               | Astro CLI 原生命令入口                    |
-| `npm run optimize:images`     | 生成 WebP 并替换博客图片引用              |
-| `npm run optimize:images:dry-run` | 预览图片优化结果，不写入任何文件       |
-
-## 重构后的开发约定（2026-02）
-
-- 页面壳层统一使用 `src/layouts/PageShell.astro`（文章详情保持 `BlogPost` 专用布局）。
-- 博客内容读取统一从 `src/lib/content/blog.ts` 获取，不再在页面里重复 `getCollection` 逻辑。
-- 摘要与 SEO 文本统一使用 `src/lib/content/text.ts`。
-- 个人社交链接解析统一使用 `src/lib/profile/social.ts`。
-- 页面交互脚本放在 `src/scripts/pages/*`，通过 `src/scripts/pages/registry.ts` 注册。
-- 页面关系与依赖图见 `docs/frontend-architecture-map.md`。
-
-## 开源协作
-
-- 贡献指南：`CONTRIBUTING.md`
-- 行为准则：`CODE_OF_CONDUCT.md`
-- 安全策略：`SECURITY.md`
-- Issue 模板：`.github/ISSUE_TEMPLATE/`
-- CI 工作流：`.github/workflows/ci.yml`
-- 部署工作流：`.github/workflows/deploy.yml`
-
-欢迎提交 Issue / PR 来补全 Hexo 迁移兼容、SEO 细节和性能优化方案。
+欢迎提交 Issue 和 Pull Request。开始前请阅读 [贡献指南](./CONTRIBUTING.md) 与 [行为准则](./CODE_OF_CONDUCT.md)。
 
 ## 许可证
 
-本项目基于 MIT License 开源，详见 `LICENSE`。
+[MIT](./LICENSE)
