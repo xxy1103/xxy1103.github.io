@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="780" viewBox="0 0 1440 780" role="img" aria-labelledby="title desc">
+  <title id="title">候选答案触发过程校验的流程</title>
+  <desc id="desc">主 Agent 通过 submit_tool_result 生成候选答案。若过程校验已启用且此前尚未通过，候选答案先接受过程校验；通过后进入答案校验，拒绝后清空候选答案并携带必做动作返回主 Agent。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#f7f5ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#26405f" flood-opacity=".14"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#52677f"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#3b9b68"/>
+    </marker>
+    <marker id="redArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#c24b55"/>
+    </marker>
+    <style>
+      .title { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 31px; font-weight: 700; fill: #17324d; }
+      .subtitle { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 18px; fill: #5b6d80; }
+      .h { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 23px; font-weight: 700; }
+      .body { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 17px; fill: #4d6579; }
+      .small { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 16px; fill: #52677f; }
+      .code { font-family: Consolas, "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 700; }
+      .label { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 16px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="780" rx="28" fill="url(#bg)"/>
+  <text x="70" y="70" class="title">候选答案出现后，先审计“为什么相信它”，再检查“如何提交它”</text>
+  <text x="70" y="110" class="subtitle">它由提交动作触发，而不是等待周期阈值；过程校验和答案校验关注不同问题。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="185" width="245" height="130" rx="24" fill="#ffffff" stroke="#7fa9d3" stroke-width="3"/>
+    <text x="192" y="236" text-anchor="middle" class="h" fill="#204d73">主 Agent</text>
+    <text x="192" y="275" text-anchor="middle" class="body">完成查询或计算</text>
+
+    <rect x="390" y="175" width="300" height="150" rx="24" fill="#eaf9f1" stroke="#3b996b" stroke-width="3"/>
+    <text x="540" y="226" text-anchor="middle" class="code" fill="#286f4d">submit_tool_result</text>
+    <text x="540" y="266" text-anchor="middle" class="body">产生候选答案</text>
+    <text x="540" y="297" text-anchor="middle" class="small">并保留 SQL / Python 等提交来源</text>
+
+    <path d="M825 164 L940 250 L825 336 L710 250 Z" fill="#fff9e9" stroke="#d7a83b" stroke-width="3"/>
+    <text x="825" y="236" text-anchor="middle" class="h" fill="#725318">需要过程校验？</text>
+    <text x="825" y="271" text-anchor="middle" class="small">已启用，且此前未通过</text>
+
+    <rect x="635" y="425" width="380" height="155" rx="25" fill="#eef0ff" stroke="#706fd3" stroke-width="3"/>
+    <text x="825" y="474" text-anchor="middle" class="h" fill="#3e3c89">过程校验 Agent</text>
+    <text x="825" y="513" text-anchor="middle" class="body">来源、字段语义、粒度、Join、指标</text>
+    <text x="825" y="546" text-anchor="middle" class="small">以及候选答案的证据闭环是否充分</text>
+
+    <path d="M1155 415 L1270 502 L1155 589 L1040 502 Z" fill="#ffffff" stroke="#7fa9d3" stroke-width="3"/>
+    <text x="1155" y="493" text-anchor="middle" class="h" fill="#204d73">valid?</text>
+    <text x="1155" y="525" text-anchor="middle" class="small">是否通过证据审计</text>
+
+    <rect x="1090" y="175" width="280" height="150" rx="24" fill="#ecfbf2" stroke="#46a66b" stroke-width="3"/>
+    <text x="1230" y="226" text-anchor="middle" class="h" fill="#257247">答案校验 Agent</text>
+    <text x="1230" y="266" text-anchor="middle" class="body">范围、行列、去重与提交结构</text>
+    <text x="1230" y="297" text-anchor="middle" class="small">处理最终交付正确性</text>
+
+    <rect x="1035" y="640" width="330" height="85" rx="22" fill="#fff0f1" stroke="#c24b55" stroke-width="3"/>
+    <text x="1200" y="677" text-anchor="middle" class="h" fill="#932d37">拒绝：清空候选答案</text>
+    <text x="1200" y="707" text-anchor="middle" class="small">反馈问题与必做取证动作</text>
+  </g>
+
+  <path d="M315 250 H390" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M690 250 H710" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M825 336 V425" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="850" y="386" class="label" fill="#52677f">是</text>
+  <path d="M1015 502 H1040" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1155 415 V360 Q1155 340 1175 340 H1230 V325" fill="none" stroke="#3b9b68" stroke-width="4" marker-end="url(#greenArrow)"/>
+  <text x="1179" y="384" class="label" fill="#2d8056">通过</text>
+  <path d="M1155 589 V640" fill="none" stroke="#c24b55" stroke-width="4" marker-end="url(#redArrow)"/>
+  <text x="1180" y="623" class="label" fill="#a33b45">拒绝</text>
+  <path d="M1035 682 H190 Q120 682 120 612 V315" fill="none" stroke="#c24b55" stroke-width="4" marker-end="url(#redArrow)"/>
+  <text x="510" y="665" text-anchor="middle" class="label" fill="#a33b45">主 Agent 补证据、修正后再次提交</text>
+  <path d="M940 250 H1090" fill="none" stroke="#52677f" stroke-width="3" stroke-dasharray="9 8" marker-end="url(#arrow)"/>
+  <text x="1015" y="229" text-anchor="middle" class="label" fill="#52677f">否：跳过过程校验</text>
+
+  <rect x="185" y="735" width="1070" height="28" rx="12" fill="#edf4fb"/>
+  <text x="720" y="756" text-anchor="middle" class="small">过程校验不负责最终表格整形；答案校验也不重新建立完整的来源证据链。</text>
+</svg>

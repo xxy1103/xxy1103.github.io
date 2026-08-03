@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc">
+  <title id="title">过程校验的通过、拒绝与技术异常流转</title>
+  <desc id="desc">过程校验有三类结果。通过时锁存状态并继续主 Agent 或答案校验；拒绝时清空候选答案、反馈必做动作并回到主 Agent；技术异常时记录 validator_error 后放行。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#f7f5ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#26405f" flood-opacity=".14"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#52677f"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#3b9b68"/>
+    </marker>
+    <marker id="redArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#c24b55"/>
+    </marker>
+    <marker id="orangeArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#bd7b2d"/>
+    </marker>
+    <style>
+      .title { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 31px; font-weight: 700; fill: #17324d; }
+      .subtitle { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 18px; fill: #5b6d80; }
+      .h { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 24px; font-weight: 700; }
+      .body { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 17px; fill: #4d6579; }
+      .small { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 16px; fill: #52677f; }
+      .code { font-family: Consolas, "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 700; }
+      .label { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 16px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="760" rx="28" fill="url(#bg)"/>
+  <text x="70" y="70" class="title">一次过程校验结束后，状态会进入三条清晰的分支</text>
+  <text x="70" y="110" class="subtitle">通过锁存，拒绝回环；辅助校验器本身发生技术故障时则记录并放行，避免主任务卡死。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="520" y="150" width="400" height="122" rx="25" fill="#eef0ff" stroke="#706fd3" stroke-width="3"/>
+    <text x="720" y="199" text-anchor="middle" class="h" fill="#3e3c89">过程校验结束</text>
+    <text x="720" y="237" text-anchor="middle" class="small">模型响应或运行时异常</text>
+
+    <rect x="70" y="390" width="370" height="190" rx="25" fill="#ecfbf2" stroke="#46a66b" stroke-width="3"/>
+    <text x="255" y="439" text-anchor="middle" class="h" fill="#257247">通过 valid=true</text>
+    <text x="105" y="483" class="body">• 更新最近校验的模型步数</text>
+    <text x="105" y="516" class="body">• 锁存 process_validation_passed</text>
+    <text x="105" y="549" class="body">• 保存新的语义账本</text>
+
+    <rect x="535" y="390" width="370" height="190" rx="25" fill="#fff0f1" stroke="#c24b55" stroke-width="3"/>
+    <text x="720" y="439" text-anchor="middle" class="h" fill="#932d37">拒绝 valid=false</text>
+    <text x="570" y="483" class="body">• 清空 answer 与 answer_submission</text>
+    <text x="570" y="516" class="body">• 拒绝计数加一，保存语义账本</text>
+    <text x="570" y="549" class="body">• 反馈 issues 与必做取证动作</text>
+
+    <rect x="1000" y="390" width="370" height="190" rx="25" fill="#fff7e8" stroke="#c8943b" stroke-width="3"/>
+    <text x="1185" y="439" text-anchor="middle" class="h" fill="#81591b">技术异常 fail-open</text>
+    <text x="1035" y="483" class="body">• 模型调用失败、超时或解析失败</text>
+    <text x="1035" y="516" class="body">• 非对象 JSON、缺少 valid、节点异常</text>
+    <text x="1035" y="549" class="body">• 记录 validator_error，不阻塞主任务</text>
+
+    <rect x="80" y="645" width="350" height="65" rx="20" fill="#ffffff" stroke="#46a66b" stroke-width="2"/>
+    <text x="255" y="685" text-anchor="middle" class="body">无答案 → 主 Agent；有答案 → 答案校验</text>
+    <rect x="540" y="645" width="360" height="65" rx="20" fill="#ffffff" stroke="#c24b55" stroke-width="2"/>
+    <text x="720" y="685" text-anchor="middle" class="body">返回主 Agent 补证据、修正后重提</text>
+    <rect x="1010" y="645" width="350" height="65" rx="20" fill="#ffffff" stroke="#c8943b" stroke-width="2"/>
+    <text x="1185" y="685" text-anchor="middle" class="body">按原主流程继续</text>
+  </g>
+
+  <path d="M650 272 C530 302 340 320 255 390" fill="none" stroke="#3b9b68" stroke-width="4" marker-end="url(#greenArrow)"/>
+  <text x="435" y="325" text-anchor="middle" class="label" fill="#2d8056">结构化响应：valid=true</text>
+  <path d="M720 272 V390" fill="none" stroke="#c24b55" stroke-width="4" marker-end="url(#redArrow)"/>
+  <text x="750" y="342" class="label" fill="#a33b45">结构化响应：valid=false</text>
+  <path d="M790 272 C910 302 1090 320 1185 390" fill="none" stroke="#bd7b2d" stroke-width="4" marker-end="url(#orangeArrow)"/>
+  <text x="1010" y="325" text-anchor="middle" class="label" fill="#a36521">调用、解析或节点异常</text>
+
+  <path d="M255 580 V645" fill="none" stroke="#3b9b68" stroke-width="4" marker-end="url(#greenArrow)"/>
+  <path d="M720 580 V645" fill="none" stroke="#c24b55" stroke-width="4" marker-end="url(#redArrow)"/>
+  <path d="M1185 580 V645" fill="none" stroke="#bd7b2d" stroke-width="4" marker-end="url(#orangeArrow)"/>
+
+  <text x="720" y="742" text-anchor="middle" class="small">fail-open 保证任务可结束，但不表示证据问题已修复；技术故障期间可能漏过真实的语义错误。</text>
+</svg>

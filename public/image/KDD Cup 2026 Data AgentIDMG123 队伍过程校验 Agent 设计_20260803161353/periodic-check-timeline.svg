@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc">
+  <title id="title">过程校验的周期检查如何触发</title>
+  <desc id="desc">示例中上一次过程校验发生在第12次主模型调用后。每次工具步骤结束时，路由器比较当前主模型调用次数与12的差值；在第24次调用后，差值达到12，触发过程校验。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#f7f5ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#26405f" flood-opacity=".14"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#52677f"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#3b9b68"/>
+    </marker>
+    <style>
+      .title { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 31px; font-weight: 700; fill: #17324d; }
+      .subtitle { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 18px; fill: #5b6d80; }
+      .h { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 23px; font-weight: 700; }
+      .body { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 17px; fill: #4d6579; }
+      .small { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 16px; fill: #52677f; }
+      .code { font-family: Consolas, "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 700; }
+      .label { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; font-size: 16px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="760" rx="28" fill="url(#bg)"/>
+  <text x="70" y="70" class="title">周期检查：只在“距离上次校验的模型调用数”达到阈值时触发</text>
+  <text x="70" y="110" class="subtitle">下图用当前配置的 12 步间隔举例。工具步骤结束时才检查，但计数对象始终是主 Agent 的模型调用。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="175" width="270" height="162" rx="24" fill="#ecfbf2" stroke="#46a66b" stroke-width="3"/>
+    <text x="205" y="223" text-anchor="middle" class="h" fill="#257247">上一次过程校验</text>
+    <text x="205" y="262" text-anchor="middle" class="code" fill="#257247">last = 12</text>
+    <text x="205" y="299" text-anchor="middle" class="small">第 12 次模型调用后已检查</text>
+
+    <rect x="1120" y="175" width="250" height="162" rx="24" fill="#fff9e9" stroke="#d7a83b" stroke-width="3"/>
+    <text x="1245" y="223" text-anchor="middle" class="h" fill="#725318">当前检查点</text>
+    <text x="1245" y="262" text-anchor="middle" class="code" fill="#725318">step_count = 24</text>
+    <text x="1245" y="299" text-anchor="middle" class="small">本次工具步骤刚刚结束</text>
+  </g>
+
+  <path d="M340 256 H1120" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="730" y="228" text-anchor="middle" class="label" fill="#52677f">主 Agent 持续调用模型，再由工具步骤返回路由器</text>
+
+  <g>
+    <circle cx="410" cy="256" r="13" fill="#7fa9d3"/>
+    <text x="410" y="296" text-anchor="middle" class="small">13</text>
+    <circle cx="500" cy="256" r="13" fill="#7fa9d3"/>
+    <text x="500" y="296" text-anchor="middle" class="small">14</text>
+    <circle cx="590" cy="256" r="13" fill="#7fa9d3"/>
+    <text x="590" y="296" text-anchor="middle" class="small">15</text>
+    <circle cx="680" cy="256" r="13" fill="#7fa9d3"/>
+    <text x="680" y="296" text-anchor="middle" class="small">16</text>
+    <text x="775" y="265" text-anchor="middle" font-family="Microsoft YaHei, Noto Sans SC, sans-serif" font-size="30" fill="#708397">…</text>
+    <circle cx="870" cy="256" r="13" fill="#7fa9d3"/>
+    <text x="870" y="296" text-anchor="middle" class="small">22</text>
+    <circle cx="960" cy="256" r="13" fill="#7fa9d3"/>
+    <text x="960" y="296" text-anchor="middle" class="small">23</text>
+    <circle cx="1050" cy="256" r="15" fill="#d7a83b"/>
+    <text x="1050" y="296" text-anchor="middle" class="small">24</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="125" y="430" width="350" height="170" rx="25" fill="#ffffff" stroke="#7fa9d3" stroke-width="3"/>
+    <text x="300" y="480" text-anchor="middle" class="h" fill="#204d73">工具步骤结束时，路由器计算</text>
+    <text x="300" y="530" text-anchor="middle" class="code" fill="#365d78">Δs = 24 − 12 = 12</text>
+    <text x="300" y="568" text-anchor="middle" class="small">不是把所有 LangGraph 节点相加</text>
+
+    <rect x="570" y="430" width="300" height="170" rx="25" fill="#ffffff" stroke="#7fa9d3" stroke-width="3"/>
+    <text x="720" y="480" text-anchor="middle" class="h" fill="#204d73">与周期阈值比较</text>
+    <text x="720" y="530" text-anchor="middle" class="code" fill="#365d78">12 ≥ 12</text>
+    <text x="720" y="568" text-anchor="middle" class="small">checkpoint_model_interval = 12</text>
+
+    <rect x="965" y="430" width="350" height="170" rx="25" fill="#eef0ff" stroke="#706fd3" stroke-width="3"/>
+    <text x="1140" y="480" text-anchor="middle" class="h" fill="#3e3c89">满足其他前提后</text>
+    <text x="1140" y="526" text-anchor="middle" class="h" fill="#3e3c89">进入 validate_process</text>
+    <text x="1140" y="568" text-anchor="middle" class="small">已启用，且此前尚未通过</text>
+  </g>
+
+  <path d="M1245 337 V383 H300 V430" fill="none" stroke="#52677f" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M475 515 H570" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M870 515 H965" fill="none" stroke="#3b9b68" stroke-width="4" marker-end="url(#greenArrow)"/>
+
+  <rect x="225" y="648" width="990" height="58" rx="18" fill="#edf4fb" stroke="#bed1e3" stroke-width="2"/>
+  <text x="720" y="684" text-anchor="middle" class="body">如果当前只到第 16 次调用：Δs = 16 − 12 = 4，小于 12，路由器不会触发校验，主 Agent 继续求解。</text>
+</svg>

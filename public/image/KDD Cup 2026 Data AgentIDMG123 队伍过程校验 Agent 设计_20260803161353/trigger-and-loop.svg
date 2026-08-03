@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="820" viewBox="0 0 1440 820" role="img" aria-labelledby="title desc">
+  <title id="title">过程校验 Agent 的触发、通过与拒绝回环</title>
+  <desc id="desc">主 Agent 调用工具后，在达到周期检查点或产生候选答案时触发过程校验。通过后继续求解或进入答案校验，拒绝后清空候选答案并返回主 Agent 补证据。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#f7f5ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#26405f" flood-opacity=".14"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#52677f"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#3b9b68"/>
+    </marker>
+    <marker id="redArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#c24b55"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="820" rx="28" fill="url(#bg)"/>
+  <text x="70" y="70" font-family="Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="#17324d">过程校验是主求解链中的证据审计关卡</text>
+  <text x="70" y="110" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#5b6d80">两种入口：达到周期检查点，或主 Agent 已经产生候选答案</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="185" width="230" height="120" rx="22" fill="#ffffff" stroke="#7fa9d3" stroke-width="2"/>
+    <text x="185" y="233" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#204d73">主 Agent</text>
+    <text x="185" y="270" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#4d6579">理解问题、规划、计算</text>
+
+    <rect x="385" y="185" width="230" height="120" rx="22" fill="#ffffff" stroke="#7fa9d3" stroke-width="2"/>
+    <text x="500" y="233" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#204d73">工具取证</text>
+    <text x="500" y="270" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#4d6579">读文档、查询、看图</text>
+
+    <rect x="700" y="165" width="280" height="160" rx="25" fill="#fff9e9" stroke="#d7a83b" stroke-width="3"/>
+    <text x="840" y="215" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="700" fill="#725318">触发判断</text>
+    <text x="840" y="258" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#6b5b38">达到模型步周期？</text>
+    <text x="840" y="291" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#6b5b38">已经产生候选答案？</text>
+
+    <rect x="1085" y="165" width="280" height="160" rx="25" fill="#eef0ff" stroke="#706fd3" stroke-width="3"/>
+    <text x="1225" y="215" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#3e3c89">过程校验 Agent</text>
+    <text x="1225" y="258" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#55558a">审计语义与证据链</text>
+    <text x="1225" y="291" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#55558a">输出结构化 JSON</text>
+
+    <rect x="735" y="495" width="280" height="120" rx="24" fill="#ecfbf2" stroke="#46a66b" stroke-width="3"/>
+    <text x="875" y="544" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="700" fill="#257247">通过 valid=true</text>
+    <text x="875" y="582" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#48715a">锁存通过状态并保存账本</text>
+
+    <rect x="1065" y="495" width="300" height="120" rx="24" fill="#fff0f1" stroke="#c24b55" stroke-width="3"/>
+    <text x="1215" y="544" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="700" fill="#932d37">拒绝 valid=false</text>
+    <text x="1215" y="582" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#8a4b50">问题 + 必做取证动作</text>
+
+    <rect x="510" y="670" width="390" height="95" rx="22" fill="#ffffff" stroke="#46a66b" stroke-width="3"/>
+    <text x="705" y="710" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#257247">答案校验 / 继续求解</text>
+    <text x="705" y="741" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#48715a">取决于是否已经有候选答案</text>
+  </g>
+
+  <path d="M300 245 H385" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M615 245 H700" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M980 245 H1085" fill="none" stroke="#52677f" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="1032" y="225" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#52677f">触发</text>
+
+  <path d="M840 325 V400 H500 V305" fill="none" stroke="#52677f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="660" y="390" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#52677f">未触发：继续求解</text>
+
+  <path d="M1185 325 C1160 400 1015 425 920 495" fill="none" stroke="#3b9b68" stroke-width="4" marker-end="url(#greenArrow)"/>
+  <text x="1028" y="412" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#2d8056">通过</text>
+  <path d="M1255 325 V495" fill="none" stroke="#c24b55" stroke-width="4" marker-end="url(#redArrow)"/>
+  <text x="1283" y="417" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#a33b45">拒绝</text>
+
+  <path d="M830 615 C805 640 770 652 735 670" fill="none" stroke="#3b9b68" stroke-width="4" marker-end="url(#greenArrow)"/>
+  <path d="M1215 615 V775 H185 Q130 775 130 700 V305" fill="none" stroke="#c24b55" stroke-width="4" marker-end="url(#redArrow)"/>
+  <text x="350" y="758" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#a33b45">清空候选答案，返回主 Agent 补证据</text>
+
+  <text x="70" y="800" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#6f7f90">技术异常或重试预算耗尽：记录原因并放行，避免辅助校验器阻塞整个任务。</text>
+</svg>

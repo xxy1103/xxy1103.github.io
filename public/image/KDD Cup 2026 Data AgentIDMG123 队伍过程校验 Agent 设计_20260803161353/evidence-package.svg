@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">过程校验证据包中的可用证据与排除清单</title>
+  <desc id="desc">运行轨迹经过筛选后形成证据包。成功、完整且未超预算的结果进入 evidence_items；失败、工具层截断或超出证据预算的结果进入 omitted_or_unusable。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#f6faf7"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#294459" flood-opacity=".14"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#5b7183"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#399367"/>
+    </marker>
+    <marker id="orangeArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#bd7b2d"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="900" rx="28" fill="url(#bg)"/>
+  <text x="720" y="64" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="32" font-weight="700" fill="#17374b">证据包 = 可用证据 + 排除清单</text>
+  <text x="720" y="103" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#607687">两个列表一起发送给过程校验模型，但只有左侧列表能够证明事实</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="190" width="300" height="190" rx="26" fill="#ffffff" stroke="#7594ad" stroke-width="3"/>
+    <text x="230" y="243" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="700" fill="#365d78">运行轨迹 steps</text>
+    <text x="230" y="285" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#5d7384">成功结果</text>
+    <text x="230" y="318" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#5d7384">失败结果</text>
+    <text x="230" y="351" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#5d7384">截断与重复结果</text>
+
+    <rect x="550" y="175" width="340" height="220" rx="28" fill="#fff9e9" stroke="#c99a39" stroke-width="3"/>
+    <text x="720" y="230" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="25" font-weight="700" fill="#735619">证据筛选器</text>
+    <text x="720" y="274" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#725f39">是否成功？</text>
+    <text x="720" y="307" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#725f39">工具结果是否完整？</text>
+    <text x="720" y="340" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#725f39">是否重复或超过预算？</text>
+
+    <rect x="1010" y="150" width="350" height="150" rx="25" fill="#eaf9f1" stroke="#3b996b" stroke-width="3"/>
+    <text x="1185" y="205" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="700" fill="#286f4d">evidence_items</text>
+    <text x="1185" y="246" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#46725b">可用证据列表</text>
+    <text x="1185" y="275" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#5c7f6c">可以用于证明来源事实</text>
+
+    <rect x="1010" y="350" width="350" height="190" rx="25" fill="#fff1e8" stroke="#c47a2c" stroke-width="3"/>
+    <text x="1185" y="405" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#914f16">omitted_or_unusable</text>
+    <text x="1185" y="446" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#805b39">排除清单</text>
+    <text x="1185" y="478" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#8b6b4e">只说明没有采纳什么及原因</text>
+    <text x="1185" y="507" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#8b6b4e">不能用于证明事实</text>
+  </g>
+
+  <path d="M380 285 H550" fill="none" stroke="#5b7183" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M890 245 H1010" fill="none" stroke="#399367" stroke-width="4" marker-end="url(#greenArrow)"/>
+  <text x="950" y="224" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#2f8058">可用</text>
+  <path d="M890 330 C955 330 950 445 1010 445" fill="none" stroke="#bd7b2d" stroke-width="4" marker-end="url(#orangeArrow)"/>
+  <text x="950" y="386" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#a36521">排除</text>
+
+  <g filter="url(#shadow)">
+    <rect x="130" y="615" width="1180" height="190" rx="28" fill="#ffffff" stroke="#95a9b8" stroke-width="2"/>
+    <text x="720" y="665" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#38586e">排除清单只是一张“未采纳回执”</text>
+    <text x="250" y="718" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#526b7d">not_successful</text>
+    <text x="250" y="753" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#70818d">工具失败，没有可信观察</text>
+    <text x="620" y="718" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#526b7d">truncated_result</text>
+    <text x="620" y="753" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#70818d">工具层只保留了部分结果</text>
+    <text x="1010" y="718" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#526b7d">evidence_budget</text>
+    <text x="1010" y="753" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#70818d">结果可用，但本轮上下文装不下</text>
+  </g>
+
+  <text x="720" y="855" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#617586">排除项不会自动导致拒绝；只有缺少了支持当前结论所必需的证据时，过程校验才应返回 valid=false。</text>
+</svg>
