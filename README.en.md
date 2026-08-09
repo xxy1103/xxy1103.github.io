@@ -1,18 +1,78 @@
 # ulBo Astro Theme
 
-[中文](./README.md) | [English](./README.en.md)
+<p align="center">
+  <strong>An Astro personal blog theme built for visual expression, long-form reading, and a disciplined publishing workflow.</strong>
+</p>
 
-`ulBo` is an Astro blog theme template for personal publishing, focused on centralized configuration, migration friendliness, extensibility, and practical SEO/performance engineering details.
+<p align="center">
+  <a href="./README.md">中文</a> ·
+  <a href="./README.en.md">English</a>
+</p>
 
-**Astro v6 Ready**: the current release is built and compatibility-tested with Astro 6.4.8.
+<p align="center">
+  <a href="https://astro.build/"><img alt="Astro 6" src="https://img.shields.io/badge/Astro-6.4.8-BC52EE?logo=astro"></a>
+  <a href="https://nodejs.org/"><img alt="Node.js 22+" src="https://img.shields.io/badge/Node.js-22%2B-339933?logo=nodedotjs&logoColor=white"></a>
+  <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+</p>
 
-Demo: [https://template.ulna520.top](https://template.ulna520.top)
+<p align="center">
+  <a href="https://template.ulna520.top"><strong>Live demo</strong></a> ·
+  <a href="https://blog.ulna520.top">Real-world blog</a> ·
+  <a href="https://astro.build/themes/details/ulbo/">Astro Theme Store</a> ·
+  <a href="https://github.com/xxy1103/ulbo_vscode">VS Code Article Manager</a>
+</p>
+
+![ulBo Astro Theme overview](./docs/images/promo/ulbo-overview.png)
+
+## Why ulBo
+
+ulBo is designed for writers, developers, and independent creators who want a personal site with a distinct visual identity without giving up content structure, search, SEO, or maintainability. It combines a cinematic interface with serious long-form reading tools and a configuration model that stays approachable as the blog grows.
+
+| Area | What ulBo provides |
+| --- | --- |
+| **Visual design and motion** | Immersive heroes, responsive layouts, light and dark themes, and Astro View Transitions tuned with Material Design 3 easing curves. |
+| **Long-form reading** | Sticky table of contents, word count, reading time, copyable code, KaTeX, Mermaid, image lightbox, and print-optimized PDF export. |
+| **Content discovery** | Fuse.js fuzzy search, a `Cmd/Ctrl + K` shortcut, archives, interactive tag filtering, and pagination. |
+| **Publishing quality** | Strict Frontmatter, production draft isolation, RSS, sitemap, canonical URLs, Open Graph, Twitter Cards, and JSON-LD. |
+| **Configuration and migration** | Centralized site, profile, and hero configuration with Markdown / MDX and Hexo-style image-path compatibility. |
+| **Performance engineering** | Lazy images, async decoding, on-demand KaTeX, deferred search data, prefetching, and an explicit WebP optimization workflow. |
+
+## Theme Preview
+
+<table>
+  <tr>
+    <td width="50%"><img src="./docs/images/promo/ulbo-light-dark.png" alt="ulBo light and dark themes"></td>
+    <td width="50%"><img src="./docs/images/promo/ulbo-longform.png" alt="ulBo long-form reading experience"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Consistent light and dark experiences</strong></td>
+    <td align="center"><strong>Reading tools for technical long-form content</strong></td>
+  </tr>
+</table>
+
+![ulBo search, tags, archives, and About page](./docs/images/promo/ulbo-content.png)
+
+## Optional VS Code Writing Companion
+
+[ulBo Article Manager](https://github.com/xxy1103/ulbo_vscode) is an optional VS Code extension designed specifically for this theme. It keeps the daily publishing workflow beside the Markdown editor:
+
+- Create drafts and search, filter, or open existing posts.
+- Edit titles, dates, descriptions, categories, tags, and draft state from a visual sidebar.
+- Generate article descriptions through the VS Code language model, with a local extraction fallback.
+- Start the Astro development server and open the current article preview.
+- Validate Frontmatter, tags, and referenced images before publishing.
+- Stage only the article and its related images in Git.
+- Move deleted posts to the system recycle bin so they remain recoverable.
+
+The theme handles presentation and builds; the companion handles writing and article management. It never commits, pushes, or deploys automatically, so the final release remains under your control.
+
+The current release is distributed as a local VSIX from the companion repository. See the [ulBo Article Manager README](https://github.com/xxy1103/ulbo_vscode#readme) for installation and scope.
 
 ## Overview
 
-- Responsive blog structure with home, archive, tags, and about pages.
+- Responsive blog structure with home, archive, tags, about, and article pages.
 - User-facing configuration is centralized in `src/config/`, making template customization fast.
-- Zero-content friendly: `src/content/blog/` can be empty while core pages still work.
+- Zero-content friendly: `src/content/blog/` can be empty while core pages still build.
 
 ## Feature Highlights
 
@@ -73,18 +133,18 @@ Every item below can be directly verified in the current codebase:
 
     - `src/layouts/BlogPost.astro`
 
-5. Archive pagination SEO strategy: `/blog/2+` is `noindex,follow`, with `rel=prev/next`
+5. Archive pagination SEO strategy: `/blog/page/2+` is `noindex,follow`, with `rel=prev/next`
 
     - `src/pages/blog/[...page].astro`
 
-6. Sitemap filtering strategy: excludes tag pages and `/blog/2+` archive pages
+6. Sitemap filtering strategy: excludes tag pages and `/blog/page/2+` archive pages
 
     - `astro.config.mjs`
 
 7. RSS output and description fallback chain (frontmatter description -> extracted body summary -> title)
 
     - `src/pages/rss.xml.js`
-    - `src/utils/seo.ts`
+    - `src/lib/content/text.ts`
 
 8. Important scope boundary
 
@@ -117,7 +177,7 @@ All items below are traceable in code:
 
 6. Lazy fetch of search index (load only when search modal is first opened)
 
-    - `src/scripts/search-modal.client.ts`
+    - `src/scripts/search/repository.ts`
 
 7. Theme initialization anti-flash logic
 
