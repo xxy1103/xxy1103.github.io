@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="700" viewBox="0 0 1280 700" role="img" aria-labelledby="title desc">
+  <title id="title">五轮投票与 Solver 交接</title>
+  <desc id="desc">五轮并发判断先对是否显示答案投票，再对决策取众数，最终作为提示注入 Solver。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.h2{font:700 18px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.label{font:700 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#fff}.arrow{stroke:#58708f;stroke-width:2.5;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="700" rx="24" fill="#f4f7fb"/>
+  <text x="56" y="58" class="title">五轮投票：先判断“有没有答案”，再判断“怎么使用”</text>
+  <text x="56" y="88" class="subtitle">投票偏保守：未过半或平票都按未显示答案处理，避免错误采纳视频诱饵。</text>
+  <rect x="52" y="126" width="310" height="466" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <text x="80" y="166" class="h2">5 轮并发完整判断</text>
+  <rect x="80" y="198" width="254" height="52" rx="12" fill="#f0eafb"/><text x="102" y="230" class="body">vote0 · true · ADOPT</text>
+  <rect x="80" y="266" width="254" height="52" rx="12" fill="#f0eafb"/><text x="102" y="298" class="body">vote1 · true · VERIFY</text>
+  <rect x="80" y="334" width="254" height="52" rx="12" fill="#f0eafb"/><text x="102" y="366" class="body">vote2 · true · VERIFY</text>
+  <rect x="80" y="402" width="254" height="52" rx="12" fill="#eef3f9"/><text x="102" y="434" class="body">vote3 · false · RECOMPUTE</text>
+  <rect x="80" y="470" width="254" height="52" rx="12" fill="#f0eafb"/><text x="102" y="502" class="body">vote4 · true · VERIFY</text>
+  <text x="80" y="558" class="small">示意：4/5 轮认为视频有答案</text>
+  <path d="M362 359H430" class="arrow"/>
+  <rect x="432" y="126" width="360" height="466" rx="20" fill="#e6f2fb" stroke="#7da5c7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="460" y="166" class="h2">两层聚合</text>
+  <rect x="460" y="198" width="304" height="126" rx="14" fill="#fff" opacity=".92"/>
+  <circle cx="486" cy="226" r="14" fill="#356aa0"/><text x="482" y="231" class="label">1</text><text x="512" y="232" class="h2">是否直接展示答案</text><text x="486" y="268" class="body">true 必须超过成功轮的一半</text><text x="486" y="294" class="small">未过半 → 立即 RECOMPUTE</text>
+  <path d="M612 324V364" class="arrow"/>
+  <rect x="460" y="366" width="304" height="150" rx="14" fill="#fff" opacity=".92"/>
+  <circle cx="486" cy="394" r="14" fill="#356aa0"/><text x="482" y="399" class="label">2</text><text x="512" y="400" class="h2">在 true 轮中选决策</text><text x="486" y="436" class="body">对 ADOPT / VERIFY / RECOMPUTE</text><text x="486" y="462" class="body">取众数，并选一个代表轮</text><text x="486" y="488" class="small">示意结果：ADOPT_AND_VERIFY</text>
+  <text x="460" y="558" class="small">置信度取支持最终决策轮次的均值</text>
+  <path d="M792 359H860" class="arrow"/>
+  <rect x="862" y="126" width="366" height="466" rx="20" fill="#dff3e8" stroke="#4b936d" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="890" y="166" class="h2">交给 Solver 的建议</text>
+  <rect x="890" y="198" width="310" height="214" rx="14" fill="#fff" opacity=".92"/>
+  <text x="912" y="230" class="body">• 最终 decision 与 confidence</text><text x="912" y="266" class="body">• 原始 claimed_values</text><text x="912" y="302" class="body">• 建议 target_columns</text><text x="912" y="338" class="body">• 关键帧 source_frames</text><text x="912" y="374" class="body">• 已排除的 distractor_notes</text>
+  <rect x="890" y="438" width="310" height="92" rx="14" fill="#eef7f2"/><text x="912" y="472" class="h2">Solver 再核对</text><text x="912" y="501" class="body">可采纳、复核，也可忽略建议重算</text>
+  <text x="890" y="558" class="small">最终写出：workdir/prediction.csv</text>
+  <rect x="52" y="628" width="1176" height="42" rx="12" fill="#e8eef6"/><text x="76" y="654" class="body">日志保留 vote0.json … vote4.json 与 result.json，可从汇总结论回查到每轮结构化输出。</text>
+</svg>
