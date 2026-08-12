@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">task_15 真实运行总览</title>
+  <desc id="desc">task_15 从七份候选文档经过五轮相关性判断，只抽取 lc_sharetransfer，形成四个 section、五十行宽表、SQLite 数据库和最终 prediction，但 gold 对比为零分。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.badge{font:700 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#fff}.arrow{stroke:#58708f;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="760" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">task_15：流程完整跑通，但业务答案没有通过 gold</text>
+  <text x="54" y="88" class="subtitle">题目：显示 300707 的出让前持股数量和出让前持股比例</text>
+
+  <rect x="42" y="122" width="1196" height="184" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="154" class="lane">筛选阶段 · 8.9 秒</text>
+  <rect x="78" y="182" width="230" height="88" rx="15" fill="#e6effb" filter="url(#shadow)"/><circle cx="102" cy="206" r="13" fill="#356aa0"/><text x="98" y="210" class="badge">1</text><text x="126" y="211" class="h2">7 份候选 doc</text><text x="102" y="238" class="body">question + knowledge</text><text x="102" y="258" class="body">每份前 40 行预览</text>
+  <path d="M308 226 H368" class="arrow"/>
+  <rect x="370" y="182" width="246" height="88" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="394" cy="206" r="13" fill="#7655a6"/><text x="390" y="210" class="badge">2</text><text x="418" y="211" class="h2">5 次全量清单判断</text><text x="394" y="238" class="body">每次同时判断全部 7 份</text><text x="394" y="258" class="body">逐 doc 聚合票数</text>
+  <path d="M616 226 H676" class="arrow"/>
+  <rect x="678" y="182" width="270" height="88" rx="15" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/><circle cx="702" cy="206" r="13" fill="#40845f"/><text x="698" y="210" class="badge">3</text><text x="726" y="211" class="h2">lc_sharetransfer：5/5</text><text x="702" y="238" class="body">其余 6 份：0/5</text><text x="702" y="258" class="body">只抽取 1/7 文档</text>
+
+  <path d="M812 270 V350" class="arrow"/>
+  <rect x="42" y="338" width="1196" height="214" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="370" class="lane">抽取阶段 · 243.7 秒</text>
+  <rect x="70" y="400" width="208" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="94" cy="424" r="13" fill="#7655a6"/><text x="90" y="428" class="badge">4</text><text x="118" y="429" class="h2">Planner</text><text x="94" y="457" class="body">50 record</text><text x="94" y="478" class="body">4 sections</text><text x="94" y="499" class="small">首轮通过</text>
+  <path d="M278 456 H326" class="arrow"/>
+  <rect x="328" y="400" width="232" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="352" cy="424" r="13" fill="#7655a6"/><text x="348" y="428" class="badge">5</text><text x="376" y="429" class="h2">4 个并发 worker</text><text x="352" y="457" class="body">每个都输出 50 行</text><text x="352" y="478" class="body">全部 attempt 0 通过</text><text x="352" y="499" class="small">结构校验无失败</text>
+  <path d="M560 456 H608" class="arrow"/>
+  <rect x="610" y="400" width="232" height="112" rx="15" fill="#e6effb" filter="url(#shadow)"/><circle cx="634" cy="424" r="13" fill="#356aa0"/><text x="630" y="428" class="badge">6</text><text x="658" y="429" class="h2">宽表 + transforms</text><text x="634" y="457" class="body">25 列 × 50 行</text><text x="634" y="478" class="body">6 列真实值试跑</text><text x="634" y="499" class="small">50 条 provenance</text>
+  <path d="M842 456 H890" class="arrow"/>
+  <rect x="892" y="400" width="280" height="112" rx="15" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/><circle cx="916" cy="424" r="13" fill="#40845f"/><text x="912" y="428" class="badge">7</text><text x="940" y="429" class="h2">lc_sharetransfer.db</text><text x="916" y="457" class="body">落库 20 列 × 50 行</text><text x="916" y="478" class="body">noise / raw 列剔除</text><text x="916" y="499" class="small">scaffold 自动注册</text>
+
+  <path d="M1032 512 V594" class="arrow"/>
+  <rect x="42" y="582" width="1196" height="126" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="614" class="lane">求解与验证</text>
+  <rect x="190" y="612" width="250" height="70" rx="15" fill="#f0eafb" filter="url(#shadow)"/><text x="216" y="640" class="h2">Solver · 37.4 秒</text><text x="216" y="664" class="body">10 轮；SQL 过滤 secucode='300707'</text>
+  <path d="M440 647 H508" class="arrow"/>
+  <rect x="510" y="612" width="252" height="70" rx="15" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/><text x="536" y="640" class="h2">prediction.csv</text><text x="536" y="664" class="body">50 行 × 2 列，文件生成成功</text>
+  <path d="M762 647 H830" class="arrow"/>
+  <rect x="832" y="612" width="258" height="70" rx="15" fill="#f8e6e6" stroke="#a95353" stroke-width="2" filter="url(#shadow)"/><text x="858" y="640" class="h2">Gold 对比：0/2 列</text><text x="858" y="664" class="body">运行成功 ≠ 答案正确</text>
+  <text x="54" y="738" class="subtitle">总墙钟 307.1 秒；最耗时的是全文抽取和逐列 transform 生成，而不是相关性判断或最终 SQL。</text>
+</svg>

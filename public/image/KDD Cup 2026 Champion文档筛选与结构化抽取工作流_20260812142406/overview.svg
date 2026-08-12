@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="740" viewBox="0 0 1280 740" role="img" aria-labelledby="title desc">
+  <title id="title">文档筛选与结构化抽取工作流总览</title>
+  <desc id="desc">从任务依据、文档相关性投票、相关文档全文规划、并发抽取、宽表合并和字段归一化，到 SQLite 表与 solver 查询的完整流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.badge{font:700 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#fff}.arrow{stroke:#58708f;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="740" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">从原始文档到 solver 可查询表：一条连续工作流</text>
+  <text x="54" y="88" class="subtitle">蓝色是确定性处理，紫色是模型辅助步骤，绿色是正式交付给 solver 的查询入口。</text>
+
+  <rect x="42" y="120" width="1196" height="214" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="152" class="lane">第一段：高召回筛选——决定哪些文档值得抽取</text>
+  <rect x="82" y="184" width="226" height="108" rx="16" fill="#e6effb" filter="url(#shadow)"/><circle cx="106" cy="208" r="13" fill="#356aa0"/><text x="102" y="212" class="badge">1</text><text x="130" y="213" class="h2">装配任务依据</text><text x="106" y="242" class="body">question · knowledge</text><text x="106" y="263" class="body">视频口径 · doc 预览</text><text x="106" y="283" class="small">每份文档默认前 40 行</text>
+  <path d="M308 238 H366" class="arrow"/>
+  <rect x="368" y="184" width="250" height="108" rx="16" fill="#f0eafb" filter="url(#shadow)"/><circle cx="392" cy="208" r="13" fill="#7655a6"/><text x="388" y="212" class="badge">2</text><text x="416" y="213" class="h2">相关性 Agent × 5 轮</text><text x="392" y="242" class="body">数据 · 口径 · 实体映射</text><text x="392" y="263" class="body">逐 doc 多数投票</text><text x="392" y="283" class="small">平票 / 遗漏 / 全失败偏召回</text>
+  <path d="M618 238 H676" class="arrow"/>
+  <rect x="678" y="184" width="232" height="108" rx="16" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/><circle cx="702" cy="208" r="13" fill="#40845f"/><text x="698" y="212" class="badge">3</text><text x="726" y="213" class="h2">relevant_stems</text><text x="702" y="242" class="body">相关 doc 进入抽取</text><text x="702" y="263" class="body">无关 doc 保留原文</text><text x="702" y="283" class="small">筛选失败则退回抽取全部</text>
+
+  <path d="M794 292 V372" class="arrow"/>
+  <rect x="42" y="360" width="1196" height="256" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="392" class="lane">第二段：Fan-out 结构化——把相关文档变成可查询宽表</text>
+  <rect x="72" y="428" width="204" height="112" rx="15" fill="#e6effb" filter="url(#shadow)"/><circle cx="96" cy="452" r="13" fill="#356aa0"/><text x="92" y="456" class="badge">4</text><text x="120" y="457" class="h2">准备全文</text><text x="96" y="486" class="body">PDF → Markdown</text><text x="96" y="507" class="body">缓存检查 · 原文加行号</text><text x="96" y="528" class="small">只处理 relevant_stems</text>
+  <path d="M276 484 H322" class="arrow"/>
+  <rect x="324" y="428" width="210" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="348" cy="452" r="13" fill="#7655a6"/><text x="344" y="456" class="badge">5</text><text x="372" y="457" class="h2">Planner</text><text x="348" y="486" class="body">实体全集 · schema</text><text x="348" y="507" class="body">按属性切 sections</text><text x="348" y="528" class="small">只规划，不抽具体值</text>
+  <path d="M534 484 H580" class="arrow"/>
+  <rect x="582" y="428" width="214" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="606" cy="452" r="13" fill="#7655a6"/><text x="602" y="456" class="badge">6</text><text x="630" y="457" class="h2">Section workers</text><text x="606" y="486" class="body">默认最多 6 路并发</text><text x="606" y="507" class="body">每个属性块抽一张子表</text><text x="606" y="528" class="small">失败只重跑当前 section</text>
+  <path d="M796 484 H842" class="arrow"/>
+  <rect x="844" y="428" width="214" height="112" rx="15" fill="#e6effb" filter="url(#shadow)"/><circle cx="868" cy="452" r="13" fill="#356aa0"/><text x="864" y="456" class="badge">7</text><text x="892" y="457" class="h2">校验与宽表合并</text><text x="868" y="486" class="body">表头 · 列数 · ID 覆盖</text><text x="868" y="507" class="body">按 record_id outer join</text><text x="868" y="528" class="small">来源行写入 provenance</text>
+  <path d="M1058 484 H1094" class="arrow"/>
+  <rect x="1096" y="428" width="112" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="1118" cy="452" r="13" fill="#7655a6"/><text x="1114" y="456" class="badge">8</text><text x="1138" y="457" class="h2">归一化</text><text x="1118" y="486" class="body">单位</text><text x="1118" y="507" class="body">日期 / 比例</text><text x="1118" y="528" class="small">失败保留原值</text>
+
+  <path d="M1152 540 V644 H946" class="arrow"/>
+  <rect x="624" y="636" width="484" height="70" rx="17" fill="#dff3e8" stroke="#4b936d" stroke-width="2.5" filter="url(#shadow)"/>
+  <circle cx="652" cy="660" r="13" fill="#40845f"/><text x="648" y="664" class="badge">9</text><text x="678" y="665" class="h2">context/db/&lt;doc_stem&gt;.db → solver SQL 查询</text><text x="652" y="690" class="body">每份文档一库一表；scaffold 自动加载；关键结果可沿 provenance 回查原文。</text>
+  <text x="54" y="724" class="subtitle">工作流边界：筛选控制处理范围，抽取控制表的结构和口径，solver 负责最终查询、计算与答案提交。</text>
+</svg>

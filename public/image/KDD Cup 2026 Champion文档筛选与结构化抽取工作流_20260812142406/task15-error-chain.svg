@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="780" viewBox="0 0 1280 780" role="img" aria-labelledby="title desc">
+  <title id="title">task_15 的真实错误传播链</title>
+  <desc id="desc">task_15 中比例口径、跨 section 重名覆盖和中文模糊数字转换错误通过结构校验进入 SQLite，solver 只查看样例后直接查询，最终两列都未匹配 gold。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a6b72"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.bad{font:700 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#9a4f4f}.arrow{stroke:#7a6b72;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="780" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">为什么“4 个 section 全通过、transform 失败数为 0”仍然得 0 分？</text>
+  <text x="54" y="88" class="subtitle">结构校验、代码可执行和业务语义正确是三种不同的保证。</text>
+
+  <rect x="44" y="122" width="1192" height="174" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="154" class="lane">错误 A · 比例口径错位</text>
+  <rect x="72" y="180" width="254" height="80" rx="14" fill="#fff1dc" filter="url(#shadow)"/><text x="94" y="208" class="h2">原文 / Gold</text><text x="94" y="233" class="body">1.55% → ratio 0.0155</text><text x="94" y="251" class="small">knowledge 明确写 ratio</text>
+  <path d="M326 220 H386" class="arrow"/>
+  <rect x="388" y="180" width="292" height="80" rx="14" fill="#f0eafb" filter="url(#shadow)"/><text x="410" y="208" class="h2">列名与 transform 错位</text><text x="410" y="233" class="body">通用 pct_before_tran 接到百分数</text><text x="410" y="251" class="small">生成代码只去掉 %，没有除以 100</text>
+  <path d="M680 220 H740" class="arrow"/>
+  <rect x="742" y="180" width="214" height="80" rx="14" fill="#f8e6e6" filter="url(#shadow)"/><text x="764" y="208" class="h2">SQLite / Prediction</text><text x="764" y="235" class="bad">1.55，而不是 0.0155</text>
+  <path d="M956 220 H1016" class="arrow"/>
+  <rect x="1018" y="180" width="188" height="80" rx="14" fill="#f8e6e6" stroke="#a95353" stroke-width="2"/><text x="1040" y="208" class="h2">45 个非空值</text><text x="1040" y="235" class="bad">全部口径错误</text>
+
+  <rect x="44" y="316" width="1192" height="174" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="348" class="lane">错误 B · 跨 section 重名覆盖</text>
+  <rect x="72" y="374" width="254" height="80" rx="14" fill="#e8f1fb" filter="url(#shadow)"/><text x="94" y="402" class="h2">record 2542 · 转让方</text><text x="94" y="427" class="body">sum_before_tran = 25,390,048</text><text x="94" y="445" class="small">section 3，原文 line 295</text>
+  <path d="M326 414 H386" class="arrow"/>
+  <rect x="388" y="374" width="254" height="80" rx="14" fill="#f0eafb" filter="url(#shadow)"/><text x="410" y="402" class="h2">record 2542 · 受让方</text><text x="410" y="427" class="body">sum_before_tran = 0</text><text x="410" y="445" class="small">section 4 使用同一个通用列名</text>
+  <path d="M642 414 H702" class="arrow"/>
+  <rect x="704" y="374" width="252" height="80" rx="14" fill="#fff1dc" filter="url(#shadow)"/><text x="726" y="402" class="h2">assemble_wide</text><text x="726" y="427" class="body">后来的非空 0 覆盖 25,390,048</text><text x="726" y="445" class="small">schema 的 transferee 后缀列未被 worker 使用</text>
+  <path d="M956 414 H1016" class="arrow"/>
+  <rect x="1018" y="374" width="188" height="80" rx="14" fill="#f8e6e6" stroke="#a95353" stroke-width="2"/><text x="1040" y="402" class="h2">最终错误</text><text x="1040" y="429" class="bad">预测 0，Gold 25390048</text>
+
+  <rect x="44" y="510" width="1192" height="174" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="542" class="lane">错误 C · transform 能运行，但不会自动证明结果语义正确</text>
+  <rect x="72" y="568" width="254" height="80" rx="14" fill="#fff1dc" filter="url(#shadow)"/><text x="94" y="596" class="h2">Planner 目标示例</text><text x="94" y="623" class="body">约六百九十七万股 → 6970000</text>
+  <path d="M326 608 H386" class="arrow"/>
+  <rect x="388" y="568" width="254" height="80" rx="14" fill="#f0eafb" filter="url(#shadow)"/><text x="410" y="596" class="h2">生成函数实际输出</text><text x="410" y="623" class="bad">约六百九十七万股 → 6097</text>
+  <path d="M642 608 H702" class="arrow"/>
+  <rect x="704" y="568" width="252" height="80" rx="14" fill="#e8f1fb" filter="url(#shadow)"/><text x="726" y="596" class="h2">运行时统计</text><text x="726" y="621" class="body">changed ✓ · errored 0 · residual 0</text><text x="726" y="641" class="small">没有异常，所以被视为成功</text>
+  <path d="M956 608 H1016" class="arrow"/>
+  <rect x="1018" y="568" width="188" height="80" rx="14" fill="#f8e6e6" stroke="#a95353" stroke-width="2"/><text x="1040" y="596" class="h2">最终错误</text><text x="1040" y="623" class="bad">预测 6097，Gold 6970000</text>
+
+  <rect x="44" y="712" width="1192" height="42" rx="12" fill="#e8eef6"/>
+  <text x="70" y="738" class="body">Solver 只看 schema 和前 5 行后直接查询，没有检查 ratio 口径、重名列覆盖或中文数字样例，最终 2 个预测列均未匹配 Gold。</text>
+</svg>
