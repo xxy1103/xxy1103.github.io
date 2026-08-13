@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="700" viewBox="0 0 1280 700" role="img" aria-labelledby="title desc">
+  <title id="title">Solver Agent 多轮求解闭环</title>
+  <desc id="desc">Solver 从首轮 Prompt 出发，经数据探查、口径判断、脚本编辑和运行自检循环，直到结果合理。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 29px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#52677f}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#667b91}.code{font:500 13px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.5;fill:none;marker-end:url(#arrow)}.back{stroke:#c27a52;stroke-width:2.5;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="700" rx="24" fill="#f5f8fc"/>
+  <text x="52" y="58" class="title">一次运行不是“一次生成”，而是带反馈的求解闭环</text>
+  <text x="52" y="88" class="body">Solver 可以跳过简单步骤，也可以反复回查；每轮工具结果都会成为下一轮决策证据。</text>
+
+  <rect x="72" y="148" width="220" height="100" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="96" y="180" class="h2">1. 首轮 Prompt</text><text x="96" y="207" class="body">理解 question 与证据</text><text x="96" y="230" class="small">判断答案的基本形态</text>
+  <path d="M292 198 H374" class="arrow"/>
+
+  <rect x="376" y="148" width="232" height="100" rx="18" fill="#fff1dc" filter="url(#shadow)"/>
+  <text x="400" y="180" class="h2">2. explore_data</text><text x="400" y="207" class="body">查看表、schema 与样例</text><text x="400" y="230" class="small">验证字段、行数、Join、去重</text>
+  <path d="M608 198 H690" class="arrow"/>
+
+  <polygon points="812,134 930,198 812,262 694,198" fill="#f0eafb" stroke="#a98ac8" stroke-width="2" filter="url(#shadow)"/>
+  <text x="757" y="192" class="h2">口径明确？</text><text x="762" y="216" class="small">字段与行集可解释</text>
+  <path d="M812 262 V330" class="arrow"/><text x="824" y="302" class="small">是</text>
+  <path d="M694 198 C656 198 650 292 492 292 V250" class="back"/><text x="606" y="282" class="small">否：继续查数</text>
+
+  <rect x="692" y="332" width="240" height="100" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="716" y="364" class="h2">3. read / edit_solver</text><text x="716" y="391" class="body">读取脚手架并写入 SQL</text><text x="716" y="414" class="small">固定口径注释与查询逻辑</text>
+  <path d="M692 382 H610" class="arrow"/>
+
+  <rect x="370" y="332" width="240" height="100" rx="18" fill="#dff3e8" filter="url(#shadow)"/>
+  <text x="394" y="364" class="h2">4. run_solver</text><text x="394" y="391" class="body">执行 solver.py</text><text x="394" y="414" class="small">返回状态与 CSV 自检</text>
+  <path d="M490 432 V500" class="arrow"/>
+
+  <polygon points="490,500 612,562 490,624 368,562" fill="#fff" stroke="#82a8cc" stroke-width="2" filter="url(#shadow)"/>
+  <text x="425" y="556" class="h2">输出合理？</text><text x="414" y="580" class="small">运行成功且形态符合题意</text>
+  <path d="M612 562 H758" class="arrow"/><text x="664" y="548" class="small">是</text>
+  <rect x="760" y="512" width="244" height="100" rx="18" fill="#dff3e8" filter="url(#shadow)"/>
+  <text x="784" y="548" class="h2">5. 结束 Agent 运行</text><text x="784" y="576" class="body">交给外层检查 CSV</text><text x="784" y="598" class="small">不等于业务答案已正确</text>
+
+  <path d="M368 562 C248 562 248 382 370 382" class="back"/><text x="188" y="480" class="small">脚本或 SQL 错误：修改后重跑</text>
+  <path d="M490 624 C490 664 164 664 164 248" class="back"/><text x="188" y="654" class="small">输出语义可疑：回到数据探查</text>
+
+  <rect x="1040" y="148" width="190" height="464" rx="18" fill="#fff" filter="url(#shadow)"/>
+  <text x="1064" y="182" class="h2">工具反馈示例</text>
+  <text x="1064" y="220" class="code">explore_data</text><text x="1064" y="244" class="small">总行数 / schema</text><text x="1064" y="264" class="small">查询结果 / 错误</text>
+  <line x1="1064" y1="286" x2="1204" y2="286" stroke="#d6e0ea"/>
+  <text x="1064" y="320" class="code">edit_solver</text><text x="1064" y="344" class="small">语法检查</text><text x="1064" y="364" class="small">最新行 hash</text>
+  <line x1="1064" y1="386" x2="1204" y2="386" stroke="#d6e0ea"/>
+  <text x="1064" y="420" class="code">run_solver</text><text x="1064" y="446" class="small">FAILED</text><text x="1064" y="468" class="small">NO OUTPUT</text><text x="1064" y="490" class="small">OK + CSV 自检</text>
+  <text x="1064" y="548" class="body">反馈进入下一轮</text><text x="1064" y="572" class="small">驱动修正或结束</text>
+</svg>

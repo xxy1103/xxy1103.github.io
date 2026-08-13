@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">solver.py 脚手架结构</title>
+  <desc id="desc">脚手架把读文件、路径、DuckDB 状态与保存逻辑固定下来，只把查询区（result=None）留给 Solver；代码中的 ①②③④⑤ 与本文源码注释一一对应。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <style>
+      .title{font:700 29px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}
+      .h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}
+      .body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#52677f}
+      .small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#667b91}
+      .code{font:500 13px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}
+      .badge{font:700 20px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}
+      .badge-edit{font:700 20px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#8a4fbf}
+      .chip{font:700 12px "Microsoft YaHei",sans-serif}
+    </style>
+  </defs>
+  <rect width="1280" height="720" rx="24" fill="#f5f8fc"/>
+  <text x="52" y="58" class="title">脚手架 = 一张只留一道空白的答题卡</text>
+  <text x="52" y="88" class="body">印好的部分全部锁死，唯一空白是查询区；Solver 只需填 result = 那一行。</text>
+
+  <!-- 左：solver.py 骨架 -->
+  <rect x="52" y="126" width="600" height="540" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <text x="80" y="164" class="h2">workdir/solver.py</text>
+
+  <rect x="80" y="184" width="544" height="80" rx="12" fill="#e8f1fb"/>
+  <text x="100" y="209" class="badge">①</text>
+  <text x="130" y="204" class="code">from tools_v2.datasource_runtime import</text>
+  <text x="130" y="224" class="code">    build_datasource_state, run_sql as _run_sql</text>
+  <text x="130" y="246" class="small">共享运行时：与 explore_data 同一引擎 · 固定</text>
+
+  <rect x="80" y="272" width="544" height="64" rx="12" fill="#e8f1fb"/>
+  <text x="100" y="297" class="badge">②</text>
+  <text x="130" y="296" class="code">input_base = ./context · output_base = ./workdir</text>
+  <text x="130" y="316" class="small">固定路径，不要修改 · 固定</text>
+
+  <rect x="80" y="344" width="544" height="92" rx="12" fill="#e8f1fb"/>
+  <text x="100" y="369" class="badge">③</text>
+  <text x="130" y="364" class="code">_state = build_datasource_state(Path('.').resolve())</text>
+  <text x="130" y="384" class="code">def run_sql(query): return _run_sql(_state, query)</text>
+  <text x="130" y="406" class="small">csv / json / sqlite → DuckDB 视图 · 固定</text>
+
+  <rect x="80" y="444" width="544" height="104" rx="12" fill="#f0eafb" stroke="#a98ac8" stroke-width="2"/>
+  <text x="100" y="469" class="badge-edit">④</text>
+  <text x="130" y="464" class="code">## 进行查询</text>
+  <text x="130" y="486" class="code">result = None   ← 唯一空白，Solver 只改这里</text>
+  <text x="130" y="508" class="small">question + 可用表注释已自动注入</text>
+  <text x="130" y="528" class="small">可改 · 契约一 / 契约二</text>
+
+  <rect x="80" y="556" width="544" height="92" rx="12" fill="#dff3e8"/>
+  <text x="100" y="581" class="badge">⑤</text>
+  <text x="130" y="580" class="code">if result is None: print('未实现') → 上层 NO OUTPUT</text>
+  <text x="130" y="600" class="code">else: result.to_csv('prediction.csv')</text>
+  <text x="130" y="622" class="small">固定结构化交付 · 固定</text>
+
+  <!-- 右：三个契约 -->
+  <rect x="684" y="126" width="544" height="540" rx="20" fill="#e7f0fb" stroke="#82a8cc" stroke-width="2" filter="url(#shadow)"/>
+  <text x="712" y="164" class="h2">三个契约</text>
+
+  <rect x="712" y="184" width="488" height="118" rx="13" fill="#fff"/>
+  <text x="736" y="210" class="h2">契约一 · 只有 ④ 是空白</text>
+  <text x="736" y="236" class="body">① ② ③ ⑤ 全部锁死，Solver 碰不到读文件与保存</text>
+  <text x="736" y="258" class="body">也就不会在这些确定性环节出错</text>
+  <text x="736" y="282" class="small">可改：④ · 固定：①②③⑤</text>
+
+  <rect x="712" y="312" width="488" height="118" rx="13" fill="#fff"/>
+  <text x="736" y="338" class="h2">契约二 · None 是「还没写」</text>
+  <text x="736" y="364" class="body">result 仍为 None → 正常退出、不写 CSV</text>
+  <text x="736" y="386" class="body">→ 上层识别 NO OUTPUT，区别于「答案是空」</text>
+  <text x="736" y="410" class="small">落点：④ 的初始值 · ⑤ 的判断分支</text>
+
+  <rect x="712" y="440" width="488" height="118" rx="13" fill="#fff"/>
+  <text x="736" y="466" class="h2">契约三 · 探查通过 = 执行通过</text>
+  <text x="736" y="492" class="body">solver.py 与 explore_data 共用同一份数据层代码</text>
+  <text x="736" y="514" class="body">一致性由「同一段代码」保证，而非注释提醒</text>
+  <text x="736" y="538" class="small">落点：①</text>
+
+  <rect x="712" y="568" width="488" height="70" rx="13" fill="#e8eef6"/>
+  <text x="736" y="594" class="body">三者共同回答：脚手架只固定「怎么查、存哪里」，</text>
+  <text x="736" y="616" class="body">「查什么」仍由 Solver 的语义决策决定。</text>
+
+  <rect x="52" y="676" width="1176" height="30" rx="12" fill="#e8eef6"/>
+  <text x="77" y="696" class="body">脚手架不是答案模板：它只固定执行骨架，题目相关的字段、条件、关联、聚合仍由 Solver 决定。</text>
+</svg>

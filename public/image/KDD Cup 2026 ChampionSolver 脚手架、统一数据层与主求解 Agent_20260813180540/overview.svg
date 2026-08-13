@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">从任务材料到主求解 Agent</title>
+  <desc id="desc">文档抽取完成后，脚手架与统一数据层建立稳定执行环境，Solver Agent 再完成语义决策并生成 prediction.csv。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.badge{font:700 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#fff}.arrow{stroke:#58708f;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="720" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">两层分工：先建稳定工作台，再做业务求解</text>
+  <text x="54" y="88" class="subtitle">蓝色是确定性基础设施，紫色是模型决策，绿色是正式答案文件。</text>
+
+  <rect x="42" y="122" width="1196" height="194" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="154" class="lane">第一层：脚手架与统一数据层</text>
+  <rect x="76" y="184" width="230" height="94" rx="15" fill="#e6effb" filter="url(#shadow)"/><circle cx="100" cy="208" r="13" fill="#356aa0"/><text x="96" y="212" class="badge">1</text><text x="124" y="213" class="h2">前置产物就绪</text><text x="100" y="241" class="body">CSV · JSON · SQLite</text><text x="100" y="262" class="small">doc_prepare 已写入文档表</text>
+  <path d="M306 231 H366" class="arrow"/>
+  <rect x="368" y="184" width="248" height="94" rx="15" fill="#e6effb" filter="url(#shadow)"/><circle cx="392" cy="208" r="13" fill="#356aa0"/><text x="388" y="212" class="badge">2</text><text x="416" y="213" class="h2">统一 DuckDB 状态</text><text x="392" y="241" class="body">发现 · 命名 · View 注册</text><text x="392" y="262" class="small">SQL 引号与列名空格归一</text>
+  <path d="M616 231 H676" class="arrow"/>
+  <rect x="678" y="184" width="250" height="94" rx="15" fill="#e6effb" filter="url(#shadow)"/><circle cx="702" cy="208" r="13" fill="#356aa0"/><text x="698" y="212" class="badge">3</text><text x="726" y="213" class="h2">生成 solver.py</text><text x="702" y="241" class="body">路径 · run_sql · 保存区</text><text x="702" y="262" class="small">只留下查询逻辑待补全</text>
+
+  <path d="M803 278 V370" class="arrow"/>
+  <rect x="42" y="356" width="1196" height="226" rx="20" fill="#fff" opacity=".9"/>
+  <text x="64" y="388" class="lane">第二层：Solver Agent</text>
+  <rect x="76" y="420" width="242" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="100" cy="444" r="13" fill="#7655a6"/><text x="96" y="448" class="badge">4</text><text x="124" y="449" class="h2">装配本题上下文</text><text x="100" y="478" class="body">question · Knowledge</text><text x="100" y="499" class="body">视频 · 文档表 · context 描述</text><text x="100" y="520" class="small">真实目录树随任务注入</text>
+  <path d="M318 476 H380" class="arrow"/>
+  <rect x="382" y="420" width="252" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="406" cy="444" r="13" fill="#7655a6"/><text x="402" y="448" class="badge">5</text><text x="430" y="449" class="h2">先决定答案形状</text><text x="406" y="478" class="body">目标列 · 字段语义</text><text x="406" y="499" class="body">过滤 · NULL · 去重 · 聚合</text><text x="406" y="520" class="small">原始记录 / 实体 / 统计题</text>
+  <path d="M634 476 H696" class="arrow"/>
+  <rect x="698" y="420" width="240" height="112" rx="15" fill="#f0eafb" filter="url(#shadow)"/><circle cx="722" cy="444" r="13" fill="#7655a6"/><text x="718" y="448" class="badge">6</text><text x="746" y="449" class="h2">补全并执行 SQL</text><text x="722" y="478" class="body">探查 → 编辑 → 运行</text><text x="722" y="499" class="body">结果结构自检</text><text x="722" y="520" class="small">自然语言回复不是答案</text>
+  <path d="M938 476 H998" class="arrow"/>
+  <rect x="1000" y="420" width="208" height="112" rx="15" fill="#dff3e8" stroke="#4b936d" stroke-width="2.5" filter="url(#shadow)"/><circle cx="1024" cy="444" r="13" fill="#40845f"/><text x="1020" y="448" class="badge">7</text><text x="1048" y="449" class="h2">prediction.csv</text><text x="1024" y="478" class="body">结构化结果</text><text x="1024" y="499" class="body">供外层保存与评分</text><text x="1024" y="520" class="small">文件存在 ≠ 业务正确</text>
+
+  <rect x="48" y="626" width="1182" height="42" rx="12" fill="#e8eef6"/>
+  <text x="74" y="652" class="body">设计原则：LLM 负责不确定的语义判断，统一运行时负责可重复的数据执行；两层通过 solver.py 连接。</text>
+</svg>

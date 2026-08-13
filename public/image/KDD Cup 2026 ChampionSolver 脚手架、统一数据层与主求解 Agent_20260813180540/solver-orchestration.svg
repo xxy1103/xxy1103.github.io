@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="650" viewBox="0 0 1280 650" role="img" aria-labelledby="title desc">
+  <title id="title">Solver Agent 在主流程中的位置</title>
+  <desc id="desc">前置模块准备证据和工作台，Solver 通过四个工具完成语义决策与 SQL 实现，最终交付 prediction.csv。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 29px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#52677f}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#667b91}.code{font:500 13px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.5;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="650" rx="24" fill="#f5f8fc"/>
+  <text x="52" y="58" class="title">Solver 接管已经整理好的任务现场</text>
+  <text x="52" y="88" class="body">前置模块负责准备证据和稳定工作台；Solver 负责最终的业务口径、SQL 与结构化交付。</text>
+
+  <rect x="48" y="130" width="310" height="410" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <text x="76" y="168" class="h2">前置准备</text>
+  <rect x="76" y="194" width="254" height="62" rx="12" fill="#e8f1fb"/><text x="96" y="220" class="body">视频抽帧 · hiccup · ASR</text><text x="96" y="242" class="small">形成按时间轴排列的证据</text>
+  <rect x="76" y="272" width="254" height="62" rx="12" fill="#f0eafb"/><text x="96" y="298" class="body">文档结构化</text><text x="96" y="320" class="small">相关文档转换为查询表</text>
+  <rect x="76" y="350" width="254" height="62" rx="12" fill="#fff1dc"/><text x="96" y="376" class="body">表相关性软压缩</text><text x="96" y="398" class="small">折叠无关描述，保留访问能力</text>
+  <rect x="76" y="428" width="254" height="78" rx="12" fill="#dff3e8"/><text x="96" y="454" class="body">统一数据层 + solver.py</text><text x="96" y="476" class="small">固定查询环境与输出协议</text><text x="96" y="496" class="code">Prompt ready</text>
+
+  <path d="M358 335 H432" class="arrow"/>
+  <rect x="434" y="130" width="414" height="410" rx="20" fill="#e7f0fb" stroke="#82a8cc" stroke-width="2" filter="url(#shadow)"/>
+  <text x="462" y="168" class="h2">Solver Agent：语义决策与执行</text>
+  <rect x="462" y="194" width="358" height="70" rx="12" fill="#fff"/><text x="484" y="220" class="body">理解 question、Knowledge 与视频口径</text><text x="484" y="244" class="small">先判断答案形态和候选数据</text>
+  <path d="M641 264 V294" class="arrow"/>
+  <rect x="462" y="296" width="358" height="112" rx="12" fill="#fff"/><text x="484" y="322" class="h2">四个专用工具</text><text x="484" y="348" class="code">explore_data → read_solver</text><text x="484" y="374" class="code">edit_solver → run_solver</text><text x="484" y="397" class="small">工具反馈进入下一轮，驱动修正</text>
+  <path d="M641 408 V438" class="arrow"/>
+  <rect x="462" y="440" width="358" height="66" rx="12" fill="#fff"/><text x="484" y="466" class="body">把确认后的口径固定为 SQL</text><text x="484" y="490" class="small">运行并检查输出形态</text>
+
+  <path d="M848 335 H922" class="arrow"/>
+  <rect x="924" y="178" width="306" height="314" rx="20" fill="#f0eafb" stroke="#a98ac8" stroke-width="2" filter="url(#shadow)"/>
+  <text x="952" y="216" class="h2">外层验收与交付</text>
+  <rect x="952" y="244" width="250" height="72" rx="12" fill="#fff"/><text x="974" y="272" class="body">Agent 是否无异常？</text><text x="974" y="296" class="body">prediction.csv 是否存在？</text>
+  <path d="M1077 316 V350" class="arrow"/>
+  <rect x="952" y="352" width="250" height="58" rx="12" fill="#dff3e8"/><text x="974" y="378" class="code">output/task_x/prediction.csv</text><text x="974" y="399" class="small">成功时复制结果</text>
+  <text x="952" y="448" class="small">未通过验收：恢复脚手架后重试</text>
+
+  <rect x="48" y="576" width="1182" height="40" rx="12" fill="#e8eef6"/>
+  <text x="74" y="602" class="body">职责边界：前置模块准备“可求解的问题”，Solver 决定“答案究竟怎么算”。</text>
+</svg>
