@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ulBo Astro Theme Promo</title>
+  <style>
+    :root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #fff; }
+    * { box-sizing: border-box; }
+    html, body { width: 1600px; height: 900px; margin: 0; overflow: hidden; background: #09100f; }
+    body { position: relative; }
+    .slide { position: absolute; inset: 0; display: none; overflow: hidden; }
+    .slide.active { display: block; }
+    .slide::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(120deg, rgba(255,255,255,.05), transparent 30%, transparent 70%, rgba(255,255,255,.025)); mix-blend-mode: screen; }
+    .brand { display: flex; align-items: center; gap: 14px; font-weight: 800; letter-spacing: -.02em; font-size: 25px; }
+    .brand-mark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px; color: #17201e; background: #f6d7c6; box-shadow: 0 8px 30px rgba(246,215,198,.3); }
+    .eyebrow { font-size: 14px; font-weight: 750; letter-spacing: .18em; text-transform: uppercase; opacity: .7; }
+    h1 { margin: 16px 0 18px; font-size: 70px; line-height: .98; letter-spacing: -.055em; }
+    p { margin: 0; font-size: 20px; line-height: 1.5; color: rgba(255,255,255,.72); }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .chip { padding: 10px 14px; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; background: rgba(255,255,255,.08); backdrop-filter: blur(12px); font-size: 14px; font-weight: 650; }
+    .browser { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: 20px; background: #111; box-shadow: 0 40px 90px rgba(0,0,0,.48), 0 8px 25px rgba(0,0,0,.2); }
+    .browser::before { content: ""; position: absolute; z-index: 2; top: 10px; left: 14px; width: 8px; height: 8px; border-radius: 50%; background: #ff8278; box-shadow: 14px 0 #ffd17a, 28px 0 #75d89c; }
+    .browser img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .browser .bar { position: absolute; z-index: 1; inset: 0 0 auto; height: 28px; background: rgba(10,13,15,.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .note { position: absolute; z-index: 5; padding: 11px 15px; border-radius: 14px; background: rgba(255,255,255,.92); color: #111714; font-weight: 780; box-shadow: 0 16px 40px rgba(0,0,0,.22); }
+
+    #slide1 { background: linear-gradient(90deg, rgba(4,11,10,.65), rgba(4,11,10,.12)), url("references/bg-forest-blush.png") center/cover; }
+    #slide1 .copy { position: absolute; z-index: 2; left: 86px; top: 70px; width: 505px; }
+    #slide1 .copy h1 { font-size: 74px; }
+    #slide1 .stage { position: absolute; z-index: 1; right: -90px; bottom: -55px; width: 1010px; height: 660px; transform: rotate(-2.4deg); }
+    #slide1 .stage img { object-position: center; }
+    #slide1 .halo { position: absolute; right: 90px; top: 70px; width: 700px; height: 700px; border-radius: 50%; background: rgba(238,183,155,.13); filter: blur(60px); }
+    #slide1 .note { right: 66px; top: 122px; transform: rotate(2deg); }
+    #slide1 .index { position: absolute; left: 86px; bottom: 54px; opacity: .45; font-size: 14px; letter-spacing: .18em; }
+
+    #slide2 { background: url("references/bg-light-dark.png") center/cover; color: #11131a; }
+    #slide2 .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,248,232,.10), rgba(6,8,22,.28)); }
+    #slide2 .head { position: absolute; z-index: 3; left: 80px; right: 80px; top: 48px; display: flex; align-items: end; justify-content: space-between; }
+    #slide2 .head h1 { margin: 7px 0 0; font-size: 56px; color: #161523; }
+    #slide2 .head p { width: 560px; text-align: right; color: rgba(255,255,255,.74); }
+    #slide2 .pair { position: absolute; z-index: 2; left: 80px; right: 80px; bottom: 60px; height: 650px; display: grid; grid-template-columns: 1fr 1fr; gap: 42px; }
+    #slide2 .mode { position: relative; }
+    #slide2 .mode .browser { width: 100%; height: 600px; }
+    #slide2 .mode:first-child .browser { transform: rotate(-1.2deg); }
+    #slide2 .mode:last-child .browser { transform: rotate(1.2deg); }
+    #slide2 .mode-label { position: absolute; z-index: 5; left: 24px; bottom: 2px; display: flex; gap: 10px; align-items: center; padding: 10px 15px; border-radius: 999px; background: rgba(255,255,255,.9); color: #15151c; font-size: 14px; font-weight: 800; box-shadow: 0 10px 32px rgba(0,0,0,.18); }
+    #slide2 .mode:last-child .mode-label { background: rgba(15,18,30,.92); color: #fff; }
+
+    #slide3 { background: radial-gradient(circle at 30% 12%, #3c3155 0, transparent 34%), linear-gradient(135deg,#11111d,#07080d 68%); }
+    #slide3 .head { position: absolute; z-index: 4; left: 78px; top: 54px; width: 820px; }
+    #slide3 h1 { font-size: 58px; margin: 8px 0 10px; }
+    #slide3 .feature-browser { position: absolute; z-index: 2; left: 78px; bottom: 54px; width: 1115px; height: 620px; }
+    #slide3 .feature-browser img { object-position: top center; }
+    #slide3 .long-card { position: absolute; z-index: 3; right: 72px; bottom: 50px; width: 294px; height: 730px; padding: 18px; border-radius: 26px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(18px); box-shadow: 0 35px 85px rgba(0,0,0,.48); }
+    #slide3 .long-card img { display: block; width: 100%; height: 642px; object-fit: contain; object-position: top center; border-radius: 14px; background: #090b11; }
+    #slide3 .long-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; font-size: 13px; font-weight: 750; }
+    #slide3 .long-meta span:last-child { color: #d6b6ff; }
+    #slide3 .note { left: 950px; top: 195px; background: #d7b9ff; }
+    #slide3 .mini-features { position: absolute; z-index: 5; left: 106px; bottom: 76px; display: flex; gap: 9px; }
+    #slide3 .mini-features span { padding: 8px 11px; border-radius: 999px; background: rgba(9,10,16,.72); border: 1px solid rgba(255,255,255,.15); font-size: 12px; font-weight: 720; }
+
+    #slide4 { background: linear-gradient(135deg,#f6efe7,#ded8ee 54%,#cdd9e4); color: #131517; }
+    #slide4 .head { position: absolute; z-index: 8; left: 78px; top: 58px; width: 550px; }
+    #slide4 h1 { font-size: 62px; margin: 10px 0 14px; }
+    #slide4 p { color: rgba(19,21,23,.62); }
+    #slide4 .brand-mark { color: #fff; background: #1b1f21; box-shadow: none; }
+    #slide4 .collage { position: absolute; z-index: 2; left: 580px; right: 55px; top: 50px; bottom: 44px; }
+    #slide4 .card-a { position: absolute; right: 0; top: 0; width: 680px; height: 390px; transform: rotate(1.5deg); }
+    #slide4 .card-b { position: absolute; left: 0; top: 292px; width: 665px; height: 430px; transform: rotate(-2.2deg); }
+    #slide4 .card-c { position: absolute; right: 28px; bottom: 0; width: 590px; height: 345px; transform: rotate(1.1deg); }
+    #slide4 .browser img { object-position: top center; }
+    #slide4 .labels { position: absolute; z-index: 8; left: 78px; bottom: 68px; display: grid; gap: 13px; }
+    #slide4 .label-row { display: flex; align-items: center; gap: 13px; font-size: 16px; font-weight: 780; }
+    #slide4 .label-row i { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; color: #fff; background: #202326; font-style: normal; }
+  </style>
+</head>
+<body>
+  <section class="slide" id="slide1">
+    <div class="halo"></div>
+    <div class="copy">
+      <div class="brand"><span class="brand-mark">u</span> ulBo <span style="opacity:.48;font-weight:600">/ Astro</span></div>
+      <div class="eyebrow" style="margin-top:64px">Personal publishing, refined</div>
+      <h1>Write beautifully.<br>Ship effortlessly.</h1>
+      <p>A cinematic Astro blog theme with thoughtful motion, centralized configuration, and a reading experience that stays out of your way.</p>
+      <div class="chips"><span class="chip">Material motion</span><span class="chip">SEO-ready</span><span class="chip">Fully configurable</span></div>
+    </div>
+    <div class="browser stage"><div class="bar"></div><img src="references/home-dark-complete.png" alt="ulBo home page"></div>
+    <div class="note">Fast by default · Built with Astro</div>
+    <div class="index">ULBO — THEME PREVIEW 01</div>
+  </section>
+
+  <section class="slide" id="slide2">
+    <div class="shade"></div>
+    <div class="head">
+      <div><div class="eyebrow">Adaptive by design</div><h1>One theme. Two moods.</h1></div>
+      <p>Light and dark modes that feel equally considered — with smooth transitions and readable contrast across every page.</p>
+    </div>
+    <div class="pair">
+      <div class="mode"><div class="browser"><div class="bar"></div><img src="references/article-light.png" alt="Light mode"></div><div class="mode-label">☀ &nbsp;Light mode</div></div>
+      <div class="mode"><div class="browser"><div class="bar"></div><img src="references/segments/article-full/00.png" alt="Dark mode"></div><div class="mode-label">☾ &nbsp;Dark mode</div></div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide3">
+    <div class="head"><div class="eyebrow">Long-form, without compromise</div><h1>A reading experience<br>built to last.</h1><p>From a focused first screen to an 8,848 px deep technical article.</p></div>
+    <div class="browser feature-browser"><div class="bar"></div><img src="references/article-light.png" alt="Article view"></div>
+    <div class="note">Sticky table of contents →</div>
+    <div class="long-card"><img src="references/article-full.png" alt="Complete long article"><div class="long-meta"><span>Complete article</span><span>8,848 px</span></div></div>
+    <div class="mini-features"><span>Syntax highlighting</span><span>Math</span><span>Mermaid</span><span>PDF export</span></div>
+  </section>
+
+  <section class="slide" id="slide4">
+    <div class="head"><div class="brand"><span class="brand-mark">u</span> ulBo</div><div class="eyebrow" style="margin-top:58px">More than a post list</div><h1>Everything<br>in its place.</h1><p>Give every idea a home — searchable, organized, and unmistakably yours.</p></div>
+    <div class="labels"><div class="label-row"><i>⌕</i>Instant search</div><div class="label-row"><i>#</i>Tags & discovery</div><div class="label-row"><i>☺</i>Personal About page</div></div>
+    <div class="collage">
+      <div class="browser card-a"><div class="bar"></div><img src="references/tags-light.png" alt="Tags"></div>
+      <div class="browser card-b"><div class="bar"></div><img src="references/blog-light.png" alt="Blog archive"></div>
+      <div class="browser card-c"><div class="bar"></div><img src="references/about-light.png" alt="About"></div>
+    </div>
+  </section>
+  <script>
+    const slide = new URLSearchParams(location.search).get('slide') || '1';
+    document.getElementById(`slide${slide}`).classList.add('active');
+  </script>
+</body>
+</html>

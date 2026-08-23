@@ -510,21 +510,43 @@ input {
 /* ==========================================================================
    Markdown 表格 - 现代优雅设计 (Modern Table UI)
    ========================================================================== */
-.prose table {
-	display: table;
+.prose .table-shell {
+	position: relative;
 	width: 100%;
 	max-width: 100%;
 	margin: 2.2rem 0;
+}
+
+.prose .table-scroll {
+	width: 100%;
+	max-width: 100%;
 	overflow-x: auto;
+	overflow-y: hidden;
 	-webkit-overflow-scrolling: touch;
+	overscroll-behavior-inline: contain;
+	scrollbar-width: thin;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	transition: border-color var(--theme-color-transition-duration) var(--theme-color-transition-ease);
+}
+
+.prose .table-scroll:focus-visible {
+	outline: 2px solid var(--color-accent, #2563eb);
+	outline-offset: 3px;
+}
+
+.prose table {
+	display: table;
+	width: max-content;
+	min-width: 100%;
+	max-width: none;
+	margin: 0;
 	border-collapse: collapse;
 	border-spacing: 0;
 	font-size: 0.925rem;
 	line-height: 1.6;
 	color: var(--color-text);
-	border: 1px solid var(--color-border);
-	border-radius: 10px;
-	transition: border-color var(--theme-color-transition-duration) var(--theme-color-transition-ease);
+	border: 0;
 }
 
 /* 表头样式 */
@@ -540,7 +562,8 @@ input {
 	font-weight: 600;
 	text-align: left;
 	letter-spacing: 0.02em;
-	overflow-wrap: anywhere;
+	overflow-wrap: break-word;
+	word-break: normal;
 	border-bottom: 2px solid var(--color-border-strong);
 }
 
@@ -583,7 +606,8 @@ input {
 .prose table td {
 	padding: 12px 16px;
 	vertical-align: middle;
-	overflow-wrap: anywhere;
+	overflow-wrap: break-word;
+	word-break: normal;
 }
 
 /* 首尾列单元格增加额外内边距以对齐视觉边界 */
@@ -602,6 +626,69 @@ input {
 	font-size: 0.85em;
 	padding: 2px 6px;
 	white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+	.prose .table-shell {
+		margin: 1.4rem 0;
+	}
+
+	.prose .table-shell--wide::before {
+		content: "左右滑动查看完整表格";
+		display: block;
+		margin: 0 0 0.45rem;
+		color: var(--color-text-muted);
+		font-size: 0.78rem;
+		line-height: 1.4;
+		text-align: right;
+	}
+
+	.prose .table-shell--wide::after {
+		content: "";
+		position: absolute;
+		top: 1.55rem;
+		right: 0;
+		bottom: 0;
+		width: 24px;
+		pointer-events: none;
+		border-radius: 0 10px 10px 0;
+		background: linear-gradient(to right, transparent, color-mix(in srgb, var(--color-surface) 88%, transparent));
+	}
+
+	.prose table {
+		font-size: 0.875rem;
+	}
+
+	.prose table th,
+	.prose table td {
+		padding: 10px 12px;
+		vertical-align: top;
+	}
+
+	.prose table th:first-child,
+	.prose table td:first-child {
+		padding-left: 14px;
+	}
+
+	.prose table th:last-child,
+	.prose table td:last-child {
+		padding-right: 14px;
+	}
+}
+
+@media print {
+	.prose .table-shell,
+	.prose .table-scroll {
+		margin: 1.25em 0;
+		overflow: visible;
+		border: 0;
+		border-radius: 0;
+	}
+
+	.prose .table-shell::before,
+	.prose .table-shell::after {
+		display: none;
+	}
 }
 
 img {

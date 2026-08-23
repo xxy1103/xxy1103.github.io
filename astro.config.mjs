@@ -10,6 +10,7 @@ import remarkMath from 'remark-math';
 import rehypeImageCaptions from './src/plugins/rehype-image-captions.mjs';
 import rehypeKatex from 'rehype-katex';
 import rehypeLazyImages from './src/plugins/rehype-lazy-images.mjs';
+import rehypeResponsiveTables from './src/plugins/rehype-responsive-tables.mjs';
 import { siteUrl } from './src/config/site';
 
 /** @returns {import('vite').Plugin} */
@@ -71,7 +72,7 @@ export default defineConfig({
 		// 支持 Hexo 相对图片路径 image/xxx/ 自动转换为 /image/xxx/
 		remarkPlugins: [remarkHexoImages, remarkMath, remarkBlockquoteLineBreaks, remarkSearchBlocks],
 		// 使用 KaTeX 渲染数学公式，图片懒加载
-		rehypePlugins: [rehypeKatex, rehypeLazyImages, rehypeImageCaptions],
+		rehypePlugins: [rehypeKatex, rehypeLazyImages, rehypeImageCaptions, rehypeResponsiveTables],
 		// 使用双主题支持代码高亮
 		shikiConfig: {
 			themes: {
