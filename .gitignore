@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # local content image junction
 src/content/blog/image/
+src/content/blog/image
