@@ -1,7 +1,7 @@
 ---
 title: "APEX-SQL：Schema Linking 的规划、探索与全局细化"
 date: "2026-08-23T16:22:35+08:00"
-updated: "2026-08-23T16:29:16+08:00"
+updated: "2026-08-23T16:35:05+08:00"
 description: "APEX-SQL 的 Schema Linking 通过抽象逻辑计划和高召回策略，解决了从复杂数据库中提取相关表和字段的问题，确保生成的 SQL 能准确反映业务需求。"
 draft: false
 categories:
@@ -9,6 +9,9 @@ categories:
 tags:
   - "agent"
 ---
+
+来年 花也将继续盛开，春日将不厌其烦地反复到来。
+
 <!-- more -->
 
 > 文档性质：当前实现说明、算法拆解与真实任务贯穿示例
