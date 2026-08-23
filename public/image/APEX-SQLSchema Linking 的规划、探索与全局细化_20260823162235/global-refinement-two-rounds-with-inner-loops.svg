@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800" role="img" aria-labelledby="title desc">
+  <title id="title">Round 0 与 Round 1 的内部多调用流程</title>
+  <desc id="desc">Round 0 与 Round 1 各自最多包含两次有效模型调用。第一次生成本轮 Schema，有探索查询时执行并反馈，再进行第二次模型调用；两轮结果最终取并集。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <marker id="orangeArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#c27a52"/></marker>
+    <style>.title{font:700 29px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#19324c}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#52677f}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#667b91}.code{font:500 13px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.4;fill:none;marker-end:url(#arrow)}.verify{stroke:#c27a52;stroke-width:2.3;fill:none;marker-end:url(#orangeArrow)}.dash{stroke:#8aa0b7;stroke-width:2;stroke-dasharray:6 5;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="800" rx="24" fill="#f5f8fc"/>
+  <text x="52" y="58" class="title">两个外层 Round，各自都可能经历“生成 → 查库 → 更新”</text>
+  <text x="52" y="88" class="body">每个 Round 最多两次有效模型调用；[CONFIRM] 或没有 exploration_queries 可以跳过本轮第二次调用。</text>
+
+  <rect x="52" y="122" width="1176" height="108" rx="18" fill="#fff" opacity=".94"/>
+  <text x="78" y="154" class="h2">进入全局细化前</text>
+  <rect x="78" y="174" width="332" height="34" rx="10" fill="#e8f1fb"/><text x="98" y="197" class="small">filtered_tables_dict：裁剪后的候选范围</text>
+  <rect x="430" y="174" width="350" height="34" rx="10" fill="#e8f1fb"/><text x="450" y="197" class="small">table_judgments：逐表 MARKED 状态与证据</text>
+  <rect x="800" y="174" width="392" height="34" rx="10" fill="#e8f1fb"/><text x="820" y="197" class="small">语义初始化 + question + evidence：角色与任务约束</text>
+
+  <path d="M430 230 V270" class="arrow"/>
+  <rect x="50" y="272" width="500" height="330" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <text x="78" y="308" class="h2">外层 Round 0：组装第一版 Schema</text>
+  <rect x="78" y="334" width="444" height="70" rx="14" fill="#f0eafb"/>
+  <text x="102" y="364" class="h2">模型调用 1</text><text x="230" y="364" class="body">根据全部候选表与逐表证据生成 refined_schema</text><text x="102" y="388" class="small">同时决定是否输出 exploration_queries</text>
+  <path d="M300 404 V432" class="verify"/>
+  <rect x="78" y="434" width="444" height="62" rx="14" fill="#fff1dc"/>
+  <text x="102" y="462" class="h2">可选：执行跨表 SQL</text><text x="290" y="462" class="body">结果反馈给同一会话</text><text x="102" y="484" class="small">[CONFIRM] 或没有查询时跳过这一步和下一次调用</text>
+  <path d="M300 496 V520" class="verify"/>
+  <rect x="78" y="522" width="444" height="56" rx="14" fill="#f0eafb"/>
+  <text x="102" y="556" class="h2">模型调用 2（可选）</text><text x="284" y="556" class="body">依据 SQL 新证据更新本轮 Schema</text>
+
+  <path d="M550 436 H590" class="arrow"/>
+  <rect x="592" y="354" width="190" height="164" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="616" y="390" class="h2">记录 Round 0</text>
+  <text x="616" y="420" class="body">Confirmed Columns</text>
+  <text x="616" y="448" class="body">Remaining Candidates</text>
+  <line x1="616" y1="468" x2="758" y2="468" stroke="#cbd8e5"/>
+  <text x="616" y="494" class="small">外层继续进入 Round 1</text>
+
+  <path d="M782 436 H822" class="arrow"/>
+  <rect x="824" y="272" width="406" height="330" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <text x="852" y="308" class="h2">外层 Round 1：Gap Analysis 与补漏</text>
+  <rect x="852" y="334" width="350" height="70" rx="14" fill="#f0eafb"/>
+  <text x="876" y="364" class="h2">模型调用 1</text><text x="1004" y="364" class="body">检查断链与缺失字段</text><text x="876" y="388" class="small">从 Remaining Candidates 形成增量 refined_schema</text>
+  <path d="M1027 404 V432" class="verify"/>
+  <rect x="852" y="434" width="350" height="62" rx="14" fill="#fff1dc"/>
+  <text x="876" y="462" class="h2">可选：执行跨表 SQL</text><text x="876" y="484" class="small">验证 Join、ID、FK 或 Bridge Table</text>
+  <path d="M1027 496 V520" class="verify"/>
+  <rect x="852" y="522" width="350" height="56" rx="14" fill="#f0eafb"/>
+  <text x="876" y="556" class="h2">模型调用 2（可选）</text><text x="1058" y="556" class="body">更新补漏结果</text>
+
+  <path d="M1027 602 V642" class="arrow"/>
+  <rect x="766" y="644" width="436" height="76" rx="16" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="792" y="676" class="h2">确定性合并</text><text x="932" y="676" class="code">final = Round 0 ∪ Round 1</text>
+  <text x="792" y="702" class="small">只增加字段，不删除 Round 0 已确认内容</text>
+  <path d="M766 682 H684" class="arrow"/>
+  <rect x="458" y="644" width="224" height="76" rx="16" fill="#dff3e8" stroke="#4b936d" stroke-width="2" filter="url(#shadow)"/>
+  <text x="484" y="676" class="h2">refined_schema</text><text x="484" y="702" class="small">同名连接键保护后的最终子图</text>
+
+  <rect x="64" y="750" width="1152" height="30" rx="10" fill="#e8eef6"/>
+  <text x="88" y="771" class="small">异常退避与 JSON 格式修复可能增加请求次数，但属于同一次输出重试，不算新的语义验证轮次。</text>
+</svg>

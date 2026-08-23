@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Schema Linking 在 APEX-SQL 中的位置</title>
+  <desc id="desc">外部证据与完整数据库进入 Schema Linking，输出逻辑计划和缩小后的 Schema，分别服务后续 SQL 生成和奖励选择。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.arrow{stroke:#58708f;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="640" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">Schema Linking：把自然语言问题落到可执行的关系子图</text>
+  <text x="54" y="88" class="subtitle">蓝色是确定性输入与处理，紫色是模型语义判断，绿色是结构化产物。</text>
+
+  <rect x="64" y="164" width="230" height="118" rx="18" fill="#e6effb" filter="url(#shadow)"/>
+  <text x="90" y="199" class="h2">Evidence Linking</text><text x="90" y="229" class="body">question + 外部文档</text><text x="90" y="255" class="small">产出字段解释与业务知识</text>
+  <rect x="64" y="340" width="230" height="118" rx="18" fill="#e6effb" filter="url(#shadow)"/>
+  <text x="90" y="375" class="h2">完整数据库 Schema</text><text x="90" y="405" class="body">表 · 列 · 类型 · 描述</text><text x="90" y="431" class="small">可执行 Snowflake 查询</text>
+
+  <path d="M294 223 H404" class="arrow"/><path d="M294 399 H404" class="arrow"/>
+  <rect x="406" y="152" width="330" height="318" rx="22" fill="#f0eafb" stroke="#a98ac8" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="442" y="194" class="h2">Schema Linking Agent</text>
+  <rect x="442" y="224" width="258" height="48" rx="12" fill="#fff"/><text x="466" y="254" class="body">逻辑计划与高召回裁剪</text>
+  <rect x="442" y="290" width="258" height="48" rx="12" fill="#fff1dc"/><text x="466" y="320" class="body">逐表 SQL 探索与判断</text>
+  <rect x="442" y="356" width="258" height="48" rx="12" fill="#fff"/><text x="466" y="386" class="body">全局连接性与缺口恢复</text>
+  <text x="442" y="438" class="small">目标：保留足以支持正确 SQL 的最小高召回子图</text>
+
+  <path d="M736 236 H842" class="arrow"/><path d="M736 392 H842" class="arrow"/>
+  <rect x="844" y="160" width="350" height="126" rx="18" fill="#dff3e8" stroke="#4b936d" stroke-width="2" filter="url(#shadow)"/>
+  <text x="872" y="196" class="h2">logical_plan</text><text x="872" y="226" class="body">问题需要的过滤、连接与聚合步骤</text><text x="872" y="254" class="small">进入 Macro Plan 与 SQL Generation</text>
+  <rect x="844" y="328" width="350" height="130" rx="18" fill="#dff3e8" stroke="#4b936d" stroke-width="2" filter="url(#shadow)"/>
+  <text x="872" y="364" class="h2">refined_schema</text><text x="872" y="394" class="body">相关表列、功能理由与逐表探索证据</text><text x="872" y="422" class="small">进入可选 Reward Selection</text>
+
+  <rect x="52" y="534" width="1176" height="50" rx="13" fill="#e8eef6"/>
+  <text x="78" y="565" class="body">关键边界：Schema Linking 确认“需要哪些数据”，后续 SQL Agent 再决定“如何组织最终查询”。</text>
+</svg>
