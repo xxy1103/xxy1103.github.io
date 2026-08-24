@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="620" viewBox="0 0 1280 620" role="img" aria-labelledby="title desc">
+  <title id="title">Base RAG 核心思想</title>
+  <desc id="desc">本地知识库与用户问题经过语义检索得到证据，再由大语言模型基于证据生成带引用回答。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.badge{font:700 12px "Microsoft YaHei",sans-serif;fill:#fff}.arrow{stroke:#58708f;stroke-width:2.5;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="620" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">Base RAG：先查本地资料，再让模型基于证据回答</text>
+  <text x="54" y="88" class="subtitle">检索决定模型能看到什么，生成决定模型如何组织证据；程序负责补上真实来源引用。</text>
+
+  <rect x="42" y="122" width="1196" height="374" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="157" class="lane">一次在线问答的核心链路</text>
+
+  <rect x="70" y="202" width="220" height="106" rx="16" fill="#e6effb" filter="url(#shadow)"/>
+  <circle cx="96" cy="228" r="14" fill="#356aa0"/><text x="92" y="232" class="badge">1</text>
+  <text x="122" y="233" class="h2">用户问题</text><text x="96" y="263" class="body">自然语言 Question</text><text x="96" y="286" class="small">例如：为什么 Chunk 要重叠？</text>
+
+  <rect x="70" y="342" width="220" height="106" rx="16" fill="#e6effb" filter="url(#shadow)"/>
+  <circle cx="96" cy="368" r="14" fill="#356aa0"/><text x="92" y="372" class="badge">2</text>
+  <text x="122" y="373" class="h2">本地知识库</text><text x="96" y="403" class="body">PDF · Markdown · HTML</text><text x="96" y="426" class="small">离线切块并建立 FAISS 索引</text>
+
+  <path d="M290 255 H370" class="arrow"/><path d="M290 395 H334 Q354 395 354 375 V315 Q354 295 374 295" class="arrow"/>
+  <rect x="376" y="232" width="234" height="142" rx="17" fill="#e6effb" filter="url(#shadow)"/>
+  <circle cx="402" cy="258" r="14" fill="#356aa0"/><text x="398" y="262" class="badge">3</text>
+  <text x="428" y="263" class="h2">语义检索</text><text x="402" y="294" class="body">问题 Embedding</text><text x="402" y="318" class="body">余弦相似度 Top-K</text><text x="402" y="342" class="small">阈值过滤无关候选</text>
+
+  <path d="M610 303 H682" class="arrow"/>
+  <rect x="684" y="232" width="222" height="142" rx="17" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="710" cy="258" r="14" fill="#40845f"/><text x="706" y="262" class="badge">4</text>
+  <text x="736" y="263" class="h2">检索证据</text><text x="710" y="294" class="body">Chunk 正文</text><text x="710" y="318" class="body">文件 · 章节 · 页码</text><text x="710" y="342" class="small">只保留当前问题相关资料</text>
+
+  <path d="M906 303 H974" class="arrow"/>
+  <rect x="976" y="232" width="222" height="142" rx="17" fill="#f0eafb" filter="url(#shadow)"/>
+  <circle cx="1002" cy="258" r="14" fill="#7655a6"/><text x="998" y="262" class="badge">5</text>
+  <text x="1028" y="263" class="h2">LLM 生成</text><text x="1002" y="294" class="body">问题 + 证据 Prompt</text><text x="1002" y="318" class="body">严格基于资料回答</text><text x="1002" y="342" class="small">无命中时不调用模型</text>
+
+  <path d="M1087 374 V430 H858" class="arrow"/>
+  <rect x="488" y="414" width="512" height="88" rx="17" fill="#dff3e8" stroke="#4b936d" stroke-width="2.5" filter="url(#shadow)"/>
+  <circle cx="516" cy="440" r="14" fill="#40845f"/><text x="512" y="444" class="badge">6</text>
+  <text x="544" y="445" class="h2">最终交付：中文答案 + 程序化来源引用</text>
+  <text x="516" y="477" class="body">引用来自真实 SearchHit，不由模型自由编造；完整过程可保存到 runs。</text>
+
+  <rect x="42" y="530" width="1196" height="50" rx="13" fill="#e8eef6"/>
+  <text x="68" y="561" class="body">核心边界：有引用只证明“检索到了这些来源”，最终正确仍依赖正确证据被召回并被模型忠实使用。</text>
+</svg>

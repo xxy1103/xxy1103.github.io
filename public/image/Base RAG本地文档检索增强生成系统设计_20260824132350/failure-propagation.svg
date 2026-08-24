@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="710" viewBox="0 0 1280 710" role="img" aria-labelledby="title desc">
+  <title id="title">Base RAG 准确性失败传播链</title>
+  <desc id="desc">从原始文档解析到生成答案，每个阶段都可能丢失或扭曲信息，流程成功与答案正确是不同保证。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a6b72"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.bad{font:700 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#9a4f4f}.arrow{stroke:#7a6b72;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="710" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">为什么“成功生成回答并附带引用”仍然可能答错？</text>
+  <text x="54" y="88" class="subtitle">流程可运行、来源可追溯和答案事实正确是三种不同的保证。</text>
+
+  <rect x="42" y="122" width="1196" height="220" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="154" class="lane">信息从原文到答案的连续传播</text>
+  <rect x="68" y="190" width="148" height="92" rx="14" fill="#e8f1fb" filter="url(#shadow)"/><text x="90" y="220" class="h2">原始文件</text><text x="90" y="246" class="body">PDF · MD · HTML</text><text x="90" y="268" class="small">事实起点</text>
+  <path d="M216 236 H258" class="arrow"/>
+  <rect x="260" y="190" width="148" height="92" rx="14" fill="#e8f1fb" filter="url(#shadow)"/><text x="282" y="220" class="h2">Document</text><text x="282" y="246" class="body">清洗后的正文</text><text x="282" y="268" class="small">保留来源</text>
+  <path d="M408 236 H450" class="arrow"/>
+  <rect x="452" y="190" width="148" height="92" rx="14" fill="#e8f1fb" filter="url(#shadow)"/><text x="474" y="220" class="h2">Chunk</text><text x="474" y="246" class="body">独立知识单元</text><text x="474" y="268" class="small">标题 + 正文</text>
+  <path d="M600 236 H642" class="arrow"/>
+  <rect x="644" y="190" width="148" height="92" rx="14" fill="#f0eafb" filter="url(#shadow)"/><text x="666" y="220" class="h2">Embedding</text><text x="666" y="246" class="body">向量语义表示</text><text x="666" y="268" class="small">相似度基础</text>
+  <path d="M792 236 H834" class="arrow"/>
+  <rect x="836" y="190" width="148" height="92" rx="14" fill="#e8f1fb" filter="url(#shadow)"/><text x="858" y="220" class="h2">Hits / Context</text><text x="858" y="246" class="body">Top-K 检索证据</text><text x="858" y="268" class="small">阈值与预算</text>
+  <path d="M984 236 H1026" class="arrow"/>
+  <rect x="1028" y="190" width="180" height="92" rx="14" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/><text x="1050" y="220" class="h2">Answer + 引用</text><text x="1050" y="246" class="body">LLM 组织证据</text><text x="1050" y="268" class="small">程序追加来源</text>
+
+  <rect x="42" y="370" width="1196" height="246" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="402" class="lane">每个阶段的典型失败</text>
+  <rect x="68" y="438" width="206" height="126" rx="14" fill="#fff1dc" filter="url(#shadow)"/><text x="90" y="468" class="h2">解析 / 切块</text><text x="90" y="495" class="body">扫描 PDF 无文字层</text><text x="90" y="518" class="body">句子跨边界被切断</text><text x="90" y="543" class="bad">正确事实未成为完整 Chunk</text>
+  <rect x="298" y="438" width="206" height="126" rx="14" fill="#fff1dc" filter="url(#shadow)"/><text x="320" y="468" class="h2">向量表达</text><text x="320" y="495" class="body">编号、缩写语义不足</text><text x="320" y="518" class="body">一个块混入多个主题</text><text x="320" y="543" class="bad">正确 Chunk 得分偏低</text>
+  <rect x="528" y="438" width="206" height="126" rx="14" fill="#f8e6e6" filter="url(#shadow)"/><text x="550" y="468" class="h2">检索 / 过滤</text><text x="550" y="495" class="body">Top-K 太小或阈值太高</text><text x="550" y="518" class="body">正确证据未被召回</text><text x="550" y="543" class="bad">LLM 根本看不到答案</text>
+  <rect x="758" y="438" width="206" height="126" rx="14" fill="#f8e6e6" filter="url(#shadow)"/><text x="780" y="468" class="h2">Context 装配</text><text x="780" y="495" class="body">字符预算提前耗尽</text><text x="780" y="518" class="body">命中但未进入 Prompt</text><text x="780" y="543" class="bad">检索成功仍无法使用</text>
+  <rect x="988" y="438" width="220" height="126" rx="14" fill="#f8e6e6" stroke="#a95353" stroke-width="2" filter="url(#shadow)"/><text x="1010" y="468" class="h2">生成阶段</text><text x="1010" y="495" class="body">遗漏条件或错误归纳</text><text x="1010" y="518" class="body">Prompt 约束未被完全遵守</text><text x="1010" y="543" class="bad">有真实引用，答案仍可能错</text>
+
+  <rect x="42" y="648" width="1196" height="44" rx="12" fill="#e8eef6"/>
+  <text x="68" y="676" class="body">定位原则：先看正确事实是否成为 Chunk，再看 rank/score、Context 和 Prompt，最后分析生成答案。</text>
+</svg>

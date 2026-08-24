@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">pipeline.py 编排完整 ingest 建库流程</title>
+  <desc id="desc">从扫描语料、加载文档、生成文本块和批量向量化，到计算语料身份、构建保存索引并返回建库报告的七个步骤。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 13px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 13px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.badge{font:700 12px "Microsoft YaHei",sans-serif;fill:#fff}.arrow{stroke:#58708f;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="720" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">pipeline.py：把四个模块编排成一次完整建库</text>
+  <text x="54" y="88" class="subtitle">蓝色是确定性数据处理，紫色是模型向量化，绿色是正式索引与建库报告。</text>
+
+  <rect x="42" y="122" width="1196" height="222" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="156" class="lane">第一段 · 从原始文件得到 Chunk 向量</text>
+
+  <rect x="70" y="198" width="230" height="108" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <circle cx="95" cy="223" r="13" fill="#356aa0"/><text x="91" y="227" class="badge">1</text>
+  <text x="121" y="228" class="h2">扫描语料目录</text>
+  <text x="95" y="258" class="body">递归遍历 corpus_dir</text>
+  <text x="95" y="281" class="small">筛选允许扩展名并排序</text>
+
+  <path d="M300 252 H348" class="arrow"/>
+  <rect x="350" y="198" width="230" height="108" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <circle cx="375" cy="223" r="13" fill="#356aa0"/><text x="371" y="227" class="badge">2</text>
+  <text x="401" y="228" class="h2">加载统一文档</text>
+  <text x="375" y="258" class="code">load_path(file)</text>
+  <text x="375" y="281" class="small">汇总 SourceDocument</text>
+
+  <path d="M580 252 H628" class="arrow"/>
+  <rect x="630" y="198" width="230" height="108" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <circle cx="655" cy="223" r="13" fill="#356aa0"/><text x="651" y="227" class="badge">3</text>
+  <text x="681" y="228" class="h2">生成全部 Chunk</text>
+  <text x="655" y="258" class="code">chunk_documents(...)</text>
+  <text x="655" y="281" class="small">章节 · 长度 · overlap</text>
+
+  <path d="M860 252 H908" class="arrow"/>
+  <rect x="910" y="198" width="298" height="108" rx="15" fill="#f0eafb" filter="url(#shadow)"/>
+  <circle cx="935" cy="223" r="13" fill="#7655a6"/><text x="931" y="227" class="badge">4</text>
+  <text x="961" y="228" class="h2">批量生成 Embedding</text>
+  <text x="935" y="258" class="body">title + section + text</text>
+  <text x="935" y="281" class="small">分批 embed()，拼接 N × d 向量矩阵</text>
+
+  <path d="M1058 306 V362 H56 V510 H116" class="arrow"/>
+  <rect x="42" y="380" width="1196" height="222" rx="20" fill="#fff" opacity=".94"/>
+  <text x="66" y="414" class="lane">第二段 · 固化索引身份并交付建库结果</text>
+
+  <rect x="128" y="456" width="276" height="108" rx="15" fill="#e6effb" filter="url(#shadow)"/>
+  <circle cx="153" cy="481" r="13" fill="#356aa0"/><text x="149" y="485" class="badge">5</text>
+  <text x="179" y="486" class="h2">计算语料与索引身份</text>
+  <text x="153" y="516" class="code">corpus_hash + metadata</text>
+  <text x="153" y="539" class="small">模型 · 维度 · Chunk 参数 · 数量</text>
+
+  <path d="M404 510 H486" class="arrow"/>
+  <rect x="488" y="456" width="304" height="108" rx="15" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="513" cy="481" r="13" fill="#40845f"/><text x="509" y="485" class="badge">6</text>
+  <text x="539" y="486" class="h2">构建并保存 FAISS 索引</text>
+  <text x="513" y="516" class="code">FaissStore.build(...).save(...)</text>
+  <text x="513" y="539" class="small">index.faiss · chunks.jsonl · metadata.json</text>
+
+  <path d="M792 510 H874" class="arrow"/>
+  <rect x="876" y="456" width="276" height="108" rx="15" fill="#dff3e8" stroke="#4b936d" stroke-width="2.5" filter="url(#shadow)"/>
+  <circle cx="901" cy="481" r="13" fill="#40845f"/><text x="897" y="485" class="badge">7</text>
+  <text x="927" y="486" class="h2">返回建库报告</text>
+  <text x="901" y="516" class="body">files · documents · chunks</text>
+  <text x="901" y="539" class="small">长度统计 · errors · corpus_hash</text>
+
+  <rect x="42" y="636" width="1196" height="46" rx="12" fill="#e8eef6"/>
+  <text x="68" y="665" class="body">失败边界：空语料、无 Chunk、严格模式下的解析错误或 Embedding 失败都会阻止正式索引落盘。</text>
+</svg>
