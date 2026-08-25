@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="620" viewBox="0 0 1280 620" role="img" aria-labelledby="title desc">
+  <title id="title">Dense 与 BM25 的互补关系</title>
+  <desc id="desc">Dense 根据语义向量召回，BM25 根据精确词匹配召回，两路结果为混合检索提供互补候选。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.h2{font:700 18px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 14px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#58708f;stroke-width:2.5;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="620" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">同一个问题，从“意思相近”和“词语重合”两个方向找证据</text>
+  <text x="54" y="88" class="subtitle">Dense 与 BM25 的失败模式不同；Hybrid 的价值来自互补，而不是把两份相同结果重复一次。</text>
+  <rect x="48" y="132" width="270" height="116" rx="17" fill="#fff" filter="url(#shadow)"/>
+  <text x="76" y="170" class="h2">用户问题</text><text x="76" y="204" class="body">“精排模型有什么作用？”</text><text x="76" y="226" class="small">自然语言、同义表达、技术术语</text>
+  <path d="M318 190 H390" class="arrow"/><path d="M354 190 V404 H390" class="arrow"/>
+  <rect x="394" y="132" width="354" height="180" rx="18" fill="#e6effb" filter="url(#shadow)"/>
+  <text x="424" y="170" class="h2">Dense Retrieval · 稠密语义</text><text x="424" y="205" class="code">Question → Embedding → FAISS</text>
+  <text x="424" y="239" class="body">擅长：同义词、概念、口语化表达</text><text x="424" y="266" class="body">示例：精排模型 ↔ Reranker</text><text x="424" y="290" class="small">弱点：罕见标识符与精确字符串可能不稳定</text>
+  <rect x="394" y="350" width="354" height="180" rx="18" fill="#fff1dc" filter="url(#shadow)"/>
+  <text x="424" y="388" class="h2">BM25 Retrieval · 稀疏词项</text><text x="424" y="423" class="code">Question → tokenize → TF / IDF</text>
+  <text x="424" y="457" class="body">擅长：术语、命令、版本号、报错文本</text><text x="424" y="484" class="body">示例：qwen3-rerank · IndexFlatIP</text><text x="424" y="508" class="small">弱点：意思相同但没有词语重合时容易漏召回</text>
+  <path d="M748 222 H824" class="arrow"/><path d="M748 440 H790 Q812 440 812 418 V326 Q812 304 834 304" class="arrow"/>
+  <rect x="832" y="214" width="388" height="196" rx="19" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="862" y="254" class="h2">互补候选池</text><text x="862" y="290" class="body">Dense 找到“意思相关”的 Chunk</text><text x="862" y="321" class="body">BM25 找到“精确词命中”的 Chunk</text><text x="862" y="352" class="body">下一步只融合名次，不比较原始分数</text><text x="862" y="384" class="small">输出：带 dense_* / bm25_* 轨迹的 SearchHit</text>
+  <rect x="48" y="558" width="1172" height="42" rx="12" fill="#e8eef6"/><text x="74" y="585" class="body">学习重点：Dense 解决语义差异，BM25 解决词项精确性；任何一路都不是另一条路的替代品。</text>
+</svg>

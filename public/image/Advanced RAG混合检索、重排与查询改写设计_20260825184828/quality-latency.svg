@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">自建题集上的检索质量与延迟权衡</title><desc id="desc">使用对数延迟轴比较五种 Profile 的 MRR@6，Advanced 延迟显著增加但质量仅小幅提高。</desc>
+  <defs><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter><style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.axis{stroke:#8091a6;stroke-width:2}.grid{stroke:#d8e0ea;stroke-width:1}.dash{stroke:#9270bd;stroke-width:2;stroke-dasharray:7 6}.label{font:700 13px "Microsoft YaHei",sans-serif;fill:#29465f}</style></defs>
+  <rect width="1280" height="760" rx="24" fill="#f5f8fc"/><text x="54" y="58" class="title">质量提升必须与延迟一起判断</text><text x="54" y="88" class="subtitle">自建 60 题 · 横轴为对数刻度的平均延迟，纵轴为 MRR@6；越靠左上越适合作为默认方案。</text>
+  <rect x="66" y="126" width="820" height="526" rx="18" fill="#fff" filter="url(#shadow)"/>
+  <line x1="156" y1="188" x2="156" y2="584" class="axis"/><line x1="156" y1="584" x2="822" y2="584" class="axis"/>
+  <line x1="156" y1="518" x2="822" y2="518" class="grid"/><line x1="156" y1="386" x2="822" y2="386" class="grid"/><line x1="156" y1="254" x2="822" y2="254" class="grid"/>
+  <text x="104" y="523" class="small">0.50</text><text x="104" y="391" class="small">0.60</text><text x="104" y="259" class="small">0.70</text><text x="86" y="206" class="body">MRR@6</text>
+  <line x1="186" y1="584" x2="186" y2="594" class="axis"/><line x1="354" y1="584" x2="354" y2="594" class="axis"/><line x1="522" y1="584" x2="522" y2="594" class="axis"/><line x1="690" y1="584" x2="690" y2="594" class="axis"/><line x1="810" y1="584" x2="810" y2="594" class="axis"/>
+  <text x="168" y="617" class="small">0.03s</text><text x="338" y="617" class="small">0.1s</text><text x="506" y="617" class="small">0.3s</text><text x="678" y="617" class="small">1s</text><text x="794" y="617" class="small">17s</text><text x="404" y="642" class="body">平均延迟（对数刻度）</text>
+  <circle cx="182" cy="532" r="10" fill="#d28a2e"/><text x="196" y="537" class="label">BM25 · 0.4898</text>
+  <circle cx="425" cy="446" r="10" fill="#6d92ba"/><text x="439" y="451" class="label">Hybrid · 0.5549</text>
+  <circle cx="443" cy="371" r="10" fill="#356aa0"/><text x="457" y="376" class="label">Dense · 0.6117</text>
+  <circle cx="526" cy="321" r="12" fill="#438a62"/><text x="542" y="326" class="label">Hybrid-Rerank · 0.6497</text>
+  <circle cx="810" cy="306" r="13" fill="#7753a1"/><text x="650" y="288" class="label">Advanced · 0.6614</text><line x1="735" y1="292" x2="798" y2="304" class="dash"/>
+  <rect x="918" y="126" width="296" height="526" rx="18" fill="#fff" filter="url(#shadow)"/><text x="946" y="170" class="h2">怎样读这张图</text>
+  <rect x="946" y="202" width="240" height="102" rx="13" fill="#dff3e8"/><text x="964" y="232" class="h2">Reranker</text><text x="964" y="260" class="body">MRR +0.0948</text><text x="964" y="284" class="small">延迟只增加 0.277s</text>
+  <rect x="946" y="326" width="240" height="126" rx="13" fill="#f0eafb"/><text x="964" y="356" class="h2">Query Rewrite</text><text x="964" y="384" class="body">MRR 仅 +0.0117</text><text x="964" y="408" class="small">Top-6 覆盖不变</text><text x="964" y="432" class="small">延迟约增至 38 倍</text>
+  <rect x="946" y="474" width="240" height="130" rx="13" fill="#e8eef6"/><text x="964" y="504" class="h2">当前默认选择</text><text x="964" y="532" class="body">不能只取最高 MRR</text><text x="964" y="556" class="small">Hybrid-Rerank 更接近</text><text x="964" y="580" class="small">质量与成本的平衡点。</text>
+  <text x="66" y="706" class="small">注：该图只展示自建题集的 MRR@6 与延迟，不代表端到端答案质量；对数横轴用于同时显示 0.028s 与 17.071s。</text>
+</svg>

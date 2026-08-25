@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">五个 Profile 的能力递进关系</title>
+  <desc id="desc">从 Dense 开始，依次加入 BM25 与 RRF、Reranker、Query Rewrite，形成 Hybrid、Hybrid-Rerank 和 Advanced。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f9fc"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#58708f"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.profile{font:700 22px Consolas,"Microsoft YaHei",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.module{font:700 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#29465f}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.arrow{stroke:#58708f;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke:#9aacbf;stroke-width:2;stroke-dasharray:6 6;fill:none}</style>
+  </defs>
+  <rect width="1280" height="720" rx="24" fill="url(#bg)"/>
+  <text x="54" y="58" class="title">Profile 递进：每次只增加一个检索能力</text>
+  <text x="54" y="88" class="subtitle">相邻 Profile 共享同一底座，因此指标差值可以对应到新增模块。</text>
+
+  <rect x="68" y="246" width="220" height="176" rx="20" fill="#e6effb" filter="url(#shadow)"/>
+  <rect x="88" y="266" width="68" height="28" rx="14" fill="#356aa0"/>
+  <text x="104" y="285" style="font:700 12px 'Microsoft YaHei',sans-serif;fill:#fff">起点</text>
+  <text x="98" y="340" class="profile">Dense</text>
+  <text x="98" y="375" class="body">Dense Retrieval</text>
+  <text x="98" y="400" class="small">语义向量召回</text>
+
+  <path d="M288 334 H380" class="arrow"/>
+  <rect x="304" y="190" width="182" height="86" rx="14" fill="#fff1dc" stroke="#d9a351" stroke-width="2"/>
+  <text x="328" y="225" class="module">+ BM25</text>
+  <text x="328" y="250" class="module">+ RRF</text>
+  <path d="M395 276 V310" class="dash"/>
+
+  <rect x="382" y="246" width="220" height="176" rx="20" fill="#fff1dc" filter="url(#shadow)"/>
+  <rect x="402" y="266" width="88" height="28" rx="14" fill="#d28a2e"/>
+  <text x="417" y="285" style="font:700 12px 'Microsoft YaHei',sans-serif;fill:#fff">双路召回</text>
+  <text x="412" y="340" class="profile">Hybrid</text>
+  <text x="412" y="375" class="body">Dense + BM25 + RRF</text>
+  <text x="412" y="400" class="small">互补候选与名次融合</text>
+
+  <path d="M602 334 H694" class="arrow"/>
+  <rect x="626" y="190" width="158" height="62" rx="14" fill="#dff3e8" stroke="#6aa281" stroke-width="2"/>
+  <text x="650" y="228" class="module">+ Reranker</text>
+  <path d="M705 252 V310" class="dash"/>
+
+  <rect x="696" y="246" width="240" height="176" rx="20" fill="#dff3e8" filter="url(#shadow)"/>
+  <rect x="716" y="266" width="80" height="28" rx="14" fill="#438a62"/>
+  <text x="731" y="285" style="font:700 12px 'Microsoft YaHei',sans-serif;fill:#fff">二阶段</text>
+  <text x="726" y="340" class="profile">Hybrid-Rerank</text>
+  <text x="726" y="375" class="body">Hybrid + Cross-Encoder</text>
+  <text x="726" y="400" class="small">对有限候选进行精排</text>
+
+  <path d="M936 334 H1028" class="arrow"/>
+  <rect x="942" y="190" width="204" height="62" rx="14" fill="#f0eafb" stroke="#9270bd" stroke-width="2"/>
+  <text x="966" y="228" class="module">+ Query Rewrite</text>
+  <path d="M1044 252 V310" class="dash"/>
+
+  <rect x="1030" y="246" width="188" height="176" rx="20" fill="#f0eafb" stroke="#9270bd" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="1050" y="266" width="68" height="28" rx="14" fill="#7753a1"/>
+  <text x="1065" y="285" style="font:700 12px 'Microsoft YaHei',sans-serif;fill:#fff">完整</text>
+  <text x="1060" y="340" class="profile">Advanced</text>
+  <text x="1060" y="375" class="body">Rewrite + Hybrid</text>
+  <text x="1060" y="400" class="small">+ Rerank</text>
+
+  <rect x="68" y="482" width="1150" height="146" rx="18" fill="#fff" opacity=".94"/>
+  <text x="96" y="520" class="module">消融比较</text>
+  <line x1="96" y1="544" x2="1190" y2="544" stroke="#d8e0ea"/>
+  <text x="96" y="578" class="body">Hybrid − Dense</text><text x="264" y="578" class="small">→ BM25 + RRF 的增量价值</text>
+  <text x="500" y="578" class="body">Hybrid-Rerank − Hybrid</text><text x="718" y="578" class="small">→ Reranker 的增量价值</text>
+  <text x="96" y="608" class="body">Advanced − Hybrid-Rerank</text><text x="332" y="608" class="small">→ Query Rewrite 的增量价值与额外成本</text>
+  <text x="912" y="608" class="small">相同语料 · 相同问题 · 相同指标</text>
+</svg>
