@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic RAG 数据如何逐步形成</title>
+  <desc id="desc">用户问题先形成 RouteDecision 和证据需求，每次检索与验收形成 HopTrace，多条 HopTrace 最终汇总为 AgenticRetrievalResult。包含关系使用嵌套卡片表达，箭头只表示数据形成顺序。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.step{font:700 13px Consolas,"Microsoft YaHei",sans-serif;fill:#65788e}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 14px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+
+  <rect width="1280" height="720" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">一个问题如何逐步形成可审计的 Agentic 检索结果</text>
+  <text x="54" y="88" class="subtitle">主线只表示数据形成顺序；对象包含关系直接画在卡片内部。</text>
+
+  <text x="62" y="178" class="step">01 · 输入</text>
+  <rect x="50" y="196" width="180" height="204" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="140" y="236" text-anchor="middle" class="h2">用户问题</text>
+  <text x="74" y="282" class="body">创办 A 公司的人</text>
+  <text x="74" y="310" class="body">后来领导了</text>
+  <text x="74" y="338" class="body">哪家机构？</text>
+  <rect x="72" y="362" width="136" height="24" rx="8" fill="#dbe8f6"/>
+  <text x="140" y="379" text-anchor="middle" class="small">AgenticState.question</text>
+
+  <path d="M230 298 H286" class="arrow"/>
+  <text x="300" y="142" class="step">02 · 规划</text>
+  <rect x="288" y="160" width="274" height="330" rx="20" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="314" y="198" class="code">RouteDecision</text>
+  <text x="314" y="228" class="small">Router 输出的检索计划</text>
+  <text x="314" y="266" class="body">route</text><text x="390" y="266" class="code">multi_hop</text>
+  <text x="314" y="294" class="body">query</text><text x="390" y="294" class="small">A 公司创办者是谁？</text>
+  <line x1="314" y1="316" x2="536" y2="316" stroke="#a8cdb8" stroke-width="1.5"/>
+  <text x="314" y="342" class="small">包含 requirements[]</text>
+  <rect x="312" y="360" width="226" height="104" rx="13" fill="#f4fbf7"/>
+  <text x="330" y="388" class="code">EvidenceRequirement</text>
+  <text x="330" y="416" class="body">R1 · 找到创办者</text>
+  <text x="330" y="442" class="body">R2 · 找到后来领导的机构</text>
+
+  <path d="M562 298 H620" class="arrow"/>
+  <text x="634" y="122" class="step">03 · 逐跳检索与验收（可重复 1…N 次）</text>
+  <rect x="634" y="128" width="332" height="392" rx="20" fill="#f6ead2" opacity=".7"/>
+  <rect x="622" y="140" width="356" height="392" rx="20" fill="#fff1dc" stroke="#c99a52" stroke-width="2" filter="url(#shadow)"/>
+  <text x="648" y="178" class="code">HopTrace</text>
+  <text x="648" y="208" class="body">第 2 跳 · query：张三后来领导了哪家机构？</text>
+
+  <rect x="646" y="234" width="308" height="100" rx="14" fill="#e8f1fb"/>
+  <text x="666" y="264" class="code">SearchHit[]</text>
+  <text x="666" y="290" class="body">本跳 Hybrid-Rerank 的 Top-K 证据</text>
+  <text x="666" y="314" class="small">正文 · 来源 · 各阶段分数与排名</text>
+
+  <rect x="646" y="354" width="308" height="150" rx="14" fill="#f0eafb"/>
+  <text x="666" y="384" class="code">EvidenceDecision</text>
+  <text x="666" y="410" class="body">verdict：continue / complete / insufficient</text>
+  <text x="666" y="438" class="small">内部包含 RequirementAssessment[]</text>
+  <rect x="666" y="452" width="268" height="34" rx="9" fill="#faf8fd"/>
+  <text x="680" y="474" class="small">R1 supported · R2 missing · chunk_id 引用</text>
+
+  <path d="M978 298 H1026" class="arrow"/>
+  <text x="1040" y="178" class="step">04 · 汇总</text>
+  <rect x="1028" y="196" width="202" height="260" rx="20" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1129" y="234" text-anchor="middle" class="code">Agentic</text>
+  <text x="1129" y="256" text-anchor="middle" class="code">RetrievalResult</text>
+  <line x1="1052" y1="278" x2="1206" y2="278" stroke="#a8cdb8" stroke-width="1.5"/>
+  <text x="1052" y="308" class="body">route_decision</text>
+  <text x="1052" y="338" class="body">final_hits[]</text>
+  <text x="1052" y="368" class="body">traces[]</text>
+  <text x="1052" y="398" class="body">termination_reason</text>
+  <text x="1052" y="428" class="body">跳数、纠错数、耗时</text>
+
+  <rect x="190" y="602" width="900" height="68" rx="16" fill="#e8eef6"/>
+  <text x="640" y="630" text-anchor="middle" class="h2">阅读主线</text>
+  <text x="640" y="654" text-anchor="middle" class="body">问题被规划 → 每次检索与验收形成一条 HopTrace → 多条 Trace 汇总成最终结果</text>
+</svg>

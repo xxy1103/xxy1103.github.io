@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">从固定 Advanced RAG 到受控 Agentic RAG</title>
+  <desc id="desc">上半部分展示 Phase 2 单次固定检索，下半部分展示 Phase 3 根据证据判断继续、纠错或结束。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 14px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="720" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">Phase 3 没有替换检索器，而是在检索器外增加决策闭环</text>
+  <text x="54" y="88" class="subtitle">固定链路只执行一次；Agentic 链路根据累计证据决定下一跳、纠错或停止。</text>
+
+  <rect x="42" y="120" width="1196" height="214" rx="20" fill="#fff" opacity=".95"/>
+  <text x="66" y="154" class="lane">Phase 2 · 固定 Advanced RAG</text>
+  <rect x="74" y="190" width="170" height="72" rx="14" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="159" y="220" text-anchor="middle" class="h2">用户问题</text><text x="159" y="244" text-anchor="middle" class="small">只进入一次检索</text>
+  <path d="M244 226 H298" class="arrow"/>
+  <rect x="300" y="190" width="210" height="72" rx="14" fill="#f0eafb" filter="url(#shadow)"/>
+  <text x="405" y="220" text-anchor="middle" class="h2">Query Rewrite</text><text x="405" y="244" text-anchor="middle" class="small">可选的检索前改写</text>
+  <path d="M510 226 H564" class="arrow"/>
+  <rect x="566" y="176" width="280" height="100" rx="16" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="706" y="209" text-anchor="middle" class="h2">Phase 2 检索器</text><text x="706" y="234" text-anchor="middle" class="body">Dense + BM25 → RRF</text><text x="706" y="256" text-anchor="middle" class="small">Rerank → Top-K</text>
+  <path d="M846 226 H900" class="arrow"/>
+  <rect x="902" y="190" width="270" height="72" rx="14" fill="#fff1dc" filter="url(#shadow)"/>
+  <text x="1037" y="220" text-anchor="middle" class="h2">一次 Top-K 证据</text><text x="1037" y="244" text-anchor="middle" class="small">链路到此结束</text>
+
+  <rect x="42" y="360" width="1196" height="306" rx="20" fill="#fff" opacity=".95"/>
+  <text x="66" y="394" class="lane">Phase 3 · 受控 Agentic Multi-Hop Retrieval</text>
+  <rect x="66" y="434" width="174" height="74" rx="14" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="153" y="463" text-anchor="middle" class="h2">Router</text><text x="153" y="487" text-anchor="middle" class="small">query + requirements</text>
+  <path d="M240 471 H298" class="arrow"/>
+  <rect x="300" y="420" width="280" height="102" rx="16" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="440" y="451" text-anchor="middle" class="h2">复用 Phase 2 检索器</text><text x="440" y="476" text-anchor="middle" class="body">当前 query → Hybrid-Rerank</text><text x="440" y="498" text-anchor="middle" class="small">每一跳只改变查询，不改变检索底座</text>
+  <path d="M580 471 H638" class="arrow"/>
+  <rect x="640" y="420" width="250" height="102" rx="16" fill="#f0eafb" stroke="#8b76b5" stroke-width="2" filter="url(#shadow)"/>
+  <text x="765" y="451" text-anchor="middle" class="h2">Evidence Grader</text><text x="765" y="476" text-anchor="middle" class="body">逐项验收累计证据</text><text x="765" y="498" text-anchor="middle" class="small">complete / continue / insufficient</text>
+  <path d="M890 471 H948" class="arrow"/>
+  <rect x="950" y="434" width="220" height="74" rx="14" fill="#fff1dc" filter="url(#shadow)"/>
+  <text x="1060" y="463" text-anchor="middle" class="h2">Final Hits + Trace</text><text x="1060" y="487" text-anchor="middle" class="small">可审计终止原因</text>
+
+  <path d="M765 522 V570 H440 V524" class="arrow"/>
+  <rect x="492" y="550" width="220" height="42" rx="12" fill="#e8f1fb"/>
+  <text x="602" y="576" text-anchor="middle" class="code">continue · 下一跳查询</text>
+  <path d="M765 522 V626 H440 V524" class="arrow"/>
+  <rect x="492" y="606" width="220" height="42" rx="12" fill="#fde9e7"/>
+  <text x="602" y="632" text-anchor="middle" class="code">insufficient · 纠错查询</text>
+  <text x="918" y="548" class="small">complete 或预算/异常终止</text>
+</svg>

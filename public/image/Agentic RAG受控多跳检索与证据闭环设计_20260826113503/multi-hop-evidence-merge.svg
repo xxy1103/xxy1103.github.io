@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="620" viewBox="0 0 1280 620" role="img" aria-labelledby="title desc">
+  <title id="title">多跳证据为什么不能直接按分数混排</title>
+  <desc id="desc">对比错误的跨跳分数排序和当前系统采用的必要证据优先加跨跳轮询方案。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 34px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.label{font:700 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 20px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 16px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.6;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+
+  <rect width="1280" height="620" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">多跳结果不是同一场考试，不能直接比较 Reranker 分数</text>
+  <text x="54" y="90" class="subtitle">每一跳查询不同；汇总目标不是选出“全局最高分”，而是保住完整证据链。</text>
+
+  <text x="64" y="150" class="label">错误思路</text>
+  <rect x="60" y="170" width="300" height="142" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="84" y="204" class="h2">两跳候选放在一起</text>
+  <text x="84" y="240" class="body">hop 1：0.92 · 0.90 · 0.88</text>
+  <text x="84" y="270" class="body">hop 2：0.86 · 0.82 · 0.79</text>
+  <text x="84" y="296" class="small">这些分数分别对应不同查询</text>
+  <path d="M360 241 H438" class="arrow"/>
+
+  <rect x="440" y="170" width="300" height="142" rx="18" fill="#fde9e7" filter="url(#shadow)"/>
+  <text x="590" y="208" text-anchor="middle" class="h2">按分数全局排序</text>
+  <text x="590" y="244" text-anchor="middle" class="body">0.92 → 0.90 → 0.88 → 0.86</text>
+  <text x="590" y="278" text-anchor="middle" class="small">hop 1 可能占据大部分位置</text>
+  <path d="M740 241 H818" class="arrow"/>
+
+  <rect x="820" y="170" width="400" height="142" rx="18" fill="#fde9e7" stroke="#bb6b62" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1020" y="208" text-anchor="middle" class="h2">结果：证据链可能断裂</text>
+  <text x="1020" y="246" text-anchor="middle" class="body">R1 的相似 Chunk 很多</text>
+  <text x="1020" y="276" text-anchor="middle" class="body">真正支持 R2 的 Chunk 被挤出 Top-K</text>
+
+  <text x="64" y="380" class="label">当前方案</text>
+  <rect x="60" y="400" width="300" height="150" rx="18" fill="#f0eafb" filter="url(#shadow)"/>
+  <text x="84" y="434" class="h2">Grader 已确认的关系</text>
+  <text x="84" y="472" class="body">R1 → 必要证据 A</text>
+  <text x="84" y="504" class="body">R2 → 必要证据 B</text>
+  <text x="84" y="532" class="small">其余 Chunk 作为补充候选</text>
+  <path d="M360 475 H438" class="arrow"/>
+
+  <rect x="440" y="400" width="300" height="150" rx="18" fill="#fff1dc" filter="url(#shadow)"/>
+  <text x="590" y="436" text-anchor="middle" class="h2">先保护，再补位</text>
+  <text x="590" y="476" text-anchor="middle" class="body">① 必要证据优先</text>
+  <text x="590" y="508" text-anchor="middle" class="body">② 不同跳轮流补充</text>
+  <text x="590" y="534" text-anchor="middle" class="small">重复 Chunk 自动跳过</text>
+  <path d="M740 475 H818" class="arrow"/>
+
+  <rect x="820" y="400" width="400" height="150" rx="18" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1020" y="436" text-anchor="middle" class="h2">结果：必要事实都被保留</text>
+  <text x="1020" y="476" text-anchor="middle" class="code">R1 证据 → R2 证据 → 其他候选</text>
+  <text x="1020" y="510" text-anchor="middle" class="body">先保证完整，再兼顾不同跳的多样性</text>
+</svg>

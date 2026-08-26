@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence Grader 如何驱动下一跳、纠错与结束</title>
+  <desc id="desc">累计证据与需求进入 Grader，经过结构校验和完成门控后，complete 结束，continue 进入下一跳，insufficient 进入当前跳查询纠错。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 30px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 15px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.h2{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 12px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 14px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.4;fill:none;marker-end:url(#arrow)}.dash{stroke:#9aa9ba;stroke-width:2;stroke-dasharray:7 6;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="760" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">Grader 判断证据状态，确定性 Gate 决定是否真的允许完成</text>
+  <text x="54" y="88" class="subtitle">continue 是进入新事实；insufficient 是修正当前事实的查询。两条边都会回到同一个 Phase 2 检索器。</text>
+
+  <rect x="52" y="134" width="276" height="178" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="78" y="168" class="h2">输入 · 累计状态</text>
+  <text x="78" y="204" class="body">原始问题</text><text x="78" y="230" class="body">当前查询</text><text x="78" y="256" class="body">全部 requirements</text><text x="78" y="282" class="body">跨跳 hits + 真实 chunk_id</text>
+  <path d="M328 223 H398" class="arrow"/>
+
+  <rect x="400" y="126" width="344" height="194" rx="20" fill="#f0eafb" stroke="#8b76b5" stroke-width="2" filter="url(#shadow)"/>
+  <text x="428" y="162" class="h2">Evidence Grader · 语义判断</text>
+  <text x="428" y="200" class="body">为每个需求标记：</text><text x="428" y="228" class="code">supported / missing</text>
+  <text x="428" y="260" class="body">整体建议：</text><text x="428" y="288" class="code">complete / continue / insufficient</text>
+  <path d="M744 223 H814" class="arrow"/>
+
+  <rect x="816" y="126" width="410" height="194" rx="20" fill="#fff1dc" stroke="#c99a52" stroke-width="2" filter="url(#shadow)"/>
+  <text x="844" y="162" class="h2">apply_complete_gate · 确定性门控</text>
+  <text x="844" y="198" class="body">① 引用的 chunk_id 必须存在于累计 hits</text>
+  <text x="844" y="226" class="body">② supported 必须至少绑定一个真实 Chunk</text>
+  <text x="844" y="254" class="body">③ 所有 requirement supported 才允许 complete</text>
+  <text x="844" y="282" class="body">④ 缺失 next_query 时用需求描述兜底</text>
+
+  <path d="M1021 320 V382" class="arrow"/>
+  <rect x="90" y="404" width="300" height="132" rx="18" fill="#dff3e8" filter="url(#shadow)"/>
+  <text x="240" y="438" text-anchor="middle" class="code">complete</text>
+  <text x="240" y="468" text-anchor="middle" class="body">所有证据需求已绑定真实 Chunk</text>
+  <text x="240" y="496" text-anchor="middle" class="small">进入 finalize · termination=complete</text>
+
+  <rect x="490" y="404" width="300" height="132" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="640" y="438" text-anchor="middle" class="code">continue</text>
+  <text x="640" y="468" text-anchor="middle" class="body">已有进展，但缺少下一项事实</text>
+  <text x="640" y="496" text-anchor="middle" class="small">hop + 1 · current_query = next_query</text>
+
+  <rect x="890" y="404" width="300" height="132" rx="18" fill="#fde9e7" filter="url(#shadow)"/>
+  <text x="1040" y="438" text-anchor="middle" class="code">insufficient</text>
+  <text x="1040" y="468" text-anchor="middle" class="body">当前查询没有取得可靠进展</text>
+  <text x="1040" y="496" text-anchor="middle" class="small">hop 不变 · correct_query</text>
+
+  <path d="M1021 382 H240 V402" class="arrow"/><path d="M1021 382 H640 V402" class="arrow"/><path d="M1021 382 H1040 V402" class="arrow"/>
+  <text x="356" y="374" class="small">全部支持</text><text x="616" y="374" class="small">有进展且仍缺事实</text><text x="900" y="374" class="small">无可靠进展</text>
+
+  <rect x="396" y="618" width="488" height="82" rx="18" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="640" y="650" text-anchor="middle" class="h2">retrieve_hop · 复用 Hybrid-Rerank</text>
+  <text x="640" y="678" text-anchor="middle" class="small">下一跳查询或纠错查询再次进入同一检索底座</text>
+  <path d="M640 536 V616" class="arrow"/><path d="M1040 536 V578 H780 V616" class="arrow"/>
+  <path d="M396 660 H246 V538" class="dash"/>
+  <text x="116" y="580" class="small">新证据再次进入 Grader</text>
+</svg>

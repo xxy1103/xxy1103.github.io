@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="680" viewBox="0 0 1280 680" role="img" aria-labelledby="title desc">
+  <title id="title">LangGraph 如何根据证据状态选择下一条边</title>
+  <desc id="desc">Router、Retrieve 和 Grader 构成主线；Grader complete 时结束，continue 时进入下一跳，insufficient 时纠正当前查询，两条分支都回到 Retrieve。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 34px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.h2{font:700 20px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 16px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.6;fill:none;marker-end:url(#arrow)}.error{stroke:#bb6b62;stroke-width:2.2;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+
+  <rect width="1280" height="680" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">LangGraph 是流程调度员：看 verdict，选择下一条路</text>
+  <text x="54" y="90" class="subtitle">节点完成具体工作，条件边只决定继续、纠错还是结束。</text>
+
+  <rect x="62" y="170" width="220" height="112" rx="18" fill="#f0eafb" filter="url(#shadow)"/>
+  <text x="172" y="208" text-anchor="middle" class="code">route_query</text>
+  <text x="172" y="240" text-anchor="middle" class="body">规划首跳和证据需求</text>
+  <path d="M282 226 H356" class="arrow"/>
+
+  <rect x="358" y="156" width="250" height="140" rx="18" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="483" y="198" text-anchor="middle" class="code">retrieve_hop</text>
+  <text x="483" y="232" text-anchor="middle" class="body">复用 Hybrid-Rerank</text>
+  <text x="483" y="262" text-anchor="middle" class="small">把命中写回 AgenticState</text>
+  <path d="M608 226 H682" class="arrow"/>
+
+  <rect x="684" y="156" width="250" height="140" rx="18" fill="#f0eafb" stroke="#8b76b5" stroke-width="2" filter="url(#shadow)"/>
+  <text x="809" y="198" text-anchor="middle" class="code">grade_evidence</text>
+  <text x="809" y="232" text-anchor="middle" class="body">累计证据是否完整？</text>
+  <text x="809" y="262" text-anchor="middle" class="small">输出一个 verdict</text>
+  <path d="M934 226 H1008" class="arrow"/>
+  <text x="950" y="212" class="small">complete</text>
+
+  <rect x="1010" y="170" width="208" height="112" rx="18" fill="#fff1dc" filter="url(#shadow)"/>
+  <text x="1114" y="208" text-anchor="middle" class="code">finalize</text>
+  <text x="1114" y="240" text-anchor="middle" class="body">汇总证据并结束</text>
+
+  <path d="M770 296 V358 H600 V390" class="arrow"/>
+  <text x="626" y="346" class="small">continue · 已有进展，但缺下一项事实</text>
+  <rect x="468" y="392" width="264" height="112" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="600" y="430" text-anchor="middle" class="code">prepare_next_hop</text>
+  <text x="600" y="462" text-anchor="middle" class="body">hop + 1 · 使用 next_query</text>
+
+  <path d="M848 296 V338 H906 V390" class="arrow"/>
+  <text x="864" y="326" class="small">insufficient · 当前查询无进展</text>
+  <rect x="774" y="392" width="264" height="112" rx="18" fill="#fde9e7" filter="url(#shadow)"/>
+  <text x="906" y="430" text-anchor="middle" class="code">correct_query</text>
+  <text x="906" y="462" text-anchor="middle" class="body">hop 不变 · 换一种问法</text>
+
+  <path d="M600 392 V350 H483 V298" class="arrow"/>
+  <path d="M906 504 V536 H420 V298 H483" class="arrow"/>
+
+  <rect x="170" y="578" width="940" height="64" rx="16" fill="#e8eef6"/>
+  <text x="640" y="604" text-anchor="middle" class="h2">三层刹车</text>
+  <text x="640" y="630" text-anchor="middle" class="body">最多 3 跳 · 每跳最多纠错 1 次 · 整张图最多流转 25 次</text>
+</svg>

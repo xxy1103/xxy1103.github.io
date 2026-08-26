@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="650" viewBox="0 0 1280 650" role="img" aria-labelledby="title desc">
+  <title id="title">AgenticState 如何随两跳检索逐步更新</title>
+  <desc id="desc">同一个共享状态从只包含问题，逐步加入路由计划、第一跳证据、下一跳查询，最后形成完整证据链和运行结果。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 34px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.step{font:700 15px Consolas,"Microsoft YaHei",sans-serif;fill:#65788e}.h2{font:700 20px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 16px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.6;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+
+  <rect width="1280" height="650" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">AgenticState 像一本共享工作笔记，节点不断在同一页上补充信息</text>
+  <text x="54" y="90" class="subtitle">每个节点读取已有内容，只写入本阶段的新结果；下一节点因此知道前面发生了什么。</text>
+
+  <text x="62" y="150" class="step">01 · 开始</text>
+  <rect x="52" y="170" width="252" height="318" rx="20" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="78" y="208" class="h2">只有原始问题</text>
+  <rect x="76" y="238" width="204" height="108" rx="14" fill="#f5f9fd"/>
+  <text x="96" y="272" class="code">question</text>
+  <text x="96" y="306" class="body">创办 A 公司的人</text>
+  <text x="96" y="334" class="body">后来领导了哪家机构？</text>
+  <text x="78" y="400" class="small">还没有检索计划</text>
+  <text x="78" y="430" class="small">还没有任何证据</text>
+
+  <path d="M304 330 H342" class="arrow"/>
+  <text x="352" y="150" class="step">02 · Router 写入计划</text>
+  <rect x="344" y="170" width="252" height="318" rx="20" fill="#dff3e8" filter="url(#shadow)"/>
+  <text x="370" y="208" class="h2">知道先查什么</text>
+  <text x="370" y="248" class="code">current_hop = 1</text>
+  <text x="370" y="280" class="body">query：A 公司创办者</text>
+  <line x1="370" y1="304" x2="570" y2="304" stroke="#a8cdb8" stroke-width="1.5"/>
+  <text x="370" y="336" class="body">R1 · 找到创办者</text>
+  <text x="370" y="368" class="body">R2 · 找到后来机构</text>
+  <text x="370" y="430" class="small">State 保存完整证据清单</text>
+
+  <path d="M596 330 H634" class="arrow"/>
+  <text x="644" y="150" class="step">03 · 第 1 跳后</text>
+  <rect x="636" y="170" width="252" height="318" rx="20" fill="#f0eafb" filter="url(#shadow)"/>
+  <text x="662" y="208" class="h2">已有部分证据</text>
+  <text x="662" y="248" class="body">hits₁：A 公司由张三创办</text>
+  <text x="662" y="284" class="code">R1 = supported</text>
+  <text x="662" y="316" class="code">R2 = missing</text>
+  <line x1="662" y1="340" x2="862" y2="340" stroke="#c6b9df" stroke-width="1.5"/>
+  <text x="662" y="374" class="body">next_query：</text>
+  <text x="662" y="404" class="body">张三后来领导哪家机构？</text>
+  <text x="662" y="450" class="small">同时保存第 1 条 HopTrace</text>
+
+  <path d="M888 330 H926" class="arrow"/>
+  <text x="936" y="150" class="step">04 · 第 2 跳完成</text>
+  <rect x="928" y="170" width="300" height="318" rx="20" fill="#fff1dc" stroke="#c99a52" stroke-width="2" filter="url(#shadow)"/>
+  <text x="954" y="208" class="h2">拥有完整证据链</text>
+  <text x="954" y="248" class="body">hits₁：A 公司 → 张三</text>
+  <text x="954" y="280" class="body">hits₂：张三 → B 机构</text>
+  <text x="954" y="320" class="code">R1 = supported</text>
+  <text x="954" y="352" class="code">R2 = supported</text>
+  <line x1="954" y1="376" x2="1202" y2="376" stroke="#d8b77f" stroke-width="1.5"/>
+  <text x="954" y="410" class="body">traces：2 条</text>
+  <text x="954" y="442" class="body">termination：complete</text>
+
+  <rect x="210" y="548" width="860" height="58" rx="15" fill="#e8eef6"/>
+  <text x="640" y="583" text-anchor="middle" class="body">State 没有替节点做决定，它只是让每个节点都能看到同一份任务进度</text>
+</svg>

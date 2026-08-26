@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">两跳证据如何组成最终 Top-K</title>
+  <desc id="desc">两跳候选先提取 R1 与 R2 的绑定证据，再按跳轮询补充三个候选，形成最终五个结果。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 34px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.step{font:700 15px Consolas,"Microsoft YaHei",sans-serif;fill:#65788e}.h2{font:700 20px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 16px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.6;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+
+  <rect width="1280" height="640" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">一个两跳问题，怎样组成最终 5 个证据 Chunk</text>
+  <text x="54" y="90" class="subtitle">先放入 Grader 绑定的必要证据，再从各跳候选中轮流补满剩余位置。</text>
+
+  <text x="62" y="138" class="step">01 · 两跳各自得到排序结果</text>
+  <rect x="54" y="156" width="330" height="174" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="80" y="192" class="h2">Hop 1 · 找创办者</text>
+  <text x="80" y="230" class="code">① h1-r1</text>
+  <text x="80" y="262" class="code">② bound-r1</text><text x="232" y="262" class="small">← 支持 R1</text>
+  <text x="80" y="294" class="code">③ h1-r3</text>
+
+  <rect x="54" y="352" width="330" height="174" rx="18" fill="#e8f1fb" filter="url(#shadow)"/>
+  <text x="80" y="388" class="h2">Hop 2 · 找后来机构</text>
+  <text x="80" y="426" class="code">① h2-r1</text>
+  <text x="80" y="458" class="code">② h2-r2</text>
+  <text x="80" y="490" class="code">③ bound-r2</text><text x="232" y="490" class="small">← 支持 R2</text>
+
+  <path d="M384 246 H446" class="arrow"/><path d="M384 438 H414 V286 H446" class="arrow"/>
+  <text x="460" y="138" class="step">02 · 先保护必要证据</text>
+  <rect x="448" y="156" width="310" height="370" rx="20" fill="#f0eafb" stroke="#8b76b5" stroke-width="2" filter="url(#shadow)"/>
+  <text x="603" y="198" text-anchor="middle" class="h2">证据链核心</text>
+  <rect x="478" y="232" width="250" height="92" rx="14" fill="#faf8fd"/>
+  <text x="502" y="268" class="code">1 · bound-r1</text>
+  <text x="502" y="298" class="body">证明“谁创办了 A 公司”</text>
+  <rect x="478" y="344" width="250" height="92" rx="14" fill="#faf8fd"/>
+  <text x="502" y="380" class="code">2 · bound-r2</text>
+  <text x="502" y="410" class="body">证明“后来领导哪家机构”</text>
+  <text x="603" y="480" text-anchor="middle" class="small">两个必要事实先各占一个位置</text>
+
+  <path d="M758 340 H818" class="arrow"/>
+  <text x="832" y="138" class="step">03 · 按跳轮询补位</text>
+  <rect x="820" y="156" width="406" height="370" rx="20" fill="#dff3e8" stroke="#6aa281" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1023" y="198" text-anchor="middle" class="h2">最终 final_hits · Top-5</text>
+
+  <rect x="852" y="226" width="342" height="44" rx="11" fill="#f4fbf7"/><text x="876" y="254" class="code">1 · bound-r1</text><text x="1060" y="254" class="small">R1 必要证据</text>
+  <rect x="852" y="280" width="342" height="44" rx="11" fill="#f4fbf7"/><text x="876" y="308" class="code">2 · bound-r2</text><text x="1060" y="308" class="small">R2 必要证据</text>
+  <rect x="852" y="344" width="342" height="44" rx="11" fill="#e8f1fb"/><text x="876" y="372" class="code">3 · h1-r1</text><text x="1060" y="372" class="small">Hop 1 补位</text>
+  <rect x="852" y="398" width="342" height="44" rx="11" fill="#e8f1fb"/><text x="876" y="426" class="code">4 · h2-r1</text><text x="1060" y="426" class="small">Hop 2 补位</text>
+  <rect x="852" y="452" width="342" height="44" rx="11" fill="#e8f1fb"/><text x="876" y="480" class="code">5 · h2-r2</text><text x="1060" y="480" class="small">跳过已选重复项后补位</text>
+
+  <rect x="244" y="564" width="792" height="48" rx="14" fill="#e8eef6"/>
+  <text x="640" y="594" text-anchor="middle" class="body">必要证据保证“答案链完整”，轮询补位保证“不同跳都有代表”</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic 在 Top-4 与 Top-10 上的不同表现</title>
+  <desc id="desc">Top-4 Evidence Coverage、Complete Evidence 和 MRR 显著提升，而 Top-10 Coverage 仅小幅变化，Complete Evidence 保持不变。</desc>
+  <defs>
+    <style>.title{font:700 34px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.panel{font:700 22px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.metric{font:700 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.body{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.value{font:700 17px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}</style>
+  </defs>
+
+  <rect width="1280" height="720" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">Agentic 把正确证据推到前面，但没有找齐更多 Top-10 证据</text>
+  <text x="54" y="90" class="subtitle">Baseline 与 Agentic 均为 60 题；条形长度使用统一的 0%–100% 尺度。</text>
+
+  <rect x="48" y="126" width="570" height="430" rx="20" fill="#fff" opacity=".96"/>
+  <text x="78" y="166" class="panel">Top-4 · 前排排序明显改善</text>
+  <text x="78" y="204" class="metric">Evidence Coverage@4</text>
+  <text x="78" y="238" class="small">Baseline</text><rect x="174" y="220" width="102" height="24" rx="7" fill="#a9c5e2"/><text x="288" y="239" class="value">25.42%</text>
+  <text x="78" y="278" class="small">Agentic</text><rect x="174" y="260" width="172" height="24" rx="7" fill="#6aa281"/><text x="358" y="279" class="value">43.06%</text>
+
+  <text x="78" y="338" class="metric">Complete Evidence@4</text>
+  <text x="78" y="372" class="small">Baseline</text><rect x="174" y="354" width="20" height="24" rx="7" fill="#a9c5e2"/><text x="206" y="373" class="value">5.00%</text>
+  <text x="78" y="412" class="small">Agentic</text><rect x="174" y="394" width="60" height="24" rx="7" fill="#6aa281"/><text x="246" y="413" class="value">15.00%</text>
+
+  <rect x="78" y="466" width="510" height="62" rx="14" fill="#dff3e8"/>
+  <text x="333" y="493" text-anchor="middle" class="metric">MRR@10：0.3516 → 0.5903</text>
+  <text x="333" y="516" text-anchor="middle" class="small">第一条正确证据更早出现</text>
+
+  <rect x="662" y="126" width="570" height="430" rx="20" fill="#fff" opacity=".96"/>
+  <text x="692" y="166" class="panel">Top-10 · 完整证据基本不变</text>
+  <text x="692" y="204" class="metric">Evidence Coverage@10</text>
+  <text x="692" y="238" class="small">Baseline</text><rect x="788" y="220" width="194" height="24" rx="7" fill="#a9c5e2"/><text x="994" y="239" class="value">48.61%</text>
+  <text x="692" y="278" class="small">Agentic</text><rect x="788" y="260" width="201" height="24" rx="7" fill="#6aa281"/><text x="1001" y="279" class="value">50.28%</text>
+
+  <text x="692" y="338" class="metric">Complete Evidence@10</text>
+  <text x="692" y="372" class="small">Baseline</text><rect x="788" y="354" width="80" height="24" rx="7" fill="#a9c5e2"/><text x="880" y="373" class="value">20.00%</text>
+  <text x="692" y="412" class="small">Agentic</text><rect x="788" y="394" width="80" height="24" rx="7" fill="#6aa281"/><text x="880" y="413" class="value">20.00%</text>
+
+  <rect x="692" y="466" width="510" height="62" rx="14" fill="#fff1dc"/>
+  <text x="947" y="493" text-anchor="middle" class="metric">Top-10 完整性没有总体提升</text>
+  <text x="947" y="516" text-anchor="middle" class="small">仍有 80% 的题没有找齐全部 Gold 事实</text>
+
+  <rect x="178" y="604" width="924" height="70" rx="16" fill="#e8eef6"/>
+  <text x="640" y="634" text-anchor="middle" class="panel">结论</text>
+  <text x="640" y="660" text-anchor="middle" class="body">排序收益已经出现，完整召回仍未解决；两者不能写成同一个“整体提升”</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="650" viewBox="0 0 1280 650" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic RAG 评测的对照设计</title>
+  <desc id="desc">相同的六十道开发集问题、索引、Hybrid-Rerank 和评分规则分别进入一次检索 Baseline 与受控多跳 Agentic 系统。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#183153" flood-opacity=".12"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60758e"/></marker>
+    <style>.title{font:700 34px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.subtitle{font:400 17px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#58708f}.lane{font:700 18px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#294462}.h2{font:700 20px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#183153}.body{font:400 16px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#4c6078}.small{font:400 14px "Microsoft YaHei","Noto Sans SC",sans-serif;fill:#65788e}.code{font:600 16px Consolas,"Microsoft YaHei",sans-serif;fill:#29465f}.arrow{stroke:#60758e;stroke-width:2.6;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+
+  <rect width="1280" height="650" rx="24" fill="#f5f8fc"/>
+  <text x="54" y="58" class="title">只改变检索控制方式，其余条件保持一致</text>
+  <text x="54" y="90" class="subtitle">MultiHop-RAG dev 60 题；Inference、Comparison、Temporal 各 20 题。</text>
+
+  <rect x="54" y="126" width="1172" height="92" rx="18" fill="#e8eef6"/>
+  <text x="80" y="160" class="lane">共同条件</text>
+  <rect x="208" y="146" width="212" height="48" rx="12" fill="#fff"/><text x="314" y="176" text-anchor="middle" class="body">相同问题与 Gold</text>
+  <rect x="444" y="146" width="212" height="48" rx="12" fill="#fff"/><text x="550" y="176" text-anchor="middle" class="body">相同 FAISS / BM25</text>
+  <rect x="680" y="146" width="212" height="48" rx="12" fill="#fff"/><text x="786" y="176" text-anchor="middle" class="body">相同 Hybrid-Rerank</text>
+  <rect x="916" y="146" width="260" height="48" rx="12" fill="#fff"/><text x="1046" y="176" text-anchor="middle" class="body">相同 Top-10 与评分规则</text>
+
+  <path d="M640 218 V252 H322 V282" class="arrow"/><path d="M640 218 V252 H958 V282" class="arrow"/>
+
+  <rect x="70" y="284" width="504" height="224" rx="20" fill="#e8f1fb" stroke="#7ea3c9" stroke-width="2" filter="url(#shadow)"/>
+  <text x="96" y="324" class="lane">Baseline · 一次固定检索</text>
+  <rect x="102" y="360" width="152" height="78" rx="14" fill="#f7fafd"/><text x="178" y="390" text-anchor="middle" class="h2">问题</text><text x="178" y="416" text-anchor="middle" class="small">原始 query</text>
+  <path d="M254 399 H300" class="arrow"/>
+  <rect x="302" y="346" width="224" height="106" rx="16" fill="#dff3e8"/><text x="414" y="382" text-anchor="middle" class="h2">Hybrid-Rerank</text><text x="414" y="412" text-anchor="middle" class="body">只执行 1 次</text>
+  <text x="322" y="486" text-anchor="middle" class="small">输出一组 Top-10 检索证据</text>
+
+  <rect x="706" y="284" width="504" height="224" rx="20" fill="#f0eafb" stroke="#8b76b5" stroke-width="2" filter="url(#shadow)"/>
+  <text x="732" y="324" class="lane">Agentic · 受控多跳检索</text>
+  <rect x="738" y="360" width="116" height="78" rx="14" fill="#faf8fd"/><text x="796" y="390" text-anchor="middle" class="h2">Router</text><text x="796" y="416" text-anchor="middle" class="small">规划</text>
+  <path d="M854 399 H884" class="arrow"/>
+  <rect x="886" y="346" width="162" height="106" rx="16" fill="#dff3e8"/><text x="967" y="382" text-anchor="middle" class="h2">检索</text><text x="967" y="412" text-anchor="middle" class="body">最多 3 跳</text>
+  <path d="M1048 399 H1078" class="arrow"/>
+  <rect x="1080" y="360" width="98" height="78" rx="14" fill="#faf8fd"/><text x="1129" y="390" text-anchor="middle" class="h2">Grader</text><text x="1129" y="416" text-anchor="middle" class="small">验收</text>
+  <text x="958" y="486" text-anchor="middle" class="small">输出多跳汇总后的 Top-10 与完整 Trace</text>
+
+  <path d="M322 508 V548 H640 V574" class="arrow"/><path d="M958 508 V548 H640 V574" class="arrow"/>
+  <rect x="336" y="566" width="608" height="58" rx="15" fill="#fff1dc"/>
+  <text x="640" y="592" text-anchor="middle" class="h2">同一把尺子逐题比较</text>
+  <text x="640" y="616" text-anchor="middle" class="small">Coverage · Complete Evidence · Hits · MAP · MRR</text>
+</svg>
