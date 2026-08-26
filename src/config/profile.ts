@@ -56,7 +56,7 @@ export interface ProfileConfig {
 export const profileConfig: ProfileConfig = {
   avatar: defaultAvatar.src,
   name: 'ulna',
-  title: '北邮计算机在读 / 深度学习与工程实践',
+  title: '北邮计算机在读 / Data Agent 工程实践',
   bio: '以兴趣驱动探索，余者皆为馈赠。',
   location: '北京',
   email: 'xianxingyuan520@outlook.com',
