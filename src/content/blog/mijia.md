@@ -41,13 +41,13 @@ with open('jsons/auth.json', 'w') as f:
 
 运行后产生二维码，使用米家扫描二维码登录即可。
 
-![1726747311848](image/mijia/1726747311848.webp)
+![1726747311848](/image/mijia/1726747311848.webp)
 
 如果程序工作目录下没有jsons文件夹，需要提前手动创建。
 
 运行完后就会将你账号登录需要数据写入在auth.json 中，此后无需再扫码登录，只需直接读取auth.json的内容即可。
 
-![1726747393209](image/mijia/1726747393209.webp)
+![1726747393209](/image/mijia/1726747393209.webp)
 
 # 获取设别列表
 
@@ -78,17 +78,17 @@ with open('test/devices.json', 'w', encoding="utf-8") as f:
 首先我们打开网站：[米家产品库](https://home.miot-spec.com/)
 
 在网站中搜索我们的设备名称
-![1726748638840](image/mijia/1726748638840.webp)
+![1726748638840](/image/mijia/1726748638840.webp)
 
 点击日期下方的小字**cuco.plug.v3** 查看设备对应功能的siid和piid。
 
-![1726748828516](image/mijia/1726748828516.webp)
+![1726748828516](/image/mijia/1726748828516.webp)
 
 以我的这款插座为例，控制开关的siid为2，开关状态的piid为1。
 
 电量消耗的siid为11:
 
-![1726749163394](image/mijia/1726749163394.webp)
+![1726749163394](/image/mijia/1726749163394.webp)
 
 其中查询功率的piid为2。
 

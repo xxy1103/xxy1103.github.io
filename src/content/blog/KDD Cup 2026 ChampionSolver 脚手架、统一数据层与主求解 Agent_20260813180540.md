@@ -27,7 +27,7 @@ tags:
 1. 脚手架与统一数据层先建立稳定的执行环境；
 2. Solver Agent 再理解题意、选择字段、确定统计口径并补全 SQL。
 
-![从任务材料到主求解 Agent](<image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/overview.svg>)
+![从任务材料到主求解 Agent](</image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/overview.svg>)
 
 两层的边界很清楚：基础设施负责“数据如何统一查询、程序如何保存结果”，Solver Agent 负责“题目究竟要查什么”。
 
@@ -64,7 +64,7 @@ Solver 最终必须交付一份结构正确的 `prediction.csv`。如果让 Agen
 
 ### 2.2 脚手架的主要区块
 
-![solver.py 脚手架的固定区块](<image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/scaffold-anatomy.svg>)
+![solver.py 脚手架的固定区块](</image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/scaffold-anatomy.svg>)
 
 生成后的脚本很薄，核心结构如下：
 
@@ -117,7 +117,7 @@ Champion 方案在两者之间增加了一层统一数据运行时：
 
 ### 3.1 从不同文件到同一种关系表
 
-![CSV、JSON 与 SQLite 的统一注册](<image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/unified-data-layer.svg>)
+![CSV、JSON 与 SQLite 的统一注册](</image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/unified-data-layer.svg>)
 
 三类数据使用不同的适配方式，但最终都进入同一个关系查询空间：
 
@@ -206,7 +206,7 @@ build_solver_agent(task_dir, model=MODEL)
 
 Solver 接管前置模块已经整理好的任务现场。它只围绕一个目标工作：**理解题目要求，把语义口径写成可执行 SQL，并生成 `prediction.csv`。**
 
-![Solver Agent 在主流程中的位置](<image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-orchestration.svg>)
+![Solver Agent 在主流程中的位置](</image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-orchestration.svg>)
 
 ### 4.1 一次 Solver 运行如何展开
 
@@ -221,7 +221,7 @@ Solver 采用单 Agent 的多轮工具调用方式。外层程序只负责启动
 5. **运行并自检。** Solver 执行脚本，查看 `prediction.csv` 的行列数、非空数和样例值。
 6. **根据反馈继续或停止。** SQL 报错时回到脚本修改；输出能运行但语义可疑时回到数据探查；只有认为结果已经满足题意时才结束本次 Agent 运行。
 
-![Solver Agent 多轮求解闭环](<image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-react-loop.svg>)
+![Solver Agent 多轮求解闭环](</image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-react-loop.svg>)
 
 例如，简单题可能查看一次 schema 后直接写 SQL；复杂题可能在数据探查和脚本修改之间往返多次。稳定的是四类动作及其验证闭环，而不是每个工具必须调用一次。当交互变长时，上下文管理会压缩较早过程并保留关键结论，使当前口径和最新工具反馈继续留在求解上下文中。
 
@@ -253,7 +253,7 @@ run_solver：验证“是否执行成功、输出是否像答案”
 
 ### 4.3 首轮 Prompt：Solver 收到三层上下文
 
-![Solver Agent 输入装配](<image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-input-assembly.svg>)
+![Solver Agent 输入装配](</image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-input-assembly.svg>)
 
 Solver 的 Prompt按“共同求解规则—当前题业务口径—当前题证据”分层装配。确定性规则在所有题目中保持一致，与题目有关的知识和数据则动态注入。让 Solver 先获得稳定的决策准则，再在当前题的证据范围内做语义判断。
 
@@ -439,7 +439,7 @@ run_ok AND prediction_file.exists()
 
 开始下一次 attempt 前，外层会恢复最初的 `solver.py` 脚手架，并删除上一轮残留的 `prediction.csv`。这保证下一轮从干净状态开始，也防止旧 CSV 被误当作本轮产出。当前每道题最多运行五次 attempt。
 
-![Solver Agent 的结束、重试与交付](<image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-lifecycle.svg>)
+![Solver Agent 的结束、重试与交付](</image/KDD Cup 2026 ChampionSolver 脚手架、统一数据层与主求解 Agent_20260813180540/solver-lifecycle.svg>)
 
 #### 4.4.3 五次失败后的兜底与交付
 

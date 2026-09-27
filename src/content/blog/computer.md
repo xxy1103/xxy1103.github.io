@@ -52,15 +52,15 @@ vim main.c
 
 我们就进入了vim编辑器的界面，因为原本不存在main.c文件，vim会创建一个空文件，效果如下：
 
-![1728648093948](image/computer/1728648093948.webp)
+![1728648093948](/image/computer/1728648093948.webp)
 
 这个时候我们按键盘**i键，让编辑器进入插入（insert）模式，就可以编辑文件了。**
 
-![1728648202072](image/computer/1728648202072.webp)
+![1728648202072](/image/computer/1728648202072.webp)
 
 创建好代码后，先按键盘 `Esc`键，退出插入模式，然后输入英文 `:`然后输入wq，屏幕左下角显示如图：
 
-![1728648321145](image/computer/1728648321145.webp)
+![1728648321145](/image/computer/1728648321145.webp)
 
 然后就可以回车，这里“w”表示保存，“q”表示离开。
 
@@ -76,7 +76,7 @@ gcc <file_name>
 
 输入 `ls`来查看目录下的文件：
 
-![1728648664539](image/computer/1728648664539.webp)
+![1728648664539](/image/computer/1728648664539.webp)
 
 a.out就是编译完成的可执行文件
 
@@ -88,7 +88,7 @@ a.out就是编译完成的可执行文件
 
 来运行程序，即可看到输出：
 
-![1728648738790](image/computer/1728648738790.webp)
+![1728648738790](/image/computer/1728648738790.webp)
 
 #### gcc -o 指令
 
@@ -137,7 +137,7 @@ gcc -S main.i -o main.s
 
 `gcc -s` 选项用于在链接阶段去除可执行文件中的符号表和调试信息，从而减小文件大小。这对于发布和分发程序时非常有用，因为它可以减少可执行文件的体积。
 
-![1728719164073](image/computer/1728719164073.webp)
+![1728719164073](/image/computer/1728719164073.webp)
 
 这里我们简单对比一下： -s文件体积 < -O文件体积 < -g文件体积
 
@@ -216,13 +216,13 @@ gcc -O3 main.c -o output3
 
 1. 这是不优化的时间：
 
-   ![1728650052958](image/computer/1728650052958.webp)
+   ![1728650052958](/image/computer/1728650052958.webp)
 2. 这是O1优化的时间：
 
-   ![1728650131040](image/computer/1728650131040.webp)
+   ![1728650131040](/image/computer/1728650131040.webp)
 3. 这是Ofast优化的时间：
 
-   ![1728650202293](image/computer/1728650202293.webp)
+   ![1728650202293](/image/computer/1728650202293.webp)
 
 不难发现优化后的时间是原来的3倍快。
 
@@ -247,7 +247,7 @@ GDB（GNU Debugger）是一个强大的调试工具，用于调试 C、C++ 和�
 GDB out
 ```
 
-![1728651022210](image/computer/1728651022210.webp)
+![1728651022210](/image/computer/1728651022210.webp)
 
 提示没有调试信息，这是因为当前运行的版本是release版本，调试需要Debug版本：
 
@@ -263,15 +263,15 @@ gcc -g main.c -o out-debug
 
 1. gdb list		l				**显示对应的code，每次10行**
 
-![1728651899354](image/computer/1728651899354.webp)
+![1728651899354](/image/computer/1728651899354.webp)
 
 再次输入会显示后面10行，但是本文件只有15行
 
-![1728651979154](image/computer/1728651979154.webp)
+![1728651979154](/image/computer/1728651979154.webp)
 
 2. gdb breakpoint  b+行号		设置断点
 
-   ![1728652094250](image/computer/1728652094250.webp)
+   ![1728652094250](/image/computer/1728652094250.webp)
 
    我们这里在for循环处设置断点
 3. gdb b 源文件 : 函数名 			在该函数的第一行打上断点，用于多文件时对于某个文件中的函数进行调试
@@ -282,7 +282,7 @@ gcc -g main.c -o out-debug
 8. gdb print		p + `<var_name>`		显示变量的值，可以省略变量的名称，默认显示上次查询的变量
 9. gdb run		r				运行程序，若无断点会直接运行结束
 
-   ![1728652765939](image/computer/1728652765939.webp)
+   ![1728652765939](/image/computer/1728652765939.webp)
 10. (gdb) file+`<file_name>`						向gdb调试工具中导入文件
 
 ### objdump 工具实现反汇编
@@ -312,7 +312,7 @@ gcc -g main.c -o out-debug
    objdump -d out 
    ```
 
-   ![1728720487884](image/computer/1728720487884.webp)
+   ![1728720487884](/image/computer/1728720487884.webp)
 
    如果你只想查看特定函数的汇编语言，可以通过使用 `objdump` 的 `-d` 选项结合 `--disassemble`示例如下：
 
@@ -322,7 +322,7 @@ gcc -g main.c -o out-debug
 
    这里我们将main函数的汇编语言存到 main_.s文件中,然后我们打开main_.s就可以查看main函数的汇编语言。
 
-   ![1728720976208](image/computer/1728720976208.webp)
+   ![1728720976208](/image/computer/1728720976208.webp)
 
 ## 实验内容二
 
@@ -387,37 +387,37 @@ ulimit -s
 ```
 
 就可以在Linux中查询我们当前设置的栈的大小：
-![1728729778626](image/computer/1728729778626.webp)
+![1728729778626](/image/computer/1728729778626.webp)
 
 只有8m，而创建2048*2048大小的int类型的数组需要16m的空间，这里我们干脆将数组放入Data Segment。
 
 现在我们在不优化的情况下来对比一下两种算法的时间比较：
 
-![1728729967671](image/computer/1728729967671.webp)
+![1728729967671](/image/computer/1728729967671.webp)
 
 通过对比real时间我们发现看似同样的操作时间上尽然差了将近4倍。
 
 我们再对比一下O优化后的时间：
 
-![1728730200400](image/computer/1728730200400.webp)
+![1728730200400](/image/computer/1728730200400.webp)
 
 优化后，两种算法的时间倍率更大了，来到将近5倍
 
 然后我们对比O2优化的时间：
 
-![1728731295193](image/computer/1728731295193.webp)
+![1728731295193](/image/computer/1728731295193.webp)
 
 运行结果与O优化时的结果类似。
 
 再来对比O3优化的结果：
 
-![1728731370271](image/computer/1728731370271.webp)
+![1728731370271](/image/computer/1728731370271.webp)
 
 通过O3优化后，第一种算法的时间并无变化，但是第二种算法的时间大幅减少，几乎和第一种算法的时间一致。
 
 最后我们对比一下 `Ofast`优化后的时间：
 
-![1728730334759](image/computer/1728730334759.webp)
+![1728730334759](/image/computer/1728730334759.webp)
 
 经过多次测试，发现两种算法在O2优化及更低级别的优化时，时间与O优化无差别，但是O3及Ofast优化，让两种算法时间几乎一致
 
@@ -437,7 +437,7 @@ ulimit -s
 > 3. 找到a[i]+b[i]对应的汇编指令，指出a[i]和b[i]位于哪个寄存器中，给出截图；
 > 4. 使用单步指令及gdb相关命令，显示a[xy]+b[xy]对应的汇编指令执行前后操作数寄存器十进制和十六进制的值，其中x，y取自于学生本人学号2022211x*y的百位和个位。
 >    学号2022211999，a[99]+b[99]单步执行前后的参考截图如下（实际命令未显示出）：
->    ![1728826970277](image/computer/1728826970277.webp)
+>    ![1728826970277](/image/computer/1728826970277.webp)
 
 首先我们写出要求的程序madd.c：
 
@@ -480,61 +480,61 @@ int main()
 objdump -d -disassemble=madd madd > madd.s
 ```
 
-![1728827357053](image/computer/1728827357053.webp)
+![1728827357053](/image/computer/1728827357053.webp)
 
 ### 用gdb进行调试，练习下列gdb命令，给出截图
 
 gdb、file、kill、quit、break、delete、clear、info break、run、continue、nexti、stepi、disassemble、list、print、x、info reg、watch
 
 1. gdb 启动调试工具
-   ![1728827725452](image/computer/1728827725452.webp)
+   ![1728827725452](/image/computer/1728827725452.webp)
 2. file +`<file_name>`像gdb中导入文件
-   ![1728827834326](image/computer/1728827834326.webp)
+   ![1728827834326](/image/computer/1728827834326.webp)
 3. list 显示导入文件的code，每次10行
 
-   ![1728828077637](image/computer/1728828077637.webp)
+   ![1728828077637](/image/computer/1728828077637.webp)
 4. break 设置断点：我们在程序的6行设置断点
-   ![1728828451241](image/computer/1728828451241.webp)
+   ![1728828451241](/image/computer/1728828451241.webp)
 5. info break 查看断点的信息：
 
-   ![1728828525875](image/computer/1728828525875.webp)
+   ![1728828525875](/image/computer/1728828525875.webp)
 6. delete +断点编号	删除断点：删除断点后再查看断点信息，显示无断点
 
-   ![1728828568625](image/computer/1728828568625.webp)
+   ![1728828568625](/image/computer/1728828568625.webp)
 7. clear+断点位置 	删除断点
-   ![1728828777594](image/computer/1728828777594.webp)
+   ![1728828777594](/image/computer/1728828777594.webp)
 8. disassemble 反汇编指定函数或内存地址范围内的机器代码
-   ![1728828894434](image/computer/1728828894434.webp)
+   ![1728828894434](/image/computer/1728828894434.webp)
 9. run 让程序开始运行，程序将停止在断点处
 
-   ![1728829004489](image/computer/1728829004489.webp)
+   ![1728829004489](/image/computer/1728829004489.webp)
 10. nexti 单步执行一条机器指令，并跳过函数调用
 
-    ![1728829532928](image/computer/1728829532928.webp)
+    ![1728829532928](/image/computer/1728829532928.webp)
 
     我们注意到这里nexti跳过了函数madd()内部的指令，而是直接执行整个函数调用并暂停在函数返回后的下一条指令处。
 11. `stepi` 命令用于在 GDB 中单步执行一条机器指令。与 `nexti` 命令不同，`stepi` 会进入函数调用内部，而不是跳过它。
 
-    ![1728829625555](image/computer/1728829625555.webp)
+    ![1728829625555](/image/computer/1728829625555.webp)
 12. continue 命令用于在 GDB 中继续执行程序，直到遇到下一个断点
 
-    ![1728829794970](image/computer/1728829794970.webp)
+    ![1728829794970](/image/computer/1728829794970.webp)
 
     我们在6行和8行设置断点，程序只用两个continue就运行结束了
 13. kill 用于杀死当前正在调试的程序
 
-    ![1728829900838](image/computer/1728829900838.webp)
+    ![1728829900838](/image/computer/1728829900838.webp)
 14. print 程序变量的值：
 
-    ![1728830047504](image/computer/1728830047504.webp)
+    ![1728830047504](/image/computer/1728830047504.webp)
 15. x 显示指定内存地址处的数据
 
-    ![1728830873370](image/computer/1728830873370.webp)
+    ![1728830873370](/image/computer/1728830873370.webp)
 16. info reg : 命令用于在 GDB 中显示所有寄存器的当前值。
-    ![1728830968643](image/computer/1728830968643.webp)
+    ![1728830968643](/image/computer/1728830968643.webp)
 17. watch：用于在程序运行时监视特定变量或内存位置的变化。当被监视的变量或内存位置的值发生变化时，程序会暂停执行，并显示相关信息。
 
-    ![1728831245784](image/computer/1728831245784.webp)
+    ![1728831245784](/image/computer/1728831245784.webp)
 
 ### 找到a[i]+b[i]对应的汇编指令，指出a[i]和b[i]位于哪个寄存器中，给出截图
 
@@ -542,11 +542,11 @@ gdb、file、kill、quit、break、delete、clear、info break、run、continue�
 
 发现这句话的第一条汇编指令为红色框出
 
-![1728954472007](image/computer/1728954472007.webp)
+![1728954472007](/image/computer/1728954472007.webp)
 
 逐步通过stepi 执行汇编语言，找到最后一条汇编语言：
 
-![1728954904238](image/computer/1728954904238.webp)
+![1728954904238](/image/computer/1728954904238.webp)
 
 我们在这两条语句之间发现唯一一处add语句，对应的寄存器为：eax和edx。所以a和b就储存在edx和eax寄存器中。
 
@@ -554,7 +554,7 @@ gdb、file、kill、quit、break、delete、clear、info break、run、continue�
 
 > 学号2022211999，a[99]+b[99]单步执行前后的参考截图如下（实际命令未显示出）：
 >
-> ![1728976571599](image/computer/1728976571599.webp)
+> ![1728976571599](/image/computer/1728976571599.webp)
 
 以我的学号来说，x = 2, y = 6。即显示a[26]+b[26]:
 
@@ -568,15 +568,15 @@ continue 26
 p i
 ```
 
-![1728976998032](image/computer/1728976998032.webp)
+![1728976998032](/image/computer/1728976998032.webp)
 
 10进制
 
-![1728980311016](image/computer/1728980311016.webp)
+![1728980311016](/image/computer/1728980311016.webp)
 
 16进制：
 
-![1728989773002](image/computer/1728989773002.webp)
+![1728989773002](/image/computer/1728989773002.webp)
 
 ## 实验内容四
 
@@ -627,7 +627,7 @@ int main() {
 
 来编译运行我们的程序，不同优化级别下运行时间如下：
 
-![1729041772014](image/computer/1729041772014.webp)
+![1729041772014](/image/computer/1729041772014.webp)
 
 我们以未优化时的运行效率为基准，那么O优化的运行效率为230%，O2的效率为453%，O3和Ofast的运行效率与O2差不多。
 
@@ -683,19 +683,19 @@ int main() {
 
 得到对应优化时间如下，结果与高计算量的优化结果大差不差。
 
-![1729043387141](image/computer/1729043387141.webp)
+![1729043387141](/image/computer/1729043387141.webp)
 
 但是我将V的值从500 改为2048，进一步增加数据量时，却出现了如下让我意外的结果：
 
-![1729044422144](image/computer/1729044422144.webp)
+![1729044422144](/image/computer/1729044422144.webp)
 
-![1729044435407](image/computer/1729044435407.webp)
+![1729044435407](/image/computer/1729044435407.webp)
 
-![1729044444540](image/computer/1729044444540.webp)
+![1729044444540](/image/computer/1729044444540.webp)
 
 这次在一系列的优化结果中O优化尽然比O2,O3,Ofast优化都快，而且O2,O3 也比Ofast快。推测是更高级别优化中的某些选项产生了负优化的效果。我们从O开始再手动添加一些优化选项：
 
-![1729045271803](image/computer/1729045271803.webp)
+![1729045271803](/image/computer/1729045271803.webp)
 
 我们为-O 添加循环展开，适配本地cpu特性，O时间又减少了约0.7秒。
 
@@ -705,7 +705,7 @@ int main() {
 
 使用pgo 的选项为：`-fprofile-generate` / `-fprofile-use `，先使用 `-fprofile-generate` 生成程序运行时的性能数据文件，运行程序后再使用 `-fprofile-use` 进行编译。这种方法能显著提升程序的性能，特别是对于执行路径复杂、分支多的程序。
 
-![1729047537716](image/computer/1729047537716.webp)
+![1729047537716](/image/computer/1729047537716.webp)
 
 首先使用代码，来生成会收集运行数据的程序：
 
@@ -723,7 +723,7 @@ gcc -O3 -march=native -fprofile-use -o my_program my_program.c
 
 然后我们测试结果如下：
 
-![1729047703908](image/computer/1729047703908.webp)
+![1729047703908](/image/computer/1729047703908.webp)
 
 相比直接使用ofast 优化，结合PGO，Ofast的速度快了近1.7秒。速度是原来的170%
 

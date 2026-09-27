@@ -42,7 +42,7 @@ flowchart LR
     F --> M
 ```
 
-![过程校验 Agent 的触发、判断与回环](<image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/trigger-and-loop.svg>)
+![过程校验 Agent 的触发、判断与回环](</image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/trigger-and-loop.svg>)
 
 整套设计可以概括为五步：
 
@@ -104,7 +104,7 @@ flowchart LR
 | `evidence_items`      | 可用证据列表 | 可以，校验器可以引用其中的来源事实           |
 | `omitted_or_unusable` | 排除清单     | 不可以，只用于说明哪些结果没有被采纳以及原因 |
 
-![证据包中的可用证据与排除清单](<image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/evidence-package.svg>)
+![证据包中的可用证据与排除清单](</image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/evidence-package.svg>)
 
 ### 校验请求：真正发送给过程校验模型的内容
 
@@ -112,7 +112,7 @@ flowchart LR
 
 前三个对象的关系是：
 
-![完整运行轨迹、证据包与校验请求的关系](<image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/three-core-objects.svg>)
+![完整运行轨迹、证据包与校验请求的关系](</image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/three-core-objects.svg>)
 
 ### 语义账本：跨校验轮次传递的记忆
 
@@ -202,7 +202,7 @@ $$
 \Delta s \ge \text{checkpoint\_model\_interval}
 $$
 
-![过程校验的周期检查如何触发](<image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/periodic-check-timeline.svg>)
+![过程校验的周期检查如何触发](</image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/periodic-check-timeline.svg>)
 
 这里的 `step_count` 是主模型调用次数，不是 LangGraph 所有节点的总数。
 
@@ -216,7 +216,7 @@ $$
 
 当主 Agent 通过 `submit_tool_result` 产生候选答案后，只要过程校验已启用且此前没有通过，就会先进入过程校验，再进入答案校验。
 
-![候选答案触发过程校验的流程](<image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/candidate-answer-check.svg>)
+![候选答案触发过程校验的流程](</image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/candidate-answer-check.svg>)
 
 此时校验器判断：
 
@@ -448,7 +448,7 @@ flowchart TD
 
 技术异常一律记录为 `validator_error` 后放行，保证任务能结束，但可能漏过真实的语义错误。
 
-![过程校验的通过、拒绝与技术异常流转](<image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/validation-outcomes.svg>)
+![过程校验的通过、拒绝与技术异常流转](</image/KDD Cup 2026 Data AgentIDMG123 队伍过程校验 Agent 设计_20260803161353/validation-outcomes.svg>)
 
 ## 当前配置画像
 

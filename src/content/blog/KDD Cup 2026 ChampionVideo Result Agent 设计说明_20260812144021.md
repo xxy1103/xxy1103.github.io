@@ -37,7 +37,7 @@ DECIDE：给出采用、复核或重算建议
 
 主流程默认**并发**运行 5 轮，再用多数票汇总。汇总结果只作为建议注入 Solver；最终是否采纳仍由 Solver 决定。
 
-![Video Result Agent 总览](<image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/overview.svg>)
+![Video Result Agent 总览](</image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/overview.svg>)
 
 ## 它位于整条解题链的哪里
 
@@ -69,7 +69,7 @@ DECIDE：给出采用、复核或重算建议
 - schema 预览明确不读取 `context/doc`。
 - `knowledge.md` 默认最多读取 12,000 字符，schema 预览默认最多 14,000 字符。
 
-![输入如何被组织](<image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/input-assembly.svg>)
+![输入如何被组织](</image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/input-assembly.svg>)
 
 ## 三步 Agent 如何工作
 
@@ -135,7 +135,7 @@ DECIDE：给出采用、复核或重算建议
 | `ADOPT_AND_VERIFY` | 视频答案基本可信，但值得低成本复核   | 先采纳，再用 SQL 对照    |
 | `RECOMPUTE`        | 视频只给规则、答案不完整或口径不可靠 | 按视频规则回结构化表计算 |
 
-![三步判断与分支](<image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/three-step-decision.svg>)
+![三步判断与分支](</image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/three-step-decision.svg>)
 
 ## 为什么还要运行 5 轮投票
 
@@ -149,7 +149,7 @@ DECIDE：给出采用、复核或重算建议
 4. 候选值、目标列、来源帧等详细内容，取第一个与最终决策一致的代表轮次。
 5. 最终置信度取支持该决策的轮次均值。
 
-![五轮投票与 Solver 交接](<image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/vote-and-handoff.svg>)
+![五轮投票与 Solver 交接](</image/KDD Cup 2026 ChampionVideo Result Agent 设计说明_20260812144021/vote-and-handoff.svg>)
 
 ## 两个容易理解的样例
 

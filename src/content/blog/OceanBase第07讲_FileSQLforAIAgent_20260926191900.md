@@ -19,7 +19,7 @@ tags:
 
 File SQL 的思路是：**文件仍在原位置，数据库通过 SQL 直接读取它**。不必先把文件导入持久表，可以在查询时形成临时关系。这样更适合 Agent 的探索式任务：发现文件、理解结构、查询和加工，最后按需导出结果。
 
-![两种方式对比图](image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/1790405110371.png)
+![两种方式对比图](/image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/1790405110371.png)
 
 视频介绍了三类实现路径：
 
@@ -27,7 +27,7 @@ File SQL 的思路是：**文件仍在原位置，数据库通过 SQL 直接读�
 * 把文件注册到 Catalog
 * 以及共享存储治理。
 
-![1790405251641](image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/1790405251641.png)
+![1790405251641](/image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/1790405251641.png)
 
 课程重点参考 DuckDB 的 File SQL 体验，但执行引擎并不依赖 DuckDB，而是希望在 seekdb 中实现相应的解析、优化和执行能力。
 
@@ -37,7 +37,7 @@ DuckDB 风格的文件查询可以按格式提供函数，例如 `read_csv`、`r
 
 **发现文件 → 推断 Schema → 读取文件 → 执行过滤/聚合/连接 → 导出结果**。
 
-![File SQL 的一生](image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/006_00-05-38.jpg)
+![File SQL 的一生](/image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/006_00-05-38.jpg)
 
 几个边界需要记住：
 
@@ -53,11 +53,11 @@ DuckDB 风格的文件查询可以按格式提供函数，例如 `read_csv`、`r
 - **单文件分析**：支持 `SELECT`、表达式、别名、`WHERE`、`ORDER BY`、`LIMIT`、`GROUP BY`、`HAVING`，以及 `COUNT`、`SUM`、`AVG`、`MIN`、`MAX` 等聚合。
 - **双文件连接**：支持本地文件之间的 `INNER JOIN` 和 `LEFT JOIN`，把两个文件的结果组合起来。
 
-![File as SQL 能力边界](image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/007_00-07-30.jpg)
+![File as SQL 能力边界](/image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/007_00-07-30.jpg)
 
 有了这组能力边界，再看它在数据库内部如何落地就更清楚了：SQL 先被解析为文件扫描算子，再根据 CSV、JSON、Parquet 等格式分派到相应的物理读取器。读取器负责文件 I/O、解析和类型转换，把文件字节流变成列值；过滤、聚合、排序和连接等关系运算，则交回数据库已有的执行引擎。这样既能复用数据库已有的表达式、算子和优化器，也不需要在数据库旁边嵌入一个完整的外部数据库。
 
-![文件读取器与数据库执行引擎的分工](image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/010_00-12-00.jpg)
+![文件读取器与数据库执行引擎的分工](/image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/010_00-12-00.jpg)
 
 视频还强调了几个实现关注点：
 
@@ -78,7 +78,7 @@ DuckDB 风格的文件查询可以按格式提供函数，例如 `read_csv`、`r
 4. **质量保障**：关注功能正确性，同时不破坏已有功能；还要考虑安全性、可用性、性能和可维护性。
 5. **持续验证**：用单元测试覆盖解析、类型推断和 Reader，用 MySQL Test 做 SQL 到端到端链路测试。
 
-![赛题的开发与测试重点](image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/013_00-16-18.jpg)
+![赛题的开发与测试重点](/image/OceanBase第07讲_FileSQLforAIAgent_20260926191900/013_00-16-18.jpg)
 
 视频提到的测试覆盖包括：Parser、Schema、SQL 端到端，以及 CSV、JSON、Parquet 文件类型。当前讲解还提到远端会执行相应测试；具体用例、测试范围和最终题面应以比赛后续发布内容为准。
 

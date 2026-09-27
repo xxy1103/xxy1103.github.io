@@ -25,7 +25,7 @@ Scope（在哪个项目里）
               └── PreparedContext（本次请求实际注入的临时视图）
 ```
 
-![PowerContext 四个核心对象的关系](image/powercontext-data-model_20260926193000/01-model-overview.svg)
+![PowerContext 四个核心对象的关系](/image/powercontext-data-model_20260926193000/01-model-overview.svg)
 
 ## 1. 先建立直觉：它解决了什么问题
 
@@ -68,7 +68,7 @@ Scope B（海外订单）  currency: USD，单位为美分
 
 对 A 查询 `currency`，只从 A 的上下文范围召回；对 B 查询同一个词，只看到 B 的约定。查询词相同并不意味着数据会跨 Scope 混合。
 
-![Scope 隔离与显式共享](image/powercontext-data-model_20260926193000/03-scope-isolation.svg)
+![Scope 隔离与显式共享](/image/powercontext-data-model_20260926193000/03-scope-isolation.svg)
 
 父子 Scope 也要特别注意：`parent_scope_id` 只描述层级。子 Scope 不会因为挂在父 Scope 下，就自动看到父级 Memory。需要复用时，应通过显式上下文引用和访问权限完成设计。
 
@@ -218,7 +218,7 @@ await client.retire_memory_entry(
 
 停用会让 Entry 退出 active recall，但不会物理删除历史。当前搜索和历史精确读取因此可以回答不同问题：一个回答“现在应该用什么”，另一个回答“当时记录了什么”。
 
-![Entry 与 Artifact 的生命周期](image/powercontext-data-model_20260926193000/02-entry-lifecycle.svg)
+![Entry 与 Artifact 的生命周期](/image/powercontext-data-model_20260926193000/02-entry-lifecycle.svg)
 
 ## 5. Citation：像书签一样固定一处内容
 
@@ -261,7 +261,7 @@ lineage：这一本“书”的这一版，是根据哪些材料整理出来的�
 
 `PreparedContext` 就是这一步的结果。它是临时值，不会因为生成了一次上下文，就自动创建新的长期 Memory。
 
-![PreparedContext 生成流程](image/powercontext-data-model_20260926193000/04-prepared-context-flow.svg)
+![PreparedContext 生成流程](/image/powercontext-data-model_20260926193000/04-prepared-context-flow.svg)
 
 ### 6.2 请求与响应
 

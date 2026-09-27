@@ -30,32 +30,32 @@ breed装好后，进入方法如下：
 
 登录后界面如下：
 
-![1724851441764](image/openwrt/1724851441764.webp)
+![1724851441764](/image/openwrt/1724851441764.webp)
 
 博主的极路由通过无线中继联网，以下讲解openwrt无线中继的方法：
 
 1. 首先打开Network中的Wireless选项
 
-   ![1724851565427](image/openwrt/1724851565427.webp)
+   ![1724851565427](/image/openwrt/1724851565427.webp)
 2. 选择一个点击 `Scan`，极路由第一个为5g频段天线，第二个为2.4g频段。选择要中继的wifi点击 `Join Network`
 
-   ![1724851723827](image/openwrt/1724851723827.webp)
+   ![1724851723827](/image/openwrt/1724851723827.webp)
 3. 勾选 `Replace wireless configuration`，并且输入wifi密码，最后点击Submit
 
-   ![1724851847730](image/openwrt/1724851847730.webp)
+   ![1724851847730](/image/openwrt/1724851847730.webp)
 4. 接下来的界面保持默认不变，直接点击 `Save`
 
-   ![1724851888144](image/openwrt/1724851888144.webp)
+   ![1724851888144](/image/openwrt/1724851888144.webp)
 5. 最后点击 `Save & Apply`。等待路由器连接上wifi。
 
 ## openwrt 汉化
 
 1. 打开system中的software
 
-   ![1724852365957](image/openwrt/1724852365957.webp)
+   ![1724852365957](/image/openwrt/1724852365957.webp)
 2. 点击 `Update lists...` 加载可用的插件，然后在搜索框中输入 `luci-i18n-base-zh-cn`
 
-   ![1724852574204](image/openwrt/1724852574204.webp)
+   ![1724852574204](/image/openwrt/1724852574204.webp)
 3. 安装即可，安装后刷新页面即为中文。
 
 ## openwrt挂载sd卡或u盘
@@ -66,16 +66,16 @@ breed装好后，进入方法如下：
 
 1. 安装 `block-mount`插件
 
-   ![1724852870173](image/openwrt/1724852870173.webp)
+   ![1724852870173](/image/openwrt/1724852870173.webp)
 2. 重启后可以在 `系统`中找到挂载点，如下勾选功能
 
-   ![1724853903295](image/openwrt/1724853903295.webp)
+   ![1724853903295](/image/openwrt/1724853903295.webp)
 3. 然后我们在下面找到我们插入的sd卡，点击编辑。
 
-   ![1724853957109](image/openwrt/1724853957109.webp)
+   ![1724853957109](/image/openwrt/1724853957109.webp)
 4. 选择 `作为根文件系统使用（）`，并且勾选 `已启用`，然后点击保存。
 
-   ![1724854153325](image/openwrt/1724854153325.webp)
+   ![1724854153325](/image/openwrt/1724854153325.webp)
    然后我们打开putty，ssh连接极路由，按顺序执行以下指令：
 
    ```
@@ -96,7 +96,7 @@ breed装好后，进入方法如下：
 
 这里给出openwrt 的官方软件源地址:[官方源](https://downloads.openwrt.org/releases/)
 
-![1724907487942](image/openwrt/1724907487942.webp)
+![1724907487942](/image/openwrt/1724907487942.webp)
 
 在官方源中找到与自己版本号、处理器架构相同的文件夹，并将网址路径复制下来替换原本的源。
 
@@ -120,7 +120,7 @@ breed装好后，进入方法如下：
    opkg update
    ```
 2. 签名验证失败：
-   ![1724907960749](image/openwrt/1724907960749.webp)
+   ![1724907960749](/image/openwrt/1724907960749.webp)
 
    解决办法：移除签名验证，也就是删除opkg.config的
 
@@ -170,7 +170,7 @@ breed装好后，进入方法如下：
    ```
 
    如下显示即为配置成功！
-   ![1724911006234](image/openwrt/1724911006234.webp)
+   ![1724911006234](/image/openwrt/1724911006234.webp)
 
 ## openwrt更新内核
 
@@ -183,7 +183,7 @@ breed装好后，进入方法如下：
    [Index of /snapshots/targets/ramips/mt7620/packages/ (openwrt.org)](https://downloads.openwrt.org/snapshots/targets/ramips/mt7620/packages/)
 2. 按 Ctrl+F 在搜索框中输入kernel
 
-   ![1725028762371](image/openwrt/1725028762371.webp)
+   ![1725028762371](/image/openwrt/1725028762371.webp)
 3. 下载后通过web上传到openwrt，通过opkg安装
 
    ```

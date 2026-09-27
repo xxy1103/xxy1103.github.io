@@ -33,7 +33,7 @@ tags:
 8. 把用户问题、轻量 Catalog 和视频摘要等内容装配成首个 `HumanMessage`。
 9. 至此才进入 `model_step`，主 Agent 开始实际推理和工具调用。
 
-![主 Agent 运行前预处理总览](<image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/preprocessing-overview.svg>)
+![主 Agent 运行前预处理总览](</image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/preprocessing-overview.svg>)
 
 ## 为什么不能把原始任务直接交给主 Agent
 
@@ -81,7 +81,7 @@ tags:
 
 > `ContextView` 统一的是 Agent 使用资源的逻辑路径。
 
-![ContextView 上下文叠加层](<image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/context-overlay.svg>)
+![ContextView 上下文叠加层](</image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/context-overlay.svg>)
 
 三层边界分别是：
 
@@ -261,7 +261,7 @@ duckdb.connect(":memory:")
 
 > 系统把异构结构化文件统一映射为可重建的 DuckDB 内存逻辑查询层，而不是提前导入一个持久化 DuckDB 数据库。
 
-![DuckDB 临时查询连接生命周期](<image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/duckdb-query-lifecycle.svg>)
+![DuckDB 临时查询连接生命周期](</image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/duckdb-query-lifecycle.svg>)
 
 ### DuckDB 类型校准
 
@@ -294,7 +294,7 @@ duckdb.connect(":memory:")
 
 一次全局巡检会产生两种粒度不同的目录。
 
-![Semantic Catalog 的两层产物](<image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/catalog-two-layers.svg>)
+![Semantic Catalog 的两层产物](</image/KDD Cup 2026 Data Agent主 Agent 运行前预处理流程_20260731174048/catalog-two-layers.svg>)
 
 ### 完整 Semantic Catalog
 

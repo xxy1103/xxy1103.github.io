@@ -26,7 +26,7 @@ Text-to-SQL 的第一道难题通常不是 SQL 语法，而是先在大型数据
 
 如果直接把完整 Schema 交给 SQL Agent，它既要理解问题，又要同时排除大量无关字段；一旦漏掉时间列、主外键或桥接表，后面的 SQL 即使语法正确也无法得到正确答案。APEX-SQL 因此把 Schema Linking 独立成一个带数据库探索能力的阶段：**先形成逻辑需求，再用高召回裁剪缩小范围，通过真实 SQL 验证表的语义，最后从全局补齐连接缺口。**
 
-![Schema Linking 在 APEX-SQL 中的位置](<image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/overview.svg>)
+![Schema Linking 在 APEX-SQL 中的位置](</image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/overview.svg>)
 
 | 阶段             | 回答的问题                                 | 主要输入                                      | 主要产物                               |
 | ---------------- | ------------------------------------------ | --------------------------------------------- | -------------------------------------- |
@@ -56,7 +56,7 @@ Schema Linking 的最终目标不是追求“字段越少越好”，而是在�
 6. 汇总局部判断形成第一版 Schema，再对未选择字段执行增量缺口恢复；
 7. 规范化表列名称，保守补充潜在连接键并保存结果。
 
-![Schema Linking 的完整算法流水线](<image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/pipeline.svg>)
+![Schema Linking 的完整算法流水线](</image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/pipeline.svg>)
 
 这套算法包含两个层次的循环：
 
@@ -132,7 +132,7 @@ ga_sessions_2018 ─┘
 - 负向裁剪：哪些表或列可以确定 100% 无关？
 - 正向选择：哪些表或列明确可能参与过滤、连接、聚合或输出？
 
-![负向裁剪与正向选择如何合并](<image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/dual-pruning.svg>)
+![负向裁剪与正向选择如何合并](</image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/dual-pruning.svg>)
 
 每个 Schema 批次分别采样两次。合并时采用不对称策略：
 
@@ -212,7 +212,7 @@ ga_sessions_2018 ─┘
 
 `explore_and_link_table()` 为**每张候选表**(经过双向裁切后保留的所有表)建立独立模型会话和 SQL 环境。模型先看到字段、描述、相似表组、题目、Evidence 和预期角色，然后生成 3～8 条 Snowflake 探索 SQL。
 
-![逐表探索与相关性判断闭环](<image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/table-exploration.svg>)
+![逐表探索与相关性判断闭环](</image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/table-exploration.svg>)
 
 探索围绕四类证据展开：
 
@@ -294,7 +294,7 @@ Round 1：沿着第一版 Schema 检查缺口，只补充，不删除
 最终结果：Round 0 ∪ Round 1
 ```
 
-![Round 0 与 Round 1 各自包含内部验证循环](<image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/global-refinement-two-rounds-with-inner-loops.svg>)
+![Round 0 与 Round 1 各自包含内部验证循环](</image/APEX-SQLSchema Linking 的规划、探索与全局细化_20260823162235/global-refinement-two-rounds-with-inner-loops.svg>)
 
 ### 5.1 全局细化收到什么
 

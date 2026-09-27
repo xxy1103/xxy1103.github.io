@@ -33,7 +33,7 @@ tags:
 
 一般的安卓手机/平板下载我圈出来的那个版本，当然具体还是要根据自己的处理器架构来选择。
 
-![1728555963947](image/tab7plus/1728555963947.webp)
+![1728555963947](/image/tab7plus/1728555963947.webp)
 
 # 开始配置环境吧
 
@@ -155,7 +155,7 @@ apt install termux-x11-nightly
 
 现在我们打开x11 就能看见桌面了
 
-![1728558686027](image/tab7plus/1728558686027.webp)
+![1728558686027](/image/tab7plus/1728558686027.webp)
 
 如果提示没有文件访问权限就输入命令：
 
@@ -186,11 +186,11 @@ Termux中的所有程序都属于Termux的子进程，如果你使用xfce的**�
    adb devices
    ```
 
-   ![1728559422308](image/tab7plus/1728559422308.webp)
+   ![1728559422308](/image/tab7plus/1728559422308.webp)
 5. 有设备连接就ok
 6. 输入如下两条命令：设置最大子进程为65536
 
-   ![1728559646236](image/tab7plus/1728559646236.webp)
+   ![1728559646236](/image/tab7plus/1728559646236.webp)
 
    ```
    adb shell device_config set_sync_disabled_for_tests persistent
@@ -246,17 +246,17 @@ pkg install proot-distro
 
 然后通过指令 `proot-distor list` 查看可以安装的linux 发行版本。
 
-![1731980148644](image/tab7plus/1731980148644.webp)
+![1731980148644](/image/tab7plus/1731980148644.webp)
 
 我们也可以看到下面提示说，通过指令 `proot-distro install <alias>` 来安装指定的linux版本。
 
 这里我选择安装ubuntu：
 
-![1731980254831](image/tab7plus/1731980254831.webp)
+![1731980254831](/image/tab7plus/1731980254831.webp)
 
 安装完成后：
 
-![1731980291293](image/tab7plus/1731980291293.webp)
+![1731980291293](/image/tab7plus/1731980291293.webp)
 
 依然提示我们如何进入ubuntu系统：`proot-distro login ubuntu`
 

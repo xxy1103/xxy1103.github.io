@@ -26,7 +26,7 @@ seekdb 可以通过这套接口使用 GPU 加速向量检索。课程中的调�
 seekdb SQL → 向量抽象层 → C 桥接层 → hipVS → ROCm → AMD GPU
 ```
 
-![seekdb 接入 hipVS 的关系，04:04](image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849786371.png)
+![seekdb 接入 hipVS 的关系，04:04](/image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849786371.png)
 
 课程按索引选择后端：`lib=vsag` 使用 CPU，`lib=cuvs` 使用 GPU。AMD 路径仍沿用 cuVS 接口名称，底层实际由 hipVS 执行。
 
@@ -47,7 +47,7 @@ seekdb SQL → 向量抽象层 → C 桥接层 → hipVS → ROCm → AMD GPU
 
 加速比为 `CPU 耗时 ÷ GPU 耗时`，数值越大表示 GPU 相对越快。
 
-![单查、批量与召回率结果，06:40](image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849814916.png)
+![单查、批量与召回率结果，06:40](/image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849814916.png)
 
 **单查时，GPU 的固定调用开销会抵消计算优势；批量提交更多查询后，开销被分摊，GPU 的并行处理能力才更明显。** 因此，这组实验中 CPU 更适合少量、低延迟查询，GPU 在大批量查询中体现出吞吐优势。这里降低的是每个查询的摊销成本，不代表整批总耗时随批次增加而一直下降。
 
@@ -67,7 +67,7 @@ seekdb SQL → 向量抽象层 → C 桥接层 → hipVS → ROCm → AMD GPU
 
 课件介绍了 **150+ 小时免费算力**，具体领取条件与额度以账户页面为准。
 
-![课程专属入口与算力说明，10:28](image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849854950.png)
+![课程专属入口与算力说明，10:28](/image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849854950.png)
 
 ### 启动实例与运行 Notebook
 
@@ -84,7 +84,7 @@ seekdb_hipvs_notebook/seekdb_hipvs_batch_demo_executed.ipynb
 
 其中包含环境检查、数据准备、单条查询、批量查询和召回率对比，可以按顺序复现课程结果。
 
-![seekdb + hipVS 模板入口，12:44](image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849884421.png)
+![seekdb + hipVS 模板入口，12:44](/image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849884421.png)
 
 ### SSH 连接与资源释放
 
@@ -94,4 +94,4 @@ seekdb_hipvs_notebook/seekdb_hipvs_batch_demo_executed.ipynb
 
 **关闭浏览器不会停止实例。** 使用结束后，先保存需要保留的实验记录，再通过 **Destroy** 释放实例，避免继续消耗算力时间。
 
-![云端实例的使用与释放流程，09:28](image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849964840.png)
+![云端实例的使用与释放流程，09:28](/image/AMDGPU加速向量检索seekdb×hipVS学习笔记_20260908144150/1788849964840.png)

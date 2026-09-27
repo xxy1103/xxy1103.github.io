@@ -30,7 +30,7 @@ tags:
 
 它的结果只用于压缩 Solver 初始 prompt：相关表继续展示完整 schema 和样例；无关表只保留一行“表存在、可用 `explore_data` 找回”的提示。所有真实表仍会注册到 DuckDB，也仍会被 `solver.py` 加载。
 
-![结构化表相关性判定总览](<image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/overview.svg>)
+![结构化表相关性判定总览](</image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/overview.svg>)
 
 这使它更准确地属于“表级 Schema 压缩器”，而不是限制数据访问的路由器。
 
@@ -61,7 +61,7 @@ tags:
 
 视频输入没有原始图片，程序复用视频预处理产物，将 ASR 旁白和 hiccup 版面文字还原为纯文本。
 
-![Table Relevance Agent 输入装配](<image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/input-assembly.svg>)
+![Table Relevance Agent 输入装配](</image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/input-assembly.svg>)
 
 ### 2.2 哪些数据源会成为候选表
 
@@ -197,7 +197,7 @@ doc_company_rules
 
 这里尤其要注意三个集合之间的关系：
 
-![TableRelevanceResult 中各表集合的关系](<image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/result-set-relationships.svg>)
+![TableRelevanceResult 中各表集合的关系](</image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/result-set-relationships.svg>)
 
 最后，主流程真正使用的不是整个结果对象，而是：
 
@@ -337,7 +337,7 @@ Prompt 同时明确排除以下理由：
 
 上一节描述的是一轮模型判断。当前实现默认目标是收集 5 个成功轮次，每轮都收到完全相同的 instructions 和 User input，并重新判断全部候选表。
 
-![并发补齐、逐表投票与安全兜底](<image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/voting-and-fallback.svg>)
+![并发补齐、逐表投票与安全兜底](</image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/voting-and-fallback.svg>)
 
 ### 4.1 第一批并发调用
 
@@ -467,7 +467,7 @@ desc_str = describe_context_dir(
 )
 ```
 
-![软过滤只改变 Prompt，不改变数据可访问性](<image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/soft-filter-handoff.svg>)
+![软过滤只改变 Prompt，不改变数据可访问性](</image/KDD Cup 2026 Champion结构化表相关性判定agent_20260812204352/soft-filter-handoff.svg>)
 
 相关表在 Solver 初始 prompt 中继续展示：
 
