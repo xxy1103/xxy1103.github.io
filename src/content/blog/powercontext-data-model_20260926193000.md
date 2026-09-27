@@ -1,8 +1,8 @@
 ---
-title: "PowerContext 数据模型入门"
+title: "PowerContext 数据模型学习笔记"
 date: "2026-09-26T19:30:00+08:00"
-updated: "2026-09-26T22:19:48+08:00"
-description: "从 Scope、Source、Artifact、Entry 和 PreparedContext 五个层次理解 PowerContext 的数据模型，并结合 Notebook 说明这些对象如何协作。"
+updated: "2026-09-27T14:46:07+08:00"
+description: "从 Scope、Artifact、Entry 到 PreparedContext，理解 PowerContext 的核心数据模型与使用方法。"
 draft: false
 categories:
   - "笔记"
@@ -11,272 +11,349 @@ tags:
   - "agent"
 ---
 <!-- more -->
-# PowerContext 数据模型入门
 
-> 面向已经了解 Agent、Prompt 和 RAG 的程序员。本文先建立 PowerContext 的数据模型，再回到 `examples/jupyter/01_memory_across_sessions.ipynb` 看这些对象如何协作。
+# PowerContext 数据模型学习笔记
 
-## 1. 先用一句话理解 PowerContext
+PowerContext 可以先用一句话理解：**把 Agent 工作中值得复用的项目知识，放进有边界、可版本化、可追溯的上下文系统；在下一次 Agent turn 前，再按问题和预算取出一小段材料。**
 
-PowerContext 是一个**上下文运行层**：它把项目中的证据和工作判断保存成可复用的上下文制品，在后续 Agent 请求中按需召回。
+这篇笔记整理前四篇 Jupyter Notebook 的共同主线，面向已经了解 Agent、RAG 和向量/关键词检索的程序员。重点不在“背接口”，而在建立一套能指导设计和排错的心智模型：
 
-可以先把它想成一套项目知识库：
+```text
+Scope（在哪个项目里）
+  └── Artifact（哪一份可复用制品的哪一个版本）
+        └── Entry（其中哪一条知识）
+              └── PreparedContext（本次请求实际注入的临时视图）
+```
 
-- `Scope` 是“哪个项目”或“哪块隔离空间”；
-- `Source` 是外部材料和事实证据；
-- `Artifact` 是 PowerContext 整理后可以复用的产物；
-- `Entry` 是产物中的一条具体内容；
-- `PreparedContext` 是为当前一次 Agent 请求挑出的临时材料。
+![PowerContext 四个核心对象的关系](image/powercontext-data-model_20260926193000/01-model-overview.svg)
 
-![PowerContext 数据模型总览](image/powercontext-data-model_20260926193000/powercontext-data-model-overview.svg)
+## 1. 先建立直觉：它解决了什么问题
 
-## 2. 五个层次：容器、证据、产物、内容、请求
+普通 RAG 往往把“文档切块 → 建索引 → 召回 → 拼 Prompt”看作一条流水线。这个模型在回答一次问题时够用，但项目型 Agent 还会遇到四个长期问题：
 
-### 2.1 Scope：数据隔离边界
+- **知识属于哪个项目？** 两个项目都可能有 `currency` 字段，但含义不同。
+- **一条知识后来改过什么？** 当前答案应该用新规则，审计时又要能找回旧规则。
+- **一组知识和一条知识是什么关系？** 一次写入可能更新多个条目，但引用时需要指到具体条目。
+- **模型本次到底收到了什么？** 不能只看“召回命中”，还要有一个受预算约束的最终输入视图。
 
-`Scope` 表示一个相互隔离的工作范围。它可以对应一个项目、仓库、团队空间，或其他由应用定义的业务范围。
+PowerContext 用四个对象分别回答这些问题：`Scope` 管边界，`Artifact` 管版本化容器，`Entry` 管可独立维护的知识单元，`PreparedContext` 管一次 Agent turn 的输入。
 
-Notebook 中创建了一个订单 CSV 导入器 Scope：
+## 2. Scope：先确定“在哪个工作空间里”
+
+### 2.1 定义
+
+`Scope` 是上下文的隔离边界，通常可以对应一个项目、仓库、客户空间或长期任务。服务端创建 Scope 后返回不透明的 `scope_id`；调用方应该保存并使用这个 ID，而不是根据目录名、仓库名或会话 ID 自己拼一个。
+
+一个 Scope 的核心字段可以这样看：
+
+| 字段                   | 含义                 | 使用提醒                     |
+| ---------------------- | -------------------- | ---------------------------- |
+| `scope_id`           | 服务端生成的稳定身份 | 用于后续 API 路由和查询      |
+| `title`              | 给人看的名称         | 可以改名，不承担唯一身份     |
+| `summary`            | 范围说明             | 帮助人和工具识别用途         |
+| `parent_scope_id`    | 可选的组织父级       | 表示组织关系，不自动继承知识 |
+| `context_references` | 显式引用其他 Scope   | 需要共享时明确声明           |
+| `version`            | Scope 元数据版本     | 更新时用于并发控制           |
+
+Scope ID 的作用是**选择数据**，不是认证身份，也不是执行授权。远程部署仍然需要认证和访问控制。
+
+### 2.2 为什么同名关键词不会串台
+
+假设国内订单和海外订单各自有一条 `currency`：
+
+```text
+Scope A（国内订单）  currency: CNY，单位为人民币分
+Scope B（海外订单）  currency: USD，单位为美分
+```
+
+对 A 查询 `currency`，只从 A 的上下文范围召回；对 B 查询同一个词，只看到 B 的约定。查询词相同并不意味着数据会跨 Scope 混合。
+
+![Scope 隔离与显式共享](image/powercontext-data-model_20260926193000/03-scope-isolation.svg)
+
+父子 Scope 也要特别注意：`parent_scope_id` 只描述层级。子 Scope 不会因为挂在父 Scope 下，就自动看到父级 Memory。需要复用时，应通过显式上下文引用和访问权限完成设计。
+
+### 2.3 创建 Scope
+
+前四篇 notebook 使用 Python Client 的 HTTP 类型模型，最小示例是：
 
 ```python
+from powercontext.http import CreateScopeRequest
+
 scope = await client.create_scope(
     CreateScopeRequest(
-        title="订单 CSV 导入器 · 01",
-        summary="第 01 篇教程的独立合成数据",
-        idempotency_key=f"{lab.run_id}:lesson-01",
+        title="订单 CSV 导入器",
+        summary="记录导入规则和验证约定",
+        idempotency_key="orders-importer-v1",
     )
 )
-scope_id = scope.scope_id
+scope_id = scope.scope_id       # 后续请求使用它
 ```
 
-之后的调用都带有 `scope_id`：
+`idempotency_key` 用来让重复发送同一个创建请求时恢复同一结果，适合网络重试和启动流程。
 
-```python
-await client.remember_memory(..., scope_id=scope_id)
-await client.search_memory(..., scope_id=scope_id)
-await client.prepare_context(..., scope_id=scope_id)
-```
+> `idempotency_key` 由调用方提供，用来识别“这是不是同一次创建操作的重试”
 
-这表示“在这个项目中保存、搜索和准备上下文”。不同 Scope 之间不会因为查询词相同而自动串台。
+## 3. Artifact：可复用知识的不可变版本快照
 
-需要注意：`scope_id` 主要是数据选择和隔离边界，不等同于用户身份，也不是权限令牌。
+### 3.1 它不是“一个文件”
 
-### 2.2 Source：系统接入的原始证据
-
-`Source` 表示 PowerContext 可以读取的外部材料，例如：
-
-- 项目文档、代码和工单；
-- Agent 的执行轨迹、工具结果和 review 记录；
-- 用户输入、人工备注和任务结果；
-- 外部系统中的事件或观测数据。
-
-Source 是“发生过什么”的证据，原始材料通常仍由外部系统负责保存。PowerContext 可以保存捕获的内容，也可以保存指向外部材料的引用。
-
-**捕获 Source 不会自动变成 Memory。** 应用或配置好的处理流程还需要决定：哪些事实值得长期保存，或者应该生成什么 Artifact。
-
-> 本篇 Notebook 没有创建 Source，而是直接使用 `remember_memory` 保存一条已经由团队确认的约定。这是为了先学习 Memory 的最小闭环。
-
-### 2.3 Artifact：可复用的上下文产物
-
-`Artifact` 是 PowerContext 制作并维护的上下文产物。常见 Artifact family 包括：
-
-- `memory`：长期事实、决定、约束、状态和下一步；
-- `experience`：可复用的情境、行动、结果和经验；
-- `skill`：可导出给 Agent 使用的操作说明和校验规则；
-- `handoff`：任务交接和工作连续性记录；
-- `profile`、`prompt`：Scope 背景和 Scope 级配置。
-
-Artifact 不是原始 Source，也不是一次搜索得到的临时结果。它有稳定身份和版本，可以被后续工作读取、引用、审核或继续演进。
-
-在 Notebook 中，默认日常 Memory 本身就是一个 `memory` Artifact：
+`Artifact` 是一个可复用输出的**不可变 revision**。可以把它想成 Git 提交或数据库快照：
 
 ```text
-family      = memory
-artifact_id = memory
-revision    = 1
+family / artifact_id @ revision
+memory / mem_123      @ 3
 ```
 
-可以用统一读取接口按身份读取它：
+- `family` 表示制品家族；前四篇主要使用 `memory`。
+- `artifact_id` 是稳定身份。同一份 Memory 更新后，ID 不变。
+- `revision` 是快照版本。每次有效变更创建新版本，旧版本不被改写。
+- `content` 保存这一版的完整结构化内容。
+- `lineage`（在通用 Artifact 模型中）记录生成该版本所依赖的引用。
 
-```python
-artifact = await client.get_artifact(
-    scope_id,
-    "memory",
-    citation.memory_ref.artifact_id,
-)
-```
+“不可变”带来两个直接好处：当前 head 可以持续前进；旧引用仍然能够精确读取当时的内容。
 
-### 2.4 Entry：Artifact 里的具体条目
+### 3.2 Artifact 和 Entry 的层级
 
-一个 Memory Artifact 可以包含多条 Memory Entry。例如：
+Memory Artifact 是一个版本化容器，里面有多个逻辑 Entry。新增一条知识时，通常会得到：
 
 ```text
-Memory Artifact: memory
-├── Entry A: amount 用整数分存储
-└── Entry B: 坏行必须返回原始 CSV 行号
+同一 memory artifact_id
+├── Entry E1：金额以整数分存储
+└── Entry E2：错误必须保留原始行号
 ```
 
-Notebook 中使用 `remember_memory` 添加 Entry：
+再修改 E1：
+
+```text
+Artifact revision：1 → 2
+Entry identity：E1（不变）
+Entry version：V1 → V2（变化）
+```
+
+因此，“哪一份制品”由 `memory_ref` 表示，“制品中的哪一条知识”由 `entry_id` 和 `entry_version_id` 进一步锚定。
+
+## 4. Entry：一条可以独立维护、检索和引用的知识
+
+### 4.1 Entry 的字段
+
+Memory Entry 可以抽象成下面的结构：
+
+| 字段                 | 含义                                         |
+| -------------------- | -------------------------------------------- |
+| `entry_id`         | 逻辑条目的稳定身份                           |
+| `entry_version_id` | 这条内容的具体版本身份                       |
+| `version`          | 条目自身的递增版本号                         |
+| `kind`             | `decision`、`constraint` 等业务分类      |
+| `text`             | 可检索的正文                                 |
+| `state`            | `active` 或 `inactive`                   |
+| `citation`         | 指向 Memory revision 和 Entry 版本的精确引用 |
+
+`kind` 是帮助应用组织内容的标签；真正用于检索和阅读的是 `text`。一条 Entry 应该尽量表达一个可以单独判断、单独修改的事实或规则，而不是把整个项目历史揉成一段大摘要。
+
+### 4.2 写入与检索
+
+显式写入不需要模型：
 
 ```python
+from powercontext.http import RememberMemoryRequest
+
 saved = await client.remember_memory(
     RememberMemoryRequest(
         scope_id=scope_id,
         kind="decision",
-        text="amount: 订单金额以整数分存储；100 表示 1 元，禁止用二进制浮点数累计金额。",
+        text="amount: 订单金额以整数分存储；100 表示 1 元。",
         reason="团队确认的金额存储约定",
+    )
+)
+citation = saved.entry.citation
+```
+
+随后按主题搜索：
+
+```python
+from powercontext.http import SearchMemoryRequest
+
+result = await client.search_memory(
+    SearchMemoryRequest(scope_id=scope_id, query="amount", mode="fts")
+)
+for hit in result.hits:
+    print(hit.text, hit.citation)
+```
+
+前四篇使用 FTS 主题词来观察行为：`search_memory` 回答“当前有哪些相关条目”，而不是直接返回整份 Artifact。向量或混合检索可以是部署能力，但不改变 Scope、Artifact、Entry 的身份关系。
+
+### 4.3 修订、冲突和停用
+
+修改条目时要把读取时拿到的 `citation` 一起交给服务端：
+
+```python
+from powercontext.http import ReviseMemoryEntryRequest
+
+revised = await client.revise_memory_entry(
+    ReviseMemoryEntryRequest(
+        scope_id=scope_id,
+        citation=citation,
+        kind="decision",
+        text="amount: 订单金额以整数分存储；转换时使用 Decimal。",
+        reason="补充输入转换规则",
     )
 )
 ```
 
-这里要区分两个 ID：
+服务端会检查 citation 是否仍指向当前可修改版本。如果另一位调用者已经先改过，旧 citation 会触发 `409` 冲突。正确做法是重新读取当前条目，再决定是否合并或覆盖；不要用旧版本静默覆盖新版本。
 
-| 标识            | 含义                       |
-| --------------- | -------------------------- |
-| `artifact_id` | 整份 Memory 制品的稳定身份 |
-| `entry_id`    | 制品中某一条 Memory 的身份 |
-
-新增第二条约定后，两个 Entry 的 `entry_id` 不同，但仍属于同一个默认 Memory Artifact。这就是“同一本项目笔记中有多个条目”。
-
-### 2.5 PreparedContext：一次请求的临时视图
-
-`PreparedContext` 是根据本次问题从长期制品中挑选出的、有大小预算的上下文文本。它不是新的 Artifact，也不会自动长期保存。
+不再适用的条目使用 `retire_memory_entry`：
 
 ```python
+from powercontext.http import RetireMemoryEntryRequest
+
+await client.retire_memory_entry(
+    RetireMemoryEntryRequest(
+        scope_id=scope_id,
+        citation=revised.entry.citation,
+        reason="项目已改用流式导入",
+    )
+)
+```
+
+停用会让 Entry 退出 active recall，但不会物理删除历史。当前搜索和历史精确读取因此可以回答不同问题：一个回答“现在应该用什么”，另一个回答“当时记录了什么”。
+
+![Entry 与 Artifact 的生命周期](image/powercontext-data-model_20260926193000/02-entry-lifecycle.svg)
+
+## 5. Citation：像书签一样固定一处内容
+
+可以把 `citation` 想成一本书里的书签。书签不是把整页内容再抄一遍，而是记住“哪本书、哪一版、哪一页”；以后书的新版出版了，旧书签仍然能带你回到原来的位置。
+
+Memory citation 也做同样的事。它至少包含三部分：
+
+```text
+memory_ref = (family="memory", artifact_id="...", revision=3)  # 哪一份制品的哪一版
+entry_id = "..."                                                    # 制品中的哪条知识
+entry_version_id = "..."                                           # 这条知识的哪一版
+```
+
+只保存一段文本就像只记住书上的一句话：文本可能重复，内容可能被修订，当前版本也可能已经变化。保存 citation，才能准确回答“我当时看到的是哪一版”。
+
+这个书签有三种常见用法：
+
+1. Agent 或应用保存一条知识后，保留服务端返回的 citation。
+2. 修改条目时，把最近读到的 citation 一起提交；如果书已经被别人翻到新版本，服务端就能发现旧书签并返回版本冲突。
+3. 需要解释、审计或交接时，使用 citation 读取原来的 Artifact revision，而不是误把当前 head 当成当时的内容。
+
+所以可以这样记：
+
+```text
+citation：我引用了哪一本“书”的哪一版、哪一页？
+lineage：这一本“书”的这一版，是根据哪些材料整理出来的？
+```
+
+## 6. PreparedContext：给一次 Agent turn 的临时上下文
+
+### 6.1 为什么还需要一个新对象
+
+搜索命中不是最终 Prompt。应用还要决定：
+
+- 本次问题是什么；
+- 要从哪个 Scope 取；
+- 最多给模型多少内容；
+- 没有命中时如何继续；
+- 如何把正文和引用放进消息。
+
+`PreparedContext` 就是这一步的结果。它是临时值，不会因为生成了一次上下文，就自动创建新的长期 Memory。
+
+![PreparedContext 生成流程](image/powercontext-data-model_20260926193000/04-prepared-context-flow.svg)
+
+### 6.2 请求与响应
+
+```python
+from powercontext.http import PrepareContextRequest
+
 prepared = await client.prepare_context(
     PrepareContextRequest(
         scope_id=scope_id,
+        query="amount 字段应该怎样解析和验证？",
+        max_bytes=2500,
+    )
+)
+
+if prepared.status == "ready":
+    context_text = prepared.content
+else:  # empty
+    context_text = None
+```
+
+响应有四个重要部分：
+
+| 字段              | 含义                                 |
+| ----------------- | ------------------------------------ |
+| `schema`        | PreparedContext 的协议版本           |
+| `status`        | `ready` 或 `empty`               |
+| `content`       | 可直接注入的文本；空结果时为`null` |
+| `content_bytes` | `content` 的 UTF-8 字节数          |
+
+`max_bytes` 限制的是完整输出的 UTF-8 字节数。空间不足时，服务端可能缩短正文或跳过条目；调用方应检查实际字节数并原样使用返回正文。
+
+没有相关历史时，`empty` 是正常业务结果，不代表请求失败：
+
+```text
+status = "empty"
+content = null
+content_bytes = 0
+```
+
+### 6.3 放进 Agent 消息的推荐位置
+
+PreparedContext 是历史材料，不是新的系统指令。一个清晰的消息编排是：
+
+```python
+messages = [
+    {
+        "role": "system",
+        "content": "你正在协助开发订单导入器。历史材料需要结合当前要求和实时检查使用。",
+    },
+    {
+        "role": "system",
+        "content": prepared.content or "本次没有可用的历史材料。",
+    },
+    {"role": "user", "content": "amount 字段应该怎样解析和验证？"},
+]
+```
+
+这样做有三个好处：历史与当前问题分层；模型能看到引用和边界；空结果不会被误当成异常而中断 Agent 流程。最终是否使用了材料，还需要观察真实模型请求和输出，不能只凭 `status == "ready"` 推断。
+
+## 7. 一条完整的最小闭环
+
+把四个对象串起来，可以得到下面的应用流程：
+
+```python
+# 1. 创建并保存 Scope
+scope = await client.create_scope(
+    CreateScopeRequest(
+        title="订单导入器",
+        summary="项目规则",
+        idempotency_key="orders-v1",
+    )
+)
+
+# 2. 在 Scope 内保存一条 Entry（服务端维护 memory Artifact）
+saved = await client.remember_memory(
+    RememberMemoryRequest(
+        scope_id=scope.scope_id,
+        kind="constraint",
+        text="amount: 金额使用整数分，禁止用二进制浮点数累计。",
+        reason="代码评审结论",
+    )
+)
+
+# 3. 新会话按当前问题准备有界上下文
+prepared = await client.prepare_context(
+    PrepareContextRequest(
+        scope_id=scope.scope_id,
         query="amount",
         max_bytes=2500,
     )
 )
+
+# 4. 只有准备成功才把正文放入 Agent 消息；保留 citation 供后续修订\nmessages = []\nif prepared.status == "ready":
+    messages.append({"role": "system", "content": prepared.content})
 ```
-
-随后应用可以把它放进模型消息：
-
-```python
-messages = [
-    {"role": "system", "content": "帮助开发订单导入器。"},
-    {"role": "system", "content": prepared.content},
-    {"role": "user", "content": "amount 字段应该用什么单位存储？"},
-]
-```
-
-这个过程类似 RAG，但数据来源和生命周期更明确：
-
-```text
-长期 Artifact
-    ↓ 按 Scope、问题和预算召回
-PreparedContext
-    ↓ 加入当前 Agent turn
-模型输入
-```
-
-本篇只验证上下文已经准备好并放进消息，没有调用真实模型验证模型是否采用它。
-
-## 3. Artifact 为什么需要 Revision
-
-Artifact 的内容不是原地覆盖，而是通过不可变 Revision 演进：
-
-```text
-Artifact: memory
-  Revision 1  ── amount 约定
-  Revision 2  ── amount 约定 + line_number 约定
-  Revision 3  ── 修订 amount 约定
-```
-
-同一个 `artifact_id` 可以有多个 Revision。精确引用由三部分组成：
-
-```text
-family / artifact_id @ revision
-```
-
-例如：
-
-```text
-memory / memory @ 1
-```
-
-旧 Revision 不会因为当前版本前进而消失，因此可以读取“当时实际使用的那一版”。这对审计、Handoff、并发更新和复现很重要。
-
-![Memory Artifact 的版本演进](image/powercontext-data-model_20260926193000/memory-lifecycle.svg)
-
-## 4. Citation：把召回内容精确指回来源
-
-保存 Memory 后，API 会返回 `citation`。它像一张定位卡，至少能回答：
-
-- 这是哪种 Artifact family？
-- 属于哪一个 Artifact？
-- 使用的是哪个 Revision？
-- 具体是哪一条 Entry？
-- 具体的 Entry 内容版本是什么？
-
-Notebook 中的引用结构大致如下：
-
-```text
-citation
-├── memory_ref
-│   ├── family: memory
-│   ├── artifact_id: memory
-│   └── revision: 1
-├── entry_id
-└── entry_version_id
-```
-
-因此，`search_memory` 返回的不是“相似的一段匿名文本”，而是带有精确来源的命中。应用可以据此读取制品、引用历史版本，或在后续修订时指定目标。
-
-## 5. 把 Notebook 的完整流程串起来
-
-这篇示例实际运行的是下面这条数据流：
-
-```text
-创建订单导入器 Scope
-        ↓
-搜索 amount：没有命中
-        ↓
-remember_memory 保存金额约定
-        ↓
-Memory Artifact 新增一个 Entry
-        ↓
-search_memory 找到 Entry
-        ↓
-prepare_context 组装本次问题的上下文
-        ↓
-加入模型消息
-        ↓
-新建 Client 仍能读取
-        ↓
-Server 重启后按 Artifact 和 Revision 读取
-```
-
-它证明的是：
-
-1. 没有知识时，搜索和上下文准备都返回空结果；
-2. 已确认的约定可以直接写入默认 Memory；
-3. 约定可以被搜索和准备成当前请求的上下文；
-4. 新 Client 不依赖旧 Client 的内存变量；
-5. Server 重启后，持久化的 Artifact Revision 仍可读取；
-6. 新增条目会产生新的 `entry_id`，但可以继续属于同一个 Memory Artifact。
-
-## 6. 用类比快速记忆
-
-| PowerContext 概念   | 直观类比             | 主要问题                              |
-| ------------------- | -------------------- | ------------------------------------- |
-| `Scope`           | 项目文件夹/工作空间  | 这条知识属于哪个项目？                |
-| `Source`          | 原始资料、工单、日志 | 这件事的证据是什么？                  |
-| `Artifact`        | 可维护的项目知识文档 | PowerContext 整理出了什么可复用产物？ |
-| `Revision`        | 文档的不可变版本     | 当时使用的到底是哪一版？              |
-| `Entry`           | 文档中的一条规则     | 具体保存了哪条知识？                  |
-| `Citation`        | 带章节和版本的书签   | 这条知识如何精确追溯？                |
-| `PreparedContext` | 为当前问题摘出的笔记 | 这次请求需要给 Agent 看什么？         |
-
-## 7. 目前先记住的边界
-
-- Memory 是长期保存的知识；`PreparedContext` 只是一次 Agent turn 的临时值。
-- Source 是证据；Artifact 是基于证据整理出的可复用产物。
-- Scope 是隔离边界；它不会自动替代身份认证或权限控制。
-- 新增或修改内容会形成新的版本；历史版本可以被精确读取。
-- 保存了 Memory，不等于模型一定会使用它；还要检查上下文是否进入真实模型输入。
-- 本篇使用 FTS 关键词搜索；向量检索、混合检索和真实 Agent 使用会在后续 Notebook 展示。
-
-**一句话总结：** `Scope` 决定知识属于哪里，`Source` 提供事实依据，`Artifact` 保存可复用产物，`Entry` 是产物中的具体内容，`Revision` 保证演进可追溯，`PreparedContext` 则把长期知识裁剪成当前 Agent 请求真正需要的材料。
-

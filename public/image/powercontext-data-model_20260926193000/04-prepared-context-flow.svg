@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="380" viewBox="0 0 1100 380" role="img" aria-labelledby="title desc">
+<title id="title">PreparedContext 生成流程</title><desc id="desc">应用提交 Scope、query 和 max_bytes，Server 从 active 条目中筛选并返回有界临时上下文。</desc>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#64748b"/></marker><style>text{font-family:Segoe UI,Microsoft YaHei,sans-serif;fill:#172033}.h{font-size:19px;font-weight:700}.p{font-size:14px}.box{stroke-width:2;rx:14;ry:14}.line{stroke:#64748b;stroke-width:2.5;fill:none;marker-end:url(#a)}</style></defs>
+<rect width="1100" height="380" fill="#f8fafc"/><text x="44" y="42" class="h">从长期知识到一次模型输入</text>
+<rect x="45" y="100" width="220" height="150" class="box" fill="#e0f2fe" stroke="#0284c7"/><text x="80" y="140" class="h">PrepareContextRequest</text><text x="80" y="175" class="p">scope_id</text><text x="80" y="200" class="p">query = “amount”</text><text x="80" y="225" class="p">max_bytes = 2500</text>
+<rect x="335" y="100" width="220" height="150" class="box" fill="#fef3c7" stroke="#d97706"/><text x="380" y="140" class="h">选择与装配</text><text x="380" y="175" class="p">仅看当前 Scope</text><text x="380" y="200" class="p">优先 active 条目</text><text x="380" y="225" class="p">遵守 UTF-8 字节预算</text>
+<rect x="625" y="75" width="210" height="95" class="box" fill="#dcfce7" stroke="#16a34a"/><text x="670" y="115" class="h">ready</text><text x="670" y="143" class="p">content + citations</text>
+<rect x="625" y="190" width="210" height="95" class="box" fill="#f1f5f9" stroke="#64748b"/><text x="670" y="230" class="h">empty</text><text x="670" y="258" class="p">content = null</text>
+<rect x="905" y="100" width="150" height="150" class="box" fill="#f3e8ff" stroke="#9333ea"/><text x="935" y="140" class="h">Agent turn</text><text x="935" y="177" class="p">system</text><text x="935" y="200" class="p">prepared</text><text x="935" y="223" class="p">user query</text>
+<path d="M265 175 L335 175" class="line"/><path d="M555 150 L625 120" class="line"/><path d="M555 200 L625 235" class="line"/><path d="M835 120 L905 165" class="line"/><path d="M835 235 L905 190" class="line"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520" role="img" aria-labelledby="title desc">
+  <title id="title">PowerContext 数据模型总览</title><desc id="desc">Scope 包含 Artifact，Artifact 由多个 Entry 组成，PreparedContext 从当前可用 Entry 中按问题和预算生成。</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z" fill="#64748b"/></marker><style>text{font-family:Segoe UI,Microsoft YaHei,sans-serif;fill:#172033}.title{font-size:24px;font-weight:700}.h{font-size:20px;font-weight:700}.p{font-size:15px}.small{font-size:13px}.box{stroke-width:2;rx:16;ry:16}.line{stroke:#64748b;stroke-width:2.5;fill:none;marker-end:url(#arrow)}</style></defs>
+  <rect width="1100" height="520" fill="#f8fafc"/>
+  <text x="52" y="48" class="title">四个核心对象如何协作</text>
+  <rect x="50" y="90" width="260" height="330" class="box" fill="#e0f2fe" stroke="#0284c7"/>
+  <text x="80" y="135" class="h">Scope</text><text x="80" y="165" class="p">一个项目或工作范围</text><text x="80" y="205" class="small">• 由 Server 分配 scope_id</text><text x="80" y="232" class="small">• 隔离不同项目的上下文</text><text x="80" y="259" class="small">• 可组织父子关系</text><text x="80" y="286" class="small">• 不等于身份或权限</text><text x="80" y="340" class="small">“国内订单”和“海外订单”</text><text x="80" y="363" class="small">可以有同名字段而不串台</text>
+  <rect x="390" y="90" width="300" height="330" class="box" fill="#fef3c7" stroke="#d97706"/>
+  <text x="420" y="135" class="h">Artifact</text><text x="420" y="165" class="p">可复用、不可变的版本快照</text><text x="420" y="205" class="small">• family：如 memory</text><text x="420" y="232" class="small">• artifact_id：稳定身份</text><text x="420" y="259" class="small">• revision：快照版本</text><text x="420" y="286" class="small">• 当前 head 可前进</text><text x="420" y="313" class="small">• 旧 revision 可精确读取</text><text x="420" y="363" class="small">一个 Memory Artifact 是一组</text><text x="420" y="386" class="small">Entry 的版本化容器</text>
+  <rect x="770" y="90" width="280" height="150" class="box" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="800" y="135" class="h">Entry</text><text x="800" y="165" class="p">一条可独立召回的知识</text><text x="800" y="195" class="small">kind + text + entry_id</text><text x="800" y="218" class="small">active / inactive</text>
+  <rect x="770" y="290" width="280" height="130" class="box" fill="#f3e8ff" stroke="#9333ea"/>
+  <text x="800" y="335" class="h">PreparedContext</text><text x="800" y="365" class="p">一次 Agent turn 的临时视图</text><text x="800" y="392" class="small">query + max_bytes → ready/empty</text>
+  <path d="M310 190 L390 190" class="line"/><path d="M690 170 L770 170" class="line"/><path d="M690 340 L770 365" class="line"/>
+  <text x="323" y="178" class="small">拥有 / 隔离</text><text x="704" y="158" class="small">包含多个</text><text x="698" y="328" class="small">筛选生成</text>
+  <path d="M910 240 L910 290" class="line"/><text x="925" y="270" class="small">查询与预算</text>
+</svg>
