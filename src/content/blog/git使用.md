@@ -183,8 +183,9 @@ git pull origin(远程库名) master(分支名)
 4. git fetch 与git pull
    `git fetch`是将远程主机的最新内容拉到本地，用户在检查了以后决定是否合并到工作本机分支中。而 `git pull` 则是将远程主机的最新内容拉下来后直接合并，即：`git pull = git fetch + git merge`，这样可能会产生冲突，需要手动解决。
 
-[img5]: image/git使用/img5.png
-[img4]: image/git使用/img4.png
-[img3]: image/git使用/img3.png
-[img2]: image/git使用/img2.png
-[img1]: image/git使用/img1.jpg
+[img5]: /image/git使用/img5.png
+[img4]: /image/git使用/img4.png
+[img3]: /image/git使用/img3.png
+[img2]: /image/git使用/img2.png
+[img1]: /image/git使用/img1.jpg
+
