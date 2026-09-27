@@ -111,5 +111,32 @@ const tocTree = buildTocTree(Astro.props.headings);
 	.toc-item[data-depth="2"] > .toc-link { padding-left: 24px; }
 	.toc-item[data-depth="3"] > .toc-link { padding-left: 36px; font-size: 0.9em; }
 	.toc-item[data-depth="4"] > .toc-link { padding-left: 48px; font-size: 0.85em; }
+	#toc-root { counter-reset: level1; }
+	#toc-root > .toc-item { counter-increment: level1; }
+	#toc-root > .toc-item > .toc-link .toc-text::before {
+		content: counter(level1) ". ";
+		color: var(--color-text-tertiary);
+		font-weight: normal;
+		margin-right: 4px;
+		font-size: 0.9em;
+	}
+	#toc-root > .toc-item > .toc-children { counter-reset: level2; }
+	#toc-root > .toc-item > .toc-children > .toc-item { counter-increment: level2; }
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-link .toc-text::before {
+		content: counter(level1) "." counter(level2) " ";
+		color: var(--color-text-tertiary);
+		font-weight: normal;
+		margin-right: 4px;
+		font-size: 0.9em;
+	}
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-children { counter-reset: level3; }
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-children > .toc-item { counter-increment: level3; }
+	#toc-root > .toc-item > .toc-children > .toc-item > .toc-children > .toc-item > .toc-link .toc-text::before {
+		content: counter(level1) "." counter(level2) "." counter(level3) " ";
+		color: var(--color-text-tertiary);
+		font-weight: normal;
+		margin-right: 4px;
+		font-size: 0.9em;
+	}
 	@media (max-width: 1100px) { .sidebar-container { display: none; } }
 </style>
