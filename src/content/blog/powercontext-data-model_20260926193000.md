@@ -1,7 +1,7 @@
 ---
 title: "PowerContext 数据模型学习笔记"
 date: "2026-09-26T19:30:00+08:00"
-updated: "2026-09-27T14:46:07+08:00"
+updated: "2026-10-11T21:56:06+08:00"
 description: "从 Scope、Artifact、Entry 到 PreparedContext，理解 PowerContext 的核心数据模型与使用方法。"
 draft: false
 categories:
@@ -10,6 +10,10 @@ tags:
   - "powercontext"
   - "agent"
 ---
+
+当107路再次经过 时间是带走青春的电车
+
+
 <!-- more -->
 
 # PowerContext 数据模型学习笔记
