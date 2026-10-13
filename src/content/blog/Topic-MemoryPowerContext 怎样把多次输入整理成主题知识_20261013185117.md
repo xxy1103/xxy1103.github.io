@@ -1,15 +1,17 @@
 ---
 title: "Topic-Memory:PowerContext 怎样把多次输入整理成主题知识"
 date: "2026-10-13T18:51:17+08:00"
-updated: "2026-10-13T18:55:39+08:00"
+updated: "2026-10-13T19:19:44+08:00"
 description: "PowerContext 的主题记忆功能通过整理多次讨论的输入，帮助用户形成清晰的主题知识，便于理解项目背景和决策细节。文章以“订单 CSV 导入器”为例，详细介绍了主题整理的流程和方法。"
 draft: false
 categories:
   - "笔记"
 tags:
-  - "agent"
   - "oceanbase"
+  - "agent"
 ---
+
+来年 花也将继续盛开，春日将不厌其烦地反复到来
 
 <!-- more -->
 # Topic Memory：PowerContext 怎样把多次输入整理成主题知识
