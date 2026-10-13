@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="1020" viewBox="0 0 1120 1020" role="img" aria-labelledby="title desc">
+<title id="title">两种触发方式，同一条整理流程</title><desc id="desc">Source 保存后，定时调度或显式 flush 接纳待处理工作。flush 在请求持久化后返回 accepted，后台完成后可能发布主题，也可能无新主题。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#668294" stroke-width="1.5"/></marker></defs>
+<style>text { font-family: 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif; } .label { letter-spacing: 1.5px; }</style>
+<rect width="1120" height="1020" rx="24" fill="#F4F7FA"/>
+<rect x="40" y="34" width="5" height="57" rx="2.5" fill="#087E82"/>
+<text x="62" y="51" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  TOPIC MEMORY  /  TRIGGER</text>
+<text x="62" y="89" font-size="28" fill="#142D42" font-weight="650" text-anchor="start">两种触发方式，同一条整理流程</text>
+<text x="40" y="996" font-size="13" fill="#52697B" font-weight="400" text-anchor="start">阅读路径 · 证据 → 主题 → 精确版本</text>
+<text x="1080" y="996" font-size="13" fill="#52697B" font-weight="400" text-anchor="end">05</text>
+<rect x="290" y="126" width="540" height="110" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="560" y="166" font-size="24" fill="#142D42" font-weight="600" text-anchor="middle">刚才的讨论已保存为 Source</text>
+<text x="560" y="204" font-size="19" fill="#52697B" font-weight="400" text-anchor="middle">原始材料已入库，等待整理</text>
+<path d="M 450 248 V 265 H 280 V 290" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 286.00 278.00 L 280.0 290.0 L 274.00 278.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 670 248 V 265 H 840 V 290" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 846.00 278.00 L 840.0 290.0 L 834.00 278.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="304" width="480" height="146" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="332" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">方式 A · 自动</text>
+<text x="62" y="365" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">等待下一次定时调度</text>
+<text x="62" y="400" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">开启自动处理后，按配置间隔安排工作</text>
+<rect x="600" y="304" width="480" height="146" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="622" y="332" font-size="13" fill="#3262AE" font-weight="600" text-anchor="start">方式 B · 主动</text>
+<text x="622" y="365" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">调用 flush，指定 Scope</text>
+<text x="622" y="400" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">请求安排处理该 Scope 尚未整理的 Source</text>
+<text x="840" y="481" font-size="16" fill="#52697B" font-weight="400" text-anchor="middle">若已处理到最新位置，flush 返回 idle。</text>
+<path d="M 280 462 V 510 H 440 V 546" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 446.00 534.00 L 440.0 546.0 L 434.00 534.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 720 492 V 510 H 680 V 546" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 686.00 534.00 L 680.0 546.0 L 674.00 534.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="310" y="560" width="500" height="108" rx="16" fill="#E4F3EF" stroke="#CDE8E0"/>
+<text x="560" y="600" font-size="24" fill="#087E82" font-weight="600" text-anchor="middle">记下处理请求</text>
+<text x="560" y="639" font-size="18" fill="#142D42" font-weight="400" text-anchor="middle">有待处理工作时，交给后台安排执行</text>
+<path d="M 822 614 H 864" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 852.00 608.00 L 864.0 614.0 L 852.00 620.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="878" y="560" width="202" height="108" rx="16" fill="#EAF0FA" stroke="#D7E2F4"/>
+<text x="979" y="589" font-size="16" fill="#3262AE" font-weight="400" text-anchor="middle">flush 此时返回</text>
+<text x="979" y="622" font-size="24" fill="#3262AE" font-weight="600" text-anchor="middle">accepted</text>
+<text x="979" y="651" font-size="16" fill="#52697B" font-weight="400" text-anchor="middle">已接单，尚未必完成</text>
+<path d="M 560 680 V 710" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 566.00 698.00 L 560.0 710.0 L 554.00 698.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="310" y="724" width="500" height="110" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="560" y="764" font-size="24" fill="#142D42" font-weight="600" text-anchor="middle">后台实际整理</text>
+<text x="560" y="802" font-size="18" fill="#52697B" font-weight="400" text-anchor="middle">读取待处理材料 → 调用模型 → 提交结果</text>
+<path d="M 560 846 V 870" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 566.00 858.00 L 560.0 870.0 L 554.00 858.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="180" y="884" width="760" height="72" rx="16" fill="#FFF5E5" stroke="#F0E3CD"/>
+<text x="560" y="913" font-size="20" fill="#A66A18" font-weight="600" text-anchor="middle">完成后：可能新建或更新主题，也可能没有新主题</text>
+<text x="560" y="941" font-size="17" fill="#52697B" font-weight="400" text-anchor="middle">搜索主题或查看修订历史，确认实际产物。</text>
+</svg>

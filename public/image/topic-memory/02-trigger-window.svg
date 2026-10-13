@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="760" viewBox="0 0 1120 760" role="img" aria-labelledby="title desc">
+<title id="title">何时处理，处理到哪里？</title><desc id="desc">Source 写入形成待处理状态；自动调度或显式 flush 接纳请求；后台按游标和预算选择窗口。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#668294" stroke-width="1.5"/></marker></defs>
+<style>text { font-family: 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif; } .label { letter-spacing: 1.5px; }</style>
+<rect width="1120" height="760" rx="24" fill="#F4F7FA"/>
+<rect x="40" y="34" width="5" height="57" rx="2.5" fill="#087E82"/>
+<text x="62" y="51" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  TOPIC MEMORY  /  02</text>
+<text x="62" y="89" font-size="28" fill="#142D42" font-weight="650" text-anchor="start">何时处理，处理到哪里？</text>
+<text x="40" y="736" font-size="13" fill="#52697B" font-weight="400" text-anchor="start">阅读路径 · 证据 → 主题 → 精确版本</text>
+<text x="1080" y="736" font-size="13" fill="#52697B" font-weight="400" text-anchor="end">02</text>
+<rect x="40" y="132" width="284" height="148" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="160" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">01 · CAPTURE</text>
+<text x="62" y="193" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">Source 写入</text>
+<text x="62" y="228" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">记录当前 Scope</text>
+<text x="62" y="256" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">存在待处理输入</text>
+<rect x="400" y="132" width="304" height="148" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="422" y="160" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">02 · ADMIT</text>
+<text x="422" y="193" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">接纳处理请求</text>
+<text x="422" y="228" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">自动调度：按配置间隔</text>
+<text x="422" y="256" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">显式 flush：请求已接受</text>
+<rect x="780" y="132" width="300" height="148" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="802" y="160" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">03 · WORKER</text>
+<text x="802" y="193" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">后台执行</text>
+<text x="802" y="228" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">读取处理进度</text>
+<text x="802" y="256" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">选取本批证据</text>
+<path d="M 336 208 H 387" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 375.00 202.00 L 387.0 208.0 L 375.00 214.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 716 208 H 767" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 755.00 202.00 L 767.0 208.0 L 755.00 214.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 930 292 V 334 H 552 V 374" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 558.00 362.00 L 552.0 374.0 L 546.00 362.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="388" width="1040" height="252" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="423" font-size="14" fill="#087E82" font-weight="600" text-anchor="start">SOURCE JOURNAL  /  当前 Scope 的输入顺序</text>
+<text x="62" y="467" font-size="18" fill="#52697B" font-weight="550" text-anchor="start">已处理</text>
+<text x="321" y="467" font-size="18" fill="#087E82" font-weight="550" text-anchor="start">本批窗口 · 举例</text>
+<text x="821" y="467" font-size="18" fill="#52697B" font-weight="550" text-anchor="start">后续输入</text>
+<rect x="62" y="485" width="207" height="62" rx="10" fill="#EAF0F5" stroke="#EAF0F5"/>
+<text x="165.5" y="524" font-size="23" fill="#52697B" font-weight="600" text-anchor="middle">… → 10</text>
+<rect x="321" y="485" width="444" height="62" rx="10" fill="#E4F3EF" stroke="#E4F3EF"/>
+<text x="543.0" y="524" font-size="23" fill="#087E82" font-weight="600" text-anchor="middle">11 → 12 → … → 20</text>
+<rect x="821" y="485" width="237" height="62" rx="10" fill="#F3F5F7" stroke="#F3F5F7"/>
+<text x="939.5" y="524" font-size="23" fill="#52697B" font-weight="600" text-anchor="middle">21 → …</text>
+<path d="M 281 516 H 309" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 297.00 510.00 L 309.0 516.0 L 297.00 522.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 777 516 H 809" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 797.00 510.00 L 809.0 516.0 L 797.00 522.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="62" y="584" font-size="18" fill="#3262AE" font-weight="600" text-anchor="start">Cursor = 10</text>
+<text x="321" y="584" font-size="18" fill="#52697B" font-weight="400" text-anchor="start">实际范围受数量和上下文预算限制</text>
+<text x="62" y="615" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">提交成功后推进书签；没有新主题的成功处理，也可以推进。</text>
+<text x="40" y="692" font-size="20" fill="#142D42" font-weight="550" text-anchor="start">已保存 ≠ 已处理完成；accepted 表示请求已接受。</text>
+</svg>

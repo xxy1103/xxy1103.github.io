@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="672" viewBox="0 0 1120 672" role="img" aria-labelledby="title desc">
+<title id="title">搜索与展开，锁定同一份内容</title><desc id="desc">搜索返回第 2 版的精确引用；后台更新 head 到第 3 版后，使用原引用仍读取第 2 版。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#668294" stroke-width="1.5"/></marker></defs>
+<style>text { font-family: 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif; } .label { letter-spacing: 1.5px; }</style>
+<rect width="1120" height="672" rx="24" fill="#F4F7FA"/>
+<rect x="40" y="34" width="5" height="57" rx="2.5" fill="#087E82"/>
+<text x="62" y="51" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  TOPIC MEMORY  /  04</text>
+<text x="62" y="89" font-size="28" fill="#142D42" font-weight="650" text-anchor="start">搜索与展开，锁定同一份内容</text>
+<text x="40" y="648" font-size="13" fill="#52697B" font-weight="400" text-anchor="start">阅读路径 · 证据 → 主题 → 精确版本</text>
+<text x="1080" y="648" font-size="13" fill="#52697B" font-weight="400" text-anchor="end">04</text>
+<text x="40" y="129" font-size="19" fill="#087E82" font-weight="550" text-anchor="start">精确引用：topic-memory / topic_01 @ 2</text>
+<rect x="40" y="166" width="312" height="164" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="194" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">T1 · SEARCH</text>
+<text x="62" y="227" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">搜索「金额精度」</text>
+<text x="62" y="262" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">返回第 2 版的摘要</text>
+<text x="62" y="290" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">同时返回精确引用 @ 2</text>
+<rect x="404" y="166" width="312" height="164" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="426" y="194" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">T2 · UPDATE</text>
+<text x="426" y="227" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">后台发布第 3 版</text>
+<text x="426" y="262" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">当前 head → @ 3</text>
+<text x="426" y="290" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">第 2 版仍然保留</text>
+<rect x="768" y="166" width="312" height="164" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="790" y="194" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">T3 · GET</text>
+<text x="790" y="227" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">使用 @ 2 展开</text>
+<text x="790" y="262" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">读取第 2 版完整详情</text>
+<text x="790" y="290" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">与刚才看到的摘要一致</text>
+<path d="M 363 248 H 392" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 380.00 242.00 L 392.0 248.0 L 380.00 254.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 727 248 H 756" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 744.00 242.00 L 756.0 248.0 L 744.00 254.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="398" width="1040" height="182" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="435" font-size="17" fill="#52697B" font-weight="550" text-anchor="start">同一主题的修订历史</text>
+<rect x="200" y="462" width="160" height="64" rx="12" fill="#EDF1F5" stroke="#EDF1F5"/>
+<text x="280" y="503" font-size="25" fill="#52697B" font-weight="650" text-anchor="middle">@ 1</text>
+<rect x="480" y="462" width="160" height="64" rx="12" fill="#E4F3EF" stroke="#E4F3EF"/>
+<text x="560" y="503" font-size="25" fill="#087E82" font-weight="650" text-anchor="middle">@ 2</text>
+<rect x="760" y="462" width="160" height="64" rx="12" fill="#EAF0FA" stroke="#EAF0FA"/>
+<text x="840" y="503" font-size="25" fill="#3262AE" font-weight="650" text-anchor="middle">@ 3</text>
+<path d="M 373 494 H 465" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 453.00 488.00 L 465.0 494.0 L 453.00 500.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 653 494 H 745" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 733.00 488.00 L 745.0 494.0 L 733.00 500.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="560" y="556" font-size="17" fill="#087E82" font-weight="600" text-anchor="middle">本次展开的版本</text>
+<text x="840" y="556" font-size="17" fill="#3262AE" font-weight="600" text-anchor="middle">当前 head</text>
+<path d="M 924 342 V 373 H 560 V 450" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 566.00 438.00 L 560.0 450.0 L 554.00 438.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="40" y="624" font-size="18" fill="#52697B" font-weight="400" text-anchor="start">需要最新情况时，重新搜索或读取当前 head。</text>
+</svg>

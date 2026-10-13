@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="660" viewBox="0 0 1120 660" role="img" aria-labelledby="title desc">
+<title id="title">一份主题，三层阅读深度</title><desc id="desc">标题定位主题，摘要说明核心规则，详情展开背景与要求。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#668294" stroke-width="1.5"/></marker></defs>
+<style>text { font-family: 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif; } .label { letter-spacing: 1.5px; }</style>
+<rect width="1120" height="660" rx="24" fill="#F4F7FA"/>
+<rect x="40" y="34" width="5" height="57" rx="2.5" fill="#087E82"/>
+<text x="62" y="51" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  TOPIC MEMORY  /  01</text>
+<text x="62" y="89" font-size="28" fill="#142D42" font-weight="650" text-anchor="start">一份主题，三层阅读深度</text>
+<text x="40" y="636" font-size="13" fill="#52697B" font-weight="400" text-anchor="start">阅读路径 · 证据 → 主题 → 精确版本</text>
+<text x="1080" y="636" font-size="13" fill="#52697B" font-weight="400" text-anchor="end">01</text>
+<text x="40" y="129" font-size="18" fill="#52697B" font-weight="400" text-anchor="start">同一个例子：订单 CSV 导入器的金额处理方案</text>
+<rect x="40" y="160" width="740" height="94" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="188" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">01 · TITLE</text>
+<text x="62" y="223" font-size="23" fill="#142D42" font-weight="600" text-anchor="start">标题</text>
+<text x="174" y="222" font-size="19" fill="#142D42" font-weight="400" text-anchor="start">订单导入中的金额存储与校验</text>
+<path d="M 792 207.0 H 828" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 816.00 201.00 L 828.0 207.0 L 816.00 213.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="846" y="213.0" font-size="17" fill="#087E82" font-weight="550" text-anchor="start">定位：这份材料讲什么？</text>
+<rect x="40" y="270" width="740" height="116" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="298" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">02 · SUMMARY</text>
+<text x="62" y="333" font-size="23" fill="#142D42" font-weight="600" text-anchor="start">摘要</text>
+<text x="174" y="332" font-size="19" fill="#142D42" font-weight="400" text-anchor="start">整数分存储，Decimal 转换；</text>
+<text x="174" y="361" font-size="19" fill="#142D42" font-weight="400" text-anchor="start">超过两位小数报错，错误包含原始行号。</text>
+<path d="M 792 328.0 H 828" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 816.00 322.00 L 828.0 328.0 L 816.00 334.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="846" y="334.0" font-size="17" fill="#087E82" font-weight="550" text-anchor="start">判断：与我的问题有关吗？</text>
+<rect x="40" y="402" width="740" height="164" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="430" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">03 · DETAIL</text>
+<text x="62" y="465" font-size="23" fill="#142D42" font-weight="600" text-anchor="start">详情</text>
+<text x="174" y="464" font-size="19" fill="#142D42" font-weight="400" text-anchor="start">采用整数分保存金额；转换时使用 Decimal，</text>
+<text x="174" y="494" font-size="19" fill="#142D42" font-weight="400" text-anchor="start">以避免浮点精度问题。输入超过两位小数时</text>
+<text x="174" y="524" font-size="19" fill="#142D42" font-weight="400" text-anchor="start">拒绝导入，并保留原始行号以便定位。</text>
+<path d="M 792 484.0 H 828" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 816.00 478.00 L 828.0 484.0 L 816.00 490.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="846" y="490.0" font-size="17" fill="#087E82" font-weight="550" text-anchor="start">展开：具体怎样做，为什么？</text>
+<text x="40" y="605" font-size="18" fill="#52697B" font-weight="400" text-anchor="start">按需展开：先定位，再判断，最后阅读细节。</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="922" viewBox="0 0 1120 922" role="img" aria-labelledby="title desc">
+<title id="title">Source 怎样变成 Topic Memory？</title><desc id="desc">从证据识别主题线索，检索已有主题，生成新内容，校验后原子提交。没有可发布内容时也可以完成窗口处理。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#668294" stroke-width="1.5"/></marker></defs>
+<style>text { font-family: 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif; } .label { letter-spacing: 1.5px; }</style>
+<rect width="1120" height="922" rx="24" fill="#F4F7FA"/>
+<rect x="40" y="34" width="5" height="57" rx="2.5" fill="#087E82"/>
+<text x="62" y="51" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  TOPIC MEMORY  /  03</text>
+<text x="62" y="89" font-size="28" fill="#142D42" font-weight="650" text-anchor="start">Source 怎样变成 Topic Memory？</text>
+<text x="40" y="898" font-size="13" fill="#52697B" font-weight="400" text-anchor="start">阅读路径 · 证据 → 主题 → 精确版本</text>
+<text x="1080" y="898" font-size="13" fill="#52697B" font-weight="400" text-anchor="end">03</text>
+<rect x="40" y="134" width="312" height="158" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="162" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">01 · EVIDENCE</text>
+<text x="62" y="195" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">本批可生成证据</text>
+<text x="62" y="230" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">A：金额以整数分存储</text>
+<text x="62" y="258" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">B：转换改用 Decimal</text>
+<rect x="404" y="134" width="312" height="158" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="426" y="162" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">02 · PROBE</text>
+<text x="426" y="195" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">识别主题线索</text>
+<text x="426" y="230" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">金额转换 · 精度校验</text>
+<text x="426" y="258" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">保留对应证据标识</text>
+<rect x="768" y="134" width="312" height="158" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="790" y="162" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">03 · RETRIEVE</text>
+<text x="790" y="195" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">检索已有主题</text>
+<text x="790" y="230" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">在当前 Scope 查找</text>
+<text x="790" y="258" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">读取选中主题的精确版本</text>
+<path d="M 363 212 H 392" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 380.00 206.00 L 392.0 212.0 L 380.00 218.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 727 212 H 756" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 744.00 206.00 L 756.0 212.0 L 744.00 218.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 925 304 V 341 H 196 V 374" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 202.00 362.00 L 196.0 374.0 L 190.00 362.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="388" width="312" height="160" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="62" y="416" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">04 · GENERATE</text>
+<text x="62" y="449" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">结合新旧材料</text>
+<text x="62" y="484" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">新建主题或修订已有主题</text>
+<text x="62" y="512" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">生成标题、摘要和详情</text>
+<rect x="404" y="388" width="312" height="160" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="426" y="416" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">05 · VALIDATE</text>
+<text x="426" y="449" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">服务端检查</text>
+<text x="426" y="484" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">结构、证据和更新目标</text>
+<text x="426" y="512" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">并发版本与处理进度</text>
+<rect x="768" y="388" width="312" height="160" rx="16" fill="#FFFFFF" stroke="#DCE5EC"/>
+<text x="790" y="416" font-size="13" fill="#087E82" font-weight="600" text-anchor="start">06 · COMMIT</text>
+<text x="790" y="449" font-size="22" fill="#142D42" font-weight="600" text-anchor="start">正式提交</text>
+<text x="790" y="484" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">主题 + 索引 + 处理进度</text>
+<text x="790" y="512" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">在同一事务中完成</text>
+<path d="M 363 468 H 392" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 380.00 462.00 L 392.0 468.0 L 380.00 474.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 727 468 H 756" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 744.00 462.00 L 756.0 468.0 L 744.00 474.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 196 560 V 604" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round" stroke-dasharray="6 5"/>
+<path d="M 202.00 592.00 L 196.0 604.0 L 190.00 592.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="618" width="676" height="127" rx="16" fill="#EAF0FA" stroke="#D7E2F4"/>
+<text x="62" y="652" font-size="20" fill="#3262AE" font-weight="600" text-anchor="start">材料过多或目标不明确时</text>
+<text x="62" y="687" font-size="18" fill="#142D42" font-weight="400" text-anchor="start">拆分工作 → 必要时形成临时摘要 → 协调相关结果</text>
+<text x="62" y="720" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">这些中间内容仅用于处理过程。</text>
+<rect x="768" y="618" width="312" height="127" rx="16" fill="#E4F3EF" stroke="#CDE8E0"/>
+<text x="790" y="652" font-size="21" fill="#087E82" font-weight="600" text-anchor="start">提交后可检索</text>
+<text x="790" y="687" font-size="18" fill="#142D42" font-weight="400" text-anchor="start">保留实际 Source 引用</text>
+<text x="790" y="720" font-size="17" fill="#52697B" font-weight="400" text-anchor="start">更新时引用精确旧主题</text>
+<path d="M 924 560 V 606" fill="none" stroke="#668294" stroke-width="2" stroke-linejoin="round"/>
+<path d="M 930.00 594.00 L 924.0 606.0 L 918.00 594.00" fill="none" stroke="#668294" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="40" y="785" width="1040" height="65" rx="12" fill="#FFF5E5" stroke="#F0E3CD"/>
+<text x="62" y="824" font-size="20" fill="#A66A18" font-weight="550" text-anchor="start">另一种结果：没有可发布主题 → 成功完成本批处理，推进 Cursor。</text>
+</svg>
