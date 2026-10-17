@@ -1,7 +1,7 @@
 ---
 title: "PowerContext 入门：理解上下文如何保存与复用"
-date: "2026-10-17T20:39:52+08:00"
-updated: "2026-10-17T20:39:52+08:00"
+date: "2026-10-11T20:39:52+08:00"
+updated: "2026-10-17T20:55:06+08:00"
 description: "从跨会话继续工作的场景出发，理解客户端、服务端、Source、Artifact 与 PreparedContext 如何配合。"
 draft: false
 categories:
