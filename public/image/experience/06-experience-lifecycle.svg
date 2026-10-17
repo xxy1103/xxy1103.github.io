@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="860" viewBox="0 0 1000 860" role="img" aria-labelledby="title desc">
+<title id="title">经验在后续实践中继续演进</title><desc id="desc">任务证据产生候选，经审核成为正式经验；后续任务按需召回，新增验证可带明确 target 发起新的更新候选。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="860" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  EXPERIENCE  /  06</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">经验在后续实践中继续演进</text>
+<path d="M 36 803 L 964 803" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="832" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">学习闭环 · 每次正式提交都经过审核，历史版本保留精确引用</text>
+<text x="964" y="832" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">06</text>
+<text x="36" y="127" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">沿用金额精度案例：先记录结果，再审核结论，后续验证支持修订。</text>
+<rect x="36" y="164" width="424" height="120" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="58" y="199" font-size="23" fill="#566B7D" font-weight="600" text-anchor="start">01  实践证据</text>
+<text x="58" y="236" font-size="20" fill="#183249" font-weight="400" text-anchor="start">复现错误，保存修复验证结果</text>
+<rect x="540" y="164" width="424" height="120" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="562" y="199" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">02  pending Candidate</text>
+<text x="562" y="236" font-size="20" fill="#183249" font-weight="400" text-anchor="start">完整提案 + 证据 + 可选 target</text>
+<path d="M 461 224 L 532 224" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="540" y="355" width="424" height="130" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="562" y="390" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">03  审核决定</text>
+<text x="562" y="427" font-size="20" fill="#183249" font-weight="400" text-anchor="start">核对结论范围、证据和版本</text>
+<text x="562" y="457" font-size="20" fill="#183249" font-weight="400" text-anchor="start">批准后提交正式内容</text>
+<path d="M 752 285 L 752 347" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="540" y="556" width="424" height="130" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="562" y="591" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">04  正式 Experience</text>
+<text x="562" y="628" font-size="20" fill="#183249" font-weight="400" text-anchor="start">首次批准：exp_01 @ 1</text>
+<text x="562" y="658" font-size="20" fill="#183249" font-weight="400" text-anchor="start">后续批准：exp_01 @ 2</text>
+<path d="M 752 486 L 752 548" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="556" width="424" height="130" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="591" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">05  后续任务参考</text>
+<text x="58" y="628" font-size="20" fill="#183249" font-weight="400" text-anchor="start">相关且满足预算时进入上下文</text>
+<text x="58" y="658" font-size="20" fill="#183249" font-weight="400" text-anchor="start">根据当前任务判断适用性</text>
+<path d="M 539 621 L 468 621" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="355" width="424" height="130" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="58" y="390" font-size="23" fill="#566B7D" font-weight="600" text-anchor="start">06  新的验证结果</text>
+<text x="58" y="427" font-size="20" fill="#183249" font-weight="400" text-anchor="start">实际运行检查，保存新证据</text>
+<text x="58" y="457" font-size="20" fill="#183249" font-weight="400" text-anchor="start">需要更新时，明确指定 target</text>
+<path d="M 248 555 L 248 493" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 248 354 L 248 292" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="718" width="928" height="63" rx="12" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="756" font-size="20" fill="#566B7D" font-weight="400" text-anchor="start">修订提案仍为 pending；拒绝结束该提案，不产生正式版本。</text>
+</svg>

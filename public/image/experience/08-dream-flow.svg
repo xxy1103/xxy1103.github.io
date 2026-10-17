@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1170" viewBox="0 0 1000 1170" role="img" aria-labelledby="title desc">
+<title id="title">Dream：从选定知识到待审核提案</title><desc id="desc">选取精确知识引用，提交 Dream 取得 run_id，后台提炼后查询结果。proposed 返回 candidate_id 并进入审核；no_change 或 needs_evidence 不创建提案。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="1170" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  EXPERIENCE  /  08</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">Dream：从选定知识到待审核提案</text>
+<path d="M 36 1113 L 964 1113" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="1142" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">身份分工 · run_id 跟踪提炼任务；candidate_id 定位待审核提案</text>
+<text x="964" y="1142" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">08</text>
+<text x="36" y="127" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">先跟踪一次提炼任务；有提案时，再进入 Candidate 审核。</text>
+<rect x="36" y="158" width="630" height="116" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="58" y="193" font-size="23" fill="#566B7D" font-weight="600" text-anchor="start">01  选定知识与依据</text>
+<text x="58" y="230" font-size="20" fill="#183249" font-weight="400" text-anchor="start">精确 Memory 条目 / Experience，可补充 Source</text>
+<path d="M 351 275 L 351 305" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="313" width="630" height="116" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="348" font-size="23" fill="#183249" font-weight="600" text-anchor="start">02  提交 Dream 请求</text>
+<text x="58" y="385" font-size="20" fill="#183249" font-weight="400" text-anchor="start">POST /v1/scopes/{scope_id}/dream</text>
+<path d="M 351 430 L 351 460" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="468" width="630" height="116" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="503" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">03  后台整理并提炼</text>
+<text x="58" y="540" font-size="20" fill="#183249" font-weight="400" text-anchor="start">取出材料与依据，由模型整理经验内容。</text>
+<path d="M 351 585 L 351 615" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="623" width="630" height="116" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="658" font-size="23" fill="#183249" font-weight="600" text-anchor="start">04  查询运行结果</text>
+<text x="58" y="695" font-size="20" fill="#183249" font-weight="400" text-anchor="start">先看 status；成功完成后，再看 outcome。</text>
+<rect x="704" y="313" width="260" height="426" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="726" y="350" font-size="17" fill="#2464B3" font-weight="600" text-anchor="start">任务跟踪凭据</text>
+<text x="726" y="393" font-size="32" fill="#2464B3" font-weight="600" text-anchor="start" class="mono">run_id</text>
+<text x="726" y="434" font-size="19" fill="#183249" font-weight="400" text-anchor="start">提交后保存此 ID，</text>
+<text x="726" y="463" font-size="19" fill="#183249" font-weight="400" text-anchor="start">用于查询同一次运行。</text>
+<path d="M 726 486 L 942 486" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="726" y="522" font-size="18" fill="#2464B3" font-weight="600" text-anchor="start">查询接口</text>
+<text x="726" y="555" font-size="17" fill="#183249" font-weight="400" text-anchor="start">GET …/dream/{run_id}</text>
+<text x="726" y="607" font-size="17" fill="#566B7D" font-weight="400" text-anchor="start">排队 / 运行中：继续查询</text>
+<text x="726" y="640" font-size="17" fill="#566B7D" font-weight="400" text-anchor="start">运行失败：查看错误</text>
+<text x="726" y="673" font-size="17" fill="#566B7D" font-weight="400" text-anchor="start">成功完成：查看提炼结果</text>
+<path d="M 667 371 L 697 371" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 351 740 V 770 H 258 V 798" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 351 770 H 742 V 798" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="806" width="444" height="122" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="58" y="841" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">proposed · 已提出内容</text>
+<text x="58" y="878" font-size="20" fill="#183249" font-weight="400" text-anchor="start">取得 candidate_id 和 version</text>
+<text x="58" y="908" font-size="20" fill="#183249" font-weight="400" text-anchor="start">Candidate 状态为 pending</text>
+<rect x="520" y="806" width="444" height="122" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="542" y="841" font-size="23" fill="#566B7D" font-weight="600" text-anchor="start">没有创建 Candidate</text>
+<text x="542" y="878" font-size="20" fill="#183249" font-weight="400" text-anchor="start">no_change：没有值得提出的变化</text>
+<text x="542" y="908" font-size="20" fill="#183249" font-weight="400" text-anchor="start">needs_evidence：需要更多证据</text>
+<path d="M 258 929 L 258 969" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="977" width="444" height="104" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="58" y="1012" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">05  进入审核</text>
+<text x="58" y="1049" font-size="20" fill="#183249" font-weight="400" text-anchor="start">读取提案 → 检查 → 修订 / 批准 / 拒绝</text>
+<text x="542" y="1009" font-size="20" fill="#566B7D" font-weight="600" text-anchor="start">运行成功 ≠ 一定生成提案</text>
+<text x="542" y="1043" font-size="20" fill="#566B7D" font-weight="600" text-anchor="start">生成提案 ≠ 已经批准</text>
+</svg>

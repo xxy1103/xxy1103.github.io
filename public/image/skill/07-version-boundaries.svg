@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="910" viewBox="0 0 1000 910" role="img" aria-labelledby="title desc">
+<title id="title">三个版本，分别推进</title><desc id="desc">Experience、正式 Skill 和 Agent 安装版本独立变化；每一步更新都需要对应提案审核或交付。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="910" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  SKILL  /  07</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">三个版本，分别推进</text>
+<path d="M 36 853 L 964 853" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="882" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">版本关系 · 依据更新、技能更新、交付更新是分别完成的动作</text>
+<text x="964" y="882" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">07</text>
+<text x="36" y="130" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">案例：经验补充了边界验证，随后决定更新技能</text>
+<text x="182" y="186" font-size="24" fill="#183249" font-weight="600" text-anchor="middle">经验版本</text>
+<text x="500" y="186" font-size="24" fill="#183249" font-weight="600" text-anchor="middle">正式 Skill</text>
+<text x="818" y="186" font-size="24" fill="#183249" font-weight="600" text-anchor="middle">Agent 安装版本</text>
+<rect x="36" y="228" width="292" height="64" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="182" y="269" font-size="22" fill="#2464B3" font-weight="600" text-anchor="middle" class="mono">exp_01 @ 1</text>
+<path d="M 182 294 L 182 327" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="354" y="228" width="292" height="64" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="500" y="269" font-size="22" fill="#087E82" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 1</text>
+<path d="M 500 294 L 500 327" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="672" y="228" width="292" height="64" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="818" y="269" font-size="22" fill="#A56613" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 1</text>
+<path d="M 818 294 L 818 327" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="36" y="355" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">起点：三处都对应最初的实践与方法。</text>
+<rect x="36" y="382" width="292" height="64" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="182" y="423" font-size="22" fill="#2464B3" font-weight="600" text-anchor="middle" class="mono">exp_01 @ 2</text>
+<path d="M 182 448 L 182 481" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="354" y="382" width="292" height="64" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="500" y="423" font-size="22" fill="#087E82" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 1</text>
+<path d="M 500 448 L 500 481" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="672" y="382" width="292" height="64" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="818" y="423" font-size="22" fill="#A56613" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 1</text>
+<path d="M 818 448 L 818 481" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="36" y="509" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">经验更新：原 Skill 仍引用 exp_01 @ 1。</text>
+<rect x="36" y="536" width="292" height="64" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="182" y="577" font-size="22" fill="#2464B3" font-weight="600" text-anchor="middle" class="mono">exp_01 @ 2</text>
+<path d="M 182 602 L 182 635" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="354" y="536" width="292" height="64" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="500" y="577" font-size="22" fill="#087E82" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 2</text>
+<path d="M 500 602 L 500 635" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="672" y="536" width="292" height="64" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="818" y="577" font-size="22" fill="#A56613" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 1</text>
+<path d="M 818 602 L 818 635" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="36" y="663" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">Skill 更新获批：Agent 仍保留已交付的第 1 版。</text>
+<rect x="36" y="690" width="292" height="64" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="182" y="731" font-size="22" fill="#2464B3" font-weight="600" text-anchor="middle" class="mono">exp_01 @ 2</text>
+<rect x="354" y="690" width="292" height="64" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="500" y="731" font-size="22" fill="#087E82" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 2</text>
+<rect x="672" y="690" width="292" height="64" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="818" y="731" font-size="22" fill="#A56613" font-weight="600" text-anchor="middle" class="mono">skill_01 @ 2</text>
+<text x="36" y="817" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">明确交付第 2 版，并确认接收端安装结果。</text>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1110" viewBox="0 0 1000 1110" role="img" aria-labelledby="title desc">
+<title id="title">同类错误又发生了，怎样进入复查？</title><desc id="desc">同一经验版本与失败线索的观察序列为复发、复发、已避免、复发、复发、复发，对应计数一、二、零、一、二、三。达到三次并满足当前版本与经验内容修复条件后创建待审核提案，原正文等待审核者修订。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="1110" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  EXPERIENCE  /  05</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">同类错误又发生了，怎样进入复查？</text>
+<path d="M 36 1053 L 964 1053" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="1082" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">复查流程 · 观察后续任务 → 按精确版本计数 → 提出待审核的更新</text>
+<text x="964" y="1082" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">05</text>
+<text x="36" y="127" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">贯穿案例：继续跟踪 exp_01 @ 1 中的金额精度失败线索。</text>
+<rect x="36" y="158" width="928" height="278" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="195" font-size="24" fill="#183249" font-weight="600" text-anchor="start">01  先看证据支持什么观察，再累计次数</text>
+<text x="58" y="232" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">同一经验版本 + 同一失败线索；以下六条均为符合规则的观察。</text>
+<rect x="58" y="257" width="133" height="104" rx="12" fill="#F0F4F7"/>
+<text x="124.5" y="288" font-size="19" fill="#566B7D" font-weight="600" text-anchor="middle">复发</text>
+<text x="124.5" y="337" font-size="34" fill="#566B7D" font-weight="650" text-anchor="middle" class="mono">1</text>
+<path d="M 193 312 L 205 312" fill="none" stroke="#718798" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="208" y="257" width="133" height="104" rx="12" fill="#F0F4F7"/>
+<text x="274.5" y="288" font-size="19" fill="#566B7D" font-weight="600" text-anchor="middle">复发</text>
+<text x="274.5" y="337" font-size="34" fill="#566B7D" font-weight="650" text-anchor="middle" class="mono">2</text>
+<path d="M 343 312 L 355 312" fill="none" stroke="#718798" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="358" y="257" width="133" height="104" rx="12" fill="#EAF6F4"/>
+<text x="424.5" y="288" font-size="19" fill="#087E82" font-weight="600" text-anchor="middle">已避免</text>
+<text x="424.5" y="337" font-size="34" fill="#087E82" font-weight="650" text-anchor="middle" class="mono">0</text>
+<path d="M 493 312 L 505 312" fill="none" stroke="#718798" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="508" y="257" width="133" height="104" rx="12" fill="#F0F4F7"/>
+<text x="574.5" y="288" font-size="19" fill="#566B7D" font-weight="600" text-anchor="middle">复发</text>
+<text x="574.5" y="337" font-size="34" fill="#566B7D" font-weight="650" text-anchor="middle" class="mono">1</text>
+<path d="M 643 312 L 655 312" fill="none" stroke="#718798" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="658" y="257" width="133" height="104" rx="12" fill="#F0F4F7"/>
+<text x="724.5" y="288" font-size="19" fill="#566B7D" font-weight="600" text-anchor="middle">复发</text>
+<text x="724.5" y="337" font-size="34" fill="#566B7D" font-weight="650" text-anchor="middle" class="mono">2</text>
+<path d="M 793 312 L 805 312" fill="none" stroke="#718798" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="808" y="257" width="133" height="104" rx="12" fill="#FFF4E4"/>
+<text x="874.5" y="288" font-size="19" fill="#A56613" font-weight="600" text-anchor="middle">复发</text>
+<text x="874.5" y="337" font-size="34" fill="#A56613" font-weight="650" text-anchor="middle" class="mono">3</text>
+<text x="58" y="404" font-size="20" fill="#566B7D" font-weight="400" text-anchor="start">“已避免”使计数清零；未知或没有记录，不等于已避免。</text>
+<path d="M 500 437 L 500 477" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="485" width="928" height="191" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="524" font-size="24" fill="#183249" font-weight="600" text-anchor="start">02  计数达到 3，再核对更新条件</text>
+<text x="58" y="565" font-size="21" fill="#183249" font-weight="400" text-anchor="start">被跟踪版本仍是当前 head → 复查当前仍在使用的内容</text>
+<text x="58" y="601" font-size="21" fill="#183249" font-weight="400" text-anchor="start">修复位置为 experience_content → 针对经验内容提出更新</text>
+<text x="58" y="646" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">条件不满足：不通过这条规则创建更新 Candidate。</text>
+<path d="M 500 677 L 500 717" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="725" width="928" height="194" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="58" y="764" font-size="24" fill="#A56613" font-weight="600" text-anchor="start">03  审核收件箱出现一份更新提案</text>
+<text x="58" y="806" font-size="20" fill="#183249" font-weight="400" text-anchor="start">target：experience / exp_01 @ 1</text>
+<text x="58" y="840" font-size="20" fill="#183249" font-weight="400" text-anchor="start">proposal：原 Experience 正文；status：pending</text>
+<text x="58" y="874" font-size="20" fill="#183249" font-weight="400" text-anchor="start">依据与理由：触发本次复查的任务结果，以及重复失败的复查理由</text>
+<path d="M 500 920 L 500 960" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="968" width="928" height="67" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="500" y="1010" font-size="21" fill="#087E82" font-weight="600" text-anchor="middle">审核者检查与修订 → 决定是否批准 → 批准后产生新 Revision</text>
+</svg>

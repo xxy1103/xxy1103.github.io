@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="730" viewBox="0 0 1000 730" role="img" aria-labelledby="title desc">
+<title id="title">从一次实践，提炼一条有依据的经验</title><desc id="desc">情境、行动、结果与经验四部分沿顺序展开，证据支撑观察，提炼保留验证范围。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="730" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  EXPERIENCE  /  01</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">从一次实践，提炼一条有依据的经验</text>
+<path d="M 36 673 L 964 673" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="702" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">判断顺序 · 证据支持结果，结果支持经验</text>
+<text x="964" y="702" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">01</text>
+<text x="36" y="128" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">同一案例：订单 CSV 导入器的金额精度问题</text>
+<rect x="36" y="161" width="444" height="156" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="191" font-size="14" fill="#183249" font-weight="600" text-anchor="start">01  SITUATION · 情境</text>
+<text x="58" y="224" font-size="23" fill="#183249" font-weight="600" text-anchor="start">当时遇到了什么？</text>
+<text x="58" y="261" font-size="20" fill="#183249" font-weight="400" text-anchor="start">金额文本先转成 float，</text>
+<text x="58" y="291" font-size="20" fill="#183249" font-weight="400" text-anchor="start">换算为整数分时出现误差。</text>
+<rect x="520" y="161" width="444" height="156" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="542" y="191" font-size="14" fill="#183249" font-weight="600" text-anchor="start">02  ACTION · 行动</text>
+<text x="542" y="224" font-size="23" fill="#183249" font-weight="600" text-anchor="start">实际采取了什么措施？</text>
+<text x="542" y="261" font-size="20" fill="#183249" font-weight="400" text-anchor="start">从原始金额文本直接解析 Decimal，</text>
+<text x="542" y="291" font-size="20" fill="#183249" font-weight="400" text-anchor="start">再按项目规则转换。</text>
+<path d="M 482 239 L 513 239" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 742 318 V 344 H 258 V 367" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="374" width="444" height="168" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="404" font-size="14" fill="#2464B3" font-weight="600" text-anchor="start">03  OUTCOME · 结果</text>
+<text x="58" y="437" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">实际观察到什么？</text>
+<text x="58" y="474" font-size="20" fill="#183249" font-weight="400" text-anchor="start">原来失败的那个输入，</text>
+<text x="58" y="504" font-size="20" fill="#183249" font-weight="400" text-anchor="start">得到预期结果。</text>
+<rect x="520" y="374" width="444" height="168" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="542" y="404" font-size="14" fill="#087E82" font-weight="600" text-anchor="start">04  LESSON · 经验</text>
+<text x="542" y="437" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">哪些判断可以复用？</text>
+<text x="542" y="474" font-size="20" fill="#183249" font-weight="400" text-anchor="start">这次结果支持该修复方向；</text>
+<text x="542" y="504" font-size="20" fill="#183249" font-weight="400" text-anchor="start">更多可靠性仍需边界验证。</text>
+<path d="M 482 458 L 513 458" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="571" width="928" height="91" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="58" y="606" font-size="23" fill="#566B7D" font-weight="600" text-anchor="start">证据与结论的范围要对应</text>
+<text x="58" y="638" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">Source 保存复现与验证材料；精确引用让审核者能够回看依据。</text>
+</svg>

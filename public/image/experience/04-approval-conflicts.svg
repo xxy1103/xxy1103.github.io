@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="870" viewBox="0 0 1000 870" role="img" aria-labelledby="title desc">
+<title id="title">批准时，两道检查都要通过</title><desc id="desc">提案 version 变化和正式 Artifact head 变化分别造成冲突；前者重新审核，后者需要针对新目标创建新的 Candidate。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="870" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  EXPERIENCE  /  04</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">批准时，两道检查都要通过</text>
+<path d="M 36 813 L 964 813" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="842" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">并发规则 · 检查过的内容与预期更新目标，都必须仍然有效</text>
+<text x="964" y="842" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">04</text>
+<text x="36" y="127" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">expected_version 检查提案；target 检查准备更新的正式版本。</text>
+<rect x="36" y="159" width="928" height="287" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<rect x="58" y="177" width="154" height="30" rx="15" fill="#FFF0EF"/>
+<text x="135.0" y="198" font-size="15" fill="#BC4545" font-weight="600" text-anchor="middle">01 · 提案变了</text>
+<text x="58" y="252" font-size="18" fill="#566B7D" font-weight="600" text-anchor="start">你审核时</text>
+<text x="520" y="252" font-size="18" fill="#566B7D" font-weight="600" text-anchor="start">批准时</text>
+<text x="58" y="290" font-size="25" fill="#183249" font-weight="600" text-anchor="start" class="mono">Candidate V2</text>
+<text x="520" y="290" font-size="25" fill="#BC4545" font-weight="600" text-anchor="start" class="mono">Candidate V3</text>
+<path d="M 367 281 L 490 281" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="58" y="331" font-size="21" fill="#BC4545" font-weight="600" text-anchor="start">携带 expected_version = 2 → 提案版本检查失败</text>
+<rect x="58" y="354" width="884" height="68" rx="10" fill="#F0F4F7"/>
+<text x="78" y="395" font-size="21" fill="#183249" font-weight="400" text-anchor="start">处理：重新读取并审核 V3，再作决定。</text>
+<rect x="36" y="474" width="928" height="309" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<rect x="58" y="492" width="154" height="30" rx="15" fill="#FFF0EF"/>
+<text x="135.0" y="513" font-size="15" fill="#BC4545" font-weight="600" text-anchor="middle">02 · 目标变了</text>
+<text x="58" y="558" font-size="18" fill="#566B7D" font-weight="600" text-anchor="start">你审核时</text>
+<text x="520" y="558" font-size="18" fill="#566B7D" font-weight="600" text-anchor="start">批准时</text>
+<text x="58" y="593" font-size="22" fill="#183249" font-weight="400" text-anchor="start">Candidate V3</text>
+<text x="58" y="625" font-size="22" fill="#183249" font-weight="400" text-anchor="start">target：exp_01 @ 2</text>
+<text x="520" y="593" font-size="22" fill="#BC4545" font-weight="400" text-anchor="start">Candidate 仍是 V3</text>
+<text x="520" y="625" font-size="22" fill="#BC4545" font-weight="400" text-anchor="start">当前 head：exp_01 @ 3</text>
+<path d="M 367 604 L 490 604" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="58" y="667" font-size="20" fill="#BC4545" font-weight="600" text-anchor="start">提案版本检查通过；target 检查失败，Candidate 保持 pending。</text>
+<rect x="58" y="690" width="884" height="72" rx="10" fill="#F0F4F7"/>
+<text x="78" y="719" font-size="20" fill="#183249" font-weight="400" text-anchor="start">处理：检查新 head，针对它创建新的 Candidate。</text>
+<text x="78" y="746" font-size="18" fill="#566B7D" font-weight="400" text-anchor="start">同一个 Candidate 的 target 不可更换。</text>
+</svg>

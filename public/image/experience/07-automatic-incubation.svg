@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1240" viewBox="0 0 1000 1240" role="img" aria-labelledby="title desc">
+<title id="title">一批任务结果，怎样变成待审经验？</title><desc id="desc">Experience 按独立游标选取第十一到十五条 Source，排除聊天与内部追溯记录，以任务结果生成完整经验及依据，校验后在同一事务保存待审 Candidate 并推进游标。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="1240" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  EXPERIENCE  /  07</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">一批任务结果，怎样变成待审经验？</text>
+<path d="M 36 1183 L 964 1183" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="1212" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">提交边界 · pending Candidate + Cursor 原子保存；批准后才有正式 Experience</text>
+<text x="964" y="1212" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">07</text>
+<text x="36" y="127" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">教学窗口：Cursor = 10，读取 11～15；只有 12、13 是可用任务结果。</text>
+<rect x="36" y="160" width="928" height="106" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="58" y="195" font-size="23" fill="#566B7D" font-weight="600" text-anchor="start">01  程序选取连续窗口</text>
+<text x="58" y="232" font-size="20" fill="#183249" font-weight="400" text-anchor="start">独立的 Experience Cursor → 未处理日志 → 本批 Source 11～15</text>
+<path d="M 500 267 L 500 303" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="311" width="928" height="178" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="346" font-size="23" fill="#183249" font-weight="600" text-anchor="start">02  程序过滤并建立证据对应关系</text>
+<rect x="58" y="368" width="424" height="96" rx="10" fill="#F0F4F7"/>
+<text x="78" y="399" font-size="21" fill="#566B7D" font-weight="600" text-anchor="start">排除：11、14、15</text>
+<text x="78" y="433" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">普通 Prompt / 内部追溯记录</text>
+<rect x="506" y="368" width="436" height="96" rx="10" fill="#EAF6F4"/>
+<text x="526" y="399" font-size="21" fill="#087E82" font-weight="600" text-anchor="start">保留：12 → e1，13 → e2</text>
+<text x="526" y="433" font-size="19" fill="#087E82" font-weight="400" text-anchor="start">Content + kind: task-outcome</text>
+<path d="M 500 490 L 500 526" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="534" width="928" height="161" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="569" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">03  模型提炼完整正文</text>
+<text x="58" y="606" font-size="20" fill="#183249" font-weight="400" text-anchor="start">e1：复现精度误差；e2：Decimal 修复后的实际验证</text>
+<text x="58" y="636" font-size="20" fill="#183249" font-weight="400" text-anchor="start">输出：situation / action / outcome / lesson + evidence_ids</text>
+<text x="58" y="666" font-size="20" fill="#183249" font-weight="400" text-anchor="start">有价值时提出一份或多份经验；也可以返回空列表。</text>
+<path d="M 500 696 L 500 732" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="740" width="928" height="142" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="775" font-size="23" fill="#183249" font-weight="600" text-anchor="start">04  程序校验输出</text>
+<text x="58" y="812" font-size="20" fill="#183249" font-weight="400" text-anchor="start">检查结构；e1、e2 → 真实 Source 引用；拒绝越界编号。</text>
+<text x="58" y="842" font-size="20" fill="#183249" font-weight="400" text-anchor="start">去重本次输出中正文与证据集合都相同的提案。</text>
+<path d="M 500 883 L 500 919" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="927" width="928" height="184" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="58" y="965" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">05  程序在同一次事务中提交</text>
+<text x="58" y="1006" font-size="20" fill="#183249" font-weight="400" text-anchor="start">Candidate：version = 1，pending，target = null</text>
+<text x="58" y="1038" font-size="20" fill="#183249" font-weight="400" text-anchor="start">Cursor：10 → 15；下一批从 16 继续</text>
+<text x="58" y="1070" font-size="20" fill="#183249" font-weight="400" text-anchor="start">成功无提案也推进进度；失败不推进，提交失败一起回滚。</text>
+<text x="36" y="1153" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">旁路：同窗还会检查失败复发，满足条件时另提更新 Candidate。</text>
+</svg>

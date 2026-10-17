@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1060" viewBox="0 0 1000 1060" role="img" aria-labelledby="title desc">
+<title id="title">远程发布：保存要求，拉取安装，回报结果</title><desc id="desc">Server 保存期望版本，Receiver 主动查询并下载，安装后回报，送达状态由结果回报确认。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="1060" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  SKILL  /  06</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">远程发布：保存要求，拉取安装，回报结果</text>
+<path d="M 36 1003 L 964 1003" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="1032" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">确认送达 · 发布已受理之后，还要查看 Receiver 的执行回报</text>
+<text x="964" y="1032" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">06</text>
+<rect x="36" y="155" width="405" height="103" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="190" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">PowerContext Server</text>
+<text x="58" y="227" font-size="20" fill="#183249" font-weight="400" text-anchor="start">保存正式版本与发布要求</text>
+<rect x="559" y="155" width="405" height="103" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="581" y="190" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">Agent 机器上的 Receiver</text>
+<text x="581" y="227" font-size="20" fill="#183249" font-weight="400" text-anchor="start">在本地检查、安装与回报</text>
+<path d="M 237 274 L 237 834" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 761 274 L 761 834" fill="none" stroke="#D6E1E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="65" y="292" width="175" height="30" rx="15" fill="#EDF4FD"/>
+<text x="152.5" y="313" font-size="15" fill="#2464B3" font-weight="600" text-anchor="middle">期望：第 1 版</text>
+<text x="500" y="376" font-size="19" fill="#566B7D" font-weight="500" text-anchor="middle">① 主动查询最新交付要求</text>
+<path d="M 753 392 L 245 392" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="500" y="452" font-size="19" fill="#566B7D" font-weight="500" text-anchor="middle">② 返回指定版本与包信息</text>
+<path d="M 245 468 L 753 468" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="500" y="528" font-size="19" fill="#566B7D" font-weight="500" text-anchor="middle">③ 接收端请求并下载技能包</text>
+<path d="M 753 544 L 245 544" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="500" y="597" font-size="19" fill="#566B7D" font-weight="500" text-anchor="middle">④ 返回与要求一致的包</text>
+<path d="M 245 613 L 753 613" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="559" y="640" width="405" height="95" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="581" y="676" font-size="21" fill="#087E82" font-weight="600" text-anchor="start">核对摘要和本地文件</text>
+<text x="581" y="709" font-size="18" fill="#183249" font-weight="400" text-anchor="start">检查通过后安装，保存本地记录</text>
+<text x="500" y="778" font-size="18" fill="#566B7D" font-weight="500" text-anchor="middle">⑤ 回报 generation、版本和结果</text>
+<path d="M 753 797 L 245 797" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="65" y="825" width="175" height="30" rx="15" fill="#EDF4FD"/>
+<text x="152.5" y="846" font-size="15" fill="#2464B3" font-weight="600" text-anchor="middle">确认：第 1 版</text>
+<rect x="36" y="885" width="928" height="102" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="920" font-size="23" fill="#183249" font-weight="600" text-anchor="start">笔记本离线时，要求可以已保存，但尚未安装</text>
+<text x="58" y="957" font-size="20" fill="#183249" font-weight="400" text-anchor="start">包摘要核对文件内容；generation 用来识别回报属于哪次交付要求。</text>
+</svg>
