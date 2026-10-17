@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="500" viewBox="0 0 1120 500" role="img" aria-labelledby="title desc">
+<title id="title">相同关键词，不同工作范围</title><desc id="desc">未配置跨 Scope 引用时，国内订单和海外订单分别召回自身范围的约定。父子关系用于组织；跨范围复用需要显式引用和访问权限。</desc>
+<style>text{font-family:'Microsoft YaHei','Segoe UI',sans-serif;fill:#23334d}.title{font-size:26px;font-weight:700}.head{font-size:21px;font-weight:700}.body{font-size:18px}.small{font-size:16px;fill:#52627a}</style>
+<rect width="1120" height="500" fill="#f8fafc"/>
+<text x="40" y="48" class="title">相同关键词，不同工作范围</text>
+<text x="40" y="80" class="small">以下示例未配置跨 Scope 引用：先选范围，再查询内容。</text>
+<rect x="40" y="112" width="470" height="238" rx="18" fill="#eaf3ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="66" y="151" class="head">Scope A · 国内订单</text>
+<text x="66" y="194" class="body">currency = CNY</text>
+<text x="66" y="228" class="body">金额单位：人民币分</text>
+<path d="M66 252 H484" stroke="#bfd5ee"/>
+<text x="66" y="285" class="body">在 A 中查询 currency</text>
+<text x="66" y="318" class="small">取回国内订单的约定</text>
+<path d="M560 125 V335" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="610" y="112" width="470" height="238" rx="18" fill="#fff6e5" stroke="#e6c683" stroke-width="1.5"/>
+<text x="636" y="151" class="head">Scope B · 海外订单</text>
+<text x="636" y="194" class="body">currency = USD</text>
+<text x="636" y="228" class="body">金额单位：美分</text>
+<path d="M636 252 H1054" stroke="#e8d8b5"/>
+<text x="636" y="285" class="body">在 B 中查询 currency</text>
+<text x="636" y="318" class="small">取回海外订单的约定</text>
+<rect x="40" y="378" width="1040" height="90" rx="16" fill="#ffffff" stroke="#d6dfeb"/>
+<text x="64" y="412" class="body">组织层级：即使同属一个父 Scope，也不会自动继承或共享上下文。</text>
+<text x="64" y="444" class="body">跨范围复用：通过显式上下文引用声明，并满足相应访问权限。</text>
+</svg>

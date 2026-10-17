@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">先认识四个概念：范围、材料、成果与本次上下文</title>
+  <desc id="desc">Scope 外框包含 Source 和 Artifact。Source 经处理形成 Artifact，也可以显式创建支持的 Artifact。相关成果经检索和组装形成临时 PreparedContext，供 Agent 使用。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9" fill="none" stroke="#64748b" stroke-width="1.6"/></marker>
+  </defs>
+  <style>
+    text{font-family:'Microsoft YaHei','Segoe UI',sans-serif;fill:#23334d}
+    .title{font-size:26px;font-weight:700}.head{font-size:22px;font-weight:700}.body{font-size:17px}.small{font-size:15px;fill:#52627a}.label{font-size:17px;font-weight:700}
+    .line{fill:none;stroke:#64748b;stroke-width:2;marker-end:url(#arrow)}
+  </style>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="36" y="47" class="title">先认识四个概念：范围 → 材料 → 成果 → 本次上下文</text>
+  <text x="36" y="79" class="body">沿用订单系统的例子，看清这些对象各自代表什么、彼此怎样连接。</text>
+
+  <rect x="36" y="112" width="722" height="400" rx="20" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="60" y="150" class="head">Scope · 这是谁的工作上下文？</text>
+  <text x="60" y="180" class="body">例如：订单系统。Source 和 Artifact 归属于这个范围。</text>
+
+  <rect x="60" y="210" width="278" height="224" rx="16" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="82" y="249" class="head">Source</text>
+  <text x="82" y="280" class="label">留下来的原始材料</text>
+  <text x="82" y="320" class="body">对话、任务结果、外部材料</text>
+  <text x="82" y="357" class="small">例如：当天讨论金额规则的记录</text>
+  <text x="82" y="402" class="small">作用：保存证据，供处理和追溯</text>
+
+  <rect x="448" y="210" width="286" height="224" rx="16" fill="#edf8f2" stroke="#86c9a4" stroke-width="1.5"/>
+  <text x="470" y="249" class="head">Artifact</text>
+  <text x="470" y="280" class="label">整理好的可复用成果</text>
+  <text x="470" y="320" class="body">Memory、Handoff、Skill 等</text>
+  <text x="470" y="357" class="small">例如：已确认的项目约定</text>
+  <text x="470" y="402" class="small">作用：按用途保存，并保留版本</text>
+
+  <path d="M338 325 H448" class="line"/>
+  <text x="365" y="305" class="small">处理生成</text>
+  <text x="60" y="480" class="small">另一路径：调用方可显式创建支持此操作的 Artifact。</text>
+
+  <path d="M734 325 H886" class="line"/>
+  <text x="774" y="280" class="small">按当前任务</text>
+  <text x="774" y="305" class="small">检索与组装</text>
+
+  <rect x="886" y="210" width="278" height="224" rx="16" fill="#f2edfc" stroke="#c4aceb" stroke-width="1.5"/>
+  <text x="906" y="249" class="head">PreparedContext</text>
+  <text x="906" y="280" class="label">本次请求的临时资料包</text>
+  <text x="906" y="320" class="body">选中的相关内容 + 引用</text>
+  <text x="906" y="357" class="small">例如：金额校验需要的背景</text>
+  <text x="906" y="402" class="small">作用：提供给 Agent 继续工作</text>
+  <text x="906" y="480" class="small">按需生成，不是新的长期制品</text>
+
+  <rect x="36" y="541" width="1128" height="51" rx="12" fill="#ffffff" stroke="#d6dfeb"/>
+  <text x="57" y="573" class="small">外框表示内容归属，箭头表示处理与使用；不同 Artifact 的使用方式不同，并非全部进入 PreparedContext。</text>
+</svg>
