@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Dream 中，两份经验可以共享同一份证据</title>
+  <desc id="desc">横版关系图：同一次金额检查分别支撑经验 A 的修复结果和经验 B 的操作建议。Dream 保留这层共同来源关系，两份经验对应一次验证。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#087E82" stroke-width="1.5" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}</style>
+  <rect width="1280" height="720" rx="28" fill="#F5F8FB"/>
+  <rect x="48" y="38" width="5" height="62" rx="2" fill="#087E82"/>
+  <text x="72" y="55" font-size="14" fill="#087E82" font-weight="600">POWERCONTEXT / SKILL / DREAM</text>
+  <text x="72" y="98" font-size="34" fill="#183249" font-weight="650">两份经验，可以来自同一次检查</text>
+  <rect x="576" y="148" width="656" height="410" rx="22" fill="#EAF6F4"/>
+  <text x="610" y="184" font-size="18" fill="#087E82" font-weight="600">Dream 选中的两份 Experience</text>
+  <rect x="48" y="258" width="350" height="188" rx="18" fill="#EDF4FD" stroke="#D6E1E9"/>
+  <text x="76" y="300" font-size="18" fill="#2464B3" font-weight="600">共同来源 · 一次金额检查</text>
+  <text x="76" y="345" font-size="24" fill="#183249" font-weight="600">原失败输入改用 Decimal</text>
+  <text x="76" y="383" font-size="24" fill="#183249">得到预期结果</text>
+  <text x="76" y="420" font-size="17" fill="#566B7D">一份实际验证材料</text>
+  <path d="M 399 352 H 489 M 489 281 V 449 M 489 281 H 602 M 489 449 H 602" fill="none" stroke="#087E82" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 560 281 H 602" fill="none" stroke="#087E82" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 560 449 H 602" fill="none" stroke="#087E82" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="425" y="321" width="128" height="54" rx="14" fill="#F5F8FB"/>
+  <text x="489" y="355" font-size="19" fill="#087E82" font-weight="600" text-anchor="middle">分别支撑</text>
+  <rect x="610" y="216" width="588" height="130" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+  <text x="638" y="258" font-size="24" fill="#183249" font-weight="600">经验 A · 记录修复结果</text>
+  <text x="638" y="303" font-size="23" fill="#566B7D">改为 Decimal 后，原用例通过。</text>
+  <rect x="610" y="384" width="588" height="130" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+  <text x="638" y="426" font-size="24" fill="#183249" font-weight="600">经验 B · 整理操作建议</text>
+  <text x="638" y="471" font-size="23" fill="#566B7D">金额应从原始文本直接解析 Decimal。</text>
+  <rect x="48" y="600" width="1184" height="72" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+  <text x="640" y="645" font-size="24" fill="#183249" text-anchor="middle">Dream 保留共同来源关系：<tspan fill="#087E82" font-weight="650">两份经验，对应一次验证。</tspan></text>
+</svg>

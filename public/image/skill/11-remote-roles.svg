@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="810" viewBox="0 0 1440 810" role="img" aria-labelledby="title desc">
+<title id="title">管理员维护技能清单，使用者同步到本机</title>
+<desc id="desc">管理员在 Server 创建 target，将金额转换技能第2版和CSV检查技能第1版发布到该 target 的清单。使用者用登记码关联 Receiver，运行 remote-sync，接收程序拉取清单并安装对应版本。target 保存交付记录，技能包由 Server 保存。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.title{font-size:24px;font-weight:600;fill:#183249}.body{font-size:21px;fill:#566B7D}.arrow{fill:none;stroke:#718798;stroke-width:2.5;stroke-linejoin:round;marker-end:url(#arrow)}</style>
+<rect width="1440" height="810" rx="28" fill="#F5F8FB"/>
+<rect x="48" y="34" width="5" height="64" rx="2" fill="#087E82"/>
+<text x="72" y="52" fill="#087E82" font-size="14" font-weight="600">POWERCONTEXT / SKILL / REMOTE DELIVERY</text>
+<text x="72" y="97" fill="#183249" font-size="34" font-weight="650">管理员维护技能清单，使用者同步到本机</text>
+<rect x="48" y="145" width="600" height="566" rx="22" fill="#EDF4FD"/>
+<rect x="792" y="145" width="600" height="566" rx="22" fill="#EAF6F4"/>
+<text x="80" y="190" font-size="27" font-weight="650" fill="#2464B3">管理员</text>
+<text x="80" y="224" class="body">通过 Server 决定交付哪些技能、哪些版本。</text>
+<text x="824" y="190" font-size="27" font-weight="650" fill="#087E82">使用者</text>
+<text x="824" y="224" class="body">在自己的 Agent 机器上登记并运行接收程序。</text>
+<rect x="80" y="249" width="536" height="84" rx="14" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="102" y="282" class="title">① 创建 target，取得登记码</text>
+<text x="102" y="313" class="body">例如：为“使用者的订单项目”登记目的地。</text>
+<rect x="824" y="249" width="536" height="84" rx="14" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="846" y="282" class="title">② 用登记码关联 Receiver</text>
+<text x="846" y="313" class="body">指定本地项目路径，与这个 target 建立关联。</text>
+<path d="M618 292 H814" class="arrow"/>
+<text x="718" y="275" class="body" text-anchor="middle">交付登记码</text>
+<text x="80" y="380" class="title">③ 发布技能，维护这个 target 的清单</text>
+<rect x="80" y="402" width="536" height="226" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="104" y="441" font-size="23" fill="#2464B3" font-weight="600">target：使用者的订单项目</text>
+<path d="M104 462 H592" stroke="#D6E1E9"/>
+<text x="104" y="505" font-size="24" fill="#183249">金额转换技能</text>
+<text x="590" y="505" font-size="24" fill="#2464B3" text-anchor="end">第 2 版</text>
+<text x="104" y="551" font-size="24" fill="#183249">CSV 检查技能</text>
+<text x="590" y="551" font-size="24" fill="#2464B3" text-anchor="end">第 1 版</text>
+<text x="104" y="599" font-size="19" fill="#566B7D">清单记录“应安装什么”；技能包由 Server 保存。</text>
+<text x="80" y="672" class="body">需要升级时，管理员明确发布新的版本。</text>
+<text x="824" y="380" class="title">④ 运行接收程序，同步清单</text>
+<rect x="824" y="402" width="536" height="122" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="846" y="441" font-size="24" fill="#087E82" font-weight="600">Receiver · 接收程序</text>
+<text x="846" y="477" class="body">remote-sync 同步一次</text>
+<text x="846" y="507" class="body">remote-watch 持续同步</text>
+<path d="M822 437 H626" class="arrow"/>
+<text x="720" y="420" class="body" text-anchor="middle">查询清单</text>
+<path d="M618 503 H814" class="arrow"/>
+<text x="720" y="486" class="body" text-anchor="middle">返回要求与包信息</text>
+<path d="M1092 526 V551" class="arrow"/>
+<rect x="824" y="560" width="536" height="128" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="846" y="595" font-size="23" fill="#183249" font-weight="600">本地 Agent 技能目录</text>
+<text x="846" y="631" class="body">金额转换技能 · 第 2 版</text>
+<text x="846" y="664" class="body">CSV 检查技能 · 第 1 版</text>
+<text x="720" y="755" font-size="22" fill="#183249" text-anchor="middle">Receiver 下载、检查、安装并回报；Agent 随后读取本地技能。</text>
+<text x="720" y="789" font-size="19" fill="#566B7D" text-anchor="middle">新版获批后需要再次发布；同步遇到本地文件修改时，会报告变化或冲突。</text>
+</svg>

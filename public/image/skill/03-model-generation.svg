@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1120" viewBox="0 0 1000 1120" role="img" aria-labelledby="title desc">
+<title id="title">一次主动生成，程序和模型怎样分工？</title><desc id="desc">程序读取选定证据，模型生成操作内容，程序校验并构建技能包，再交给审核者。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="1120" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  SKILL  /  03</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">一次主动生成，程序和模型怎样分工？</text>
+<path d="M 36 1063 L 964 1063" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="1092" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">生成边界 · 校验格式与来源可追溯性；审核判断内容是否有依据</text>
+<text x="964" y="1092" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">03</text>
+<text x="36" y="130" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">例：根据 experience / exp_01 @ 1 提炼金额转换方法</text>
+<rect x="36" y="165" width="775" height="113" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="200" font-size="23" fill="#183249" font-weight="600" text-anchor="start">01  调用方选择材料</text>
+<text x="58" y="237" font-size="20" fill="#183249" font-weight="400" text-anchor="start">提交 origin、精确引用；更新时明确 target</text>
+<path d="M 422 280 L 422 311" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="318" width="775" height="113" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="353" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">02  程序读取内容</text>
+<text x="58" y="390" font-size="20" fill="#183249" font-weight="400" text-anchor="start">在当前 Scope 中解析引用，组织有编号的材料</text>
+<path d="M 422 433 L 422 464" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="471" width="775" height="113" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="506" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">03  模型整理方法</text>
+<text x="58" y="543" font-size="20" fill="#183249" font-weight="400" text-anchor="start">生成名称、描述、操作说明和验证要求，保留限制</text>
+<path d="M 422 586 L 422 617" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="624" width="775" height="113" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="659" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">04  程序检查并打包</text>
+<text x="58" y="696" font-size="20" fill="#183249" font-weight="400" text-anchor="start">校验字段和包格式，构建 SKILL.md，保存内容摘要</text>
+<path d="M 422 739 L 422 770" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="777" width="775" height="113" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="58" y="812" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">05  保存待审核提案</text>
+<text x="58" y="849" font-size="20" fill="#183249" font-weight="400" text-anchor="start">完整内容 + 精确引用 + 可选 target，状态 pending</text>
+<path d="M 813 527 H 902 V 641" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="831" y="651" width="133" height="95" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="897" y="685" font-size="16" fill="#566B7D" font-weight="600" text-anchor="middle">无可复用内容</text>
+<text x="897" y="721" font-size="21" fill="#566B7D" font-weight="600" text-anchor="middle" class="mono">no_op</text>
+<text x="832" y="567" font-size="17" fill="#566B7D" font-weight="400" text-anchor="start">无提案</text>
+<rect x="36" y="932" width="928" height="102" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="967" font-size="23" fill="#183249" font-weight="600" text-anchor="start">审核者核对具体内容</text>
+<text x="58" y="1004" font-size="20" fill="#183249" font-weight="400" text-anchor="start">检查步骤是否可靠、限制是否保留、验证要求是否得到证据支持。</text>
+</svg>

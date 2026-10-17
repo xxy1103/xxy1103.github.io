@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="980" viewBox="0 0 1000 980" role="img" aria-labelledby="title desc">
+<title id="title">同一个正式版本，可以怎样交给 Agent？</title><desc id="desc">比较客户端导出、Server 本机受管发布和远程 Receiver 分发，强调最终文件写入的主机。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="980" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  SKILL  /  05</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">同一个正式版本，可以怎样交给 Agent？</text>
+<path d="M 36 923 L 964 923" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="952" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">交付位置 · 看清是谁写文件，以及文件写在哪台机器</text>
+<text x="964" y="952" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">05</text>
+<text x="36" y="130" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">共同起点：已批准的 skill / skill_01 @ 1</text>
+<rect x="36" y="171" width="928" height="166" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="207" font-size="25" fill="#183249" font-weight="600" text-anchor="start">导出</text>
+<text x="58" y="252" font-size="20" fill="#183249" font-weight="400" text-anchor="start">客户端领取精确版本</text>
+<path d="M 398 246 L 468 246" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="495" y="252" font-size="23" fill="#183249" font-weight="600" text-anchor="start">运行客户端的机器</text>
+<text x="58" y="298" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">指定新目录；已存在时拒绝覆盖。</text>
+<rect x="36" y="368" width="928" height="166" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="404" font-size="25" fill="#2464B3" font-weight="600" text-anchor="start">本机受管发布</text>
+<text x="58" y="449" font-size="20" fill="#183249" font-weight="400" text-anchor="start">Server 管理受管副本</text>
+<path d="M 398 443 L 468 443" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="495" y="449" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">运行 Server 的机器</text>
+<text x="58" y="495" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">写入已配置 target；更新前核对原文件。</text>
+<rect x="36" y="565" width="928" height="166" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="601" font-size="25" fill="#087E82" font-weight="600" text-anchor="start">远程分发</text>
+<text x="58" y="646" font-size="20" fill="#183249" font-weight="400" text-anchor="start">Receiver 拉取并安装</text>
+<path d="M 398 640 L 468 640" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="495" y="646" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">Agent 所在的机器</text>
+<text x="58" y="692" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">Server 保存要求；接收端安装后回报。</text>
+<rect x="36" y="789" width="928" height="102" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="824" font-size="23" fill="#183249" font-weight="600" text-anchor="start">目标是让宿主能读取文件</text>
+<text x="58" y="861" font-size="20" fill="#183249" font-weight="400" text-anchor="start">后续是否发现、选择和执行技能，由 Agent 的任务流程决定。</text>
+</svg>

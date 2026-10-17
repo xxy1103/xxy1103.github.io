@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1010" viewBox="0 0 1000 1010" role="img" aria-labelledby="title desc">
+<title id="title">五类入口，汇入同一条审核流程</title><desc id="desc">直接提交、上传、主动生成、Dream 和外部导入生成待审核提案，再经审核成为正式版本。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="1010" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  SKILL  /  02</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">五类入口，汇入同一条审核流程</text>
+<path d="M 36 953 L 964 953" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="982" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">创建入口 · 模型有效输出先成为提案；正式版本在批准后形成</text>
+<text x="964" y="982" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">02</text>
+<text x="36" y="129" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">先判断：完整内容已经准备好，还是需要模型整理？</text>
+<rect x="36" y="160" width="790" height="86" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="192" font-size="22" fill="#183249" font-weight="600" text-anchor="start">直接提交</text>
+<text x="58" y="222" font-size="18" fill="#183249" font-weight="400" text-anchor="start">完整正文 + 精确证据</text>
+<rect x="653" y="184" width="150" height="30" rx="15" fill="#F0F4F7"/>
+<text x="728.0" y="205" font-size="15" fill="#566B7D" font-weight="600" text-anchor="middle">不调用模型</text>
+<path d="M 827 203 H 874" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="36" y="263" width="790" height="86" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="295" font-size="22" fill="#183249" font-weight="600" text-anchor="start">上传技能包</text>
+<text x="58" y="325" font-size="18" fill="#183249" font-weight="400" text-anchor="start">ZIP 中包含 SKILL.md 与配套文件</text>
+<rect x="653" y="287" width="150" height="30" rx="15" fill="#F0F4F7"/>
+<text x="728.0" y="308" font-size="15" fill="#566B7D" font-weight="600" text-anchor="middle">不调用模型</text>
+<path d="M 827 306 H 874" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="36" y="366" width="790" height="86" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="398" font-size="22" fill="#087E82" font-weight="600" text-anchor="start">主动生成</text>
+<text x="58" y="428" font-size="18" fill="#183249" font-weight="400" text-anchor="start">调用方选择 Experience / Source / usage</text>
+<rect x="653" y="390" width="150" height="30" rx="15" fill="#F0F4F7"/>
+<text x="728.0" y="411" font-size="15" fill="#566B7D" font-weight="600" text-anchor="middle">调用模型</text>
+<path d="M 827 409 H 874" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="36" y="469" width="790" height="86" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="501" font-size="22" fill="#087E82" font-weight="600" text-anchor="start">Dream 派生</text>
+<text x="58" y="531" font-size="18" fill="#183249" font-weight="400" text-anchor="start">选择 Experience，建立后台运行</text>
+<rect x="653" y="493" width="150" height="30" rx="15" fill="#F0F4F7"/>
+<text x="728.0" y="514" font-size="15" fill="#566B7D" font-weight="600" text-anchor="middle">调用模型</text>
+<path d="M 827 512 H 874" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="36" y="572" width="790" height="86" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="604" font-size="22" fill="#183249" font-weight="600" text-anchor="start">外部技能导入</text>
+<text x="58" y="634" font-size="18" fill="#183249" font-weight="400" text-anchor="start">import 保留原包；fork 交给模型改编</text>
+<rect x="653" y="596" width="150" height="30" rx="15" fill="#F0F4F7"/>
+<text x="728.0" y="617" font-size="15" fill="#566B7D" font-weight="600" text-anchor="middle">依模式而定</text>
+<path d="M 827 615 H 874" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 874 203 V 725 H 500 V 750" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="758" width="928" height="91" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="58" y="793" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">pending Candidate · 内容、证据、可选 target</text>
+<text x="58" y="825" font-size="18" fill="#566B7D" font-weight="400" text-anchor="start">模型无有效提案时，不创建 Candidate。</text>
+<path d="M 500 851 L 500 879" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="887" width="928" height="53" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="500" y="921" font-size="22" fill="#2464B3" font-weight="600" text-anchor="middle">审核并批准 → 正式 Skill Revision → 后续交付</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="940" viewBox="0 0 1000 940" role="img" aria-labelledby="title desc">
+<title id="title">从实践依据，到任务中的实际使用</title><desc id="desc">证据经过提案和审核成为正式 Skill，交付到 Agent 后产生使用观察，调用方可据此发起新的更新提案。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="940" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  SKILL  /  08</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">从实践依据，到任务中的实际使用</text>
+<path d="M 36 883 L 964 883" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="912" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">生命周期 · 内容、交付、实际使用，各自有可追溯记录</text>
+<text x="964" y="912" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">08</text>
+<text x="36" y="130" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">一次金额修复，怎样形成可持续改进的技能？</text>
+<rect x="36" y="175" width="444" height="154" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="210" font-size="23" fill="#183249" font-weight="600" text-anchor="start">01  选择依据</text>
+<text x="58" y="247" font-size="20" fill="#183249" font-weight="400" text-anchor="start">Experience / Source</text>
+<text x="58" y="277" font-size="20" fill="#183249" font-weight="400" text-anchor="start">固定到精确引用</text>
+<rect x="520" y="175" width="444" height="154" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="542" y="210" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">02  创建 Candidate</text>
+<text x="542" y="247" font-size="20" fill="#183249" font-weight="400" text-anchor="start">整理步骤与验证要求</text>
+<text x="542" y="277" font-size="20" fill="#183249" font-weight="400" text-anchor="start">保存内容和证据</text>
+<rect x="520" y="376" width="444" height="154" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="542" y="411" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">03  审核并批准</text>
+<text x="542" y="448" font-size="20" fill="#183249" font-weight="400" text-anchor="start">核对适用范围</text>
+<text x="542" y="478" font-size="20" fill="#183249" font-weight="400" text-anchor="start">形成 Skill Revision</text>
+<rect x="36" y="376" width="444" height="154" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="411" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">04  明确交付</text>
+<text x="58" y="448" font-size="20" fill="#183249" font-weight="400" text-anchor="start">选择版本和目的地</text>
+<text x="58" y="478" font-size="20" fill="#183249" font-weight="400" text-anchor="start">确认文件送达</text>
+<rect x="36" y="577" width="444" height="154" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="612" font-size="23" fill="#183249" font-weight="600" text-anchor="start">05  Agent 实际使用</text>
+<text x="58" y="649" font-size="20" fill="#183249" font-weight="400" text-anchor="start">选择与调用技能</text>
+<text x="58" y="679" font-size="20" fill="#183249" font-weight="400" text-anchor="start">执行检查，观察结果</text>
+<rect x="520" y="577" width="444" height="154" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="542" y="612" font-size="23" fill="#183249" font-weight="600" text-anchor="start">06  保存使用反馈</text>
+<text x="542" y="649" font-size="20" fill="#183249" font-weight="400" text-anchor="start">关联精确版本和包</text>
+<text x="542" y="679" font-size="20" fill="#183249" font-weight="400" text-anchor="start">未知结果保留 unknown</text>
+<path d="M 482 251 L 512 251" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 742 331 L 742 368" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 518 452 L 488 452" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 258 532 L 258 569" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 482 653 L 512 653" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 965 653 H 982 V 251 H 972" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 6"/>
+<text x="36" y="786" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">需要改进时：选择使用证据，明确当前 Skill target，主动发起更新提案。</text>
+<text x="36" y="827" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">新版本获批以后，再决定把哪些目的地升级到新版。</text>
+</svg>

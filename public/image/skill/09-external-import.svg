@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1304" viewBox="0 0 1000 1304" role="img" aria-labelledby="title desc">
+<title id="title">外部技能：从目录发现，到审核入库</title><desc id="desc">配置 Server 可访问的目录，扫描并列出技能；提交时核对指纹，变化则重新扫描，一致则捕获快照。import 保留原包，fork 用模型改编，有提案才进入审核。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 8 5 L 1 9" fill="none" stroke="#718798" stroke-width="1.6" stroke-linejoin="round"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}</style>
+<rect width="1000" height="1304" rx="24" fill="#F5F8FB"/>
+<rect x="36" y="32" width="5" height="58" rx="2" fill="#087E82"/>
+<text x="58" y="48" font-size="12" fill="#087E82" font-weight="600" text-anchor="start">POWERCONTEXT  /  SKILL  /  09</text>
+<text x="58" y="86" font-size="30" fill="#183249" font-weight="650" text-anchor="start">外部技能：从目录发现，到审核入库</text>
+<path d="M 36 1247 L 964 1247" fill="none" stroke="#D6E1E9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="1276" font-size="15" fill="#566B7D" font-weight="400" text-anchor="start">导入边界 · 扫描用于发现；提交后保存快照；批准后形成正式 Skill</text>
+<text x="964" y="1276" font-size="15" fill="#087E82" font-weight="600" text-anchor="end">09</text>
+<text x="36" y="130" font-size="19" fill="#566B7D" font-weight="400" text-anchor="start">文件在哪里、是否发生变化、怎样处理内容，按顺序确认。</text>
+<rect x="36" y="163" width="928" height="104" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="198" font-size="23" fill="#183249" font-weight="600" text-anchor="start">01  配置技能根目录</text>
+<text x="58" y="235" font-size="20" fill="#183249" font-weight="400" text-anchor="start">Server 能访问的路径；例如 /srv/project/.agents/skills</text>
+<path d="M 500 269 L 500 299" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="307" width="928" height="106" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="342" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">02  扫描并列出技能</text>
+<text x="58" y="379" font-size="20" fill="#183249" font-weight="400" text-anchor="start">取得 external_skill_id（哪项技能）和 fingerprint（内容指纹）</text>
+<path d="M 346 415 L 346 449" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g transform="translate(0 -146)">
+<rect x="36" y="603" width="620" height="114" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="58" y="638" font-size="23" fill="#2464B3" font-weight="600" text-anchor="start">03  提交导入，程序核对指纹</text>
+<text x="58" y="675" font-size="20" fill="#183249" font-weight="400" text-anchor="start">POST /v1/external-skills/import</text>
+<text x="58" y="705" font-size="20" fill="#183249" font-weight="400" text-anchor="start">确认文件仍是刚刚查看过的那一份。</text>
+<rect x="700" y="603" width="264" height="114" rx="16" fill="#FFF0EF" stroke="#D6E1E9"/>
+<text x="722" y="638" font-size="23" fill="#BC4545" font-weight="600" text-anchor="start">文件已变化</text>
+<text x="722" y="675" font-size="20" fill="#183249" font-weight="400" text-anchor="start">停止本次导入</text>
+<text x="722" y="705" font-size="20" fill="#183249" font-weight="400" text-anchor="start">重新扫描与查看</text>
+<path d="M 658 660 L 692 660" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 965 660 H 982 V 506 H 966" fill="none" stroke="#BC4545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 6"/>
+<path d="M 346 719 L 346 759" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="365" y="725" width="120" height="30" rx="15" fill="#EAF6F4"/>
+<text x="425.0" y="746" font-size="15" fill="#087E82" font-weight="600" text-anchor="middle">指纹一致</text>
+<rect x="36" y="767" width="928" height="88" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="58" y="802" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">04  捕获并保存精确技能快照</text>
+<text x="58" y="839" font-size="20" fill="#183249" font-weight="400" text-anchor="start">后续处理依据这次捕获的文件内容。</text>
+<path d="M 500 857 V 884 H 258 V 907" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 500 884 H 742 V 907" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="36" y="915" width="444" height="126" rx="16" fill="#FFFFFF" stroke="#D6E1E9"/>
+<text x="58" y="950" font-size="23" fill="#183249" font-weight="600" text-anchor="start">import · 保留原包</text>
+<text x="58" y="987" font-size="20" fill="#183249" font-weight="400" text-anchor="start">保留技能文件内容</text>
+<text x="58" y="1017" font-size="20" fill="#183249" font-weight="400" text-anchor="start">直接准备导入提案，不调用模型</text>
+<rect x="520" y="915" width="444" height="126" rx="16" fill="#EAF6F4" stroke="#D6E1E9"/>
+<text x="542" y="950" font-size="23" fill="#087E82" font-weight="600" text-anchor="start">fork · 模型改编</text>
+<text x="542" y="987" font-size="20" fill="#183249" font-weight="400" text-anchor="start">把快照作为材料交给模型</text>
+<text x="542" y="1017" font-size="20" fill="#183249" font-weight="400" text-anchor="start">尝试生成新的技能内容</text>
+<path d="M 258 1043 L 258 1131" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 650 1043 V 1080 H 505 V 1131" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="515" y="1109" font-size="18" fill="#087E82" font-weight="600" text-anchor="start">有有效提案</text>
+<path d="M 832 1043 L 832 1131" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="846" y="1096" font-size="18" fill="#566B7D" font-weight="400" text-anchor="start">无提案</text>
+<rect x="36" y="1139" width="600" height="112" rx="16" fill="#FFF4E4" stroke="#D6E1E9"/>
+<text x="58" y="1174" font-size="23" fill="#A56613" font-weight="600" text-anchor="start">pending Candidate</text>
+<text x="58" y="1211" font-size="20" fill="#183249" font-weight="400" text-anchor="start">校验通过后，完整内容和来源进入审核。</text>
+<rect x="700" y="1139" width="264" height="112" rx="16" fill="#F0F4F7" stroke="#D6E1E9"/>
+<text x="722" y="1174" font-size="23" fill="#566B7D" font-weight="600" text-anchor="start">no_op</text>
+<text x="722" y="1211" font-size="20" fill="#183249" font-weight="400" text-anchor="start">不创建 Candidate</text>
+<text x="722" y="1241" font-size="20" fill="#183249" font-weight="400" text-anchor="start">可回看材料再判断</text>
+<path d="M 336 1253 L 336 1303" fill="none" stroke="#718798" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="357" y="1263" width="130" height="30" rx="15" fill="#FFF4E4"/>
+<text x="422.0" y="1284" font-size="15" fill="#A56613" font-weight="600" text-anchor="middle">审核并批准</text>
+<rect x="36" y="1311" width="600" height="65" rx="16" fill="#EDF4FD" stroke="#D6E1E9"/>
+<text x="336" y="1352" font-size="24" fill="#2464B3" font-weight="600" text-anchor="middle">正式 Skill Revision</text>
+<text x="700" y="1337" font-size="18" fill="#566B7D" font-weight="400" text-anchor="start">导入不等于批准，</text>
+<text x="700" y="1367" font-size="18" fill="#566B7D" font-weight="400" text-anchor="start">也不等于安装或执行。</text>
+</g>
+</svg>
