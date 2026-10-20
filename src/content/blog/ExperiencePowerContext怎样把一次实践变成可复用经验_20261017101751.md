@@ -1,7 +1,7 @@
 ---
 title: "Experience：PowerContext怎样把一次实践变成可复用经验"
 date: "2026-10-17T10:17:51+08:00"
-updated: "2026-10-17T10:19:17+08:00"
+updated: "2026-10-20T16:49:39+08:00"
 description: "PowerContext 的 Experience 功能通过整理实践经验，帮助团队记录情境、行动、结果和教训，提升后续任务的参考价值。文章详细介绍了如何创建、审核和复用经验，强调了经验在项目中的重要性和实用性。"
 draft: false
 categories:
@@ -11,6 +11,7 @@ tags:
   - "powercontext"
   - "agent"
 ---
+来年 花也将继续盛开，春日将不厌其烦地反复到来。
 
 <!-- more -->
 

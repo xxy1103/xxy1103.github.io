@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">生成：每次只追加一个字符</title><desc id="desc">生成时，每一轮把当前前缀输入同一个模型，只取最后一个位置的候选分数，采样出一个新字符并追加到前缀末尾，然后进入下一轮。示例依次追加子、很、开。模型参数保持不变。</desc>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9" fill="#657c92"/></marker></defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#23374a}.title{font-size:42px;font-weight:700}.head{font-size:28px;font-weight:600}.body{font-size:25px}.small{font-size:22px}.tok{font-size:34px;font-weight:600;text-anchor:middle}.arrow{fill:none;stroke:#657c92;stroke-width:3;marker-end:url(#a)}</style>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="70" y="75" class="title">生成：每一轮只追加一个字符</text>
+<text x="70" y="120" class="body">同一个模型反复运行；每一轮只取最后一个位置的分数，采样出下一个字。</text>
+<rect x="50" y="160" width="1500" height="205" rx="22" fill="#e5f1eb"/>
+<text x="80" y="202" class="head">第 1 轮</text>
+<rect x="80" y="240" width="90" height="80" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="125.0" y="292.0" class="tok">小</text>
+<rect x="180" y="240" width="90" height="80" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="225.0" y="292.0" class="tok">兔</text>
+<text x="80" y="350" class="small">当前前缀</text>
+<path d="M495 280 H530" class="arrow"/>
+<rect x="540" y="230" width="330" height="100" rx="16" fill="#e8f1f9" stroke="#9cbbd6" stroke-width="2"/><text x="705" y="272" text-anchor="middle" class="head">TinyGPT 前向</text><text x="705" y="307" text-anchor="middle" class="small">每个位置一组候选分数</text>
+<path d="M870 280 H905" class="arrow"/>
+<rect x="915" y="230" width="310" height="100" rx="16" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="1070" y="272" text-anchor="middle" class="head">只取最后一组</text><text x="1070" y="307" text-anchor="middle" class="small">在“兔”这个位置</text>
+<path d="M1225 280 H1260" class="arrow"/>
+<text x="1275" y="255" class="small">采样得到</text>
+<rect x="1275" y="265" width="90" height="80" rx="14" fill="#ffe2bd" stroke="#d6a860" stroke-width="2"/><text x="1320.0" y="317.0" class="tok">子</text>
+<text x="1385" y="303" class="small">追加到</text><text x="1385" y="332" class="small">前缀末尾</text>
+<rect x="50" y="385" width="1500" height="205" rx="22" fill="#e5f1eb"/>
+<text x="80" y="427" class="head">第 2 轮</text>
+<rect x="80" y="465" width="90" height="80" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="125.0" y="517.0" class="tok">小</text>
+<rect x="180" y="465" width="90" height="80" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="225.0" y="517.0" class="tok">兔</text>
+<rect x="280" y="465" width="90" height="80" rx="14" fill="#ffe2bd" stroke="#d6a860" stroke-width="2"/><text x="325.0" y="517.0" class="tok">子</text>
+<text x="80" y="575" class="small">当前前缀（橙色是上一轮追加的字）</text>
+<path d="M495 505 H530" class="arrow"/>
+<rect x="540" y="455" width="330" height="100" rx="16" fill="#e8f1f9" stroke="#9cbbd6" stroke-width="2"/><text x="705" y="497" text-anchor="middle" class="head">TinyGPT 前向</text><text x="705" y="532" text-anchor="middle" class="small">每个位置一组候选分数</text>
+<path d="M870 505 H905" class="arrow"/>
+<rect x="915" y="455" width="310" height="100" rx="16" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="1070" y="497" text-anchor="middle" class="head">只取最后一组</text><text x="1070" y="532" text-anchor="middle" class="small">在“子”这个位置</text>
+<path d="M1225 505 H1260" class="arrow"/>
+<text x="1275" y="480" class="small">采样得到</text>
+<rect x="1275" y="490" width="90" height="80" rx="14" fill="#ffe2bd" stroke="#d6a860" stroke-width="2"/><text x="1320.0" y="542.0" class="tok">很</text>
+<text x="1385" y="528" class="small">追加到</text><text x="1385" y="557" class="small">前缀末尾</text>
+<rect x="50" y="610" width="1500" height="205" rx="22" fill="#e5f1eb"/>
+<text x="80" y="652" class="head">第 3 轮</text>
+<rect x="80" y="690" width="90" height="80" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="125.0" y="742.0" class="tok">小</text>
+<rect x="180" y="690" width="90" height="80" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="225.0" y="742.0" class="tok">兔</text>
+<rect x="280" y="690" width="90" height="80" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="325.0" y="742.0" class="tok">子</text>
+<rect x="380" y="690" width="90" height="80" rx="14" fill="#ffe2bd" stroke="#d6a860" stroke-width="2"/><text x="425.0" y="742.0" class="tok">很</text>
+<text x="80" y="800" class="small">当前前缀（橙色是上一轮追加的字）</text>
+<path d="M495 730 H530" class="arrow"/>
+<rect x="540" y="680" width="330" height="100" rx="16" fill="#e8f1f9" stroke="#9cbbd6" stroke-width="2"/><text x="705" y="722" text-anchor="middle" class="head">TinyGPT 前向</text><text x="705" y="757" text-anchor="middle" class="small">每个位置一组候选分数</text>
+<path d="M870 730 H905" class="arrow"/>
+<rect x="915" y="680" width="310" height="100" rx="16" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="1070" y="722" text-anchor="middle" class="head">只取最后一组</text><text x="1070" y="757" text-anchor="middle" class="small">在“很”这个位置</text>
+<path d="M1225 730 H1260" class="arrow"/>
+<text x="1275" y="705" class="small">采样得到</text>
+<rect x="1275" y="715" width="90" height="80" rx="14" fill="#ffe2bd" stroke="#d6a860" stroke-width="2"/><text x="1320.0" y="767.0" class="tok">开</text>
+<text x="1385" y="753" class="small">追加到</text><text x="1385" y="782" class="small">前缀末尾</text>
+<text x="800" y="862" text-anchor="middle" class="small">采样出的字只是流程示意。采到 EOS 或达到长度上限就停止；生成过程中模型参数始终不变。</text>
+</svg>

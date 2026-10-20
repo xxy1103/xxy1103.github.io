@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">同一个 TinyGPT 在训练与生成时的用法</title><desc id="desc">训练时将真实文本错开一位，在各位置计算下一个字符的分数并更新参数；生成时只取最后一个位置的分数，采样一个字符后追加到前缀，模型参数不更新。</desc>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10" fill="#567087"/></marker></defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#23374a}.title{font-size:42px;font-weight:700}.head{font-size:30px;font-weight:600}.body{font-size:27px}.small{font-size:23px}.arrow{fill:none;stroke:#567087;stroke-width:3;marker-end:url(#a)}.box{stroke:#c8d6e2;stroke-width:2;rx:18}</style>
+<rect width="1600" height="900" fill="#f7f9fc"/><text x="70" y="80" class="title">训练与生成：同一个模型，两种使用方式</text>
+<rect x="70" y="125" width="1460" height="325" rx="24" fill="#e8f1f9"/>
+<text x="100" y="175" class="head">训练：前缀来自真实故事，参数会更新</text>
+<rect x="110" y="210" width="350" height="100" class="box" fill="white"/><text x="140" y="250" class="body">输入 x：小　兔　子　很</text><text x="140" y="287" class="small">每个位置只能读取左侧与自己</text>
+<path d="M460 260H520" class="arrow"/><rect x="535" y="210" width="220" height="100" class="box" fill="#dcece4"/><text x="575" y="268" class="head">TinyGPT</text>
+<path d="M755 260H815" class="arrow"/><rect x="830" y="210" width="300" height="100" class="box" fill="white"/><text x="858" y="250" class="body">四组候选分数</text><text x="858" y="288" class="small">对应四次“猜下一个字”</text>
+<path d="M1130 260H1190" class="arrow"/><rect x="1205" y="210" width="280" height="100" class="box" fill="#fff0df"/><text x="1235" y="251" class="body">Cross Entropy</text><text x="1235" y="288" class="small">目标：兔　子　很　开</text>
+<text x="110" y="365" class="body">真实连续片段：“小兔子很开……” → x 与 y 错开一个位置。</text>
+<text x="110" y="411" class="body">loss → Backward → Optimizer；四个位置的误差一起帮助调整参数。</text>
+<rect x="70" y="490" width="1460" height="340" rx="24" fill="#e5f1eb"/><text x="100" y="540" class="head">生成：新字符来自模型采样，参数保持不变</text>
+<rect x="110" y="580" width="350" height="145" class="box" fill="white"/><text x="140" y="624" class="head">① 输入“小兔”</text><text x="140" y="667" class="body">取“兔”处的分数</text><text x="140" y="705" class="small">采样得到“子”</text>
+<path d="M460 652H575" class="arrow"/>
+<rect x="590" y="580" width="390" height="145" class="box" fill="white"/><text x="620" y="624" class="head">② 输入“小兔子”</text><text x="620" y="667" class="body">重新运行同一个模型</text><text x="620" y="705" class="small">取最后位置分数，采样“很”</text>
+<path d="M980 652H1095" class="arrow"/>
+<rect x="1110" y="580" width="375" height="145" class="box" fill="white"/><text x="1140" y="624" class="head">③ 输入“小兔子很”</text><text x="1140" y="667" class="body">继续运行与采样</text><text x="1140" y="705" class="small">得到“小兔子很……”</text>
+<text x="110" y="784" class="body">一次生成只追加一个字符；上面采样的字是流程示意，实际输出见实验记录。</text>
+</svg>

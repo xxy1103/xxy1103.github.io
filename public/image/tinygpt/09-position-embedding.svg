@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">同一个我，出现在不同位置</title>
+<desc id="desc">序列我喜欢你中的我处于第一个位置，序列你喜欢我中的我处于第三个位置。两者token编号都是0，取同一个向量0.2 0.5 0.1；分别加位置编号0的向量0.1 0 0.3和编号2的向量负0.2 0.1 0.4，得到0.3 0.5 0.4和0 0.6 0.5。token与位置分开查表，逐元素相加，长度仍为3。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#52748c"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:42px;font-weight:700}.h{font-size:32px;font-weight:600}.b{font-size:28px}.s{font-size:26px}.arrow{fill:none;stroke:#52748c;stroke-width:3;marker-end:url(#a)}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="77" class="t">同一个 token，换个位置，初始表示也可以不同</text>
+<text x="64" y="130" class="b">token 表按“是谁”查，位置表按“排第几个”查；两个向量逐元素相加。</text>
+<rect x="64" y="173" width="1472" height="86" rx="16" fill="#e8edf9"/>
+<text x="800" y="226" class="h" text-anchor="middle">两处“我”共用同一行 token 向量：[0.2, 0.5, 0.1]</text>
+<path d="M800 259V281H417V306" class="arrow"/>
+<path d="M800 281H1183V306" class="arrow"/>
+
+<rect x="64" y="312" width="706" height="433" rx="20" fill="#fff" stroke="#afc4d1" stroke-width="2"/>
+<text x="90" y="359" class="h">序列 A：“我” / 喜欢 / 你</text>
+<text x="90" y="403" class="s">“我”在第 1 个位置 → 位置编号 0</text>
+<rect x="90" y="433" width="654" height="64" rx="12" fill="#e8edf9"/>
+<text x="110" y="475" class="b">token 向量　[ 0.2,　0.5,　0.1 ]</text>
+<rect x="90" y="519" width="654" height="64" rx="12" fill="#fff0df"/>
+<text x="110" y="561" class="b">＋ 位置向量 [ 0.1,　0.0,　0.3 ]</text>
+<path d="M417 584V620" class="arrow"/>
+<rect x="90" y="630" width="654" height="88" rx="12" fill="#e5f1eb"/>
+<text x="110" y="663" class="s">送入后续网络的初始表示</text>
+<text x="110" y="704" class="h">[ 0.3,　0.5,　0.4 ]</text>
+
+<rect x="830" y="312" width="706" height="433" rx="20" fill="#fff" stroke="#afc4d1" stroke-width="2"/>
+<text x="856" y="359" class="h">序列 B：你 / 喜欢 / “我”</text>
+<text x="856" y="403" class="s">“我”在第 3 个位置 → 位置编号 2</text>
+<rect x="856" y="433" width="654" height="64" rx="12" fill="#e8edf9"/>
+<text x="876" y="475" class="b">token 向量　[ 0.2,　0.5,　0.1 ]</text>
+<rect x="856" y="519" width="654" height="64" rx="12" fill="#fff0df"/>
+<text x="876" y="561" class="b">＋ 位置向量 [−0.2,　0.1,　0.4 ]</text>
+<path d="M1183 584V620" class="arrow"/>
+<rect x="856" y="630" width="654" height="88" rx="12" fill="#e5f1eb"/>
+<text x="876" y="663" class="s">送入后续网络的初始表示</text>
+<text x="876" y="704" class="h">[ 0.0,　0.6,　0.5 ]</text>
+<text x="64" y="803" class="b">相同 token 向量 ＋ 不同位置向量 → 不同初始表示；向量长度仍然是 3。</text>
+<text x="64" y="850" class="s">教学示例：向量数值为人工设定。真实模型中，两张表的数值都可以随训练更新。</text>
+</svg>

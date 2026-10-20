@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">一次训练更新：抽题、预测、纠错、调整</title>
+<desc id="desc">训练循环包含四步：抽取一批窗口和正确答案；模型前向预测并计算 loss；反向传播求出每个参数的梯度；优化器据此更新参数。更新后回到第一步，本章第一版重复 5000 次。每隔 250 步，用固定验证窗口检查一次成绩，只检查，不更新参数。</desc>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9" fill="#657c92"/></marker><marker id="g" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9" fill="#268163"/></marker></defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#23374a}.title{font-size:42px;font-weight:700}.head{font-size:29px;font-weight:600}.body{font-size:25px}.small{font-size:22px}.num{font-size:30px;font-weight:700;fill:white;text-anchor:middle}.arrow{fill:none;stroke:#657c92;stroke-width:3;marker-end:url(#a)}.loop{fill:none;stroke:#268163;stroke-width:4;marker-end:url(#g)}</style>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="70" y="78" class="title">一次训练更新：抽题、预测、纠错、调整</text>
+<text x="70" y="124" class="body">本章第一版把这个循环重复 5000 次，模型从随机参数逐渐学会预测下一个字。</text>
+<rect x="60" y="165" width="1480" height="400" rx="24" fill="#e5f1eb"/>
+<rect x="95" y="215" width="305" height="250" rx="20" fill="white" stroke="#bcd6c5" stroke-width="2"/>
+<circle cx="135" cy="250" r="23" fill="#268163"/><text x="135" y="261" class="num">1</text>
+<text x="170" y="259" class="head">抽一批题</text>
+<text x="120" y="320" class="body">随机取 8 个窗口</text>
+<text x="120" y="360" class="body">每个窗口带着</text>
+<text x="120" y="400" class="body">错开一位的答案</text>
+<path d="M400 340H442" class="arrow"/>
+<rect x="445" y="215" width="305" height="250" rx="20" fill="white" stroke="#bcd6c5" stroke-width="2"/>
+<circle cx="485" cy="250" r="23" fill="#268163"/><text x="485" y="261" class="num">2</text>
+<text x="520" y="259" class="head">预测并打分</text>
+<text x="470" y="320" class="body">模型给出候选分数</text>
+<text x="470" y="360" class="body">与答案比较，得到</text>
+<text x="470" y="400" class="body">一个数：loss</text>
+<path d="M750 340H792" class="arrow"/>
+<rect x="795" y="215" width="305" height="250" rx="20" fill="white" stroke="#bcd6c5" stroke-width="2"/>
+<circle cx="835" cy="250" r="23" fill="#268163"/><text x="835" y="261" class="num">3</text>
+<text x="870" y="259" class="head">找出责任</text>
+<text x="820" y="320" class="body">反向传播：算出每个</text>
+<text x="820" y="360" class="body">参数该往哪个方向</text>
+<text x="820" y="400" class="body">调整，即梯度</text>
+<path d="M1100 340H1142" class="arrow"/>
+<rect x="1145" y="215" width="365" height="250" rx="20" fill="#268163"/>
+<circle cx="1185" cy="250" r="23" fill="white"/><text x="1185" y="261" class="num" style="fill:#268163">4</text>
+<text x="1220" y="259" class="head" style="fill:white">调整参数</text>
+<text x="1170" y="320" class="body" style="fill:white">优化器按梯度小步</text>
+<text x="1170" y="360" class="body" style="fill:white">修改参数，模型</text>
+<text x="1170" y="400" class="body" style="fill:white">变得好一点点</text>
+<path d="M1327 465V520H247V470" class="loop"/>
+<text x="787" y="553" text-anchor="middle" class="body" style="fill:#217354;font-weight:600">更新后的模型，回到第 1 步，再抽一批新题</text>
+<rect x="60" y="610" width="1480" height="215" rx="24" fill="#e8f1f9"/>
+<text x="95" y="660" class="head">每隔 250 次更新，停下来检查一次</text>
+<rect x="95" y="690" width="400" height="95" rx="16" fill="white" stroke="#bfd4e6" stroke-width="2"/>
+<text x="295" y="725" text-anchor="middle" class="body">固定的一批验证窗口</text><text x="295" y="762" text-anchor="middle" class="small">每次用同一批，方便比较</text>
+<path d="M495 737H557" class="arrow"/>
+<rect x="560" y="690" width="400" height="95" rx="16" fill="white" stroke="#bfd4e6" stroke-width="2"/>
+<text x="760" y="725" text-anchor="middle" class="body">当前模型做预测</text><text x="760" y="762" text-anchor="middle" class="small">计算验证 loss</text>
+<path d="M960 737H1022" class="arrow"/>
+<rect x="1025" y="690" width="485" height="95" rx="16" fill="#d4e6f5" stroke="#bfd4e6" stroke-width="2"/>
+<text x="1267" y="725" text-anchor="middle" class="body">只看成绩，不更新参数</text><text x="1267" y="762" text-anchor="middle" class="small">loss 越来越低，说明在进步</text>
+</svg>

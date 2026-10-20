@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">RMSNorm 前后：相差一百倍的输入被调整到相同尺度</title>
+<desc id="desc">蓝色向量u为1、2、3、4，绿色向量v为100、200、300、400。左图共用零到四百的纵轴，蓝色柱几乎贴近基线，绿色柱明显较高。两组向量分别除以自己的均方根后，右图每对蓝绿柱一样高，数值约为0.365、0.730、1.095、1.461。左右图纵轴刻度不同，每张图内蓝绿两组共用同一刻度。示例忽略epsilon，并令gamma全为1；每组向量单独归一化，不混合统计。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55758b"/></marker><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:40px;font-weight:700}.h{font-size:30px;font-weight:600}.b{font-size:27px}.s{font-size:24px}.tick{font-size:21px;fill:#627987}.grid{stroke:#e2e9ef;stroke-width:1}.axis{stroke:#78909f;stroke-width:2}.u{fill:#5b91c5}.v{fill:#4b9c7e}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">RMSNorm 调整整体大小，保留各分量之间的比例</text>
+<text x="64" y="128" class="b">蓝色 u = [1,2,3,4]，绿色 v = [100,200,300,400]。示例忽略 ε，γ 全为 1。</text>
+<rect x="56" y="175" width="680" height="509" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<rect x="864" y="175" width="680" height="509" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="82" y="220" class="h">调整前：整体大小相差 100 倍</text>
+<text x="82" y="266" class="s">蓝绿共用纵轴：0～400</text>
+<text x="890" y="220" class="h">调整后：两组结果相同</text>
+<text x="890" y="266" class="s">蓝绿共用纵轴：0～1.5</text>
+
+<path d="M130 300H696 M130 370H696 M130 440H696 M130 510H696" class="grid"/>
+<path d="M130 294V580H696" fill="none" class="axis"/>
+<g class="tick" text-anchor="end"><text x="117" y="587">0</text><text x="117" y="517">100</text><text x="117" y="447">200</text><text x="117" y="377">300</text><text x="117" y="307">400</text></g>
+<g class="u"><rect x="190" y="579.3" width="26" height="0.7"/><rect x="320" y="578.6" width="26" height="1.4"/><rect x="450" y="577.9" width="26" height="2.1"/><rect x="580" y="577.2" width="26" height="2.8"/></g>
+<g class="v"><rect x="225" y="510" width="26" height="70"/><rect x="355" y="440" width="26" height="140"/><rect x="485" y="370" width="26" height="210"/><rect x="615" y="300" width="26" height="280"/></g>
+<g class="tick" text-anchor="middle"><text x="203" y="565">1</text><text x="333" y="565">2</text><text x="463" y="565">3</text><text x="593" y="565">4</text><text x="238" y="497">100</text><text x="368" y="427">200</text><text x="498" y="357">300</text><text x="628" y="287">400</text></g>
+<g class="s" text-anchor="middle"><text x="220" y="619">分量 1</text><text x="350" y="619">分量 2</text><text x="480" y="619">分量 3</text><text x="610" y="619">分量 4</text></g>
+<text x="396" y="660" class="s" text-anchor="middle">u 的数值很小，柱子几乎贴近基线。</text>
+
+<path d="M756 445H844" fill="none" stroke="#55758b" stroke-width="4" marker-end="url(#a)"/>
+<text x="800" y="392" class="s" text-anchor="middle">分别</text><text x="800" y="425" class="s" text-anchor="middle">归一化</text>
+
+<path d="M950 340H1504 M950 420H1504 M950 500H1504" class="grid"/>
+<path d="M950 310V580H1504" fill="none" class="axis"/>
+<g class="tick" text-anchor="end"><text x="937" y="587">0</text><text x="937" y="507">0.5</text><text x="937" y="427">1.0</text><text x="937" y="347">1.5</text></g>
+<g class="u"><rect x="1010" y="521.576" width="26" height="58.424"/><rect x="1130" y="463.153" width="26" height="116.847"/><rect x="1250" y="404.729" width="26" height="175.271"/><rect x="1370" y="346.305" width="26" height="233.695"/></g>
+<g class="v"><rect x="1045" y="521.576" width="26" height="58.424"/><rect x="1165" y="463.153" width="26" height="116.847"/><rect x="1285" y="404.729" width="26" height="175.271"/><rect x="1405" y="346.305" width="26" height="233.695"/></g>
+<g class="s" text-anchor="middle"><text x="1040" y="506">0.365</text><text x="1160" y="448">0.730</text><text x="1280" y="390">1.095</text><text x="1400" y="331">1.461</text><text x="1040" y="619">分量 1</text><text x="1160" y="619">分量 2</text><text x="1280" y="619">分量 3</text><text x="1400" y="619">分量 4</text></g>
+<text x="1204" y="660" class="s" text-anchor="middle">每对蓝绿柱等高，比例仍为 1 : 2 : 3 : 4。</text>
+
+<rect x="64" y="710" width="1472" height="104" rx="16" fill="#fff0df"/>
+<text x="88" y="752" class="b">u ÷ 2.739 ≈ [0.365,0.730,1.095,1.461]</text>
+<text x="88" y="795" class="b">v ÷ 273.861 ≈ [0.365,0.730,1.095,1.461]</text>
+<text x="64" y="865" class="s">左右纵轴刻度不同；每张图内两组共用刻度。两组各算自己的均方根，没有混在一起求平均。</text>
+</svg>

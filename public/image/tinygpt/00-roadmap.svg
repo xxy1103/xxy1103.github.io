@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">TinyGPT 全景：从已有文字到下一段文字</title>
+<desc id="desc">主路径从文字我今天想吃，经Tokenizer得到编号，经过Embedding加位置表示、多层Transformer Block、LM Head得到logits，再选出下一个token。中部展开Block，包括Norm、多头Attention、残差相加、Norm、MLP、残差相加。下方展示训练路径：预测和真实后续计算loss，再反向传播并更新模型。底部列出阅读这些计算的基础Tensor、shape、矩阵乘法与Linear。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#54738a"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.title{font-size:42px;font-weight:700}.head{font-size:29px;font-weight:600}.body{font-size:26px}.small{font-size:24px}.en{font-size:25px;font-weight:600}.arrow{fill:none;stroke:#54738a;stroke-width:3;marker-end:url(#a)}.box{fill:#fff;stroke:#a7bdcc;stroke-width:2}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="77" class="title">TinyGPT 全景：读入已有文字，预测接下来写什么</text>
+<text x="64" y="126" class="body">先看从左到右的主线；每个模块的内部计算，会在后面的章节逐步展开。</text>
+<rect x="64" y="169" width="1472" height="74" rx="16" fill="#e6f1eb"/>
+<text x="104" y="215" class="head">输入：我今天想吃</text>
+<text x="595" y="215" class="body">经过模型计算</text>
+<path d="M422 207H560" class="arrow"/><path d="M810 207H969" class="arrow"/>
+<text x="1010" y="215" class="head">可能的后续：火锅 / 米饭 / ……</text>
+
+<rect x="64" y="298" width="230" height="145" rx="18" class="box"/>
+<text x="179" y="342" text-anchor="middle" class="head">Tokenizer</text><text x="179" y="385" text-anchor="middle" class="body">文字 → token 编号</text><text x="179" y="422" text-anchor="middle" class="small">文本进入计算的入口</text>
+<rect x="339" y="298" width="255" height="145" rx="18" class="box"/>
+<text x="466" y="342" text-anchor="middle" class="head">Embedding</text><text x="466" y="385" text-anchor="middle" class="body">编号 → 向量</text><text x="466" y="422" text-anchor="middle" class="small">加上位置表示</text>
+<rect x="639" y="298" width="305" height="145" rx="18" fill="#e8f1f9" stroke="#769db9" stroke-width="2"/>
+<text x="791" y="342" text-anchor="middle" class="head">Transformer Blocks</text><text x="791" y="385" text-anchor="middle" class="body">结合前文，加工表示</text><text x="791" y="422" text-anchor="middle" class="small">同类结构，重复多层</text>
+<rect x="989" y="298" width="240" height="145" rx="18" class="box"/>
+<text x="1109" y="342" text-anchor="middle" class="head">LM Head</text><text x="1109" y="385" text-anchor="middle" class="body">给候选 token 打分</text><text x="1109" y="422" text-anchor="middle" class="small">输出分数：logits</text>
+<rect x="1274" y="298" width="262" height="145" rx="18" fill="#e6f1eb" stroke="#8bb29d" stroke-width="2"/>
+<text x="1405" y="342" text-anchor="middle" class="head">选出下一个 token</text><text x="1405" y="385" text-anchor="middle" class="body">追加到已有文字后</text><text x="1405" y="422" text-anchor="middle" class="small">再继续预测</text>
+<path d="M294 369H335" class="arrow"/><path d="M594 369H635" class="arrow"/><path d="M944 369H985" class="arrow"/><path d="M1229 369H1270" class="arrow"/>
+
+<path d="M791 443V489" fill="none" stroke="#769db9" stroke-width="2" stroke-dasharray="6 5"/>
+<rect x="64" y="493" width="1472" height="137" rx="18" fill="#e8f1f9"/>
+<text x="92" y="534" class="head">放大一个 Block</text>
+<text x="92" y="585" class="small">Attention 读取上下文；MLP 加工每个位置的表示</text>
+<text x="687" y="538" class="en">Norm → 多头 Attention → 残差相加</text>
+<text x="687" y="587" class="en">Norm → MLP → 残差相加</text>
+<text x="1253" y="539" class="small">只读取自身与前文</text>
+<text x="1253" y="587" class="small">Causal Mask</text>
+
+<rect x="64" y="671" width="1472" height="105" rx="18" fill="#fff0e5"/>
+<text x="92" y="712" class="head">模型怎样学会？</text><text x="92" y="752" class="small">训练时使用真实文本</text>
+<text x="413" y="731" class="body">预测 ＋ 真实后续</text><path d="M650 721H706" class="arrow"/>
+<text x="727" y="731" class="body">loss：衡量错误</text><path d="M931 721H982" class="arrow"/>
+<text x="1004" y="731" class="body">反向传播</text><path d="M1134 721H1186" class="arrow"/>
+<text x="1207" y="731" class="body">更新模型中的参数</text>
+<text x="64" y="842" class="body">阅读这些计算的基础：Tensor（多维数组） · shape（形状） · 矩阵乘法 · Linear（线性层）</text>
+</svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">多个 Transformer Block 怎样连续堆叠</title>
+<desc id="desc">初始表示依次经过Block1、Block2、Block3、省略的中间层和BlockN，再成为最终表示。每个Block都包含Norm、因果多头Attention、MLP和两次残差相加。各层输入输出均为B乘T乘d，所以可以直接连接；向量数值持续更新，每层通常使用自己独立的参数。输入输出的彩色网格仅示意相同形状与不同数值。</desc>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f8fc"/><stop offset="1" stop-color="#edf5f2"/></linearGradient>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55758b"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:42px;font-weight:700}.h{font-size:31px;font-weight:600}.b{font-size:27px}.s{font-size:24px}.a{fill:none;stroke:#55758b;stroke-width:3;marker-end:url(#a)}.card{fill:#fff;stroke:#b5c9d7;stroke-width:2}.grid{stroke:#fff;stroke-width:3}</style>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<text x="64" y="78" class="t">同样的接口，接力加工：把多个 Transformer Block 串起来</text>
+<text x="64" y="132" class="b">前一层的输出，就是后一层的输入。shape 一直是 [B,T,d]，表示的内容不断更新。</text>
+
+<rect x="64" y="199" width="1472" height="56" rx="28" fill="#e4edf5"/>
+<text x="800" y="236" class="b" text-anchor="middle">初始表示 → 逐层读取上下文、加工特征 → 最终表示</text>
+
+<text x="136" y="326" class="h" text-anchor="middle">初始表示</text>
+<g><rect x="84" y="355" width="104" height="104" rx="8" fill="#bad1e6"/><rect x="84" y="355" width="26" height="26" fill="#709ac3"/><rect x="136" y="381" width="26" height="26" fill="#dce8f3"/><rect x="110" y="407" width="26" height="26" fill="#86adcf"/><rect x="162" y="433" width="26" height="26" fill="#5989b8"/>
+<path d="M110 355V459 M136 355V459 M162 355V459 M84 381H188 M84 407H188 M84 433H188" fill="none" class="grid"/></g>
+<text x="136" y="511" class="b" text-anchor="middle">[B,T,d]</text>
+
+<rect x="256" y="291" width="230" height="288" rx="20" class="card"/>
+<rect x="256" y="291" width="230" height="66" rx="20" fill="#dceaf6"/>
+<text x="371" y="335" class="h" text-anchor="middle">Block 1</text>
+<text x="371" y="399" class="b" text-anchor="middle">Attention</text>
+<text x="371" y="443" class="b" text-anchor="middle">MLP</text>
+<text x="371" y="487" class="s" text-anchor="middle">含 Norm 与残差</text>
+<path d="M282 510H460" stroke="#d7e0e8" stroke-width="2"/>
+<text x="371" y="552" class="b" text-anchor="middle">[B,T,d]</text>
+
+<rect x="528" y="291" width="230" height="288" rx="20" class="card"/>
+<rect x="528" y="291" width="230" height="66" rx="20" fill="#d5e8ec"/>
+<text x="643" y="335" class="h" text-anchor="middle">Block 2</text>
+<text x="643" y="399" class="b" text-anchor="middle">Attention</text>
+<text x="643" y="443" class="b" text-anchor="middle">MLP</text>
+<text x="643" y="487" class="s" text-anchor="middle">含 Norm 与残差</text>
+<path d="M554 510H732" stroke="#d7e0e8" stroke-width="2"/>
+<text x="643" y="552" class="b" text-anchor="middle">[B,T,d]</text>
+
+<rect x="800" y="291" width="230" height="288" rx="20" class="card"/>
+<rect x="800" y="291" width="230" height="66" rx="20" fill="#d3e7e0"/>
+<text x="915" y="335" class="h" text-anchor="middle">Block 3</text>
+<text x="915" y="399" class="b" text-anchor="middle">Attention</text>
+<text x="915" y="443" class="b" text-anchor="middle">MLP</text>
+<text x="915" y="487" class="s" text-anchor="middle">含 Norm 与残差</text>
+<path d="M826 510H1004" stroke="#d7e0e8" stroke-width="2"/>
+<text x="915" y="552" class="b" text-anchor="middle">[B,T,d]</text>
+
+<text x="1075" y="419" font-size="38" text-anchor="middle">···</text>
+<text x="1075" y="623" class="s" text-anchor="middle">省略中间层</text>
+
+<rect x="1120" y="291" width="230" height="288" rx="20" class="card"/>
+<rect x="1120" y="291" width="230" height="66" rx="20" fill="#cce3d7"/>
+<text x="1235" y="335" class="h" text-anchor="middle">Block N</text>
+<text x="1235" y="399" class="b" text-anchor="middle">Attention</text>
+<text x="1235" y="443" class="b" text-anchor="middle">MLP</text>
+<text x="1235" y="487" class="s" text-anchor="middle">含 Norm 与残差</text>
+<path d="M1146 510H1324" stroke="#d7e0e8" stroke-width="2"/>
+<text x="1235" y="552" class="b" text-anchor="middle">[B,T,d]</text>
+
+<text x="1464" y="326" class="h" text-anchor="middle">最终表示</text>
+<g><rect x="1412" y="355" width="104" height="104" rx="8" fill="#a9d0bc"/><rect x="1464" y="355" width="26" height="26" fill="#4d9777"/><rect x="1412" y="381" width="26" height="26" fill="#cee6d9"/><rect x="1490" y="407" width="26" height="26" fill="#6eac8e"/><rect x="1438" y="433" width="26" height="26" fill="#478d6d"/>
+<path d="M1438 355V459 M1464 355V459 M1490 355V459 M1412 381H1516 M1412 407H1516 M1412 433H1516" fill="none" class="grid"/></g>
+<text x="1464" y="511" class="b" text-anchor="middle">[B,T,d]</text>
+
+<path d="M196 407H246" class="a"/><path d="M486 407H518" class="a"/><path d="M758 407H790" class="a"/><path d="M1030 407H1044" class="a"/><path d="M1100 407H1110" class="a"/><path d="M1350 407H1402" class="a"/>
+<text x="371" y="623" class="s" text-anchor="middle">第 1 层参数</text><text x="643" y="623" class="s" text-anchor="middle">第 2 层参数</text><text x="915" y="623" class="s" text-anchor="middle">第 3 层参数</text><text x="1235" y="623" class="s" text-anchor="middle">第 N 层参数</text>
+
+<rect x="64" y="690" width="1472" height="132" rx="18" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<circle cx="104" cy="733" r="7" fill="#5b91c5"/><text x="126" y="743" class="b">shape 相同：仍是 B 条序列、T 个位置，每个位置 d 个数。</text>
+<circle cx="104" cy="783" r="7" fill="#4b9c7e"/><text x="126" y="793" class="b">内容不同：各层根据新的表示重新计算；通常每层都有独立参数。</text>
+<text x="64" y="870" class="s">N 表示 Block 的总层数。网格颜色仅示意数值发生变化；这里展示的是内部表示，尚未进行词表打分。</text>
+</svg>

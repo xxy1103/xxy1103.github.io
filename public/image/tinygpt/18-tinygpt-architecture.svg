@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">本章 TinyGPT 的完整结构</title>
+<desc id="desc">输入编号通过字符 Embedding，与可学习位置 Embedding 相加，依次经过四个独立参数的 Transformer Block、final RMSNorm 和 LM Head，输出每个位置的三千零三十五个候选分数。每个 Block 内含 RMSNorm、因果多头 Attention 与残差，再经过 RMSNorm、GELU MLP 与第二条残差。</desc>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9" fill="#657c92"/></marker><marker id="r" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9" fill="#b68036"/></marker></defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#23374a}.title{font-size:42px;font-weight:700}.head{font-size:27px;font-weight:600}.body{font-size:24px}.small{font-size:21px}.box{stroke:#c3d3e1;stroke-width:2}.arrow{fill:none;stroke:#657c92;stroke-width:3;marker-end:url(#a)}.residual{fill:none;stroke:#b68036;stroke-width:3;marker-end:url(#r)}</style>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="65" y="78" class="title">把零件接起来：本章的 TinyGPT</text>
+<text x="65" y="125" class="body">第一版模型 · 4 层 Block · 向量长度 128 · 词表 3035 项 · 约 159 万参数</text>
+<rect x="210" y="175" width="225" height="105" rx="17" fill="#fff0df" class="box"/>
+<text x="322" y="211" text-anchor="middle" class="head">位置 Embedding</text>
+<text x="322" y="243" text-anchor="middle" class="small">位置编号 0…127 查表</text>
+<text x="322" y="269" text-anchor="middle" class="small">[128, 128]</text>
+<rect x="65" y="320" width="125" height="100" rx="16" fill="white" class="box"/>
+<text x="127" y="359" text-anchor="middle" class="head">输入编号</text><text x="127" y="397" text-anchor="middle" class="small">[8, 128]</text>
+<path d="M190 370H208" class="arrow"/>
+<rect x="220" y="320" width="215" height="100" rx="16" fill="#e8f1f9" class="box"/>
+<text x="327" y="359" text-anchor="middle" class="head">字符 Embedding</text><text x="327" y="397" text-anchor="middle" class="small">[8, 128, 128]</text>
+<path d="M435 370H448" class="arrow"/>
+<path d="M435 227H475V342" class="arrow"/>
+<circle cx="475" cy="370" r="24" fill="white" stroke="#9cb0c1" stroke-width="2"/><text x="475" y="380" text-anchor="middle" font-size="35">+</text>
+<text x="470" y="461" text-anchor="middle" class="small">逐元素相加</text>
+<rect x="515" y="290" width="490" height="160" rx="20" fill="#edf4ef" stroke="#bcd6c5" stroke-width="2"/>
+<text x="760" y="268" text-anchor="middle" class="body">4 层依次加工，参数各自独立</text>
+<path d="M499 370H528" class="arrow"/>
+<rect x="538" y="322" width="95" height="96" rx="14" fill="#d9eade" class="box"/><text x="585" y="360" text-anchor="middle" class="body">Block</text><text x="585" y="395" text-anchor="middle" class="head">1</text>
+<path d="M633 370H646" class="arrow"/>
+<rect x="656" y="322" width="95" height="96" rx="14" fill="#d9eade" class="box"/><text x="703" y="360" text-anchor="middle" class="body">Block</text><text x="703" y="395" text-anchor="middle" class="head">2</text>
+<path d="M751 370H764" class="arrow"/>
+<rect x="774" y="322" width="95" height="96" rx="14" fill="#d9eade" class="box"/><text x="821" y="360" text-anchor="middle" class="body">Block</text><text x="821" y="395" text-anchor="middle" class="head">3</text>
+<path d="M869 370H882" class="arrow"/>
+<rect x="892" y="322" width="95" height="96" rx="14" fill="#d9eade" class="box"/><text x="939" y="360" text-anchor="middle" class="body">Block</text><text x="939" y="395" text-anchor="middle" class="head">4</text>
+<text x="760" y="486" text-anchor="middle" class="small">每层输入、输出均为 [8, 128, 128]</text>
+<path d="M987 370H1030" class="arrow"/>
+<rect x="1040" y="320" width="210" height="100" rx="16" fill="#eee9f6" class="box"/><text x="1145" y="359" text-anchor="middle" class="head">final RMSNorm</text><text x="1145" y="397" text-anchor="middle" class="small">[8, 128, 128]</text>
+<path d="M1250 370H1282" class="arrow"/>
+<rect x="1292" y="320" width="245" height="100" rx="16" fill="#e8f1f9" class="box"/><text x="1414" y="359" text-anchor="middle" class="head">LM Head</text><text x="1414" y="397" text-anchor="middle" class="small">Linear：128 → 3035</text>
+<text x="1414" y="461" text-anchor="middle" class="small">logits [8, 128, 3035]</text>
+<text x="1414" y="492" text-anchor="middle" class="small">每个位置一组候选分数</text>
+<rect x="65" y="535" width="1472" height="275" rx="20" fill="white" stroke="#c3d3e1" stroke-width="2"/>
+<text x="95" y="578" class="head">展开任意一个 Block：先 Norm，再进入子层，最后加回原输入</text>
+<text x="100" y="717" class="body">x</text>
+<path d="M120 710H222" class="arrow"/>
+<rect x="235" y="673" width="160" height="74" rx="13" fill="#eee9f6" class="box"/><text x="315" y="718" text-anchor="middle" class="body">RMSNorm 1</text>
+<path d="M395 710H421" class="arrow"/>
+<rect x="434" y="665" width="220" height="90" rx="13" fill="#e8f1f9" class="box"/><text x="544" y="702" text-anchor="middle" class="body">因果多头 Attention</text><text x="544" y="735" text-anchor="middle" class="small">4 头，每头 32 维</text>
+<path d="M654 710H680" class="arrow"/>
+<circle cx="708" cy="710" r="24" fill="#fff0df" stroke="#d6b383" stroke-width="2"/><text x="708" y="720" text-anchor="middle" font-size="34">+</text>
+<path d="M165 710V625H708V682" class="residual"/>
+<text x="420" y="650" text-anchor="middle" class="small" style="fill:#986823">残差：加回 x</text>
+<path d="M732 710H777" class="arrow"/>
+<text x="755" y="780" text-anchor="middle" class="small">h</text>
+<rect x="790" y="673" width="160" height="74" rx="13" fill="#eee9f6" class="box"/><text x="870" y="718" text-anchor="middle" class="body">RMSNorm 2</text>
+<path d="M950 710H976" class="arrow"/>
+<rect x="989" y="665" width="250" height="90" rx="13" fill="#e5f1eb" class="box"/><text x="1114" y="702" text-anchor="middle" class="body">MLP（含 GELU）</text><text x="1114" y="735" text-anchor="middle" class="small">128 → 512 → 128</text>
+<path d="M1239 710H1280" class="arrow"/>
+<circle cx="1308" cy="710" r="24" fill="#fff0df" stroke="#d6b383" stroke-width="2"/><text x="1308" y="720" text-anchor="middle" font-size="34">+</text>
+<path d="M755 710V625H1308V682" class="residual"/>
+<text x="1055" y="650" text-anchor="middle" class="small" style="fill:#986823">残差：加回 h</text>
+<path d="M1332 710H1410" class="arrow"/><text x="1425" y="717" class="body">y</text>
+<text x="800" y="861" text-anchor="middle" class="small">图中按 batch = 8、输入长度 = 128 标注 shape；位置向量共享给 batch 内的每条序列。</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">TinyGPT：从文字到预测，从错误到参数更新</title>
+  <desc id="desc">上方从左向右依次为文字与Tokenizer、Token IDs、Embedding加位置表示、Transformer Blocks、LM Head和logits。模型边界只包含可学习的神经网络模块。logits向上进入下一token选择，向下与正确答案计算loss。下方从右向左依次为loss、Backward计算梯度、Optimizer更新参数，更新箭头返回模型参数区域。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#48677d"/></marker>
+    <marker id="orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#b95b2c"/></marker>
+    <style>
+      text{font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#183446}
+      .title{font-size:44px;font-weight:700}.section{font-size:28px;font-weight:600}.label{font-size:28px;font-weight:600}.body{font-size:26px}.small{font-size:24px}.shape{font-size:26px;font-family:Menlo,Consolas,monospace;fill:#365d76}
+      .flow{fill:none;stroke:#48677d;stroke-width:3;marker-end:url(#arrow)}.train{fill:none;stroke:#b95b2c;stroke-width:3;marker-end:url(#orange)}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f7f9fc"/>
+  <text x="64" y="76" class="title">TinyGPT：预测怎样产生，参数怎样学会</text>
+  <text x="64" y="122" class="body">同一条前向路径，既用于预测，也用于训练。</text>
+
+  <rect x="503" y="242" width="758" height="270" rx="24" fill="#eaf3f8" stroke="#88adc5" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="529" y="281" class="small">模型：这里的参数会在训练中更新</text>
+  <text x="64" y="281" class="section">① 前向：文字 → 词表分数</text>
+
+  <rect x="64" y="319" width="220" height="160" rx="18" fill="#fff" stroke="#c4d1dd" stroke-width="2"/>
+  <text x="174" y="359" text-anchor="middle" class="label">Tokenizer</text>
+  <text x="174" y="407" text-anchor="middle" class="body">我 今天 想 吃</text>
+  <text x="174" y="450" text-anchor="middle" class="small">文字 → 分词 → 编号</text>
+
+  <rect x="320" y="319" width="156" height="160" rx="18" fill="#fff" stroke="#c4d1dd" stroke-width="2"/>
+  <text x="398" y="363" text-anchor="middle" class="label">Token IDs</text>
+  <text x="398" y="408" text-anchor="middle" class="body">整数编号</text>
+  <text x="398" y="451" text-anchor="middle" class="shape">[B,T]</text>
+
+  <rect x="529" y="319" width="220" height="160" rx="18" fill="#fff" stroke="#88adc5" stroke-width="2"/>
+  <text x="639" y="359" text-anchor="middle" class="label">Embedding</text>
+  <text x="639" y="399" text-anchor="middle" class="body">＋位置表示</text>
+  <text x="639" y="451" text-anchor="middle" class="shape">[B,T,d]</text>
+
+  <rect x="789" y="319" width="226" height="160" rx="18" fill="#fff" stroke="#88adc5" stroke-width="2"/>
+  <text x="902" y="359" text-anchor="middle" class="label">Transformer</text>
+  <text x="902" y="399" text-anchor="middle" class="body">Blocks × N</text>
+  <text x="902" y="451" text-anchor="middle" class="shape">[B,T,d]</text>
+
+  <rect x="1055" y="319" width="180" height="160" rx="18" fill="#fff" stroke="#88adc5" stroke-width="2"/>
+  <text x="1145" y="359" text-anchor="middle" class="label">LM Head</text>
+  <text x="1145" y="407" text-anchor="middle" class="body">映射到词表</text>
+  <text x="1145" y="450" text-anchor="middle" class="small">候选 token 打分</text>
+
+  <rect x="1297" y="319" width="239" height="160" rx="18" fill="#e7f3ef" stroke="#83afa1" stroke-width="2"/>
+  <text x="1416" y="359" text-anchor="middle" class="label">logits</text>
+  <text x="1416" y="407" text-anchor="middle" class="body">每个位置一组分数</text>
+  <text x="1416" y="451" text-anchor="middle" class="shape">[B,T,V_vocab]</text>
+  <path d="M284 399H316" class="flow"/>
+  <path d="M476 399H525" class="flow"/>
+  <path d="M749 399H785" class="flow"/>
+  <path d="M1015 399H1051" class="flow"/>
+  <path d="M1235 399H1293" class="flow"/>
+
+  <rect x="1055" y="160" width="481" height="69" rx="14" fill="#e7f3ef"/>
+  <text x="1295" y="203" text-anchor="middle" class="body">生成：取最后位置 → 选出下一个 token</text>
+  <path d="M1416 319V234" class="flow"/>
+
+  <text x="64" y="577" class="section">② 训练：比较答案 → 计算梯度 → 更新参数</text>
+  <rect x="1055" y="550" width="481" height="65" rx="14" fill="#fff2dc"/>
+  <text x="1295" y="591" text-anchor="middle" class="body">正确答案：今天 / 想 / 吃 / 火锅</text>
+
+  <rect x="1135" y="664" width="401" height="123" rx="18" fill="#fff" stroke="#d5aa8f" stroke-width="2"/>
+  <text x="1335" y="708" text-anchor="middle" class="label">Cross Entropy → loss</text>
+  <text x="1335" y="754" text-anchor="middle" class="body">衡量对正确 token 的预测有多差</text>
+  <path d="M1512 479V527H1555V641H1480V660" class="train"/>
+  <path d="M1295 615V660" class="train"/>
+
+  <rect x="691" y="664" width="360" height="123" rx="18" fill="#fff" stroke="#d5aa8f" stroke-width="2"/>
+  <text x="871" y="708" text-anchor="middle" class="label">Backward：计算梯度</text>
+  <text x="871" y="754" text-anchor="middle" class="body">求 loss 对参数的变化率</text>
+  <path d="M1135 726H1055" class="train"/>
+
+  <rect x="247" y="664" width="360" height="123" rx="18" fill="#fff" stroke="#d5aa8f" stroke-width="2"/>
+  <text x="427" y="708" text-anchor="middle" class="label">Optimizer：更新参数</text>
+  <text x="427" y="754" text-anchor="middle" class="body">根据梯度调整模型</text>
+  <path d="M691 726H611" class="train"/>
+  <path d="M607 691H639V517" class="train"/>
+  <text x="667" y="548" class="small" fill="#b95b2c">更新模型中的参数</text>
+
+  <text x="64" y="850" class="small">B：序列数　T：序列长度　d：隐藏维度　V_vocab：词表大小　N：Block 数量</text>
+</svg>

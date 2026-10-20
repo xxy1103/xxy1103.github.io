@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">同一批故事，三种用途</title>
+<desc id="desc">先把完整故事分成互不重叠的三组：训练集约三百万字符用于更新参数，验证集约二十万字符用于观察效果和选择模型，测试集约二十万字符用于选定模型后的最终评估。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10" fill="#71859a"/></marker></defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#23374a}.title{font-size:44px;font-weight:700}.head{font-size:32px;font-weight:600}.body{font-size:27px}.small{font-size:24px}.arrow{fill:none;stroke:#71859a;stroke-width:3;marker-end:url(#arrow)}</style>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="80" y="90" class="title">同一批故事，三种用途</text>
+<text x="80" y="140" class="body">先按整篇故事划分，再在各自集合内切成模型能读取的片段。</text>
+<rect x="565" y="190" width="470" height="140" rx="22" fill="white" stroke="#c8d6e2" stroke-width="2"/>
+<text x="800" y="245" text-anchor="middle" class="head">一批完整的中文故事</text>
+<text x="800" y="290" text-anchor="middle" class="small">每篇故事只属于其中一个集合</text>
+<path d="M800 330V375H310V425" class="arrow"/>
+<path d="M800 375V425" class="arrow"/>
+<path d="M800 375H1290V425" class="arrow"/>
+<rect x="80" y="440" width="460" height="295" rx="22" fill="#e5f1eb" stroke="#b6d6c4" stroke-width="2"/>
+<text x="115" y="495" class="head">训练集</text>
+<text x="115" y="540" class="body">约 300 万字符</text>
+<path d="M115 565H505" stroke="#b6d6c4" stroke-width="2"/>
+<text x="115" y="610" class="body">像平时的练习题</text>
+<text x="115" y="657" class="body">根据预测错误更新参数</text>
+<text x="115" y="705" class="small">让模型逐渐学会怎样接下去</text>
+<rect x="570" y="440" width="460" height="295" rx="22" fill="#e8f1f9" stroke="#bfd4e6" stroke-width="2"/>
+<text x="605" y="495" class="head">验证集</text>
+<text x="605" y="540" class="body">约 20 万字符</text>
+<path d="M605 565H995" stroke="#bfd4e6" stroke-width="2"/>
+<text x="605" y="610" class="body">像训练过程中的阶段测验</text>
+<text x="605" y="657" class="body">观察效果，选择模型</text>
+<text x="605" y="705" class="small">只检查预测，不更新参数</text>
+<rect x="1060" y="440" width="460" height="295" rx="22" fill="#fff0df" stroke="#e7ccaa" stroke-width="2"/>
+<text x="1095" y="495" class="head">测试集</text>
+<text x="1095" y="540" class="body">约 20 万字符</text>
+<path d="M1095 565H1485" stroke="#e7ccaa" stroke-width="2"/>
+<text x="1095" y="610" class="body">留到模型选定后再使用</text>
+<text x="1095" y="657" class="body">做最终评估</text>
+<text x="1095" y="705" class="small">只检查预测，不更新参数</text>
+<text x="800" y="815" text-anchor="middle" class="body">同一篇故事及其重复副本，不应同时出现在训练与评估两侧。</text>
+</svg>

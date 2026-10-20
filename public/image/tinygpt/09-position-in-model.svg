@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">第五章回到输入端：位置向量在哪里加入</title>
+<desc id="desc">Token编号查token Embedding表得到token向量；位置编号查位置Embedding表得到位置向量。二者在进入Transformer之前逐元素相加，得到初始表示X。X进入Transformer Blocks，其中包括前一章学过的Attention，之后经LM Head得到词表分数并预测下一个token。本章重点为位置向量及输入端加法。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55758b"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:42px;font-weight:700}.h{font-size:31px;font-weight:600}.b{font-size:28px}.s{font-size:25px}.a{fill:none;stroke:#55758b;stroke-width:3;marker-end:url(#a)}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="78" class="t">本章回到输入端：位置向量在进入 Transformer 前加入</text>
+<text x="64" y="132" class="b">讲解顺序：先学过 Attention，再回来补位置表示；实际数据流仍从输入端开始。</text>
+
+<rect x="64" y="200" width="854" height="524" rx="22" fill="#fff5e9" stroke="#d4a970" stroke-width="2"/>
+<text x="90" y="246" class="h">输入端：本章补齐位置分支与相加步骤</text>
+<rect x="90" y="294" width="240" height="124" rx="16" fill="#fff" stroke="#b4c4d0" stroke-width="2"/>
+<text x="210" y="335" class="h" text-anchor="middle">Token 编号</text>
+<text x="210" y="376" class="s" text-anchor="middle">由文字分词后得到</text>
+<path d="M330 356H390" class="a"/>
+<rect x="395" y="294" width="273" height="124" rx="16" fill="#e8edf9"/>
+<text x="531" y="335" class="b" text-anchor="middle">Token Embedding</text>
+<text x="531" y="376" class="b" text-anchor="middle">查出 token 向量</text>
+
+<rect x="90" y="529" width="240" height="124" rx="16" fill="#fff" stroke="#d4a970" stroke-width="2"/>
+<text x="210" y="571" class="h" text-anchor="middle">位置编号</text>
+<text x="210" y="612" class="s" text-anchor="middle">0、1、2、……</text>
+<path d="M330 591H390" class="a"/>
+<rect x="395" y="529" width="273" height="124" rx="16" fill="#ffe3bc"/>
+<text x="531" y="571" class="s" text-anchor="middle">Position Embedding</text>
+<text x="531" y="612" class="b" text-anchor="middle">查出位置向量</text>
+
+<path d="M668 356H784V421" class="a"/>
+<path d="M668 591H784V501" class="a"/>
+<circle cx="784" cy="461" r="35" fill="#fff" stroke="#bd8b4f" stroke-width="3"/>
+<text x="784" y="474" font-size="42" text-anchor="middle">+</text>
+<text x="531" y="685" class="b" text-anchor="middle">逐元素相加</text>
+<text x="531" y="716" class="s" text-anchor="middle">得到初始表示 X</text>
+<path d="M819 461H985" class="a"/>
+
+<rect x="990" y="342" width="546" height="190" rx="20" fill="#e8f1f9" stroke="#a5bdcf" stroke-width="2"/>
+<text x="1263" y="390" class="h" text-anchor="middle">Transformer Blocks</text>
+<text x="1263" y="437" class="b" text-anchor="middle">包含上一章学过的 Attention</text>
+<text x="1263" y="486" class="s" text-anchor="middle">在这里计算 Q、K、V，读取上下文</text>
+<path d="M1263 532V585" class="a"/>
+<rect x="990" y="590" width="546" height="134" rx="18" fill="#e5f1eb"/>
+<text x="1263" y="637" class="h" text-anchor="middle">LM Head → 词表分数</text>
+<text x="1263" y="686" class="b" text-anchor="middle">用于预测下一个 token</text>
+
+<text x="64" y="800" class="b">真实顺序：token 向量 ＋ 位置向量 → Transformer（含 Attention）→ LM Head → 预测</text>
+<text x="64" y="851" class="s">位置向量加在模型入口，不是等 Attention 算完再加。图中省略 Norm 等内部步骤。</text>
+</svg>

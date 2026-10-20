@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Attention 读取其他位置，MLP 加工当前行</title>
+<desc id="desc">左右两边都展示我、今天、想、吃四行，每行四个特征。左边用四条箭头展示吃位置读取自身和前文的向量，强调跨位置读取。右边每一行分别通过同一套MLP参数，先升维再激活再降维，没有跨行箭头。右侧输入代表已经获得上下文的表示。图中只画一条序列并省略Attention内部QKV细节。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55758b"/></marker><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:40px;font-weight:700}.h{font-size:30px;font-weight:600}.b{font-size:27px}.s{font-size:24px}.a{fill:none;stroke:#55758b;stroke-width:3;marker-end:url(#a)}.grid{stroke:#fff;stroke-width:3}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">两种处理方向：先读取上下文，再加工每一行已有的信息</text>
+<text x="64" y="128" class="b">每行是一个 token 位置，每格是一个向量分量。这里只画一条序列：T = 4，d = 4。</text>
+
+<rect x="56" y="180" width="716" height="548" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="82" y="226" class="h">Attention：一个位置读取多个来源</text>
+<text x="245" y="278" class="s" text-anchor="middle">输入表示</text><text x="620" y="278" class="s" text-anchor="middle">Attention 输出</text>
+<g class="b" text-anchor="end"><text x="146" y="333">我</text><text x="146" y="403">今天</text><text x="146" y="473">想</text><text x="146" y="543">吃</text></g>
+<g fill="#e8f1f9"><rect x="165" y="300" width="160" height="48" rx="7"/><rect x="165" y="370" width="160" height="48" rx="7"/><rect x="165" y="440" width="160" height="48" rx="7"/><rect x="165" y="510" width="160" height="48" rx="7"/></g>
+<path d="M205 300V348 M245 300V348 M285 300V348 M205 370V418 M245 370V418 M285 370V418 M205 440V488 M245 440V488 M285 440V488 M205 510V558 M245 510V558 M285 510V558" class="grid"/>
+<g fill="#eef2f6"><rect x="540" y="300" width="160" height="48" rx="7"/><rect x="540" y="370" width="160" height="48" rx="7"/><rect x="540" y="440" width="160" height="48" rx="7"/></g>
+<rect x="540" y="510" width="160" height="48" rx="7" fill="#ffe3bc" stroke="#d4a970" stroke-width="2"/>
+<path d="M580 300V348 M620 300V348 M660 300V348 M580 370V418 M620 370V418 M660 370V418 M580 440V488 M620 440V488 M660 440V488 M580 510V558 M620 510V558 M660 510V558" class="grid"/>
+<path d="M325 324L530 534 M325 394L530 534 M325 464L530 534 M325 534H530" class="a"/>
+<text x="425" y="350" class="s" text-anchor="middle">跨位置</text>
+<text x="620" y="604" class="s" text-anchor="middle">突出“吃”的读取</text>
+<text x="82" y="659" class="b">“吃”的输出可以受前面三行影响。</text>
+<text x="82" y="700" class="s">其他行也会计算；图中只展开最后一行的读取。</text>
+
+<rect x="828" y="180" width="716" height="548" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="854" y="226" class="h">MLP：每行单独加工，参数共享</text>
+<text x="1006" y="278" class="s" text-anchor="middle">已有上下文的表示</text><text x="1418" y="278" class="s" text-anchor="middle">加工结果</text>
+<g class="b" text-anchor="end"><text x="914" y="333">我</text><text x="914" y="403">今天</text><text x="914" y="473">想</text><text x="914" y="543">吃</text></g>
+<g fill="#e8f1f9"><rect x="934" y="300" width="144" height="48" rx="7"/><rect x="934" y="370" width="144" height="48" rx="7"/><rect x="934" y="440" width="144" height="48" rx="7"/><rect x="934" y="510" width="144" height="48" rx="7"/></g>
+<g fill="#e5f1eb"><rect x="1346" y="300" width="144" height="48" rx="7"/><rect x="1346" y="370" width="144" height="48" rx="7"/><rect x="1346" y="440" width="144" height="48" rx="7"/><rect x="1346" y="510" width="144" height="48" rx="7"/></g>
+<path d="M970 300V348 M1006 300V348 M1042 300V348 M970 370V418 M1006 370V418 M1042 370V418 M970 440V488 M1006 440V488 M1042 440V488 M970 510V558 M1006 510V558 M1042 510V558 M1382 300V348 M1418 300V348 M1454 300V348 M1382 370V418 M1418 370V418 M1454 370V418 M1382 440V488 M1418 440V488 M1454 440V488 M1382 510V558 M1418 510V558 M1454 510V558" class="grid"/>
+<g fill="#fff0df"><rect x="1126" y="298" width="172" height="52" rx="8"/><rect x="1126" y="368" width="172" height="52" rx="8"/><rect x="1126" y="438" width="172" height="52" rx="8"/><rect x="1126" y="508" width="172" height="52" rx="8"/></g>
+<g class="s" text-anchor="middle"><text x="1212" y="333">同一套 MLP</text><text x="1212" y="403">同一套 MLP</text><text x="1212" y="473">同一套 MLP</text><text x="1212" y="543">同一套 MLP</text></g>
+<path d="M1078 324H1118 M1298 324H1338 M1078 394H1118 M1298 394H1338 M1078 464H1118 M1298 464H1338 M1078 534H1118 M1298 534H1338" class="a"/>
+<text x="1186" y="604" class="s" text-anchor="middle">每行内部：4 → 16 → 激活 → 4</text>
+<text x="854" y="659" class="b">不在这一步直接读取其他行。</text>
+<text x="854" y="700" class="s">当前行本身已经可以包含 Attention 汇集的信息。</text>
+
+<text x="64" y="796" class="b">Attention 混合不同位置的信息；MLP 用非线性变换加工每个位置的特征。</text>
+<text x="64" y="848" class="s">图中省略 Norm 与残差，专门对比这两种运算。格子不代表预先指定的“时间”“动作”等语义。</text>
+</svg>

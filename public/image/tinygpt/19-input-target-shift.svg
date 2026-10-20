@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">从同一段文字里切出输入和答案</title><desc id="desc">从连续的编号中取出五个字：小、兔、子、很、开。前四个作为输入，后四个作为答案，答案整体错开一位。位置一读到小，答案是兔；位置二读到小兔，答案是子；位置三读到小兔子，答案是很；位置四读到小兔子很，答案是开。</desc>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9" fill="#657c92"/></marker></defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#23374a}.title{font-size:42px;font-weight:700}.head{font-size:28px;font-weight:600}.body{font-size:25px}.small{font-size:22px}.tok{font-size:34px;font-weight:600;text-anchor:middle}.arrow{fill:none;stroke:#657c92;stroke-width:3;marker-end:url(#a)}</style>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="70" y="75" class="title">从同一段文字里，切出输入和答案</text>
+<text x="70" y="120" class="body">答案就是输入向后错开一位：每个位置都在练习“猜下一个字”。</text>
+<text x="70" y="206" class="head">token 流</text>
+<rect x="333" y="150" width="664" height="100" rx="18" fill="#fff0df" stroke="#d6a860" stroke-width="3" stroke-dasharray="10 7"/>
+<rect x="215" y="165" width="120" height="70" rx="14" fill="#eceff3" stroke="#aab8c5" stroke-width="2"/><text x="275.0" y="212.0" class="tok" style="font-size:22px">BOS</text>
+<rect x="345" y="165" width="120" height="70" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="405.0" y="212.0" class="tok">小</text>
+<rect x="475" y="165" width="120" height="70" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="535.0" y="212.0" class="tok">兔</text>
+<rect x="605" y="165" width="120" height="70" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="665.0" y="212.0" class="tok">子</text>
+<rect x="735" y="165" width="120" height="70" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="795.0" y="212.0" class="tok">很</text>
+<rect x="865" y="165" width="120" height="70" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="925.0" y="212.0" class="tok">开</text>
+<rect x="995" y="165" width="120" height="70" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="1055.0" y="212.0" class="tok">心</text>
+<rect x="1125" y="165" width="120" height="70" rx="14" fill="white" stroke="#c3d3e1" stroke-width="2"/><text x="1185.0" y="212.0" class="tok">。</text>
+<rect x="1255" y="165" width="120" height="70" rx="14" fill="#eceff3" stroke="#aab8c5" stroke-width="2"/><text x="1315.0" y="212.0" class="tok" style="font-size:22px">EOS</text>
+<text x="665" y="285" text-anchor="middle" class="body">随机取连续 T+1 个编号（这里把 T 缩成 4，所以取 5 个）</text>
+<text x="70" y="383" class="head">输入 x</text><text x="70" y="418" class="small">前 4 个</text>
+<rect x="345" y="350" width="120" height="70" rx="14" fill="#e8f1f9" stroke="#9cbbd6" stroke-width="2"/><text x="405.0" y="397.0" class="tok">小</text>
+<rect x="475" y="350" width="120" height="70" rx="14" fill="#e8f1f9" stroke="#9cbbd6" stroke-width="2"/><text x="535.0" y="397.0" class="tok">兔</text>
+<rect x="605" y="350" width="120" height="70" rx="14" fill="#e8f1f9" stroke="#9cbbd6" stroke-width="2"/><text x="665.0" y="397.0" class="tok">子</text>
+<rect x="735" y="350" width="120" height="70" rx="14" fill="#e8f1f9" stroke="#9cbbd6" stroke-width="2"/><text x="795.0" y="397.0" class="tok">很</text>
+<text x="70" y="523" class="head">答案 y</text><text x="70" y="558" class="small">后 4 个</text>
+<rect x="475" y="490" width="120" height="70" rx="14" fill="#e5f1eb" stroke="#9ccaae" stroke-width="2"/><text x="535.0" y="537.0" class="tok">兔</text>
+<rect x="605" y="490" width="120" height="70" rx="14" fill="#e5f1eb" stroke="#9ccaae" stroke-width="2"/><text x="665.0" y="537.0" class="tok">子</text>
+<rect x="735" y="490" width="120" height="70" rx="14" fill="#e5f1eb" stroke="#9ccaae" stroke-width="2"/><text x="795.0" y="537.0" class="tok">很</text>
+<rect x="865" y="490" width="120" height="70" rx="14" fill="#e5f1eb" stroke="#9ccaae" stroke-width="2"/><text x="925.0" y="537.0" class="tok">开</text>
+<path d="M415 424 L517 486" class="arrow"/>
+<path d="M545 424 L647 486" class="arrow"/>
+<path d="M675 424 L777 486" class="arrow"/>
+<path d="M805 424 L907 486" class="arrow"/>
+<text x="1070" y="395" class="small">每个位置读到的字</text><text x="1070" y="528" class="small">要猜的下一个字</text>
+<text x="800" y="618" text-anchor="middle" class="body">每个位置只能读到自己和左边的字，后面的字被因果遮挡</text>
+<rect x="70" y="650" width="350" height="165" rx="18" fill="white" stroke="#c3d3e1" stroke-width="2"/>
+<text x="95" y="695" class="head">位置 1</text>
+<text x="95" y="745" class="body">读到：小</text>
+<text x="95" y="790" class="body" style="fill:#217354;font-weight:600">答案：兔</text>
+<rect x="440" y="650" width="350" height="165" rx="18" fill="white" stroke="#c3d3e1" stroke-width="2"/>
+<text x="465" y="695" class="head">位置 2</text>
+<text x="465" y="745" class="body">读到：小 兔</text>
+<text x="465" y="790" class="body" style="fill:#217354;font-weight:600">答案：子</text>
+<rect x="810" y="650" width="350" height="165" rx="18" fill="white" stroke="#c3d3e1" stroke-width="2"/>
+<text x="835" y="695" class="head">位置 3</text>
+<text x="835" y="745" class="body">读到：小 兔 子</text>
+<text x="835" y="790" class="body" style="fill:#217354;font-weight:600">答案：很</text>
+<rect x="1180" y="650" width="350" height="165" rx="18" fill="white" stroke="#c3d3e1" stroke-width="2"/>
+<text x="1205" y="695" class="head">位置 4</text>
+<text x="1205" y="745" class="body">读到：小 兔 子 很</text>
+<text x="1205" y="790" class="body" style="fill:#217354;font-weight:600">答案：开</text>
+<text x="800" y="868" text-anchor="middle" class="small">真实训练中 T = 128：取 129 个编号，8 个这样的窗口叠起来，x 与 y 的 shape 都是 [8, 128]。</text>
+</svg>

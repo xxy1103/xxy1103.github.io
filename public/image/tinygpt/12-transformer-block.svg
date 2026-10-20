@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Pre-Norm Transformer Block：两条残差各自从哪里出发</title>
+<desc id="desc">水平主干为x到Norm1到因果多头Attention到加法得到h，再到Norm2到MLP到加法得到y。上方残差从未经归一化的x分出，跨过Norm1和Attention到第一处加法。下方残差从第一次相加之后的h分出，跨过Norm2和MLP到第二处加法。两次Norm不共享参数，所有主干节点的输入输出均为B乘T乘d，MLP仅内部升维。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55758b"/></marker><marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#bd8b4f"/></marker><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:40px;font-weight:700}.h{font-size:30px;font-weight:600}.b{font-size:27px}.s{font-size:24px}.a{fill:none;stroke:#55758b;stroke-width:3;marker-end:url(#a)}.r{fill:none;stroke:#bd8b4f;stroke-width:4;marker-end:url(#r)}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">一个 Pre-Norm Block：两次加工，两次加回对应的输入</text>
+<text x="64" y="128" class="b">第一条残差保留 x；第二条残差保留第一次相加后的 h。旁路都绕过对应的 Norm。</text>
+
+<rect x="182" y="370" width="568" height="198" rx="20" fill="#f0f5fa"/>
+<rect x="878" y="370" width="562" height="198" rx="20" fill="#f0f6f2"/>
+<text x="90" y="456" class="h" text-anchor="middle">x</text>
+<path d="M114 445H193" class="a"/>
+<circle cx="150" cy="445" r="5" fill="#bd8b4f"/>
+<path d="M150 445V274H720V408" class="r"/>
+<text x="435" y="244" class="b" text-anchor="middle">旁路①：保留 x</text>
+
+<rect x="200" y="390" width="142" height="110" rx="14" fill="#fff0df" stroke="#d4a970" stroke-width="2"/>
+<text x="271" y="437" class="h" text-anchor="middle">Norm₁</text>
+<text x="271" y="479" class="s" text-anchor="middle">逐行调整</text>
+<path d="M342 445H390" class="a"/>
+<rect x="398" y="390" width="232" height="110" rx="14" fill="#e8f1f9" stroke="#9ab9d1" stroke-width="2"/>
+<text x="514" y="435" class="h" text-anchor="middle">因果多头</text>
+<text x="514" y="479" class="h" text-anchor="middle">Attention</text>
+<path d="M630 445H682" class="a"/>
+<text x="657" y="424" class="s" text-anchor="middle">a</text>
+<circle cx="720" cy="445" r="30" fill="#fff" stroke="#bd8b4f" stroke-width="3"/>
+<text x="720" y="457" font-size="38" text-anchor="middle">+</text>
+<path d="M750 445H892" class="a"/>
+<circle cx="810" cy="445" r="5" fill="#bd8b4f"/>
+<text x="810" y="418" class="h" text-anchor="middle">h</text>
+
+<rect x="900" y="390" width="142" height="110" rx="14" fill="#fff0df" stroke="#d4a970" stroke-width="2"/>
+<text x="971" y="437" class="h" text-anchor="middle">Norm₂</text>
+<text x="971" y="479" class="s" text-anchor="middle">逐行调整</text>
+<path d="M1042 445H1094" class="a"/>
+<rect x="1102" y="390" width="204" height="110" rx="14" fill="#e5f1eb" stroke="#99bdac" stroke-width="2"/>
+<text x="1204" y="435" class="h" text-anchor="middle">MLP</text>
+<text x="1204" y="479" class="s" text-anchor="middle">升维、激活、降维</text>
+<path d="M1306 445H1372" class="a"/>
+<text x="1338" y="424" class="s" text-anchor="middle">m</text>
+<circle cx="1410" cy="445" r="30" fill="#fff" stroke="#bd8b4f" stroke-width="3"/>
+<text x="1410" y="457" font-size="38" text-anchor="middle">+</text>
+<path d="M1440 445H1491" class="a"/>
+<text x="1515" y="456" class="h" text-anchor="middle">y</text>
+<path d="M810 445V612H1410V482" class="r"/>
+<text x="1110" y="658" class="b" text-anchor="middle">旁路②：保留更新后的 h</text>
+
+<text x="466" y="547" class="s" text-anchor="middle">Attention 分支输出 a：[B,T,d]</text>
+<text x="1160" y="547" class="s" text-anchor="middle">MLP 分支输出 m：[B,T,d]</text>
+
+<rect x="64" y="716" width="1472" height="120" rx="18" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="90" y="762" class="h">h = x + Attention(Norm₁(x))</text>
+<text x="840" y="762" class="h">y = h + MLP(Norm₂(h))</text>
+<text x="90" y="810" class="b">x、h、y 都是 [B,T,d]。两次相加都是逐元素相加，Norm₁ 与 Norm₂ 各有自己的参数。</text>
+<text x="64" y="879" class="s">注意：第二次加法加回的是 h；相加之后不在这里另做一次 Norm。</text>
+</svg>

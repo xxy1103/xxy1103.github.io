@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">一个参数的一次训练：从loss16到loss0.64</title>
+<desc id="desc">第一步前向：输入2乘参数1得到预测2，与目标6比较得到平方损失16。第二步反向：沿计算关系返回参数，求得梯度负16，参数仍为1。第三步优化器以学习率0.1更新参数到2.6。第四步用新参数重新前向，得到预测5.2，损失0.64。</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#51768e"/></marker>
+<marker id="orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#b56337"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.title{font-size:42px;font-weight:700}.h{font-size:32px;font-weight:600}.b{font-size:28px}.s{font-size:26px}.flow{fill:none;stroke:#51768e;stroke-width:3;marker-end:url(#blue)}.back{fill:none;stroke:#b56337;stroke-width:3;marker-end:url(#orange)}</style>
+</defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="77" class="title">一次训练：先算预测，再算梯度，最后更新参数</text>
+<text x="64" y="128" class="b">模型：预测 = w × x　　样本：x = 2，目标 y = 6　　损失：L = (预测 − y)²</text>
+
+<text x="64" y="211" class="h">① Forward：用旧参数计算预测与 loss</text>
+<rect x="64" y="242" width="270" height="105" rx="16" fill="#fff" stroke="#a7bdcc" stroke-width="2"/>
+<text x="199" y="286" class="b" text-anchor="middle">输入 x = 2</text><text x="199" y="325" class="b" text-anchor="middle">参数 w = 1</text>
+<path d="M334 294H455" class="flow"/>
+<rect x="460" y="242" width="300" height="105" rx="16" fill="#e8f1f9"/>
+<text x="610" y="286" class="b" text-anchor="middle">预测 = 1 × 2</text><text x="610" y="325" class="h" text-anchor="middle">2</text>
+<path d="M760 294H875" class="flow"/>
+<rect x="880" y="242" width="300" height="105" rx="16" fill="#e8f1f9"/>
+<text x="1030" y="286" class="b" text-anchor="middle">误差 = 2 − 6</text><text x="1030" y="325" class="h" text-anchor="middle">−4</text>
+<path d="M1180 294H1251" class="flow"/>
+<rect x="1256" y="242" width="280" height="105" rx="16" fill="#e8f1f9"/>
+<text x="1396" y="286" class="b" text-anchor="middle">loss = (−4)²</text><text x="1396" y="325" class="h" text-anchor="middle">16</text>
+
+<text x="64" y="416" class="h">② Backward：沿计算关系求梯度</text>
+<rect x="64" y="446" width="570" height="118" rx="16" fill="#fff0e5"/>
+<text x="90" y="491" class="b">dL/dw = 2(wx − y) × x = −16</text>
+<text x="90" y="538" class="s">此时 w 仍是 1；得到的是梯度。</text>
+<path d="M1396 347V495H650" class="back"/>
+<text x="823" y="469" class="s">从 loss 出发，反向计算对 w 的变化率</text>
+
+<rect x="64" y="603" width="715" height="160" rx="18" fill="#fff" stroke="#bda58d" stroke-width="2"/>
+<text x="89" y="649" class="h">③ Optimizer：更新参数</text>
+<text x="89" y="699" class="b">新 w = 1 − 0.1 × (−16) = 2.6</text>
+<text x="89" y="741" class="s">学习率 0.1；这里使用简单 SGD 规则。</text>
+<path d="M349 564V597" class="back"/>
+<path d="M779 682H844" class="flow"/>
+<rect x="850" y="603" width="686" height="160" rx="18" fill="#e5f1eb"/>
+<text x="876" y="649" class="h">④ 重新 Forward：观察更新后的结果</text>
+<text x="876" y="699" class="b">新预测 = 2.6 × 2 = 5.2</text>
+<text x="876" y="741" class="b">新 loss = (5.2 − 6)² = 0.64</text>
+
+<text x="64" y="842" class="b">Backward 算梯度 → Optimizer 改参数 → 重新计算，才能看到新预测与新 loss。</text>
+</svg>

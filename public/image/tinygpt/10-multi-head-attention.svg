@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">多头注意力：拆特征、各头读取、按位置合并</title>
+<desc id="desc">输入X经过Q、K、V投影，每个位置的四个特征分成两个头，每头两个特征。两个头均保留我、今天、想、吃的全部位置，各自计算四乘四的权重表并汇总自己的Value。各头的输出按同一个token位置拼接，然后用输出投影混合。图中省略batch的具体数值。</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55758b"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.title{font-size:42px;font-weight:700}.h{font-size:30px;font-weight:600}.b{font-size:27px}.s{font-size:24px}.a{fill:none;stroke:#55758b;stroke-width:3;marker-end:url(#arrow)}.blue{fill:#e8f1f9;stroke:#9ab9d1;stroke-width:2}.green{fill:#e5f1eb;stroke:#99bdac;stroke-width:2}</style>
+</defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="title">多头 Attention：每个头都读取整条序列，再按位置合并</text>
+<text x="64" y="127" class="b">示例：T = 4 个位置，d = 4 个特征，H = 2 个头，每头 D = 2 个特征。</text>
+
+<rect x="56" y="174" width="448" height="566" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="82" y="220" class="h">① 先投影，再拆特征</text>
+<text x="280" y="271" class="b" text-anchor="middle">X [B,T,4]</text>
+<path d="M280 285V318" class="a"/>
+<rect x="92" y="325" width="376" height="94" rx="14" fill="#fff0df"/>
+<text x="280" y="362" class="b" text-anchor="middle">Q、K、V 各做 Linear(4,4)</text>
+<text x="280" y="399" class="s" text-anchor="middle">下面以 Q 为例；K、V 同样拆分</text>
+<text x="206" y="463" class="s" text-anchor="middle">头 1</text>
+<text x="363" y="463" class="s" text-anchor="middle">头 2</text>
+<rect x="145" y="481" width="122" height="169" rx="10" class="blue"/>
+<rect x="302" y="481" width="122" height="169" rx="10" class="green"/>
+<g class="s" text-anchor="end"><text x="130" y="513">我</text><text x="130" y="553">今天</text><text x="130" y="593">想</text><text x="130" y="633">吃</text></g>
+<g class="b" text-anchor="middle"><text x="206" y="513">[·, ·]</text><text x="206" y="553">[·, ·]</text><text x="206" y="593">[·, ·]</text><text x="206" y="633">[·, ·]</text><text x="363" y="513">[·, ·]</text><text x="363" y="553">[·, ·]</text><text x="363" y="593">[·, ·]</text><text x="363" y="633">[·, ·]</text></g>
+<text x="280" y="700" class="s" text-anchor="middle">每行四个分量 → 两组，每组两个</text>
+
+<path d="M504 488H549" class="a"/>
+<rect x="558" y="174" width="484" height="566" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="584" y="220" class="h">② 各头分别计算 Attention</text>
+<text x="800" y="268" class="s" text-anchor="middle">Q、K、V 都整理成 [B,H,T,D]</text>
+<rect x="586" y="300" width="428" height="158" rx="14" class="blue"/>
+<text x="609" y="338" class="h">头 1：我 / 今天 / 想 / 吃</text>
+<text x="609" y="382" class="s">自己的 Q、K → 4×4 权重表</text>
+<text x="609" y="426" class="s">权重 × 自己的 V → 4×2 输出</text>
+<rect x="586" y="481" width="428" height="158" rx="14" class="green"/>
+<text x="609" y="519" class="h">头 2：我 / 今天 / 想 / 吃</text>
+<text x="609" y="563" class="s">自己的 Q、K → 4×4 权重表</text>
+<text x="609" y="607" class="s">权重 × 自己的 V → 4×2 输出</text>
+<text x="800" y="682" class="s" text-anchor="middle">每头都缩放、遮挡，再逐行 Softmax</text>
+<text x="800" y="719" class="s" text-anchor="middle">各头输出：[B,H,T,D]</text>
+
+<path d="M1042 488H1087" class="a"/>
+<rect x="1096" y="174" width="448" height="566" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="1122" y="220" class="h">③ 同位置拼接，再混合</text>
+<text x="1320" y="268" class="s" text-anchor="middle">先恢复轴顺序：[B,T,H,D]</text>
+<g class="s" text-anchor="end"><text x="1174" y="338">我</text><text x="1174" y="388">今天</text><text x="1174" y="438">想</text><text x="1174" y="488">吃</text></g>
+<g>
+<rect x="1190" y="309" width="142" height="38" rx="6" class="blue"/><rect x="1340" y="309" width="142" height="38" rx="6" class="green"/>
+<rect x="1190" y="359" width="142" height="38" rx="6" class="blue"/><rect x="1340" y="359" width="142" height="38" rx="6" class="green"/>
+<rect x="1190" y="409" width="142" height="38" rx="6" class="blue"/><rect x="1340" y="409" width="142" height="38" rx="6" class="green"/>
+<rect x="1190" y="459" width="142" height="38" rx="6" class="blue"/><rect x="1340" y="459" width="142" height="38" rx="6" class="green"/>
+</g>
+<g class="s" text-anchor="middle"><text x="1261" y="337">头 1 结果</text><text x="1411" y="337">头 2 结果</text><text x="1261" y="387">头 1 结果</text><text x="1411" y="387">头 2 结果</text><text x="1261" y="437">头 1 结果</text><text x="1411" y="437">头 2 结果</text><text x="1261" y="487">头 1 结果</text><text x="1411" y="487">头 2 结果</text></g>
+<text x="1320" y="543" class="s" text-anchor="middle">合并 H、D → [B,T,4]</text>
+<path d="M1320 556V584" class="a"/>
+<rect x="1140" y="591" width="360" height="76" rx="14" fill="#fff0df"/>
+<text x="1320" y="623" class="b" text-anchor="middle">Output Projection</text>
+<text x="1320" y="654" class="s" text-anchor="middle">Linear(4,4)：混合各头分量</text>
+<text x="1320" y="717" class="b" text-anchor="middle">输出：[B,T,4]</text>
+
+<text x="64" y="800" class="b">拆头：[B,T,d] → [B,T,H,D] → [B,H,T,D]　　合头：按相反顺序恢复。</text>
+<text x="64" y="851" class="b">始终保留 T 个位置。每个头都有自己的读取结果，头的职责由训练形成。</text>
+</svg>

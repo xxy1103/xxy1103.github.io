@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">从文字输入到语言模型训练</title>
+<desc id="desc">文字我今天想吃经过Tokenizer得到编号，经Embedding得到向量，经中间网络结合前文处理，再经LM Head输出词表分数。词表分数与错开一位的目标编号计算交叉熵损失，经Backward计算梯度，Optimizer更新Embedding、中间网络与LM Head中的可训练参数。位置表示与网络内部细节省略，后续章节展开。</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#53758c"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ad6034"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:42px;font-weight:700}.h{font-size:31px;font-weight:600}.b{font-size:28px}.s{font-size:26px}.a{fill:none;stroke:#53758c;stroke-width:3;marker-end:url(#a)}.bline{fill:none;stroke:#ad6034;stroke-width:3;marker-end:url(#b)}</style>
+</defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="77" class="t">把入口、出口与训练接起来</text>
+<text x="64" y="128" class="b">上方从左向右计算预测；下方从右向左读取训练步骤。</text>
+
+<rect x="424" y="176" width="1112" height="308" rx="22" fill="#edf4f9" stroke="#9db8cb" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="449" y="217" class="s">模型中的可训练模块（位置表示与内部细节后续展开）</text>
+<text x="64" y="217" class="h">输入：我今天想吃</text>
+<rect x="64" y="265" width="312" height="180" rx="18" fill="#fff" stroke="#acbdca" stroke-width="2"/>
+<text x="220" y="310" class="h" text-anchor="middle">Tokenizer</text>
+<text x="220" y="359" class="b" text-anchor="middle">文字 → token 编号</text>
+<text x="220" y="413" class="b" text-anchor="middle">[B,T]</text>
+<path d="M376 355H446" class="a"/>
+<rect x="451" y="265" width="304" height="180" rx="18" fill="#fff" stroke="#9db8cb" stroke-width="2"/>
+<text x="603" y="310" class="h" text-anchor="middle">Embedding</text>
+<text x="603" y="359" class="b" text-anchor="middle">编号 → 初始向量</text>
+<text x="603" y="413" class="b" text-anchor="middle">[B,T,d]</text>
+<path d="M755 355H814" class="a"/>
+<rect x="819" y="265" width="304" height="180" rx="18" fill="#fff" stroke="#9db8cb" stroke-width="2"/>
+<text x="971" y="310" class="h" text-anchor="middle">中间网络</text>
+<text x="971" y="359" class="b" text-anchor="middle">结合前文加工表示</text>
+<text x="971" y="413" class="b" text-anchor="middle">[B,T,d]</text>
+<path d="M1123 355H1182" class="a"/>
+<rect x="1187" y="265" width="324" height="180" rx="18" fill="#e6f1eb" stroke="#90b29f" stroke-width="2"/>
+<text x="1349" y="310" class="h" text-anchor="middle">LM Head → logits</text>
+<text x="1349" y="359" class="b" text-anchor="middle">给词表候选打分</text>
+<text x="1349" y="413" class="b" text-anchor="middle">[B,T,V_vocab]</text>
+
+<rect x="944" y="530" width="567" height="85" rx="16" fill="#fff0df"/>
+<text x="968" y="565" class="s">错开一位的目标编号 [B,T]</text>
+<text x="968" y="599" class="s">今天 / 想 / 吃 / 火锅（教学分词示例）</text>
+<path d="M1465 445V653" class="bline"/>
+<path d="M1107 615V653" class="bline"/>
+
+<rect x="1000" y="658" width="511" height="127" rx="18" fill="#fff" stroke="#d0ad93" stroke-width="2"/>
+<text x="1255" y="704" class="h" text-anchor="middle">Cross Entropy → loss</text>
+<text x="1255" y="753" class="s" text-anchor="middle">比较每个位置的预测与正确答案</text>
+<path d="M1000 721H917" class="bline"/>
+<rect x="514" y="658" width="398" height="127" rx="18" fill="#fff" stroke="#d0ad93" stroke-width="2"/>
+<text x="713" y="704" class="h" text-anchor="middle">Backward</text>
+<text x="713" y="753" class="b" text-anchor="middle">计算梯度</text>
+<path d="M514 721H443" class="bline"/>
+<rect x="64" y="658" width="374" height="127" rx="18" fill="#fff" stroke="#d0ad93" stroke-width="2"/>
+<text x="251" y="704" class="h" text-anchor="middle">Optimizer</text>
+<text x="251" y="753" class="b" text-anchor="middle">更新可训练参数</text>
+<path d="M251 658V559H603V489" class="bline"/>
+<text x="275" y="540" class="s">更新模型中的参数</text>
+<text x="64" y="849" class="s">Tokenizer 按固定规则转换文字与编号；它不属于这里由优化器更新的神经网络模块。</text>
+</svg>

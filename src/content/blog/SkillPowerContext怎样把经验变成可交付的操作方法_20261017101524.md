@@ -1,7 +1,7 @@
 ---
 title: "Skill：PowerContext怎样把经验变成可交付的操作方法"
 date: "2026-10-17T10:15:24+08:00"
-updated: "2026-10-17T10:29:18+08:00"
+updated: "2026-10-20T16:48:30+08:00"
 description: "PowerContext 的 Skill 功能将经验转化为可操作的技能包，提供明确的操作步骤和验证要求，帮助 Agent 在遇到类似问题时高效处理。通过整理和审核，Skill 确保了经验的可复用性和适用性。"
 draft: false
 categories:
@@ -12,6 +12,7 @@ tags:
   - "powercontext"
 ---
 
+时间啊，如若能倒流。相爱之事也能，如我所愿吧。
 <!-- more -->
 
 # Skill：PowerContext 怎样把经验变成可交付的操作方法

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">各头分别投影与一次大投影再拆分等价</title>
+<desc id="desc">左侧同一个完整四维输入分别送入两个Linear(4,2)，蓝色头1和绿色头2各产生两个数。右侧将两个数学记法下四乘二的权重矩阵沿列拼成四乘四矩阵，并拼接偏置，单次Linear(4,4)产生相同四个数，再分给两个头。仅当参数对应相同时两种方式等价。图中只讨论Query投影，不包含Attention读取。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#55758b"/></marker>
+<style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203c50}.t{font-size:40px;font-weight:700}.h{font-size:30px;font-weight:600}.b{font-size:27px}.s{font-size:24px}.a{fill:none;stroke:#55758b;stroke-width:3;marker-end:url(#a)}.blue{fill:#e8f1f9;stroke:#9ab9d1;stroke-width:2}.green{fill:#e5f1eb;stroke:#99bdac;stroke-width:2}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">各头有自己的参数，也可以合在一次 Linear 里计算</text>
+<text x="64" y="126" class="b">只看一个 token 的 Query 投影：输入长度 4，两个头各输出 2 个数。Q 的其他位置同样处理。</text>
+
+<rect x="56" y="174" width="708" height="492" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="82" y="221" class="h">方式一：两个 Linear(4,2) 分别计算</text>
+<rect x="219" y="254" width="380" height="64" rx="12" fill="#fff0df"/>
+<text x="409" y="296" class="b" text-anchor="middle">同一个 x = [x₁, x₂, x₃, x₄]</text>
+<path d="M409 318V348H237V385" class="a"/>
+<path d="M409 348H581V385" class="a"/>
+<rect x="88" y="392" width="298" height="116" rx="14" class="blue"/>
+<text x="237" y="432" class="h" text-anchor="middle">头 1：Linear(4,2)</text>
+<text x="237" y="477" class="b" text-anchor="middle">W₁ [4,2]、b₁ [2]</text>
+<rect x="432" y="392" width="298" height="116" rx="14" class="green"/>
+<text x="581" y="432" class="h" text-anchor="middle">头 2：Linear(4,2)</text>
+<text x="581" y="477" class="b" text-anchor="middle">W₂ [4,2]、b₂ [2]</text>
+<path d="M237 508V550" class="a"/><path d="M581 508V550" class="a"/>
+<rect x="122" y="557" width="230" height="65" rx="12" class="blue"/><rect x="466" y="557" width="230" height="65" rx="12" class="green"/>
+<text x="237" y="600" class="h" text-anchor="middle">[q₁, q₂]</text><text x="581" y="600" class="h" text-anchor="middle">[q₃, q₄]</text>
+
+<text x="800" y="438" font-size="46" text-anchor="middle">=</text>
+<rect x="836" y="174" width="708" height="492" rx="20" fill="#fff" stroke="#d7e0e8" stroke-width="2"/>
+<text x="862" y="221" class="h">方式二：一个 Linear(4,4)，再拆成两头</text>
+<rect x="1000" y="254" width="380" height="64" rx="12" fill="#fff0df"/>
+<text x="1190" y="296" class="b" text-anchor="middle">同一个 x = [x₁, x₂, x₃, x₄]</text>
+<path d="M1190 318V351" class="a"/>
+<rect x="872" y="358" width="636" height="150" rx="14" fill="#f7f9fc" stroke="#b4c4d0" stroke-width="2"/>
+<text x="1041" y="402" class="h" text-anchor="middle">Linear(4,4)</text>
+<text x="1041" y="445" class="s" text-anchor="middle">W = [W₁ | W₂]</text>
+<text x="1041" y="483" class="s" text-anchor="middle">b = [b₁ | b₂]</text>
+<rect x="1226" y="376" width="104" height="112" class="blue"/><rect x="1330" y="376" width="104" height="112" class="green"/>
+<path d="M1278 376V488 M1382 376V488 M1226 404H1434 M1226 432H1434 M1226 460H1434" stroke="#fff" stroke-width="2" fill="none"/>
+<text x="1278" y="347" class="s" text-anchor="middle">头 1 的列</text><text x="1407" y="347" class="s" text-anchor="middle">头 2 的列</text>
+<path d="M1190 508V550" class="a"/>
+<rect x="958" y="557" width="228" height="65" rx="10" class="blue"/><rect x="1194" y="557" width="228" height="65" rx="10" class="green"/>
+<text x="1072" y="600" class="h" text-anchor="middle">[q₁, q₂]</text><text x="1308" y="600" class="h" text-anchor="middle">[q₃, q₄]</text>
+<text x="1190" y="650" class="s" text-anchor="middle">输出四个数，按前两个 / 后两个拆头</text>
+
+<rect x="64" y="700" width="1472" height="104" rx="16" fill="#fff0df"/>
+<text x="88" y="741" class="h">等价的前提：右侧恰好使用左侧两组权重与偏置的拼接。</text>
+<text x="88" y="784" class="b">两头都使用完整输入。合并计算没有共享两头的参数，也没有新增一套参数。</text>
+<text x="64" y="855" class="s">图中 W 按 [输入,输出] 书写，蓝绿各占两列。这里只画 Q；K、V 各有自己的一套投影。</text>
+</svg>
