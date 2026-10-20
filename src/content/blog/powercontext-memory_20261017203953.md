@@ -1,7 +1,7 @@
 ---
 title: "Memory：PowerContext 怎样保存、更新和复用一条知识"
 date: "2026-10-11T20:39:53+08:00"
-updated: "2026-10-17T20:55:28+08:00"
+updated: "2026-10-20T16:53:14+08:00"
 description: "从订单项目的几条约定出发，理解 Memory Artifact、Entry、两层版本与精确引用，以及写入、提取、修订、停用和召回的完整流程。"
 draft: false
 categories:
@@ -11,6 +11,8 @@ tags:
   - "agent"
 ---
 
+天气逐渐转凉，待在被窝里暖暖的，会觉得很幸福o(*￣▽￣*)o
+<!-- more -->
 # Memory：PowerContext 怎样保存、更新和复用一条知识
 
 
