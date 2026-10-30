@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">GPU 的硬件结构：从整块芯片放大到一个 SM</title>
+<desc id="desc">左侧是整块 GPU 芯片，芯片上重复排列多个 SM，所有 SM 共享 L2 Cache，芯片外连接 HBM 或 GDDR 显存。右侧放大一个 SM，内部有 Warp Scheduler、CUDA Core、Tensor Core、寄存器文件，以及 Shared Memory 和 L1。图中标出数据越靠近计算单元越快、容量越小。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#56758a"/></marker><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203b4d}.title{font-size:40px;font-weight:700}.h{font-size:27px;font-weight:700}.b{font-size:22px}.s{font-size:19px}.sm{fill:#f0eafb;stroke:#9b83bd;stroke-width:2}.arrow{fill:none;stroke:#56758a;stroke-width:3;marker-end:url(#arrow)}.zoom{fill:none;stroke:#9b83bd;stroke-width:2;stroke-dasharray:8 7}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="72" class="title">GPU 快，靠的是很多个 SM 同时工作</text>
+<text x="64" y="116" class="b">左边看整块芯片由什么组成，右边放大其中一个 SM。简化示意，实际数量随型号而变。</text>
+<text x="64" y="144" class="s">例：H100 SXM5 共 132 个 SM；每个 SM 有 128 个 FP32 CUDA Core、4 个 Tensor Core（NVIDIA 官方数据）。</text>
+
+<rect x="64" y="160" width="660" height="560" rx="24" fill="#ffffff" stroke="#a9bdc9" stroke-width="2"/>
+<text x="94" y="204" class="h">整块 GPU 芯片</text>
+<g>
+<rect x="100" y="230" width="132" height="86" rx="12" class="sm"/><text x="166" y="281" text-anchor="middle" class="b">SM 0</text>
+<rect x="250" y="230" width="132" height="86" rx="12" class="sm"/><text x="316" y="281" text-anchor="middle" class="b">SM 1</text>
+<rect x="400" y="230" width="132" height="86" rx="12" class="sm"/><text x="466" y="281" text-anchor="middle" class="b">SM 2</text>
+<rect x="550" y="230" width="132" height="86" rx="12" fill="#e2d6f5" stroke="#7b5fa8" stroke-width="3"/><text x="616" y="281" text-anchor="middle" class="b">SM 3</text>
+<rect x="100" y="332" width="132" height="86" rx="12" class="sm"/><text x="166" y="383" text-anchor="middle" class="b">SM 4</text>
+<rect x="250" y="332" width="132" height="86" rx="12" class="sm"/><text x="316" y="383" text-anchor="middle" class="b">SM 5</text>
+<rect x="400" y="332" width="132" height="86" rx="12" class="sm"/><text x="466" y="383" text-anchor="middle" class="b">SM 6</text>
+<rect x="550" y="332" width="132" height="86" rx="12" class="sm"/><text x="616" y="383" text-anchor="middle" class="b">……</text>
+</g>
+<text x="100" y="452" class="s">同样的 SM 重复排列，具体数量取决于 GPU 型号</text>
+<rect x="100" y="476" width="582" height="72" rx="14" fill="#e8f1f9" stroke="#7c9db7" stroke-width="2"/>
+<text x="391" y="508" text-anchor="middle" class="h">L2 Cache</text><text x="391" y="536" text-anchor="middle" class="s">所有 SM 共享的片上缓存</text>
+<path d="M391 552V600" class="arrow"/>
+<text x="408" y="584" class="s">芯片边界</text>
+<line x1="80" y1="600" x2="708" y2="600" stroke="#9db1bb" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="100" y="616" width="582" height="84" rx="14" fill="#fff0e5" stroke="#c49362" stroke-width="2"/>
+<text x="391" y="652" text-anchor="middle" class="h">显存：HBM / GDDR（芯片外）</text><text x="391" y="684" text-anchor="middle" class="s">容量最大，存放模型权重和张量，访问代价最高</text>
+
+<path d="M682 236L836 172M682 310L836 708" class="zoom"/>
+
+<rect x="836" y="160" width="700" height="560" rx="24" fill="#f6f2fc" stroke="#7b5fa8" stroke-width="3"/>
+<text x="866" y="204" class="h">放大 SM 3：一个 SM 里有什么</text>
+<rect x="866" y="228" width="640" height="76" rx="14" fill="#ffffff" stroke="#9b83bd" stroke-width="2"/>
+<text x="890" y="262" class="h">Warp Scheduler</text><text x="890" y="290" class="s">每次挑一个准备好的 Warp，发出它的下一条指令</text>
+<path d="M1018 308V336" class="arrow"/><path d="M1353 308V336" class="arrow"/>
+<rect x="866" y="342" width="305" height="150" rx="14" fill="#e6f1eb" stroke="#82ad94" stroke-width="2"/>
+<text x="1018" y="378" text-anchor="middle" class="h">CUDA Core</text>
+<g fill="#b9dcc5"><rect x="890" y="396" width="34" height="26" rx="4"/><rect x="932" y="396" width="34" height="26" rx="4"/><rect x="974" y="396" width="34" height="26" rx="4"/><rect x="1016" y="396" width="34" height="26" rx="4"/><rect x="1058" y="396" width="34" height="26" rx="4"/><rect x="1100" y="396" width="34" height="26" rx="4"/></g>
+<text x="1018" y="452" text-anchor="middle" class="s">通用标量运算：索引、</text><text x="1018" y="478" text-anchor="middle" class="s">地址计算、逐元素运算</text>
+<rect x="1201" y="342" width="305" height="150" rx="14" fill="#fff0e5" stroke="#c49362" stroke-width="2"/>
+<text x="1353" y="378" text-anchor="middle" class="h">Tensor Core</text>
+<g fill="#f2c9a0"><rect x="1285" y="394" width="70" height="30" rx="5"/><rect x="1361" y="394" width="70" height="30" rx="5"/></g>
+<text x="1353" y="452" text-anchor="middle" class="s">高吞吐矩阵乘加，</text><text x="1353" y="478" text-anchor="middle" class="s">适合 Linear、MatMul</text>
+<rect x="866" y="516" width="640" height="70" rx="14" fill="#e8f1f9" stroke="#7c9db7" stroke-width="2"/>
+<text x="890" y="560" class="h">寄存器文件</text><text x="1060" y="546" class="s">分给每个线程私用，离计算单元最近</text><text x="1060" y="574" class="s">每个线程占得越多，SM 能同时驻留的线程越少</text>
+<rect x="866" y="604" width="640" height="94" rx="14" fill="#dcebf5" stroke="#7c9db7" stroke-width="2"/>
+<text x="890" y="640" class="h">Shared Memory / L1</text><text x="1170" y="636" class="s">SM 内的片上存储</text><text x="890" y="674" class="s">同一个 Block 的线程可以在 Shared Memory 中共享数据</text>
+
+<rect x="64" y="752" width="1472" height="70" rx="16" fill="#ffffff" stroke="#b4c5cf" stroke-width="2"/>
+<text x="94" y="785" class="b">离计算单元由近到远：</text>
+<text x="340" y="785" class="b">寄存器 → Shared Memory / L1 → L2 Cache → 显存</text>
+<text x="94" y="810" class="s">越近通常越快、容量越小；这是简化顺序，不同架构的配置和访问路径会有差异。</text>
+<text x="64" y="862" class="b">读图提示：程序里的 Thread 和 Block 不在这张图上；它们是软件的工作分组，下一章再看它们怎样被分配到 SM。</text>
+</svg>

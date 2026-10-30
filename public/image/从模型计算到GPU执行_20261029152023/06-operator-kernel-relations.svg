@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">算子与 Kernel 的三种对应关系</title>
+<desc id="desc">左侧是一个 Add 算子由一个 Kernel 的多个线程完成；中间是一个复杂算子由两个 Kernel 分阶段完成，中间结果写入显存；右侧是 MatMul、Scale、Softmax 融合进一个 Kernel，中间结果留在片上。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#56758a"/></marker><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203b4d}.t{font-size:40px;font-weight:700}.h{font-size:28px;font-weight:700}.b{font-size:24px}.s{font-size:20px}.ar{fill:none;stroke:#56758a;stroke-width:3;marker-end:url(#a)}.op{fill:#fff0e5;stroke:#c49362;stroke-width:2}.k{fill:#f0eafb;stroke:#9b83bd;stroke-width:2}.p{fill:#fff;stroke:#b4c5cf;stroke-width:2}.th{fill:#ffffff;stroke:#9b83bd;stroke-width:1.5}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="72" class="t">算子说“算什么”，Kernel 决定“启动几次、怎样算”</text>
+<text x="64" y="114" class="b">橙色是算子，紫色是 Kernel。看箭头数量和中间结果的去向。</text>
+
+<rect x="60" y="160" width="460" height="650" rx="24" class="p"/>
+<text x="290" y="200" text-anchor="middle" class="h">一对一</text>
+<rect x="90" y="225" width="400" height="70" rx="14" class="op"/><text x="290" y="270" text-anchor="middle" class="b">Add 算子：C = A + B</text>
+<path d="M290 298V336" class="ar"/>
+<rect x="90" y="345" width="400" height="330" rx="16" class="k"/><text x="290" y="385" text-anchor="middle" class="b">add_kernel（启动 1 次）</text>
+<g class="s" text-anchor="middle">
+<rect x="172" y="410" width="50" height="50" rx="8" class="th"/><rect x="234" y="410" width="50" height="50" rx="8" class="th"/><rect x="296" y="410" width="50" height="50" rx="8" class="th"/><rect x="358" y="410" width="50" height="50" rx="8" class="th"/>
+<rect x="172" y="472" width="50" height="50" rx="8" class="th"/><rect x="234" y="472" width="50" height="50" rx="8" class="th"/><rect x="296" y="472" width="50" height="50" rx="8" class="th"/><rect x="358" y="472" width="50" height="50" rx="8" class="th"/>
+<rect x="172" y="534" width="50" height="50" rx="8" class="th"/><rect x="234" y="534" width="50" height="50" rx="8" class="th"/><rect x="296" y="534" width="50" height="50" rx="8" class="th"/><rect x="358" y="534" width="50" height="50" rx="8" class="th"/>
+<text x="197" y="442">T0</text><text x="259" y="442">T1</text><text x="321" y="442">T2</text><text x="383" y="442">T3</text>
+<text x="197" y="504">T4</text><text x="259" y="504">T5</text><text x="321" y="504">T6</text><text x="383" y="504">T7</text>
+<text x="197" y="566">…</text><text x="259" y="566">…</text><text x="321" y="566">…</text><text x="383" y="566">…</text>
+<text x="290" y="625">每个线程算一个位置</text><text x="290" y="655">C[i] = A[i] + B[i]</text>
+</g>
+<text x="290" y="760" text-anchor="middle" class="b" fill="#56758a">一次启动，完成整个算子</text>
+
+<rect x="570" y="160" width="460" height="650" rx="24" class="p"/>
+<text x="800" y="200" text-anchor="middle" class="h">一对多</text>
+<rect x="600" y="225" width="400" height="70" rx="14" class="op"/><text x="800" y="270" text-anchor="middle" class="b">一个复杂算子</text>
+<path d="M800 298V326" class="ar"/>
+<rect x="595" y="330" width="410" height="370" rx="18" fill="none" stroke="#c49362" stroke-width="2" stroke-dasharray="8 7"/>
+<rect x="630" y="350" width="340" height="86" rx="14" class="k"/><text x="800" y="386" text-anchor="middle" class="b">Kernel 1</text><text x="800" y="418" text-anchor="middle" class="s">局部计算</text>
+<path d="M800 438V462" class="ar"/>
+<rect x="660" y="468" width="280" height="56" rx="28" fill="#fde3d3" stroke="#c96f45" stroke-width="2"/><text x="800" y="504" text-anchor="middle" class="s">中间结果写入显存</text>
+<path d="M800 526V550" class="ar"/>
+<rect x="630" y="556" width="340" height="86" rx="14" class="k"/><text x="800" y="592" text-anchor="middle" class="b">Kernel 2</text><text x="800" y="624" text-anchor="middle" class="s">筛选 / 归约 / 重排</text>
+<text x="800" y="680" text-anchor="middle" class="s" fill="#9a6b42">虚线框内共同实现同一个算子</text>
+<text x="800" y="760" text-anchor="middle" class="b" fill="#56758a">分阶段启动多个 Kernel</text>
+
+<rect x="1080" y="160" width="460" height="650" rx="24" class="p"/>
+<text x="1310" y="200" text-anchor="middle" class="h">多对一（融合）</text>
+<rect x="1100" y="225" width="130" height="70" rx="14" class="op"/><text x="1165" y="268" text-anchor="middle" class="s">MatMul</text>
+<rect x="1245" y="225" width="130" height="70" rx="14" class="op"/><text x="1310" y="268" text-anchor="middle" class="s">Scale</text>
+<rect x="1390" y="225" width="130" height="70" rx="14" class="op"/><text x="1455" y="268" text-anchor="middle" class="s">Softmax</text>
+<path d="M1165 298L1255 340" class="ar"/><path d="M1310 298V340" class="ar"/><path d="M1455 298L1365 340" class="ar"/>
+<rect x="1100" y="345" width="420" height="330" rx="16" class="k"/><text x="1310" y="385" text-anchor="middle" class="b">Fused Kernel（启动 1 次）</text>
+<rect x="1125" y="410" width="215" height="54" rx="12" fill="#fff" stroke="#9b83bd" stroke-width="1.5"/><text x="1232" y="445" text-anchor="middle" class="s">S = QKᵀ</text>
+<path d="M1232 466V486" class="ar"/>
+<rect x="1125" y="490" width="215" height="54" rx="12" fill="#fff" stroke="#9b83bd" stroke-width="1.5"/><text x="1232" y="525" text-anchor="middle" class="s">S / √d</text>
+<path d="M1232 546V566" class="ar"/>
+<rect x="1125" y="570" width="215" height="54" rx="12" fill="#fff" stroke="#9b83bd" stroke-width="1.5"/><text x="1232" y="605" text-anchor="middle" class="s">softmax(S)</text>
+<rect x="1360" y="410" width="135" height="214" rx="14" fill="#e6f1eb" stroke="#82ad94" stroke-width="2"/>
+<text x="1427" y="480" text-anchor="middle" class="s">中间结果</text><text x="1427" y="512" text-anchor="middle" class="s">留在</text><text x="1427" y="544" text-anchor="middle" class="s">片上存储</text>
+<text x="1310" y="655" text-anchor="middle" class="s">不必每一步写回显存</text>
+<text x="1310" y="760" text-anchor="middle" class="b" fill="#56758a">一次启动，减少显存读写</text>
+</svg>

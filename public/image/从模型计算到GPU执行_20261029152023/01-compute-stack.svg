@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">从模型到 GPU 的五层观察框架</title>
+<desc id="desc">以 Attention 为例，从上到下依次展示模型架构、算法、算子、GPU Kernel 和 GPU 硬件，每层给出例子和它回答的问题。Kernel 与硬件之间经过编译器和 Runtime/Driver。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#56758a"/></marker><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203b4d}.t{font-size:40px;font-weight:700}.h{font-size:30px;font-weight:700}.b{font-size:25px;font-weight:600}.s{font-size:21px}.q{font-size:23px;font-weight:600;fill:#56758a}.ar{fill:none;stroke:#56758a;stroke-width:3;marker-end:url(#a)}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="72" class="t">同一次 Attention 计算，从上往下看五个层次</text>
+<text x="64" y="114" class="s">上面描述“要做什么”，越往下越接近“GPU 怎样执行”。这是学习用的观察框架，不是严格的调用栈。</text>
+<text x="380" y="160" class="s" fill="#6b8291">以 Attention 为例</text><text x="1150" y="160" class="s" fill="#6b8291">这一层回答的问题</text>
+<rect x="64" y="178" width="1430" height="110" rx="20" fill="#ffffff" stroke="#82ad94" stroke-width="2"/>
+<rect x="64" y="178" width="270" height="110" rx="20" fill="#e6f1eb" stroke="#82ad94" stroke-width="2"/>
+<text x="199" y="244" text-anchor="middle" class="h">模型架构</text>
+<text x="380" y="224" class="b">Transformer Block</text><text x="380" y="260" class="s">Attention · MLP · Norm · 残差连接</text>
+<line x1="1120" y1="198" x2="1120" y2="268" stroke="#d3dde3" stroke-width="2"/>
+<text x="1150" y="242" class="q">由哪些模块组成？</text>
+<path d="M199 291V317" class="ar"/>
+<rect x="64" y="320" width="1430" height="110" rx="20" fill="#ffffff" stroke="#7c9db7" stroke-width="2"/>
+<rect x="64" y="320" width="270" height="110" rx="20" fill="#e8f1f9" stroke="#7c9db7" stroke-width="2"/>
+<text x="199" y="386" text-anchor="middle" class="h">算法</text>
+<text x="380" y="366" class="b">Dense Attention / FlashAttention</text><text x="380" y="402" class="s">怎样组织 QKᵀ、Softmax 和 PV</text>
+<line x1="1120" y1="340" x2="1120" y2="410" stroke="#d3dde3" stroke-width="2"/>
+<text x="1150" y="384" class="q">怎样组织计算？</text>
+<path d="M199 433V459" class="ar"/>
+<rect x="64" y="462" width="1430" height="110" rx="20" fill="#ffffff" stroke="#c49362" stroke-width="2"/>
+<rect x="64" y="462" width="270" height="110" rx="20" fill="#fff0e5" stroke="#c49362" stroke-width="2"/>
+<text x="199" y="528" text-anchor="middle" class="h">算子</text>
+<text x="380" y="508" class="b">MatMul → Scale → Softmax → MatMul</text><text x="380" y="544" class="s">每一步有明确的输入、输出和规则</text>
+<line x1="1120" y1="482" x2="1120" y2="552" stroke="#d3dde3" stroke-width="2"/>
+<text x="1150" y="526" class="q">完成哪种张量计算？</text>
+<path d="M199 575V601" class="ar"/>
+<rect x="64" y="604" width="1430" height="110" rx="20" fill="#ffffff" stroke="#9b83bd" stroke-width="2"/>
+<rect x="64" y="604" width="270" height="110" rx="20" fill="#f0eafb" stroke="#9b83bd" stroke-width="2"/>
+<text x="199" y="670" text-anchor="middle" class="h">GPU Kernel</text>
+<text x="380" y="650" class="b">CUDA / Triton 程序</text><text x="380" y="686" class="s">线程加载数据 → 计算 → 写回结果</text>
+<line x1="1120" y1="624" x2="1120" y2="694" stroke="#d3dde3" stroke-width="2"/>
+<text x="1150" y="668" class="q">让 GPU 怎样算？</text>
+<path d="M199 717V743" class="ar"/>
+<rect x="64" y="746" width="1430" height="110" rx="20" fill="#ffffff" stroke="#7c909b" stroke-width="2"/>
+<rect x="64" y="746" width="270" height="110" rx="20" fill="#e9eef1" stroke="#7c909b" stroke-width="2"/>
+<text x="199" y="812" text-anchor="middle" class="h">GPU 硬件</text>
+<text x="380" y="792" class="b">SM · CUDA Core · Tensor Core</text><text x="380" y="828" class="s">寄存器 · Shared Memory · L2 · 显存</text>
+<line x1="1120" y1="766" x2="1120" y2="836" stroke="#d3dde3" stroke-width="2"/>
+<text x="1150" y="810" class="q">用什么资源执行？</text>
+<text x="226" y="737" class="s" fill="#7a5a9a" font-size="18">经编译器、Runtime / Driver 提交执行</text>
+<path d="M1540 190V830" class="ar"/>
+<text x="1556" y="230" class="s" fill="#56758a" writing-mode="tb">更抽象</text>
+<text x="1556" y="740" class="s" fill="#56758a" writing-mode="tb">更具体</text>
+</svg>
