@@ -1,7 +1,7 @@
 ---
 title: "用 Triton 写 GPU Kernel：从 Vector Add、Softmax 到 MatMul"
 date: "2026-11-01T11:57:08+08:00"
-updated: "2026-11-03T22:52:15+08:00"
+updated: "2026-11-03T23:11:23+08:00"
 draft: false
 categories:
   - "学习笔记"
