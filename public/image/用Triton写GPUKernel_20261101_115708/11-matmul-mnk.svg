@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">矩阵乘法的 M、N、K</title>
+<desc id="desc">A 为 3 行 4 列，B 为 4 行 2 列，C 为 3 行 2 列。M=3 是 A 和 C 的行数，N=2 是 B 和 C 的列数，K=4 是 A 的列数和 B 的行数。C[0,0] 由 A 的第 0 行和 B 的第 0 列逐对相乘求和得到。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<style>.v{font-size:32px;font-weight:600;fill:#203b4d}.vs{font-size:28px;font-weight:600;fill:#203b4d}.lab{font-size:24px;font-weight:600;fill:#4d6575}</style>
+<text x="64" y="76" class="t">M、N、K：C 的一个元素从哪里来</text>
+<text x="64" y="118" class="b">A[M, K] × B[K, N] = C[M, N]，本例 [3, 4] × [4, 2] = [3, 2]</text>
+<rect x="150" y="330" width="88" height="72" fill="#9fc3e8" stroke="#2f6da3" stroke-width="3"/><text x="194" y="375" text-anchor="middle" class="vs">1</text>
+<rect x="238" y="330" width="88" height="72" fill="#9fc3e8" stroke="#2f6da3" stroke-width="3"/><text x="282" y="375" text-anchor="middle" class="vs">2</text>
+<rect x="326" y="330" width="88" height="72" fill="#9fc3e8" stroke="#2f6da3" stroke-width="3"/><text x="370" y="375" text-anchor="middle" class="vs">3</text>
+<rect x="414" y="330" width="88" height="72" fill="#9fc3e8" stroke="#2f6da3" stroke-width="3"/><text x="458" y="375" text-anchor="middle" class="vs">4</text>
+<rect x="150" y="402" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="194" y="447" text-anchor="middle" class="vs">5</text>
+<rect x="238" y="402" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="282" y="447" text-anchor="middle" class="vs">6</text>
+<rect x="326" y="402" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="370" y="447" text-anchor="middle" class="vs">7</text>
+<rect x="414" y="402" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="458" y="447" text-anchor="middle" class="vs">8</text>
+<rect x="150" y="474" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="194" y="519" text-anchor="middle" class="vs">9</text>
+<rect x="238" y="474" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="282" y="519" text-anchor="middle" class="vs">10</text>
+<rect x="326" y="474" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="370" y="519" text-anchor="middle" class="vs">11</text>
+<rect x="414" y="474" width="88" height="72" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="458" y="519" text-anchor="middle" class="vs">12</text>
+<rect x="700" y="210" width="88" height="72" fill="#a7d6b6" stroke="#2e7d4f" stroke-width="3"/><text x="744" y="255" text-anchor="middle" class="vs">1</text>
+<rect x="788" y="210" width="88" height="72" fill="#dcefe2" stroke="#4f9a6a" stroke-width="1.5"/><text x="832" y="255" text-anchor="middle" class="vs">0</text>
+<rect x="700" y="282" width="88" height="72" fill="#a7d6b6" stroke="#2e7d4f" stroke-width="3"/><text x="744" y="327" text-anchor="middle" class="vs">0</text>
+<rect x="788" y="282" width="88" height="72" fill="#dcefe2" stroke="#4f9a6a" stroke-width="1.5"/><text x="832" y="327" text-anchor="middle" class="vs">1</text>
+<rect x="700" y="354" width="88" height="72" fill="#a7d6b6" stroke="#2e7d4f" stroke-width="3"/><text x="744" y="399" text-anchor="middle" class="vs">2</text>
+<rect x="788" y="354" width="88" height="72" fill="#dcefe2" stroke="#4f9a6a" stroke-width="1.5"/><text x="832" y="399" text-anchor="middle" class="vs">0</text>
+<rect x="700" y="426" width="88" height="72" fill="#a7d6b6" stroke="#2e7d4f" stroke-width="3"/><text x="744" y="471" text-anchor="middle" class="vs">0</text>
+<rect x="788" y="426" width="88" height="72" fill="#dcefe2" stroke="#4f9a6a" stroke-width="1.5"/><text x="832" y="471" text-anchor="middle" class="vs">2</text>
+<rect x="1120" y="330" width="88" height="72" fill="#f5d27a" stroke="#b07d1c" stroke-width="3"/><text x="1164" y="375" text-anchor="middle" class="vs">7</text>
+<rect x="1208" y="330" width="88" height="72" fill="#fdf4dc" stroke="#d9a53a" stroke-width="1.5"/><text x="1252" y="375" text-anchor="middle" class="vs">10</text>
+<rect x="1120" y="402" width="88" height="72" fill="#fdf4dc" stroke="#d9a53a" stroke-width="1.5"/><text x="1164" y="447" text-anchor="middle" class="vs">19</text>
+<rect x="1208" y="402" width="88" height="72" fill="#fdf4dc" stroke="#d9a53a" stroke-width="1.5"/><text x="1252" y="447" text-anchor="middle" class="vs">22</text>
+<rect x="1120" y="474" width="88" height="72" fill="#fdf4dc" stroke="#d9a53a" stroke-width="1.5"/><text x="1164" y="519" text-anchor="middle" class="vs">31</text>
+<rect x="1208" y="474" width="88" height="72" fill="#fdf4dc" stroke="#d9a53a" stroke-width="1.5"/><text x="1252" y="519" text-anchor="middle" class="vs">34</text>
+<text x="326" y="306" text-anchor="middle" class="h">A [3, 4]</text>
+<text x="788" y="186" text-anchor="middle" class="h">B [4, 2]</text>
+<text x="1208" y="306" text-anchor="middle" class="h">C [3, 2]</text>
+<text x="548" y="450" text-anchor="middle" class="t">×</text>
+<text x="996" y="450" text-anchor="middle" class="t">=</text>
+<defs><marker id="dac0392b" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#c0392b"/></marker><marker id="da8e44ad" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8e44ad"/></marker><marker id="da16808a" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#16808a"/></marker></defs>
+<path d="M120 330L120 546" stroke="#c0392b" stroke-width="4" marker-start="url(#dac0392b)" marker-end="url(#dac0392b)"/><text x="106" y="448" text-anchor="end" class="h" style="fill:#c0392b">M = 3</text>
+<path d="M150 576L502 576" stroke="#16808a" stroke-width="4" marker-start="url(#da16808a)" marker-end="url(#da16808a)"/><text x="326" y="616" text-anchor="middle" class="h" style="fill:#16808a">K = 4</text>
+<path d="M670 210L670 498" stroke="#16808a" stroke-width="4" marker-start="url(#da16808a)" marker-end="url(#da16808a)"/><text x="656" y="364" text-anchor="end" class="h" style="fill:#16808a">K = 4</text>
+<path d="M700 528L876 528" stroke="#8e44ad" stroke-width="4" marker-start="url(#da8e44ad)" marker-end="url(#da8e44ad)"/><text x="788" y="568" text-anchor="middle" class="h" style="fill:#8e44ad">N = 2</text>
+<path d="M1326 330L1326 546" stroke="#c0392b" stroke-width="4" marker-start="url(#dac0392b)" marker-end="url(#dac0392b)"/><text x="1340" y="448" text-anchor="start" class="h" style="fill:#c0392b">M = 3</text>
+<path d="M1120 576L1296 576" stroke="#8e44ad" stroke-width="4" marker-start="url(#da8e44ad)" marker-end="url(#da8e44ad)"/><text x="1208" y="616" text-anchor="middle" class="h" style="fill:#8e44ad">N = 2</text>
+<rect x="64" y="700" width="1472" height="160" rx="18" fill="#fff" stroke="#c9d5de"/>
+<text x="94" y="744" class="b">C[0, 0] = A 的第 0 行 · B 的第 0 列，沿 K 方向逐对相乘再求和：</text>
+<text x="94" y="790" class="m">C[0,0] = 1×1 + 2×0 + 3×2 + 4×0 = 7</text>
+<text x="94" y="836" class="s">M、N 决定 C 有多大；K 不出现在 C 的形状里，它决定每个元素要累加多少组乘积。</text>
+</svg>

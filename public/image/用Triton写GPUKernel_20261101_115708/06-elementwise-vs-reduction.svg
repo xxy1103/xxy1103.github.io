@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">逐元素运算与归约</title>
+<desc id="desc">左侧 Vector Add 四个位置各自独立相加，得到 6、8、10、12。右侧 Softmax 中 Exp 逐元素计算，Sum 把四个指数值汇聚成一个总和，再广播回每个位置做 Divide。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<style>.v{font-size:32px;font-weight:600;fill:#203b4d}.vs{font-size:28px;font-weight:600;fill:#203b4d}.lab{font-size:24px;font-weight:600;fill:#4d6575}</style>
+<text x="64" y="76" class="t">逐元素运算与归约</text>
+<text x="64" y="118" class="b">Vector Add 各算各的；Softmax 的 Sum 必须先汇总全行，Divide 才能开始</text>
+<rect x="64" y="150" width="560" height="716" rx="24" fill="#fff" stroke="#c9d5de" stroke-width="2"/>
+<rect x="656" y="150" width="880" height="716" rx="24" fill="#fff" stroke="#c9d5de" stroke-width="2"/>
+<text x="100" y="206" class="h">Vector Add：每个位置独立</text>
+<text x="692" y="206" class="h">Softmax：中间要“看全行”</text>
+<text x="100" y="268" class="lab">输入 x + y</text>
+<rect x="94" y="290" width="112" height="84" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="150" y="343" text-anchor="middle" class="v">1+5</text>
+<path d="M150 374V572" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="94" y="584" width="112" height="84" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="150" y="637" text-anchor="middle" class="v">6</text>
+<rect x="224" y="290" width="112" height="84" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="280" y="343" text-anchor="middle" class="v">2+6</text>
+<path d="M280 374V572" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="224" y="584" width="112" height="84" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="280" y="637" text-anchor="middle" class="v">8</text>
+<rect x="354" y="290" width="112" height="84" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="410" y="343" text-anchor="middle" class="v">3+7</text>
+<path d="M410 374V572" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="354" y="584" width="112" height="84" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="410" y="637" text-anchor="middle" class="v">10</text>
+<rect x="484" y="290" width="112" height="84" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="540" y="343" text-anchor="middle" class="v">4+8</text>
+<path d="M540 374V572" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="484" y="584" width="112" height="84" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="540" y="637" text-anchor="middle" class="v">12</text>
+<text x="100" y="706" class="lab">输出</text>
+<text x="100" y="770" class="h">线程之间不需要交换数据</text>
+<text x="100" y="816" class="b" style="fill:#4d6575">位置 0 的结果不依赖位置 1、2、3</text>
+<text x="692" y="294" class="lab">输入</text><text x="692" y="432" class="lab">① Exp</text><text x="692" y="604" class="lab">② Sum</text><text x="692" y="792" class="lab">③ Divide</text>
+<text x="692" y="638" class="s" style="fill:#c0392b">4 个数 → 1 个数</text>
+<text x="692" y="826" class="s" style="fill:#b07d1c">广播回每个位置</text>
+<rect x="870" y="250" width="136" height="72" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="938" y="297" text-anchor="middle" class="v">x<tspan font-size="20" dy="8">0</tspan></text>
+<path d="M938 322V378" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="866" y="388" width="144" height="72" rx="12" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="938" y="435" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₀</tspan></text>
+<path d="M938 460C938 520 1190 510 1190 562" stroke="#c0392b" stroke-width="4" fill="none"/>
+<path d="M1190 646C1190 690 938 690 938 738" stroke="#d9a53a" stroke-width="4" fill="none" marker-end="url(#ar)"/>
+<rect x="866" y="748" width="144" height="72" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="938" y="795" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₀</tspan><tspan dy="12"> / Σ</tspan></text>
+<rect x="1038" y="250" width="136" height="72" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="1106" y="297" text-anchor="middle" class="v">x<tspan font-size="20" dy="8">1</tspan></text>
+<path d="M1106 322V378" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="1034" y="388" width="144" height="72" rx="12" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="1106" y="435" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₁</tspan></text>
+<path d="M1106 460C1106 520 1190 510 1190 562" stroke="#c0392b" stroke-width="4" fill="none"/>
+<path d="M1190 646C1190 690 1106 690 1106 738" stroke="#d9a53a" stroke-width="4" fill="none" marker-end="url(#ar)"/>
+<rect x="1034" y="748" width="144" height="72" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="1106" y="795" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₁</tspan><tspan dy="12"> / Σ</tspan></text>
+<rect x="1206" y="250" width="136" height="72" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="1274" y="297" text-anchor="middle" class="v">x<tspan font-size="20" dy="8">2</tspan></text>
+<path d="M1274 322V378" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="1202" y="388" width="144" height="72" rx="12" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="1274" y="435" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₂</tspan></text>
+<path d="M1274 460C1274 520 1190 510 1190 562" stroke="#c0392b" stroke-width="4" fill="none"/>
+<path d="M1190 646C1190 690 1274 690 1274 738" stroke="#d9a53a" stroke-width="4" fill="none" marker-end="url(#ar)"/>
+<rect x="1202" y="748" width="144" height="72" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="1274" y="795" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₂</tspan><tspan dy="12"> / Σ</tspan></text>
+<rect x="1374" y="250" width="136" height="72" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="1442" y="297" text-anchor="middle" class="v">x<tspan font-size="20" dy="8">3</tspan></text>
+<path d="M1442 322V378" stroke="#7a8fa0" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="1370" y="388" width="144" height="72" rx="12" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="1442" y="435" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₃</tspan></text>
+<path d="M1442 460C1442 520 1190 510 1190 562" stroke="#c0392b" stroke-width="4" fill="none"/>
+<path d="M1190 646C1190 690 1442 690 1442 738" stroke="#d9a53a" stroke-width="4" fill="none" marker-end="url(#ar)"/>
+<rect x="1370" y="748" width="144" height="72" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="1442" y="795" text-anchor="middle" class="vs">e<tspan font-size="20" dy="-12">x₃</tspan><tspan dy="12"> / Σ</tspan></text>
+<rect x="1020" y="562" width="340" height="84" rx="42" fill="#f6e0dd" stroke="#c0392b" stroke-width="4"/>
+<text x="1190" y="616" text-anchor="middle" class="v" style="fill:#c0392b">Σ 总和（归约）</text>
+</svg>

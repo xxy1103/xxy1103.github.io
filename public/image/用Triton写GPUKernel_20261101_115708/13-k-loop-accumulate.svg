@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Program (0,0) 沿 K 方向分两轮累加</title>
+<desc id="desc">K=4，BLOCK_K=2。第 1 轮取 A 前两行的第 0、1 列与 B 前两列的第 0、1 行，乘积为 [[1,2],[5,6]]；第 2 轮取第 2、3 列与第 2、3 行，乘积为 [[6,8],[14,16]]。累加器 acc 从 0 变为 [[1,2],[5,6]]，再变为 [[7,10],[19,22]]。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<style>.v{font-size:32px;font-weight:600;fill:#203b4d}.vs{font-size:28px;font-weight:600;fill:#203b4d}.lab{font-size:24px;font-weight:600;fill:#4d6575}</style>
+<text x="64" y="76" class="t">BLOCK_K：同一个 Program 沿 K 方向分两轮计算</text>
+<text x="64" y="118" class="b">C_tile = A₀B₀ + A₁B₁　（K = 4，BLOCK_K = 2，循环 2 轮）</text>
+<rect x="64" y="146" width="1472" height="250" rx="24" fill="#fff" stroke="#c9d5de"/>
+<text x="94" y="190" class="h">把 K 方向切成两段</text>
+<rect x="150" y="240" width="60" height="52" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="180" y="275" text-anchor="middle" class="vs">1</text>
+<rect x="210" y="240" width="60" height="52" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="240" y="275" text-anchor="middle" class="vs">2</text>
+<rect x="270" y="240" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="300" y="275" text-anchor="middle" class="vs">3</text>
+<rect x="330" y="240" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="360" y="275" text-anchor="middle" class="vs">4</text>
+<rect x="150" y="292" width="60" height="52" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="180" y="327" text-anchor="middle" class="vs">5</text>
+<rect x="210" y="292" width="60" height="52" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="240" y="327" text-anchor="middle" class="vs">6</text>
+<rect x="270" y="292" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="300" y="327" text-anchor="middle" class="vs">7</text>
+<rect x="330" y="292" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="360" y="327" text-anchor="middle" class="vs">8</text>
+<path d="M150 358H264" stroke="#2f6da3" stroke-width="4"/><text x="210" y="388" text-anchor="middle" class="s" style="fill:#2f6da3;font-weight:700">A₀：k = 0, 1</text>
+<path d="M276 358H390" stroke="#8e44ad" stroke-width="4"/><text x="330" y="388" text-anchor="middle" class="s" style="fill:#8e44ad;font-weight:700">A₁：k = 2, 3</text>
+<text x="270" y="226" text-anchor="middle" class="s">A 的前两行</text>
+<text x="445" y="304" text-anchor="middle" class="t">×</text>
+<rect x="500" y="170" width="60" height="52" fill="#cfe8d6" stroke="#2f6da3" stroke-width="3"/><text x="530" y="205" text-anchor="middle" class="vs">1</text>
+<rect x="560" y="170" width="60" height="52" fill="#cfe8d6" stroke="#2f6da3" stroke-width="3"/><text x="590" y="205" text-anchor="middle" class="vs">0</text>
+<rect x="500" y="222" width="60" height="52" fill="#cfe8d6" stroke="#2f6da3" stroke-width="3"/><text x="530" y="257" text-anchor="middle" class="vs">0</text>
+<rect x="560" y="222" width="60" height="52" fill="#cfe8d6" stroke="#2f6da3" stroke-width="3"/><text x="590" y="257" text-anchor="middle" class="vs">1</text>
+<rect x="500" y="274" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="530" y="309" text-anchor="middle" class="vs">2</text>
+<rect x="560" y="274" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="590" y="309" text-anchor="middle" class="vs">0</text>
+<rect x="500" y="326" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="530" y="361" text-anchor="middle" class="vs">0</text>
+<rect x="560" y="326" width="60" height="52" fill="#e8daf0" stroke="#8e44ad" stroke-width="3"/><text x="590" y="361" text-anchor="middle" class="vs">2</text>
+<text x="636" y="230" class="s" style="fill:#2f6da3;font-weight:700">B₀：k = 0, 1</text>
+<text x="636" y="334" class="s" style="fill:#8e44ad;font-weight:700">B₁：k = 2, 3</text>
+<text x="636" y="372" class="s">（B 的前两列）</text>
+<text x="900" y="250" class="b">C 的每个元素本来就是沿 K 的求和：</text>
+<text x="900" y="292" class="m">C[0,0] = (1×1 + 2×0) + (3×2 + 4×0)</text>
+<text x="1074" y="328" text-anchor="middle" class="s" style="fill:#2f6da3;font-weight:700">第 1 轮</text><text x="1158" y="328" text-anchor="middle" class="s">+</text><text x="1242" y="328" text-anchor="middle" class="s" style="fill:#8e44ad;font-weight:700">第 2 轮</text>
+<text x="900" y="366" class="s">分组求和再相加，总和不变</text>
+<rect x="64" y="420" width="520" height="300" rx="20" fill="#fff" stroke="#2f6da3" stroke-width="3"/><text x="90" y="462" class="h" style="fill:#2f6da3">第 1 轮：k = 0, 1</text>
+<rect x="90" y="520" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="116" y="554" text-anchor="middle" class="vs">1</text>
+<rect x="142" y="520" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="168" y="554" text-anchor="middle" class="vs">2</text>
+<rect x="90" y="570" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="116" y="604" text-anchor="middle" class="vs">5</text>
+<rect x="142" y="570" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="168" y="604" text-anchor="middle" class="vs">6</text>
+<text x="218" y="582" text-anchor="middle" class="h">×</text>
+<rect x="242" y="520" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="268" y="554" text-anchor="middle" class="vs">1</text>
+<rect x="294" y="520" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="320" y="554" text-anchor="middle" class="vs">0</text>
+<rect x="242" y="570" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="268" y="604" text-anchor="middle" class="vs">0</text>
+<rect x="294" y="570" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="320" y="604" text-anchor="middle" class="vs">1</text>
+<text x="370" y="582" text-anchor="middle" class="h">=</text>
+<rect x="394" y="520" width="62" height="50" fill="#f6eefa" stroke="#2f6da3" stroke-width="1.5"/><text x="425" y="554" text-anchor="middle" class="vs">1</text>
+<rect x="456" y="520" width="62" height="50" fill="#f6eefa" stroke="#2f6da3" stroke-width="1.5"/><text x="487" y="554" text-anchor="middle" class="vs">2</text>
+<rect x="394" y="570" width="62" height="50" fill="#f6eefa" stroke="#2f6da3" stroke-width="1.5"/><text x="425" y="604" text-anchor="middle" class="vs">5</text>
+<rect x="456" y="570" width="62" height="50" fill="#f6eefa" stroke="#2f6da3" stroke-width="1.5"/><text x="487" y="604" text-anchor="middle" class="vs">6</text>
+<text x="90" y="660" class="s">a [2,2]</text><text x="242" y="660" class="s">b [2,2]</text><text x="394" y="660" class="s">a @ b</text>
+<text x="90" y="702" class="m">acc = acc + a @ b</text>
+<rect x="608" y="420" width="520" height="300" rx="20" fill="#fff" stroke="#8e44ad" stroke-width="3"/><text x="634" y="462" class="h" style="fill:#8e44ad">第 2 轮：k = 2, 3</text>
+<rect x="634" y="520" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="660" y="554" text-anchor="middle" class="vs">3</text>
+<rect x="686" y="520" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="712" y="554" text-anchor="middle" class="vs">4</text>
+<rect x="634" y="570" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="660" y="604" text-anchor="middle" class="vs">7</text>
+<rect x="686" y="570" width="52" height="50" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="712" y="604" text-anchor="middle" class="vs">8</text>
+<text x="762" y="582" text-anchor="middle" class="h">×</text>
+<rect x="786" y="520" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="812" y="554" text-anchor="middle" class="vs">2</text>
+<rect x="838" y="520" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="864" y="554" text-anchor="middle" class="vs">0</text>
+<rect x="786" y="570" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="812" y="604" text-anchor="middle" class="vs">0</text>
+<rect x="838" y="570" width="52" height="50" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="1.5"/><text x="864" y="604" text-anchor="middle" class="vs">2</text>
+<text x="914" y="582" text-anchor="middle" class="h">=</text>
+<rect x="938" y="520" width="62" height="50" fill="#f6eefa" stroke="#8e44ad" stroke-width="1.5"/><text x="969" y="554" text-anchor="middle" class="vs">6</text>
+<rect x="1000" y="520" width="62" height="50" fill="#f6eefa" stroke="#8e44ad" stroke-width="1.5"/><text x="1031" y="554" text-anchor="middle" class="vs">8</text>
+<rect x="938" y="570" width="62" height="50" fill="#f6eefa" stroke="#8e44ad" stroke-width="1.5"/><text x="969" y="604" text-anchor="middle" class="vs">14</text>
+<rect x="1000" y="570" width="62" height="50" fill="#f6eefa" stroke="#8e44ad" stroke-width="1.5"/><text x="1031" y="604" text-anchor="middle" class="vs">16</text>
+<text x="634" y="660" class="s">a [2,2]</text><text x="786" y="660" class="s">b [2,2]</text><text x="938" y="660" class="s">a @ b</text>
+<text x="634" y="702" class="m">acc = acc + a @ b</text>
+<rect x="1152" y="420" width="384" height="300" rx="20" fill="#fff" stroke="#d9a53a" stroke-width="3"/>
+<text x="1178" y="462" class="h" style="fill:#b07d1c">累加器 acc</text>
+<rect x="1172" y="520" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1197" y="554" text-anchor="middle" class="m">0</text>
+<rect x="1222" y="520" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1247" y="554" text-anchor="middle" class="m">0</text>
+<rect x="1172" y="570" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1197" y="604" text-anchor="middle" class="m">0</text>
+<rect x="1222" y="570" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1247" y="604" text-anchor="middle" class="m">0</text>
+<text x="1222" y="650" text-anchor="middle" class="s">开始</text>
+<path d="M1274 570H1290" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="1292" y="520" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1317" y="554" text-anchor="middle" class="m">1</text>
+<rect x="1342" y="520" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1367" y="554" text-anchor="middle" class="m">2</text>
+<rect x="1292" y="570" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1317" y="604" text-anchor="middle" class="m">5</text>
+<rect x="1342" y="570" width="50" height="50" fill="#fbefcc" stroke="#d9a53a" stroke-width="1.5"/><text x="1367" y="604" text-anchor="middle" class="m">6</text>
+<text x="1342" y="650" text-anchor="middle" class="s">第 1 轮后</text>
+<path d="M1394 570H1410" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="1412" y="520" width="50" height="50" fill="#f5d27a" stroke="#d9a53a" stroke-width="1.5"/><text x="1437" y="554" text-anchor="middle" class="m">7</text>
+<rect x="1462" y="520" width="50" height="50" fill="#f5d27a" stroke="#d9a53a" stroke-width="1.5"/><text x="1487" y="554" text-anchor="middle" class="m">10</text>
+<rect x="1412" y="570" width="50" height="50" fill="#f5d27a" stroke="#d9a53a" stroke-width="1.5"/><text x="1437" y="604" text-anchor="middle" class="m">19</text>
+<rect x="1462" y="570" width="50" height="50" fill="#f5d27a" stroke="#d9a53a" stroke-width="1.5"/><text x="1487" y="604" text-anchor="middle" class="m">22</text>
+<text x="1462" y="650" text-anchor="middle" class="s">第 2 轮后</text>
+<text x="1178" y="696" class="s">最后一轮结束，写回 C 的左上角</text>
+<rect x="64" y="744" width="1472" height="116" rx="16" fill="#eef2f6"/>
+<text x="94" y="790" class="b">循环轮数 = ceil(K / BLOCK_K) = 2。每轮只读一小段 A、B，片上存储放得下。</text>
+<text x="94" y="832" class="b">BLOCK_K 只改变 Program 内部的循环次数，Program 仍然只有 Grid 里的那 4 个。</text>
+</svg>

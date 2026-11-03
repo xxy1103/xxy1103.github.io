@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">相同保留数量，不同保留位置</title>
+<desc id="desc">教学示例假设第四层对替换索引敏感。上排固定间隔保留第一和第五层；下排保留第一和第四层。实际配置需评价模型表现确定。</desc>
+<defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#24384c}.t{font-size:38px;font-weight:700}.h{font-size:27px;font-weight:600}.b{font-size:23px}.s{font-size:20px;fill:#52667a}</style>
+<g id="f"><rect width="98" height="76" rx="12" fill="#fff1d9" stroke="#dba549" stroke-width="1.5"/><text x="49" y="49" text-anchor="middle" class="h">F</text></g>
+<g id="s"><rect width="98" height="76" rx="12" fill="#e8f1ff" stroke="#85a9db" stroke-width="1.5"/><text x="49" y="49" text-anchor="middle" class="h">S</text></g>
+<g id="labels" class="s" text-anchor="middle"><text x="487">Layer 1</text><text x="621">Layer 2</text><text x="755">Layer 3</text><text x="889">Layer 4</text><text x="1023">Layer 5</text><text x="1157">Layer 6</text><text x="1291">Layer 7</text><text x="1425">Layer 8</text></g>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="64" y="78" class="t">同样保留两个 Indexer，保留在哪些层也很重要</text>
+<text x="64" y="124" class="b">教学假设：Layer 4 对替换索引敏感，需要重点评价是否保留其 Indexer</text>
+<rect x="64" y="165" width="1472" height="246" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<text x="96" y="220" class="h">固定间隔保留</text><text x="96" y="266" class="b">F S S S F S S S</text><text x="96" y="307" class="s">保留 2 / 8 个 Indexer</text>
+<use href="#labels" y="217"/>
+<use href="#f" x="438" y="242"/><use href="#s" x="572" y="242"/><use href="#s" x="706" y="242"/><use href="#s" x="840" y="242"/><use href="#f" x="974" y="242"/><use href="#s" x="1108" y="242"/><use href="#s" x="1242" y="242"/><use href="#s" x="1376" y="242"/>
+<rect x="840" y="242" width="98" height="76" rx="12" fill="none" stroke="#ba6352" stroke-width="3"/><path d="M889 322V339" stroke="#ba6352" stroke-width="2"/>
+<text x="889" y="371" text-anchor="middle" class="b" style="fill:#a65344">敏感层被设为 S</text>
+<rect x="64" y="441" width="1472" height="246" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<text x="96" y="496" class="h">调整保留位置</text><text x="96" y="542" class="b">F S S F S S S S</text><text x="96" y="583" class="s">仍保留 2 / 8 个 Indexer</text>
+<use href="#labels" y="493"/>
+<use href="#f" x="438" y="518"/><use href="#s" x="572" y="518"/><use href="#s" x="706" y="518"/><use href="#f" x="840" y="518"/><use href="#s" x="974" y="518"/><use href="#s" x="1108" y="518"/><use href="#s" x="1242" y="518"/><use href="#s" x="1376" y="518"/>
+<rect x="840" y="518" width="98" height="76" rx="12" fill="none" stroke="#ba6352" stroke-width="3"/><path d="M889 598V615" stroke="#ba6352" stroke-width="2"/>
+<text x="889" y="647" text-anchor="middle" class="b" style="fill:#a65344">敏感层保留为 F</text>
+<rect x="64" y="723" width="1472" height="123" rx="16" fill="#e8edf5"/>
+<text x="800" y="769" text-anchor="middle" class="h">固定间隔只规定保留数量与间距，没有考虑各层对索引替换的敏感程度</text>
+<text x="800" y="811" text-anchor="middle" class="s">配置与敏感层均为教学示意，不代表论文实际搜索结果；具体保留位置需用模型表现评价</text>
+</svg>

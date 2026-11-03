@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">IndexCache 八层 F/S 索引复用示意</title>
+<desc id="desc">Layer 1 和 Layer 5 运行 Indexer，其后的三个 S 层分别复用它们的索引。所有层仍使用自己的 K/V。灰线表示状态传递，橙线表示索引复用。八层配置仅为教学示意。</desc>
+<defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#24384c}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:600}.b{font-size:23px}.s{font-size:20px;fill:#52667a}.state{fill:none;stroke:#8b9cad;stroke-width:3;marker-end:url(#gray)}.reuse{fill:none;stroke:#ce9031;stroke-width:3;marker-end:url(#orange)}</style>
+<marker id="gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8b9cad"/></marker>
+<marker id="orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ce9031"/></marker>
+<g id="f"><rect width="130" height="240" rx="16" fill="#fff1d9" stroke="#dba549" stroke-width="2"/><text x="65" y="47" class="h" text-anchor="middle">F</text><text x="65" y="92" class="s" text-anchor="middle">运行 Indexer</text><path d="M16 120H114" stroke="#c4cfdb"/><text x="65" y="164" class="s" text-anchor="middle">本层稀疏</text><text x="65" y="197" class="s" text-anchor="middle">注意力</text></g>
+<g id="s"><rect width="130" height="240" rx="16" fill="#e8f1ff" stroke="#85a9db" stroke-width="2"/><text x="65" y="47" class="h" text-anchor="middle">S</text><text x="65" y="92" class="s" text-anchor="middle">跳过 Indexer</text><path d="M16 120H114" stroke="#c4cfdb"/><text x="65" y="164" class="s" text-anchor="middle">本层稀疏</text><text x="65" y="197" class="s" text-anchor="middle">注意力</text></g>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="64" y="78" class="t">IndexCache：一次选择，供后续多个层使用</text>
+<text x="64" y="124" class="b">同一个 Query 位置沿八层前向传播；F 计算新索引，S 复用最近前置 F 的索引</text>
+<rect x="64" y="162" width="1472" height="570" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<text x="96" y="211" class="s">灰色：Hidden State 逐层更新</text>
+<text x="800" y="211" class="s">橙色：Top-k 索引的跨层复用</text>
+<rect x="100" y="249" width="670" height="58" rx="12" fill="#fff1d9"/>
+<text x="435" y="286" class="h" text-anchor="middle">索引 A：由 Layer 1 生成</text>
+<rect x="820" y="249" width="670" height="58" rx="12" fill="#fff1d9"/>
+<text x="1155" y="286" class="h" text-anchor="middle">索引 B：由 Layer 5 生成</text>
+<g class="b" text-anchor="middle"><text x="165" y="678">Layer 1</text><text x="345" y="678">Layer 2</text><text x="525" y="678">Layer 3</text><text x="705" y="678">Layer 4</text><text x="885" y="678">Layer 5</text><text x="1065" y="678">Layer 6</text><text x="1245" y="678">Layer 7</text><text x="1425" y="678">Layer 8</text></g>
+<use href="#f" x="100" y="400"/><use href="#s" x="280" y="400"/><use href="#s" x="460" y="400"/><use href="#s" x="640" y="400"/><use href="#f" x="820" y="400"/><use href="#s" x="1000" y="400"/><use href="#s" x="1180" y="400"/><use href="#s" x="1360" y="400"/>
+<path d="M236 555H270" class="state"/><path d="M416 555H450" class="state"/><path d="M596 555H630" class="state"/><path d="M776 555H810" class="state"/><path d="M956 555H990" class="state"/><path d="M1136 555H1170" class="state"/><path d="M1316 555H1350" class="state"/>
+<path d="M165 400V328H705M885 400V328H1425" fill="none" stroke="#ce9031" stroke-width="3"/>
+<path d="M345 328V392" class="reuse"/><path d="M525 328V392" class="reuse"/><path d="M705 328V392" class="reuse"/><path d="M1065 328V392" class="reuse"/><path d="M1245 328V392" class="reuse"/><path d="M1425 328V392" class="reuse"/>
+<g class="s" text-anchor="middle"><text x="165" y="713">使用索引 A</text><text x="345" y="713">使用索引 A</text><text x="525" y="713">使用索引 A</text><text x="705" y="713">使用索引 A</text><text x="885" y="713">使用索引 B</text><text x="1065" y="713">使用索引 B</text><text x="1245" y="713">使用索引 B</text><text x="1425" y="713">使用索引 B</text></g>
+<rect x="64" y="762" width="1472" height="90" rx="16" fill="#e8edf5"/>
+<text x="800" y="800" class="h" text-anchor="middle">共享的是 Token 位置；每一层仍使用自己的 Q/K/V，执行自己的注意力与 FFN</text>
+<text x="800" y="832" class="s" text-anchor="middle">仅为教学配置，省略其他模块：8 次 Indexer → 2 次 Indexer；并非整个模型少算 75%</text>
+</svg>

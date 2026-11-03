@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Triton 在调用链中的位置与本文路线</title>
+<desc id="desc">左侧为四层调用链：PyTorch 程序、Triton Kernel、Triton 编译器、GPU 硬件，本文代码位于 Triton Kernel 层。右侧为三个 Kernel 的路线：Vector Add 一个 Program 负责一段元素，Softmax 负责一整行，MatMul 负责一个输出 Tile。</desc>
+<defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker>
+</defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">Triton 在哪一层，本文写哪三个 Kernel</text>
+<text x="64" y="118" class="b">我们描述“一块数据怎样计算”；线程、寄存器和指令交给编译器</text>
+<rect x="64" y="160" width="680" height="680" rx="24" fill="#fff" stroke="#c9d5de"/>
+<text x="104" y="210" class="h">调用链</text>
+<rect x="104" y="240" width="600" height="104" rx="16" fill="#eef2f6" stroke="#b4c5cf"/>
+<text x="134" y="284" class="h">PyTorch 程序</text>
+<text x="134" y="320" class="s">准备张量、计算 Grid、启动 Kernel（运行在 CPU）</text>
+<path d="M404 344V378" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="104" y="384" width="600" height="116" rx="16" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/>
+<text x="134" y="428" class="h">Triton Kernel</text>
+<text x="134" y="464" class="s">描述一个 Program 怎样读取、计算、写回一块数据</text>
+<rect x="526" y="402" width="160" height="40" rx="20" fill="#d9a53a"/>
+<text x="606" y="429" text-anchor="middle" class="b" style="fill:#fff;font-weight:700">本文写这一层</text>
+<path d="M404 500V534" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="104" y="540" width="600" height="104" rx="16" fill="#eef2f6" stroke="#b4c5cf"/>
+<text x="134" y="584" class="h">Triton 编译器</text>
+<text x="134" y="620" class="s">把数据分给线程、分配寄存器、生成 GPU 指令</text>
+<path d="M404 644V678" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="104" y="684" width="600" height="116" rx="16" fill="#e3e9ef" stroke="#9fb1be"/>
+<text x="134" y="728" class="h">GPU 硬件</text>
+<text x="134" y="764" class="s">SM · CUDA Core · Tensor Core · 寄存器 · 显存</text>
+<rect x="796" y="160" width="740" height="680" rx="24" fill="#fff" stroke="#c9d5de"/>
+<text x="836" y="210" class="h">路线：一个 Program 负责的数据逐级变大</text>
+<text x="836" y="282" class="h">第 1 章 Vector Add</text>
+<text x="836" y="316" class="s">负责一段连续元素 · 新增：load / store / mask</text>
+<g transform="translate(836,336)">
+<rect x="0" y="0" width="640" height="36" rx="6" fill="#eef2f6" stroke="#b4c5cf"/>
+<rect x="160" y="0" width="160" height="36" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/>
+<path d="M80 0V36M240 0V36M400 0V36M480 0V36M560 0V36" stroke="#c9d5de"/>
+</g>
+<text x="836" y="452" class="h">第 2 章 Softmax</text>
+<text x="836" y="486" class="s">负责一整行 · 新增：行内归约（Max、Sum）</text>
+<g transform="translate(836,504)">
+<rect x="0" y="0" width="320" height="120" rx="6" fill="#eef2f6" stroke="#b4c5cf"/>
+<rect x="0" y="40" width="320" height="40" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/>
+<path d="M0 40H320M0 80H320M64 0V120M128 0V120M192 0V120M256 0V120" stroke="#c9d5de"/>
+</g>
+<text x="836" y="680" class="h">第 3、4 章 MatMul</text>
+<text x="836" y="714" class="s">负责一个二维输出 Tile · 新增：二维地址、K 方向累加</text>
+<g transform="translate(836,730)">
+<rect x="0" y="0" width="200" height="88" rx="6" fill="#eef2f6" stroke="#b4c5cf"/>
+<rect x="0" y="0" width="100" height="44" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/>
+<path d="M0 44H200M100 0V88M50 0V88M150 0V88M0 22H200M0 66H200" stroke="#c9d5de"/>
+</g>
+<text x="1080" y="770" class="s">黄色：一个 Program 负责的数据</text>
+</svg>
+

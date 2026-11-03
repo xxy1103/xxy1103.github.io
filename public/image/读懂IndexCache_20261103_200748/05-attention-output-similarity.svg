@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">在同一层比较替换索引前后的 Core Attention 输出</title>
+<desc id="desc">对于前层 j 和当前层 i，j 小于 i。上方路径让第 i 层使用自身 Indexer 的索引，下方路径让同一层使用第 j 层提供的索引。两条路径均使用第 i 层的 Q/K/V，再比较其 Core Attention 输出的余弦相似度。不是比较第 i 层和第 j 层的输出，也不是计算索引集合重合率。</desc>
+<defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#24384c}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:600}.b{font-size:23px}.s{font-size:20px;fill:#52667a}.ar{fill:none;stroke:#8b9cad;stroke-width:3;marker-end:url(#arrow)}</style>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8b9cad"/></marker>
+<marker id="same-layer" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#5b7eaf"/></marker>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="64" y="78" class="t">替换索引后，同一层的注意力输出有多相似？</text>
+<text x="64" y="124" class="b">固定观察 Layer i；前层 j 只提供索引（j &lt; i），两条路径都在 Layer i 计算</text>
+<rect x="64" y="162" width="1472" height="540" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<text x="96" y="212" class="h">路径 A：使用本层索引</text>
+<rect x="96" y="244" width="274" height="90" rx="14" fill="#fff1d9" stroke="#dba549"/>
+<text x="233" y="281" text-anchor="middle" class="h">Indexer i</text><text x="233" y="314" text-anchor="middle" class="s">本层选择的 Top-k 索引</text>
+<path d="M376 289H454" class="ar"/>
+<rect x="464" y="238" width="420" height="102" rx="14" fill="#e8f1ff" stroke="#85a9db"/>
+<text x="674" y="278" text-anchor="middle" class="h">Core Attention i</text><text x="674" y="315" text-anchor="middle" class="b">使用 Layer i 的 Q/K/V</text>
+<path d="M890 289H968" class="ar"/>
+<rect x="978" y="244" width="248" height="90" rx="14" fill="#edf1f6" stroke="#c4cfdb"/>
+<text x="1102" y="281" text-anchor="middle" class="h">输出 A</text><text x="1102" y="314" text-anchor="middle" class="s">本层索引下的结果</text>
+<text x="96" y="433" class="h">路径 B：复用前层索引</text>
+<rect x="96" y="465" width="274" height="90" rx="14" fill="#fff1d9" stroke="#dba549"/>
+<text x="233" y="502" text-anchor="middle" class="h">Indexer j</text><text x="233" y="535" text-anchor="middle" class="s">前层选择的 Top-k 索引</text>
+<path d="M376 510H454" class="ar"/>
+<rect x="464" y="459" width="420" height="102" rx="14" fill="#e8f1ff" stroke="#85a9db"/>
+<text x="674" y="499" text-anchor="middle" class="h">Core Attention i</text><text x="674" y="536" text-anchor="middle" class="b">仍使用 Layer i 的 Q/K/V</text>
+<path d="M606 350V449" fill="none" stroke="#5b7eaf" stroke-width="3" stroke-dasharray="7 5" marker-start="url(#same-layer)" marker-end="url(#same-layer)"/>
+<text x="632" y="406" class="b" style="fill:#456b9e;font-weight:600">同一层 Attention</text>
+<path d="M890 510H968" class="ar"/>
+<rect x="978" y="465" width="248" height="90" rx="14" fill="#edf1f6" stroke="#c4cfdb"/>
+<text x="1102" y="502" text-anchor="middle" class="h">输出 B</text><text x="1102" y="535" text-anchor="middle" class="s">替换索引后的结果</text>
+<path d="M1232 289H1390V356" class="ar"/>
+<path d="M1232 510H1390V446" class="ar"/>
+<rect x="1270" y="367" width="240" height="68" rx="14" fill="#e9f1e9" stroke="#94b49a"/>
+<text x="1390" y="410" text-anchor="middle" class="h">Cosine(A, B)</text>
+<text x="96" y="627" class="b">只替换索引来源，比较同一个 Layer i 的 Core Attention 输出</text>
+<text x="96" y="665" class="s">Layer j 的注意力输出不参与比较；也不直接比较两组索引的重合率</text>
+<rect x="64" y="736" width="1472" height="116" rx="16" fill="#e8edf5"/>
+<text x="800" y="782" text-anchor="middle" class="h">越接近 1，说明这次索引替换对当前层输出的局部影响越小</text>
+<text x="800" y="822" text-anchor="middle" class="s">该指标没有直接评价后续层传播后的最终预测质量 · 根据原论文 Appendix C 绘制</text>
+</svg>

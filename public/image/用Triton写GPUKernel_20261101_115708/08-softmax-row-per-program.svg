@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Row-wise Softmax 的任务划分</title>
+<desc id="desc">输入 X 形状为 4 行 5 列，元素 1 到 20。每行由一个 Program 负责，BLOCK_SIZE 为 8，后 3 格被 mask 屏蔽。下方是显存中的一维排列，第 row_idx 行从 row_idx 乘 5 开始。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">一个 Program 负责一行</text>
+<text x="64" y="118" class="b">X: [4, 5]，Grid = (4,)，BLOCK_SIZE = next_power_of_2(5) = 8</text>
+<text x="64" y="212" class="b">第 0 行</text>
+<rect x="180" y="170" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="218" y="211" text-anchor="middle" class="m">1</text>
+<rect x="256" y="170" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="294" y="211" text-anchor="middle" class="m">2</text>
+<rect x="332" y="170" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="370" y="211" text-anchor="middle" class="m">3</text>
+<rect x="408" y="170" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="446" y="211" text-anchor="middle" class="m">4</text>
+<rect x="484" y="170" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="522" y="211" text-anchor="middle" class="m">5</text>
+<rect x="560" y="170" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="598" y="211" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="636" y="170" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="674" y="211" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="712" y="170" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="750" y="211" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<path d="M798 202H850" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="860" y="174" width="300" height="56" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/><text x="1010" y="210" text-anchor="middle" class="b">Program 0 · row_idx = 0</text>
+<text x="64" y="294" class="b">第 1 行</text>
+<rect x="180" y="252" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="218" y="293" text-anchor="middle" class="m">6</text>
+<rect x="256" y="252" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="294" y="293" text-anchor="middle" class="m">7</text>
+<rect x="332" y="252" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="370" y="293" text-anchor="middle" class="m">8</text>
+<rect x="408" y="252" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="446" y="293" text-anchor="middle" class="m">9</text>
+<rect x="484" y="252" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="522" y="293" text-anchor="middle" class="m">10</text>
+<rect x="560" y="252" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="598" y="293" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="636" y="252" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="674" y="293" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="712" y="252" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="750" y="293" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<path d="M798 284H850" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="860" y="256" width="300" height="56" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/><text x="1010" y="292" text-anchor="middle" class="b">Program 1 · row_idx = 1</text>
+<text x="64" y="376" class="b">第 2 行</text>
+<rect x="180" y="334" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="218" y="375" text-anchor="middle" class="m">11</text>
+<rect x="256" y="334" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="294" y="375" text-anchor="middle" class="m">12</text>
+<rect x="332" y="334" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="370" y="375" text-anchor="middle" class="m">13</text>
+<rect x="408" y="334" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="446" y="375" text-anchor="middle" class="m">14</text>
+<rect x="484" y="334" width="76" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="522" y="375" text-anchor="middle" class="m">15</text>
+<rect x="560" y="334" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="598" y="375" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="636" y="334" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="674" y="375" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="712" y="334" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="750" y="375" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<path d="M798 366H850" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="860" y="338" width="300" height="56" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/><text x="1010" y="374" text-anchor="middle" class="b">Program 2 · row_idx = 2</text>
+<text x="64" y="458" class="b">第 3 行</text>
+<rect x="180" y="416" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="218" y="457" text-anchor="middle" class="m">16</text>
+<rect x="256" y="416" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="294" y="457" text-anchor="middle" class="m">17</text>
+<rect x="332" y="416" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="370" y="457" text-anchor="middle" class="m">18</text>
+<rect x="408" y="416" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="446" y="457" text-anchor="middle" class="m">19</text>
+<rect x="484" y="416" width="76" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="522" y="457" text-anchor="middle" class="m">20</text>
+<rect x="560" y="416" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="598" y="457" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="636" y="416" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="674" y="457" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<rect x="712" y="416" width="76" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="750" y="457" text-anchor="middle" class="ms" style="fill:#7a8590">mask</text>
+<path d="M798 448H850" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="860" y="420" width="300" height="56" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/><text x="1010" y="456" text-anchor="middle" class="b">Program 3 · row_idx = 3</text>
+<text x="180" y="512" class="s">列 0～4：有效元素</text><text x="560" y="512" class="s">列 5～7：越界，mask 屏蔽</text>
+<path d="M560 158V486" stroke="#c0392b" stroke-width="3"/><text x="568" y="152" class="s" style="fill:#c0392b">N = 5</text>
+<rect x="1236" y="170" width="300" height="310" rx="18" fill="#fff" stroke="#c9d5de"/>
+<text x="1258" y="214" class="h">和第 1 章对比</text>
+<text x="1258" y="258" class="s">Vector Add：按固定长度切段</text>
+<text x="1258" y="290" class="s">Program 数 = ceil(总数 / 256)</text>
+<text x="1258" y="350" class="s">Softmax：按行分工</text>
+<text x="1258" y="382" class="s">Program 数 = 行数 M</text>
+<text x="1258" y="442" class="s">BLOCK_SIZE ≥ 每行长度 N</text>
+<text x="64" y="596" class="h">显存中的一维排列（按行连续存放）</text>
+<rect x="64.0" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="100.8" y="658" text-anchor="middle" class="m">1</text>
+<text x="100.8" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">0</text>
+<rect x="137.6" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="174.4" y="658" text-anchor="middle" class="m">2</text>
+<text x="174.4" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">1</text>
+<rect x="211.2" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="248.0" y="658" text-anchor="middle" class="m">3</text>
+<text x="248.0" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">2</text>
+<rect x="284.8" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="321.6" y="658" text-anchor="middle" class="m">4</text>
+<text x="321.6" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">3</text>
+<rect x="358.4" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="395.2" y="658" text-anchor="middle" class="m">5</text>
+<text x="395.2" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">4</text>
+<rect x="432.0" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="468.8" y="658" text-anchor="middle" class="m">6</text>
+<text x="468.8" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">5</text>
+<rect x="505.6" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="542.4" y="658" text-anchor="middle" class="m">7</text>
+<text x="542.4" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">6</text>
+<rect x="579.2" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="616.0" y="658" text-anchor="middle" class="m">8</text>
+<text x="616.0" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">7</text>
+<rect x="652.8" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="689.6" y="658" text-anchor="middle" class="m">9</text>
+<text x="689.6" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">8</text>
+<rect x="726.4" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="763.2" y="658" text-anchor="middle" class="m">10</text>
+<text x="763.2" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">9</text>
+<rect x="800.0" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="836.8" y="658" text-anchor="middle" class="m">11</text>
+<text x="836.8" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">10</text>
+<rect x="873.6" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="910.4" y="658" text-anchor="middle" class="m">12</text>
+<text x="910.4" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">11</text>
+<rect x="947.2" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="984.0" y="658" text-anchor="middle" class="m">13</text>
+<text x="984.0" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">12</text>
+<rect x="1020.8" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="1057.6" y="658" text-anchor="middle" class="m">14</text>
+<text x="1057.6" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">13</text>
+<rect x="1094.4" y="620" width="73.6" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="1131.2" y="658" text-anchor="middle" class="m">15</text>
+<text x="1131.2" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">14</text>
+<rect x="1168.0" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="1204.8" y="658" text-anchor="middle" class="m">16</text>
+<text x="1204.8" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">15</text>
+<rect x="1241.6" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="1278.4" y="658" text-anchor="middle" class="m">17</text>
+<text x="1278.4" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">16</text>
+<rect x="1315.2" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="1352.0" y="658" text-anchor="middle" class="m">18</text>
+<text x="1352.0" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">17</text>
+<rect x="1388.8" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="1425.6" y="658" text-anchor="middle" class="m">19</text>
+<text x="1425.6" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">18</text>
+<rect x="1462.4" y="620" width="73.6" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="1499.2" y="658" text-anchor="middle" class="m">20</text>
+<text x="1499.2" y="706" text-anchor="middle" class="ms" style="fill:#4d6575">19</text>
+<path d="M68.0 720V744" stroke="#d9a53a" stroke-width="3"/><text x="68.0" y="770" class="ms">第 0 行起点：0 × 5 = 0</text>
+<path d="M436.0 720V744" stroke="#d9a53a" stroke-width="3"/><text x="436.0" y="770" class="ms">第 1 行起点：1 × 5 = 5</text>
+<path d="M804.0 720V744" stroke="#d9a53a" stroke-width="3"/><text x="804.0" y="770" class="ms">第 2 行起点：2 × 5 = 10</text>
+<path d="M1172.0 720V744" stroke="#d9a53a" stroke-width="3"/><text x="1172.0" y="770" class="ms">第 3 行起点：3 × 5 = 15</text>
+<text x="1536" y="596" text-anchor="end" class="s">格内：元素值 · 格下：偏移</text>
+<rect x="64" y="800" width="1472" height="68" rx="14" fill="#eef2f6"/>
+<text x="94" y="842" class="m">offsets = row_idx * N + tl.arange(0, BLOCK_SIZE)</text><text x="900" y="842" class="m">mask = col_offsets &lt; N</text>
+</svg>

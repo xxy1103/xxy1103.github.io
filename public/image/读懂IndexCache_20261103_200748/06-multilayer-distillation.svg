@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">从单层蒸馏到多层蒸馏</title>
+<desc id="desc">左侧 Indexer 1 的预测分布 q 只接受本层 Attention 分布 p1 的监督。右侧同一个 q 分别与四层的目标 p1 到 p4 计算 KL，四个损失平均后训练保留的 Indexer 1。图示为训练监督关系，不是推理时共享注意力结果。</desc>
+<defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#24384c}.t{font-size:38px;font-weight:700}.h{font-size:27px;font-weight:600}.b{font-size:23px}.s{font-size:20px;fill:#52667a}.ar{fill:none;stroke:#8b9cad;stroke-width:3;marker-end:url(#arrow)}.line{fill:none;stroke:#8b9cad;stroke-width:3}</style>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8b9cad"/></marker>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="64" y="78" class="t">一个 Indexer，接受所服务各层的共同监督</text>
+<text x="64" y="123" class="b">固定同一个 Query 位置：p 是 Attention 目标分布，q 是 Indexer 预测分布</text>
+<rect x="64" y="164" width="530" height="570" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<rect x="626" y="164" width="910" height="570" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<text x="96" y="214" class="h">单层蒸馏：只学习本层</text>
+<rect x="154" y="264" width="350" height="82" rx="14" fill="#e8f1ff" stroke="#85a9db"/>
+<text x="329" y="299" text-anchor="middle" class="b">Layer 1 的 Attention</text><text x="329" y="329" text-anchor="middle" class="s">目标 p₁</text>
+<path d="M329 352V405" class="ar"/>
+<rect x="219" y="416" width="220" height="64" rx="12" fill="#e9f1e9" stroke="#94b49a"/>
+<text x="329" y="457" text-anchor="middle" class="b">KL(p₁ ∥ q)</text>
+<path d="M329 556V491" class="ar"/>
+<rect x="154" y="566" width="350" height="82" rx="14" fill="#fff1d9" stroke="#dba549"/>
+<text x="329" y="602" text-anchor="middle" class="b">Indexer 1</text><text x="329" y="631" text-anchor="middle" class="s">预测 q = Softmax(scores)</text>
+<text x="329" y="699" text-anchor="middle" class="s">KL 训练这个 Indexer</text>
+<text x="658" y="214" class="h">多层蒸馏：一个 F 服务自己与三个 S</text>
+<g class="s" text-anchor="middle"><text x="751" y="254">Layer 1 · F</text><text x="971" y="254">Layer 2 · S</text><text x="1191" y="254">Layer 3 · S</text><text x="1411" y="254">Layer 4 · S</text></g>
+<g fill="#e8f1ff" stroke="#85a9db"><rect x="666" y="273" width="170" height="65" rx="12"/><rect x="886" y="273" width="170" height="65" rx="12"/><rect x="1106" y="273" width="170" height="65" rx="12"/><rect x="1326" y="273" width="170" height="65" rx="12"/></g>
+<g class="b" text-anchor="middle"><text x="751" y="314">目标 p₁</text><text x="971" y="314">目标 p₂</text><text x="1191" y="314">目标 p₃</text><text x="1411" y="314">目标 p₄</text></g>
+<path d="M751 344V396" class="ar"/><path d="M971 344V396" class="ar"/><path d="M1191 344V396" class="ar"/><path d="M1411 344V396" class="ar"/>
+<g fill="#e9f1e9" stroke="#94b49a"><rect x="666" y="406" width="170" height="64" rx="12"/><rect x="886" y="406" width="170" height="64" rx="12"/><rect x="1106" y="406" width="170" height="64" rx="12"/><rect x="1326" y="406" width="170" height="64" rx="12"/></g>
+<g class="b" text-anchor="middle"><text x="751" y="447">KL(p₁ ∥ q)</text><text x="971" y="447">KL(p₂ ∥ q)</text><text x="1191" y="447">KL(p₃ ∥ q)</text><text x="1411" y="447">KL(p₄ ∥ q)</text></g>
+<path d="M1081 566V524M751 524H1411" class="line"/>
+<path d="M751 524V480" class="ar"/><path d="M971 524V480" class="ar"/><path d="M1191 524V480" class="ar"/><path d="M1411 524V480" class="ar"/>
+<rect x="906" y="566" width="350" height="82" rx="14" fill="#fff1d9" stroke="#dba549"/>
+<text x="1081" y="602" text-anchor="middle" class="b">同一个 Indexer 1</text><text x="1081" y="631" text-anchor="middle" class="s">同一份预测 q 参与四个 KL</text>
+<text x="1081" y="699" text-anchor="middle" class="s">四个 KL 取平均，训练这一个保留的 Indexer</text>
+<rect x="64" y="766" width="1472" height="86" rx="16" fill="#e8edf5"/>
+<text x="800" y="801" text-anchor="middle" class="h">监督目标从“适合本层”变为“兼顾所服务的多个层”</text>
+<text x="800" y="834" text-anchor="middle" class="s">图示为训练监督关系；推理时共享的仍是 Top-k 位置索引 · 根据论文 §3.2 绘制</text>
+</svg>

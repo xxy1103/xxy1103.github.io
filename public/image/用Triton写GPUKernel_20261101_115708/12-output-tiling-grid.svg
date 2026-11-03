@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">按输出 C 切 Tile</title>
+<desc id="desc">4 行 4 列的 C 被切成 4 个 2 行 2 列的 Tile，分别由 Program (0,0)、(0,1)、(1,0)、(1,1) 负责，Grid=(2,2)。Program (0,0) 负责左上角 7、10、19、22，需要 A 的前两行和 B 的前两列，形状为 [2,4] 乘 [4,2] 得到 [2,2]。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<style>.v{font-size:32px;font-weight:600;fill:#203b4d}.vs{font-size:28px;font-weight:600;fill:#203b4d}.lab{font-size:24px;font-weight:600;fill:#4d6575}</style>
+<text x="64" y="76" class="t">按输出 C 切 Tile：一个 Program 负责一块</text>
+<text x="64" y="118" class="b">C: [4, 4]，BLOCK_M = BLOCK_N = 2 → Grid = (2, 2)，共 4 个 Program</text>
+<rect x="64" y="150" width="560" height="700" rx="24" fill="#fff" stroke="#c9d5de"/>
+<text x="94" y="200" class="h">输出 C 的分工</text>
+<rect x="124" y="260" width="200" height="200" fill="#fbefcc" stroke="#d9a53a" stroke-width="6"/>
+<text x="174" y="314" text-anchor="middle" class="v">7</text>
+<text x="274" y="314" text-anchor="middle" class="v">10</text>
+<text x="174" y="414" text-anchor="middle" class="v">19</text>
+<text x="274" y="414" text-anchor="middle" class="v">22</text>
+<text x="224" y="444" text-anchor="middle" class="s" style="fill:#d9a53a;font-weight:700">Program (0,0)</text>
+<rect x="324" y="260" width="200" height="200" fill="#fde3c8" stroke="#d98a3a" stroke-width="3"/>
+<text x="374" y="314" text-anchor="middle" class="v">4</text>
+<text x="474" y="314" text-anchor="middle" class="v">6</text>
+<text x="374" y="414" text-anchor="middle" class="v">12</text>
+<text x="474" y="414" text-anchor="middle" class="v">14</text>
+<text x="424" y="444" text-anchor="middle" class="s" style="fill:#d98a3a;font-weight:700">Program (0,1)</text>
+<rect x="124" y="460" width="200" height="200" fill="#efe3f5" stroke="#9b6bb5" stroke-width="3"/>
+<text x="174" y="514" text-anchor="middle" class="v">31</text>
+<text x="274" y="514" text-anchor="middle" class="v">34</text>
+<text x="174" y="614" text-anchor="middle" class="v">43</text>
+<text x="274" y="614" text-anchor="middle" class="v">46</text>
+<text x="224" y="644" text-anchor="middle" class="s" style="fill:#9b6bb5;font-weight:700">Program (1,0)</text>
+<rect x="324" y="460" width="200" height="200" fill="#dff0f0" stroke="#3f9a9a" stroke-width="3"/>
+<text x="374" y="514" text-anchor="middle" class="v">20</text>
+<text x="474" y="514" text-anchor="middle" class="v">22</text>
+<text x="374" y="614" text-anchor="middle" class="v">28</text>
+<text x="474" y="614" text-anchor="middle" class="v">30</text>
+<text x="424" y="644" text-anchor="middle" class="s" style="fill:#3f9a9a;font-weight:700">Program (1,1)</text>
+<path d="M124 460H524M324 260V660" stroke="#203b4d" stroke-width="3"/>
+<text x="94" y="710" class="b">pid_m：行方向第几块</text>
+<text x="94" y="746" class="b">pid_n：列方向第几块</text>
+<text x="94" y="782" class="s">Program 数只由 C 的形状决定</text>
+<rect x="656" y="150" width="880" height="700" rx="24" fill="#fff" stroke="#d9a53a" stroke-width="2"/>
+<text x="686" y="200" class="h">放大 Program (0,0)：要算左上角这一块</text>
+<rect x="700" y="420" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="732" y="461" text-anchor="middle" class="vs">1</text>
+<rect x="764" y="420" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="796" y="461" text-anchor="middle" class="vs">2</text>
+<rect x="828" y="420" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="860" y="461" text-anchor="middle" class="vs">3</text>
+<rect x="892" y="420" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="924" y="461" text-anchor="middle" class="vs">4</text>
+<rect x="700" y="484" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="732" y="525" text-anchor="middle" class="vs">5</text>
+<rect x="764" y="484" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="796" y="525" text-anchor="middle" class="vs">6</text>
+<rect x="828" y="484" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="860" y="525" text-anchor="middle" class="vs">7</text>
+<rect x="892" y="484" width="64" height="64" fill="#bcd6ef" stroke="#2f6da3" stroke-width="3"/><text x="924" y="525" text-anchor="middle" class="vs">8</text>
+<text x="828" y="400" text-anchor="middle" class="b">A 的前两行 [2, 4]</text>
+<text x="990" y="498" text-anchor="middle" class="t">×</text>
+<rect x="1010" y="300" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1042" y="341" text-anchor="middle" class="vs">1</text>
+<rect x="1074" y="300" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1106" y="341" text-anchor="middle" class="vs">0</text>
+<rect x="1010" y="364" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1042" y="405" text-anchor="middle" class="vs">0</text>
+<rect x="1074" y="364" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1106" y="405" text-anchor="middle" class="vs">1</text>
+<rect x="1010" y="428" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1042" y="469" text-anchor="middle" class="vs">2</text>
+<rect x="1074" y="428" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1106" y="469" text-anchor="middle" class="vs">0</text>
+<rect x="1010" y="492" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1042" y="533" text-anchor="middle" class="vs">0</text>
+<rect x="1074" y="492" width="64" height="64" fill="#cfe8d6" stroke="#2e7d4f" stroke-width="3"/><text x="1106" y="533" text-anchor="middle" class="vs">2</text>
+<text x="1074" y="280" text-anchor="middle" class="b">B 的前两列 [4, 2]</text>
+<text x="1182" y="498" text-anchor="middle" class="t">=</text>
+<rect x="1230" y="420" width="80" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="1270" y="461" text-anchor="middle" class="vs">7</text>
+<rect x="1310" y="420" width="80" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="1350" y="461" text-anchor="middle" class="vs">10</text>
+<rect x="1230" y="484" width="80" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="1270" y="525" text-anchor="middle" class="vs">19</text>
+<rect x="1310" y="484" width="80" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/><text x="1350" y="525" text-anchor="middle" class="vs">22</text>
+<text x="1310" y="400" text-anchor="middle" class="b">C Tile [2, 2]</text>
+<rect x="686" y="640" width="820" height="180" rx="16" fill="#eef2f6"/>
+<text x="712" y="684" class="b">一行 A 读进来一次，同时用于这一行的 2 个输出；</text>
+<text x="712" y="720" class="b">一列 B 读进来一次，同时用于这一列的 2 个输出。</text>
+<text x="712" y="766" class="s">Tile 越大，读进来的数据被复用得越多（上一篇的 Tiling）。</text>
+<text x="712" y="800" class="s">C 不能被 Tile 整除时，边界 Tile 不满，用 mask 处理。</text>
+</svg>

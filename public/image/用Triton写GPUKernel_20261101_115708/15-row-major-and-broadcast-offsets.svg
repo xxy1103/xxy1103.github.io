@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">按行存储与广播生成地址</title>
+<desc id="desc">上半部分：4×4 矩阵 A 按行展开成长度 16 的一维数组，红框标出 9、10、13、14 在二维矩阵和一维数组中的位置。下半部分：rows=[2,3] 竖放并乘以 4 得到 [8,12]，ks=[0,1] 横放，广播相加得到偏移表 [[8,9],[12,13]]，对应一维数组中的 9、10、13、14。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<style>.v{font-size:32px;font-weight:600;fill:#203b4d}.vs{font-size:28px;font-weight:600;fill:#203b4d}.lab{font-size:24px;font-weight:600;fill:#4d6575}</style>
+<text x="64" y="72" class="t">从二维下标到一维地址</text>
+<text x="64" y="112" class="b">按行存储：offset_A(i, j) = i × K + j，本例 K = 4</text>
+<rect x="64" y="136" width="1472" height="290" rx="22" fill="#fff" stroke="#c9d5de"/>
+<text x="90" y="176" class="h">① 二维矩阵在显存中是一维的</text>
+<rect x="96" y="200" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="124" y="233" text-anchor="middle" class="vs">1</text>
+<rect x="152" y="200" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="180" y="233" text-anchor="middle" class="vs">2</text>
+<rect x="208" y="200" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="236" y="233" text-anchor="middle" class="vs">3</text>
+<rect x="264" y="200" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="292" y="233" text-anchor="middle" class="vs">4</text>
+<rect x="96" y="248" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="124" y="281" text-anchor="middle" class="vs">5</text>
+<rect x="152" y="248" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="180" y="281" text-anchor="middle" class="vs">6</text>
+<rect x="208" y="248" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="236" y="281" text-anchor="middle" class="vs">7</text>
+<rect x="264" y="248" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="292" y="281" text-anchor="middle" class="vs">8</text>
+<rect x="96" y="296" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="124" y="329" text-anchor="middle" class="vs">9</text>
+<rect x="152" y="296" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="180" y="329" text-anchor="middle" class="vs">10</text>
+<rect x="208" y="296" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="236" y="329" text-anchor="middle" class="vs">11</text>
+<rect x="264" y="296" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="292" y="329" text-anchor="middle" class="vs">12</text>
+<rect x="96" y="344" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="124" y="377" text-anchor="middle" class="vs">13</text>
+<rect x="152" y="344" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="180" y="377" text-anchor="middle" class="vs">14</text>
+<rect x="208" y="344" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="236" y="377" text-anchor="middle" class="vs">15</text>
+<rect x="264" y="344" width="56" height="48" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="292" y="377" text-anchor="middle" class="vs">16</text>
+<text x="208" y="410" text-anchor="middle" class="s">A [4, 4]</text>
+<rect x="98" y="298" width="52" height="44" fill="none" stroke="#c0392b" stroke-width="3.5"/><rect x="154" y="298" width="52" height="44" fill="none" stroke="#c0392b" stroke-width="3.5"/><rect x="98" y="346" width="52" height="44" fill="none" stroke="#c0392b" stroke-width="3.5"/><rect x="154" y="346" width="52" height="44" fill="none" stroke="#c0392b" stroke-width="3.5"/>
+<rect x="380" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="415.5" y="300" text-anchor="middle" class="vs">1</text><text x="415.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">0</text>
+<rect x="451" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="486.5" y="300" text-anchor="middle" class="vs">2</text><text x="486.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">1</text>
+<rect x="522" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="557.5" y="300" text-anchor="middle" class="vs">3</text><text x="557.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">2</text>
+<rect x="593" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="628.5" y="300" text-anchor="middle" class="vs">4</text><text x="628.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">3</text>
+<rect x="664" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="699.5" y="300" text-anchor="middle" class="vs">5</text><text x="699.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">4</text>
+<rect x="735" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="770.5" y="300" text-anchor="middle" class="vs">6</text><text x="770.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">5</text>
+<rect x="806" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="841.5" y="300" text-anchor="middle" class="vs">7</text><text x="841.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">6</text>
+<rect x="877" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="912.5" y="300" text-anchor="middle" class="vs">8</text><text x="912.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">7</text>
+<rect x="948" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/><text x="983.5" y="300" text-anchor="middle" class="vs">9</text><text x="983.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">8</text>
+<rect x="1019" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="1054.5" y="300" text-anchor="middle" class="vs">10</text><text x="1054.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">9</text>
+<rect x="1090" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="1125.5" y="300" text-anchor="middle" class="vs">11</text><text x="1125.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">10</text>
+<rect x="1161" y="260" width="71" height="60" fill="#bcd6ef" stroke="#4f86b8" stroke-width="1.5"/><text x="1196.5" y="300" text-anchor="middle" class="vs">12</text><text x="1196.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">11</text>
+<rect x="1232" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="3"/><text x="1267.5" y="300" text-anchor="middle" class="vs">13</text><text x="1267.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">12</text>
+<rect x="1303" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="1338.5" y="300" text-anchor="middle" class="vs">14</text><text x="1338.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">13</text>
+<rect x="1374" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="1409.5" y="300" text-anchor="middle" class="vs">15</text><text x="1409.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">14</text>
+<rect x="1445" y="260" width="71" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="1.5"/><text x="1480.5" y="300" text-anchor="middle" class="vs">16</text><text x="1480.5" y="348" text-anchor="middle" class="ms" style="fill:#4d6575">15</text>
+<text x="522" y="246" text-anchor="middle" class="s">第 0 行</text>
+<text x="806" y="246" text-anchor="middle" class="s">第 1 行</text>
+<text x="1090" y="246" text-anchor="middle" class="s">第 2 行</text>
+<text x="1374" y="246" text-anchor="middle" class="s">第 3 行</text>
+<text x="1516" y="214" text-anchor="end" class="s">格内：元素值　格下：偏移</text>
+<rect x="64" y="446" width="1472" height="420" rx="22" fill="#fff" stroke="#c9d5de"/>
+<text x="90" y="486" class="h">② 广播一次算出整块地址：a_offsets = rows[:, None] * K + ks[None, :]</text>
+<rect x="110" y="530" width="72" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="146" y="576" text-anchor="middle" class="v">2</text>
+<rect x="110" y="602" width="72" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="146" y="648" text-anchor="middle" class="v">3</text>
+<text x="146" y="708" text-anchor="middle" class="ms">rows[:, None]</text><text x="146" y="732" text-anchor="middle" class="s">[2, 1]</text>
+<text x="226" y="614" text-anchor="middle" class="h">× 4</text>
+<text x="290" y="614" text-anchor="middle" class="h">=</text>
+<rect x="330" y="530" width="72" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="366" y="576" text-anchor="middle" class="v">8</text>
+<rect x="330" y="602" width="72" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="366" y="648" text-anchor="middle" class="v">12</text>
+<text x="366" y="708" text-anchor="middle" class="s">每行起点</text>
+<text x="450" y="614" text-anchor="middle" class="h">+</text>
+<rect x="490" y="566" width="72" height="72" fill="#efe3f5" stroke="#9b6bb5" stroke-width="2.5"/><text x="526" y="612" text-anchor="middle" class="v">0</text>
+<rect x="562" y="566" width="72" height="72" fill="#efe3f5" stroke="#9b6bb5" stroke-width="2.5"/><text x="598" y="612" text-anchor="middle" class="v">1</text>
+<text x="562" y="708" text-anchor="middle" class="ms">ks[None, :]</text><text x="562" y="732" text-anchor="middle" class="s">[1, 2]，行内列号</text>
+<text x="680" y="614" text-anchor="middle" class="h">→</text>
+<rect x="730" y="530" width="60" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="760" y="576" text-anchor="middle" class="v">8</text>
+<rect x="790" y="530" width="60" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="820" y="576" text-anchor="middle" class="v">8</text>
+<rect x="730" y="602" width="60" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="760" y="648" text-anchor="middle" class="v">12</text>
+<rect x="790" y="602" width="60" height="72" fill="#fde3c8" stroke="#d98a3a" stroke-width="2.5"/><text x="820" y="648" text-anchor="middle" class="v">12</text>
+<text x="870" y="614" text-anchor="middle" class="h">+</text>
+<rect x="890" y="530" width="60" height="72" fill="#efe3f5" stroke="#9b6bb5" stroke-width="2.5"/><text x="920" y="576" text-anchor="middle" class="v">0</text>
+<rect x="950" y="530" width="60" height="72" fill="#efe3f5" stroke="#9b6bb5" stroke-width="2.5"/><text x="980" y="576" text-anchor="middle" class="v">1</text>
+<rect x="890" y="602" width="60" height="72" fill="#efe3f5" stroke="#9b6bb5" stroke-width="2.5"/><text x="920" y="648" text-anchor="middle" class="v">0</text>
+<rect x="950" y="602" width="60" height="72" fill="#efe3f5" stroke="#9b6bb5" stroke-width="2.5"/><text x="980" y="648" text-anchor="middle" class="v">1</text>
+<text x="870" y="708" text-anchor="middle" class="s">广播：各自扩展成 [2, 2]</text>
+<text x="1046" y="614" text-anchor="middle" class="h">=</text>
+<rect x="1080" y="530" width="72" height="72" fill="#f6d5d1" stroke="#c0392b" stroke-width="2.5"/><text x="1116" y="576" text-anchor="middle" class="v">8</text>
+<rect x="1152" y="530" width="72" height="72" fill="#f6d5d1" stroke="#c0392b" stroke-width="2.5"/><text x="1188" y="576" text-anchor="middle" class="v">9</text>
+<rect x="1080" y="602" width="72" height="72" fill="#f6d5d1" stroke="#c0392b" stroke-width="2.5"/><text x="1116" y="648" text-anchor="middle" class="v">12</text>
+<rect x="1152" y="602" width="72" height="72" fill="#f6d5d1" stroke="#c0392b" stroke-width="2.5"/><text x="1188" y="648" text-anchor="middle" class="v">13</text>
+<text x="1152" y="708" text-anchor="middle" class="s">a_offsets</text>
+<text x="1254" y="560" class="b">读取</text>
+<text x="1254" y="600" class="m">A[2,0] A[2,1]</text>
+<text x="1254" y="634" class="m">A[3,0] A[3,1]</text>
+<text x="1254" y="668" class="s">= 9, 10, 13, 14</text>
+<rect x="90" y="770" width="1420" height="76" rx="14" fill="#eef2f6"/>
+<text x="116" y="806" class="b">Program (1, 0) 第 1 轮：rows = [2, 3]，ks = [0, 1]。红色偏移表指向上方一维数组中偏移 8、9、12、13 的红框。</text>
+<text x="116" y="836" class="s">B 用同样的写法：b_offsets = ks[:, None] * N + cols[None, :]。广播只是逻辑上扩展形状，不一定真的复制数据。</text>
+<rect x="951" y="263" width="65" height="54" fill="none" stroke="#c0392b" stroke-width="4"/>
+<rect x="1022" y="263" width="65" height="54" fill="none" stroke="#c0392b" stroke-width="4"/>
+<rect x="1235" y="263" width="65" height="54" fill="none" stroke="#c0392b" stroke-width="4"/>
+<rect x="1306" y="263" width="65" height="54" fill="none" stroke="#c0392b" stroke-width="4"/>
+<text x="1516" y="400" text-anchor="end" class="s" style="fill:#c0392b;font-weight:700">红色：② 中一次读取的 4 个元素</text>
+</svg>

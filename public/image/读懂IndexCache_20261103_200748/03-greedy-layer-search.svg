@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Training-free IndexCache 的贪心选层过程</title>
+<desc id="desc">八层教学示例从全 F 开始。第一轮各候选分别将一个 F 改为 S，在同一校准数据上比较 LM Loss。示例选择 Layer 3 并提交。第二轮在保留这次修改的基础上重新评价剩余候选。所有 Loss 均为示意，不是论文实测结果。</desc>
+<defs>
+<style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#24384c}.t{font-size:38px;font-weight:700}.h{font-size:27px;font-weight:600}.b{font-size:23px}.s{font-size:20px;fill:#52667a}.code{font-family:'Menlo',monospace;font-size:25px;letter-spacing:4px}.arrow{fill:none;stroke:#8b9cad;stroke-width:3;marker-end:url(#ar)}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8b9cad"/></marker>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="64" y="78" class="t">贪心选层：尝试一次修改，比较 Loss，再提交</text>
+<text x="64" y="123" class="b">同一组校准数据 · 第一层始终为 F · 所有配置和 Loss 均为教学示意</text>
+
+<rect x="64" y="164" width="700" height="560" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<text x="96" y="212" class="h">第 1 轮：从全 F 开始</text>
+<text x="96" y="255" class="code">F F F F F F F F</text>
+<text x="96" y="305" class="s">分别尝试，候选之间不累积修改</text>
+<path d="M96 327H730" stroke="#d6dfe8"/>
+<text x="96" y="366" class="s">候选</text><text x="286" y="366" class="s">F/S 配置</text><text x="626" y="366" class="s">LM Loss</text>
+<text x="96" y="419" class="b">Layer 2 → S</text><text x="286" y="419" class="code">F S F F F F F F</text><text x="646" y="419" class="b">1.24</text>
+<rect x="82" y="440" width="664" height="64" rx="12" fill="#fff1d9" stroke="#dba549"/>
+<text x="96" y="481" class="b">Layer 3 → S</text><text x="286" y="481" class="code">F F S F F F F F</text><text x="646" y="481" class="b" style="font-weight:700">1.20</text>
+<text x="96" y="543" class="b">Layer 4 → S</text><text x="286" y="543" class="code">F F F S F F F F</text><text x="646" y="543" class="b">1.23</text>
+<text x="414" y="591" class="h" text-anchor="middle">…</text>
+<text x="96" y="637" class="b">Layer 8 → S</text><text x="286" y="637" class="code">F F F F F F F S</text><text x="646" y="637" class="b">1.26</text>
+<text x="96" y="690" class="s">比较全部 7 个候选，提交 Loss 最低的修改</text>
+
+<path d="M772 472H820" class="arrow"/>
+<rect x="836" y="164" width="700" height="560" rx="22" fill="#fff" stroke="#d6dfe8"/>
+<text x="868" y="212" class="h">第 2 轮：在新配置上重新评价</text>
+<rect x="868" y="234" width="636" height="56" rx="10" fill="#fff1d9"/>
+<text x="890" y="270" class="code">F F S F F F F F</text>
+<text x="868" y="327" class="s">上一轮选定的 Layer 3 继续保持 S</text>
+<text x="868" y="385" class="b">尝试 Layer 2 → S</text>
+<text x="868" y="428" class="code">F S S F F F F F</text>
+<path d="M868 452H1504" stroke="#d6dfe8"/>
+<text x="868" y="494" class="b">尝试 Layer 4 → S</text>
+<text x="868" y="537" class="code">F F S S F F F F</text>
+<text x="1186" y="584" class="h" text-anchor="middle">…</text>
+<text x="868" y="634" class="b">重新比较剩余 6 个候选的 LM Loss</text>
+<text x="868" y="681" class="s">提交一个修改，再开始下一轮</text>
+
+<rect x="64" y="760" width="1472" height="94" rx="16" fill="#e8edf5"/>
+<text x="800" y="799" class="h" text-anchor="middle">每一轮都基于当前配置评价，直到达到目标保留比例</text>
+<text x="800" y="834" class="s" text-anchor="middle">八层只保留两个 Indexer：共提交 6 次 F → S；搜索期间不更新模型权重</text>
+</svg>

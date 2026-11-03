@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">DSA 的两阶段流程与逐层重复的 Indexer 计算</title>
+  <desc id="desc">左侧展示一个 Query 经过 Indexer、Top-k 位置选择，再使用当前层的 Q/K/V 执行稀疏注意力。右侧展示同一个 Query 位置经过三个 Transformer 层，各层独立运行 Indexer 和 Core Attention。橙色表示选择阶段，蓝色表示注意力计算。三个选中位置仅为教学示意。</desc>
+  <defs>
+    <style>
+      text { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #24384c; }
+      .title { font-size: 38px; font-weight: 700; }
+      .heading { font-size: 27px; font-weight: 600; }
+      .body { font-size: 23px; }
+      .small { font-size: 20px; fill: #52667a; }
+      .label { font-size: 22px; font-weight: 600; }
+      .arrow { fill: none; stroke: #8b9cad; stroke-width: 3; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#8b9cad"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="#f5f7fb"/>
+  <text x="64" y="78" class="title">DSA：注意力计算变稀疏，Token 选择仍逐层执行</text>
+  <text x="64" y="122" class="body">IndexCache 关注的重复点：相邻层可能重新选出了高度相似的一组位置</text>
+
+  <rect x="64" y="162" width="700" height="604" rx="22" fill="#fff" stroke="#d6dfe8"/>
+  <rect x="800" y="162" width="736" height="604" rx="22" fill="#fff" stroke="#d6dfe8"/>
+  <text x="96" y="211" class="heading">一个 Query：先选位置，再计算注意力</text>
+  <text x="96" y="254" class="small">输入：当前 Query 对应的表示与可见历史</text>
+  <rect x="96" y="277" width="636" height="52" rx="10" fill="#edf1f6"/>
+  <text x="414" y="312" class="body" text-anchor="middle">历史位置  1   2   3   4   5   6   7   8  …</text>
+  <path d="M414 329V363" class="arrow"/>
+  <rect x="128" y="370" width="572" height="82" rx="14" fill="#fff1d9" stroke="#dba549"/>
+  <text x="414" y="404" class="heading" text-anchor="middle">Lightning Indexer</text>
+  <text x="414" y="434" class="small" text-anchor="middle">对历史位置打分</text>
+  <path d="M414 452V488" class="arrow"/>
+  <rect x="128" y="495" width="572" height="78" rx="14" fill="#fff1d9" stroke="#dba549"/>
+  <text x="414" y="526" class="heading" text-anchor="middle">Top-k → 位置索引</text>
+  <text x="414" y="555" class="small" text-anchor="middle">例如 {2, 5, 8}（仅示意，论文 k = 2048）</text>
+  <path d="M414 573V609" class="arrow"/>
+  <rect x="128" y="616" width="572" height="92" rx="14" fill="#e8f1ff" stroke="#85a9db"/>
+  <text x="414" y="652" class="heading" text-anchor="middle">Sparse Core Attention</text>
+  <text x="414" y="685" class="small" text-anchor="middle">使用当前层的 Q/K/V，在选定位置上计算</text>
+  <text x="414" y="742" class="small" text-anchor="middle">橙色：选择位置　　蓝色：计算注意力</text>
+
+  <text x="832" y="211" class="heading">多个 Layer：每层重新选择一次</text>
+  <text x="832" y="254" class="small">沿同一个 Query 位置观察，层间表示持续更新</text>
+  <text x="832" y="312" class="label">Layer ℓ</text>
+  <rect x="954" y="280" width="202" height="74" rx="12" fill="#fff1d9" stroke="#dba549"/>
+  <text x="1055" y="311" class="label" text-anchor="middle">Indexer ℓ</text>
+  <text x="1055" y="340" class="small" text-anchor="middle">生成本层 Top-k</text>
+  <path d="M1156 317H1210" class="arrow"/>
+  <rect x="1220" y="280" width="278" height="74" rx="12" fill="#e8f1ff" stroke="#85a9db"/>
+  <text x="1359" y="311" class="label" text-anchor="middle">Core Attention ℓ</text>
+  <text x="1359" y="340" class="small" text-anchor="middle">使用本层的 K/V</text>
+  <path d="M1359 354V388H914V430H946" class="arrow"/>
+
+  <text x="832" y="462" class="label">Layer ℓ+1</text>
+  <rect x="954" y="430" width="202" height="74" rx="12" fill="#fff1d9" stroke="#dba549"/>
+  <text x="1055" y="461" class="label" text-anchor="middle">Indexer ℓ+1</text>
+  <text x="1055" y="490" class="small" text-anchor="middle">重新生成 Top-k</text>
+  <path d="M1156 467H1210" class="arrow"/>
+  <rect x="1220" y="430" width="278" height="74" rx="12" fill="#e8f1ff" stroke="#85a9db"/>
+  <text x="1359" y="461" class="label" text-anchor="middle">Core Attention ℓ+1</text>
+  <text x="1359" y="490" class="small" text-anchor="middle">使用本层的 K/V</text>
+  <path d="M1359 504V538H914V580H946" class="arrow"/>
+
+  <text x="832" y="612" class="label">Layer ℓ+2</text>
+  <rect x="954" y="580" width="202" height="74" rx="12" fill="#fff1d9" stroke="#dba549"/>
+  <text x="1055" y="611" class="label" text-anchor="middle">Indexer ℓ+2</text>
+  <text x="1055" y="640" class="small" text-anchor="middle">再次生成 Top-k</text>
+  <path d="M1156 617H1210" class="arrow"/>
+  <rect x="1220" y="580" width="278" height="74" rx="12" fill="#e8f1ff" stroke="#85a9db"/>
+  <text x="1359" y="611" class="label" text-anchor="middle">Core Attention ℓ+2</text>
+  <text x="1359" y="640" class="small" text-anchor="middle">使用本层的 K/V</text>
+  <text x="1168" y="708" class="small" text-anchor="middle">每层独立选择，但选中位置可能高度重合</text>
+  <text x="1168" y="741" class="small" text-anchor="middle">灰色折线：省略其他模块后的层间状态传递</text>
+
+  <rect x="64" y="794" width="1472" height="66" rx="16" fill="#e8edf5"/>
+  <text x="800" y="836" class="heading" text-anchor="middle">核心问题：能否复用前面层选好的位置，让后续层少做一次 Indexer？</text>
+</svg>

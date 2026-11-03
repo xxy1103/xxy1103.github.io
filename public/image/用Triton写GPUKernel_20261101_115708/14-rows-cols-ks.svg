@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">rows、cols、ks 各选中哪里</title>
+<desc id="desc">Program (1,0) 第 1 轮：rows=[2,3]，cols=[0,1]，ks=[0,1]。A 中选中第 2、3 行和第 0、1 列，得到蓝块；B 中选中第 0、1 行和第 0、1 列，得到绿块；C 中第 2、3 行和第 0、1 列是这个 Program 要写的黄块。rows 和 cols 在 K 循环中不变，ks 每轮后移。</desc>
+<defs><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:34px;font-weight:700}.b{font-size:24px}.s{font-size:21px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:26px;font-weight:700}.v{font-size:26px;font-weight:600}.ix{font-family:Menlo,Consolas,monospace;font-size:22px}</style></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="72" class="t">rows、cols、ks 各选中哪里</text>
+<text x="64" y="114" class="b">以 Program (1, 0) 的第 1 轮为例。每个矩阵左边是行号，上边是列号，彩色的号码就是被选中的。</text>
+<rect x="395" y="150" width="250" height="52" rx="26" fill="#fff" stroke="#d98a3a" stroke-width="3"/>
+<text x="520" y="185" text-anchor="middle" class="m" style="fill:#d98a3a">rows = [2, 3]</text>
+<rect x="675" y="150" width="250" height="52" rx="26" fill="#fff" stroke="#3f9a9a" stroke-width="3"/>
+<text x="800" y="185" text-anchor="middle" class="m" style="fill:#3f9a9a">cols = [0, 1]</text>
+<rect x="955" y="150" width="250" height="52" rx="26" fill="#fff" stroke="#8e44ad" stroke-width="3"/>
+<text x="1080" y="185" text-anchor="middle" class="m" style="fill:#8e44ad">ks = [0, 1]</text>
+<text x="328" y="272" text-anchor="middle" class="h">A</text>
+<text x="232" y="316" text-anchor="middle" class="ix" style="fill:#8e44ad;font-weight:700">0</text>
+<text x="296" y="316" text-anchor="middle" class="ix" style="fill:#8e44ad;font-weight:700">1</text>
+<text x="360" y="316" text-anchor="middle" class="ix" style="fill:#a3b1bb">2</text>
+<text x="424" y="316" text-anchor="middle" class="ix" style="fill:#a3b1bb">3</text>
+<text x="184" y="370" text-anchor="end" class="ix" style="fill:#a3b1bb">0</text>
+<rect x="200" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="232" y="372" text-anchor="middle" class="v" style="fill:#9aa8b2">1</text>
+<rect x="264" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="296" y="372" text-anchor="middle" class="v" style="fill:#9aa8b2">2</text>
+<rect x="328" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="360" y="372" text-anchor="middle" class="v" style="fill:#9aa8b2">3</text>
+<rect x="392" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="424" y="372" text-anchor="middle" class="v" style="fill:#9aa8b2">4</text>
+<text x="184" y="434" text-anchor="end" class="ix" style="fill:#a3b1bb">1</text>
+<rect x="200" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="232" y="436" text-anchor="middle" class="v" style="fill:#9aa8b2">5</text>
+<rect x="264" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="296" y="436" text-anchor="middle" class="v" style="fill:#9aa8b2">6</text>
+<rect x="328" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="360" y="436" text-anchor="middle" class="v" style="fill:#9aa8b2">7</text>
+<rect x="392" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="424" y="436" text-anchor="middle" class="v" style="fill:#9aa8b2">8</text>
+<text x="184" y="498" text-anchor="end" class="ix" style="fill:#d98a3a;font-weight:700">2</text>
+<rect x="200" y="458" width="64" height="64" fill="#bcd6ef" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="232" y="500" text-anchor="middle" class="v">9</text>
+<rect x="264" y="458" width="64" height="64" fill="#bcd6ef" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="296" y="500" text-anchor="middle" class="v">10</text>
+<rect x="328" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="360" y="500" text-anchor="middle" class="v" style="fill:#9aa8b2">11</text>
+<rect x="392" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="424" y="500" text-anchor="middle" class="v" style="fill:#9aa8b2">12</text>
+<text x="184" y="562" text-anchor="end" class="ix" style="fill:#d98a3a;font-weight:700">3</text>
+<rect x="200" y="522" width="64" height="64" fill="#bcd6ef" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="232" y="564" text-anchor="middle" class="v">13</text>
+<rect x="264" y="522" width="64" height="64" fill="#bcd6ef" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="296" y="564" text-anchor="middle" class="v">14</text>
+<rect x="328" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="360" y="564" text-anchor="middle" class="v" style="fill:#9aa8b2">15</text>
+<rect x="392" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="424" y="564" text-anchor="middle" class="v" style="fill:#9aa8b2">16</text>
+<rect x="200" y="458" width="128" height="128" fill="none" stroke="#4f86b8" stroke-width="5" rx="4"/>
+<text x="328" y="650" text-anchor="middle" class="m">A[<tspan style="fill:#d98a3a">rows</tspan>, <tspan style="fill:#8e44ad">ks</tspan>]</text>
+<text x="328" y="690" text-anchor="middle" class="s">蓝块：本轮读的 a</text>
+<text x="800" y="272" text-anchor="middle" class="h">B</text>
+<text x="704" y="316" text-anchor="middle" class="ix" style="fill:#3f9a9a;font-weight:700">0</text>
+<text x="768" y="316" text-anchor="middle" class="ix" style="fill:#3f9a9a;font-weight:700">1</text>
+<text x="832" y="316" text-anchor="middle" class="ix" style="fill:#a3b1bb">2</text>
+<text x="896" y="316" text-anchor="middle" class="ix" style="fill:#a3b1bb">3</text>
+<text x="656" y="370" text-anchor="end" class="ix" style="fill:#8e44ad;font-weight:700">0</text>
+<rect x="672" y="330" width="64" height="64" fill="#cfe8d6" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="704" y="372" text-anchor="middle" class="v">1</text>
+<rect x="736" y="330" width="64" height="64" fill="#cfe8d6" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="768" y="372" text-anchor="middle" class="v">0</text>
+<rect x="800" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="832" y="372" text-anchor="middle" class="v" style="fill:#9aa8b2">1</text>
+<rect x="864" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="896" y="372" text-anchor="middle" class="v" style="fill:#9aa8b2">0</text>
+<text x="656" y="434" text-anchor="end" class="ix" style="fill:#8e44ad;font-weight:700">1</text>
+<rect x="672" y="394" width="64" height="64" fill="#cfe8d6" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="704" y="436" text-anchor="middle" class="v">0</text>
+<rect x="736" y="394" width="64" height="64" fill="#cfe8d6" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="768" y="436" text-anchor="middle" class="v">1</text>
+<rect x="800" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="832" y="436" text-anchor="middle" class="v" style="fill:#9aa8b2">0</text>
+<rect x="864" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="896" y="436" text-anchor="middle" class="v" style="fill:#9aa8b2">1</text>
+<text x="656" y="498" text-anchor="end" class="ix" style="fill:#a3b1bb">2</text>
+<rect x="672" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="704" y="500" text-anchor="middle" class="v" style="fill:#9aa8b2">2</text>
+<rect x="736" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="768" y="500" text-anchor="middle" class="v" style="fill:#9aa8b2">0</text>
+<rect x="800" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="832" y="500" text-anchor="middle" class="v" style="fill:#9aa8b2">1</text>
+<rect x="864" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="896" y="500" text-anchor="middle" class="v" style="fill:#9aa8b2">0</text>
+<text x="656" y="562" text-anchor="end" class="ix" style="fill:#a3b1bb">3</text>
+<rect x="672" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="704" y="564" text-anchor="middle" class="v" style="fill:#9aa8b2">0</text>
+<rect x="736" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="768" y="564" text-anchor="middle" class="v" style="fill:#9aa8b2">2</text>
+<rect x="800" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="832" y="564" text-anchor="middle" class="v" style="fill:#9aa8b2">0</text>
+<rect x="864" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="896" y="564" text-anchor="middle" class="v" style="fill:#9aa8b2">1</text>
+<rect x="672" y="330" width="128" height="128" fill="none" stroke="#4f9a6a" stroke-width="5" rx="4"/>
+<text x="800" y="650" text-anchor="middle" class="m">B[<tspan style="fill:#8e44ad">ks</tspan>, <tspan style="fill:#3f9a9a">cols</tspan>]</text>
+<text x="800" y="690" text-anchor="middle" class="s">绿块：本轮读的 b</text>
+<text x="1272" y="272" text-anchor="middle" class="h">C</text>
+<text x="1176" y="316" text-anchor="middle" class="ix" style="fill:#3f9a9a;font-weight:700">0</text>
+<text x="1240" y="316" text-anchor="middle" class="ix" style="fill:#3f9a9a;font-weight:700">1</text>
+<text x="1304" y="316" text-anchor="middle" class="ix" style="fill:#a3b1bb">2</text>
+<text x="1368" y="316" text-anchor="middle" class="ix" style="fill:#a3b1bb">3</text>
+<text x="1128" y="370" text-anchor="end" class="ix" style="fill:#a3b1bb">0</text>
+<rect x="1144" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1208" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1272" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1336" y="330" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="1128" y="434" text-anchor="end" class="ix" style="fill:#a3b1bb">1</text>
+<rect x="1144" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1208" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1272" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1336" y="394" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="1128" y="498" text-anchor="end" class="ix" style="fill:#d98a3a;font-weight:700">2</text>
+<rect x="1144" y="458" width="64" height="64" fill="#fbefcc" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1208" y="458" width="64" height="64" fill="#fbefcc" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1272" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1336" y="458" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<text x="1128" y="562" text-anchor="end" class="ix" style="fill:#d98a3a;font-weight:700">3</text>
+<rect x="1144" y="522" width="64" height="64" fill="#fbefcc" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1208" y="522" width="64" height="64" fill="#fbefcc" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1272" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1336" y="522" width="64" height="64" fill="#f3f6f9" stroke="#c3d0d8" stroke-width="1.2"/>
+<rect x="1144" y="458" width="128" height="128" fill="none" stroke="#d9a53a" stroke-width="5" rx="4"/>
+<text x="1272" y="650" text-anchor="middle" class="m">C[<tspan style="fill:#d98a3a">rows</tspan>, <tspan style="fill:#3f9a9a">cols</tspan>]</text>
+<text x="1272" y="690" text-anchor="middle" class="s">黄块：这个 Program 要写的结果</text>
+<text x="564" y="474" text-anchor="middle" style="font-size:48px;fill:#7a8fa0">×</text>
+<text x="1036" y="474" text-anchor="middle" style="font-size:48px;fill:#7a8fa0">=</text>
+<rect x="160" y="748" width="1280" height="120" rx="16" fill="#eef2f6"/>
+<text x="200" y="798" class="b"><tspan style="fill:#d98a3a">rows</tspan> 和 <tspan style="fill:#3f9a9a">cols</tspan> 由 Program 的编号算出，K 循环里不变，所以黄块的位置一直不变。</text>
+<text x="200" y="840" class="b"><tspan style="fill:#8e44ad">ks</tspan> 由轮次算出，每轮后移。第 2 轮 ks = [2, 3]：蓝块右移两列，绿块下移两行。</text>
+</svg>

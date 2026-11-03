@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">填充值 0 与 -inf 的对比</title>
+<desc id="desc">同一行 -3、-2、-5、-1、-4 补成 8 格。用 0 填充时最大值变成 0，填充位置指数各为 1，分母 3.5781，有效输出之和约 0.16。用 -inf 填充时最大值为 -1，填充位置指数为 0，分母 1.5713，结果正确。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">填充值不对，归约结果就不对</text>
+<text x="64" y="118" class="b">同一行 [−3, −2, −5, −1, −4]，BLOCK_SIZE = 8，后 3 格是填充位置</text>
+<rect x="64" y="150" width="716" height="640" rx="24" fill="#fff" stroke="#e3b3ac" stroke-width="2"/>
+<text x="94" y="200" class="h" style="fill:#c0392b">用 0 填充（错误）</text>
+<text x="94" y="236" class="s">读入 x</text>
+<rect x="94" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="135" y="288" text-anchor="middle" class="ms">−3</text>
+<rect x="176" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="217" y="288" text-anchor="middle" class="ms">−2</text>
+<rect x="258" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="299" y="288" text-anchor="middle" class="ms">−5</text>
+<rect x="340" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="381" y="288" text-anchor="middle" class="ms">−1</text>
+<rect x="422" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="463" y="288" text-anchor="middle" class="ms">−4</text>
+<rect x="504" y="250" width="82" height="60" fill="#f6e0dd" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/><text x="545" y="288" text-anchor="middle" class="ms">0</text>
+<rect x="586" y="250" width="82" height="60" fill="#f6e0dd" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/><text x="627" y="288" text-anchor="middle" class="ms">0</text>
+<rect x="668" y="250" width="82" height="60" fill="#f6e0dd" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/><text x="709" y="288" text-anchor="middle" class="ms">0</text>
+<text x="94" y="426" class="s">exp(x − max)</text>
+<rect x="94" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="135" y="478" text-anchor="middle" class="ms">0.0498</text>
+<rect x="176" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="217" y="478" text-anchor="middle" class="ms">0.1353</text>
+<rect x="258" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="299" y="478" text-anchor="middle" class="ms">0.0067</text>
+<rect x="340" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="381" y="478" text-anchor="middle" class="ms">0.3679</text>
+<rect x="422" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="463" y="478" text-anchor="middle" class="ms">0.0183</text>
+<rect x="504" y="440" width="82" height="60" fill="#f6e0dd" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/><text x="545" y="478" text-anchor="middle" class="ms">1</text>
+<rect x="586" y="440" width="82" height="60" fill="#f6e0dd" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/><text x="627" y="478" text-anchor="middle" class="ms">1</text>
+<rect x="668" y="440" width="82" height="60" fill="#f6e0dd" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/><text x="709" y="478" text-anchor="middle" class="ms">1</text>
+<text x="94" y="370" class="b">tl.max → <tspan style="fill:#c0392b;font-weight:700">0（应为 −1）</tspan></text>
+<text x="94" y="560" class="b">tl.sum → <tspan style="fill:#c0392b;font-weight:700">3.5781</tspan></text>
+<text x="94" y="630" class="s">最大值被填充位置“抢走”</text>
+<text x="94" y="670" class="s">3 个填充位置各给分母加 1</text>
+<text x="94" y="710" class="s">有效位置的输出之和只有约 0.16，不是 1</text>
+<text x="504" y="370" class="s" style="fill:#c0392b">← 来自填充位置</text>
+<rect x="820" y="150" width="716" height="640" rx="24" fill="#fff" stroke="#a9cdb5" stroke-width="2"/>
+<text x="850" y="200" class="h" style="fill:#2e7d4f">用 −inf 填充（正确）</text>
+<text x="850" y="236" class="s">读入 x</text>
+<rect x="850" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="891" y="288" text-anchor="middle" class="ms">−3</text>
+<rect x="932" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="973" y="288" text-anchor="middle" class="ms">−2</text>
+<rect x="1014" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="1055" y="288" text-anchor="middle" class="ms">−5</text>
+<rect x="1096" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="1137" y="288" text-anchor="middle" class="ms">−1</text>
+<rect x="1178" y="250" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="1219" y="288" text-anchor="middle" class="ms">−4</text>
+<rect x="1260" y="250" width="82" height="60" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="1301" y="288" text-anchor="middle" class="ms">−inf</text>
+<rect x="1342" y="250" width="82" height="60" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="1383" y="288" text-anchor="middle" class="ms">−inf</text>
+<rect x="1424" y="250" width="82" height="60" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="1465" y="288" text-anchor="middle" class="ms">−inf</text>
+<text x="850" y="426" class="s">exp(x − max)</text>
+<rect x="850" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="891" y="478" text-anchor="middle" class="ms">0.1353</text>
+<rect x="932" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="973" y="478" text-anchor="middle" class="ms">0.3679</text>
+<rect x="1014" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="1055" y="478" text-anchor="middle" class="ms">0.0183</text>
+<rect x="1096" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="1137" y="478" text-anchor="middle" class="ms">1</text>
+<rect x="1178" y="440" width="82" height="60" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/><text x="1219" y="478" text-anchor="middle" class="ms">0.0498</text>
+<rect x="1260" y="440" width="82" height="60" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="1301" y="478" text-anchor="middle" class="ms">0</text>
+<rect x="1342" y="440" width="82" height="60" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="1383" y="478" text-anchor="middle" class="ms">0</text>
+<rect x="1424" y="440" width="82" height="60" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/><text x="1465" y="478" text-anchor="middle" class="ms">0</text>
+<text x="850" y="370" class="b">tl.max → <tspan style="fill:#2e7d4f;font-weight:700">−1</tspan></text>
+<text x="850" y="560" class="b">tl.sum → <tspan style="fill:#2e7d4f;font-weight:700">1.5713</tspan></text>
+<text x="850" y="630" class="s">任何有限数都比 −inf 大：不影响 Max</text>
+<text x="850" y="670" class="s">e^(−inf) = 0：不影响 Sum</text>
+<text x="850" y="710" class="s">输出 [0.0861, 0.2341, 0.0117, 0.6364, 0.0317]</text>
+<rect x="64" y="810" width="1472" height="60" rx="14" fill="#eef2f6"/>
+<text x="94" y="848" class="b">mask 决定哪些地址能访问；other 决定被屏蔽位置在后续计算中的值。有归约时两者都要选对。</text>
+</svg>

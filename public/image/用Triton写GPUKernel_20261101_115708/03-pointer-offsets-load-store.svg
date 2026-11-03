@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">指针加偏移：tl.load 与 tl.store</title>
+<desc id="desc">x、y、output 是显存中三段连续数组。Program 1 的 offsets 为 256 到 511，同时对齐 x 和 y 的同一段，读入后相加，再按同样的 offsets 写回 output 的同一段。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">指针 + 偏移：一个 Program 读写自己的那一段</text>
+<text x="64" y="118" class="b">以 Program 1 为例：offsets = 1 × 256 + [0, 1, …, 255] = [256, …, 511]</text>
+<text x="64" y="176" class="h">显存</text>
+<text x="1120" y="176" class="h">Program 1 内部</text>
+<text x="64" y="266" class="m">x_ptr</text>
+<rect x="240" y="230" width="760" height="56" rx="6" fill="#eef2f6" stroke="#b4c5cf"/>
+<rect x="434.56" y="230" width="194.56" height="56" fill="#bcd6ef" stroke="#4f86b8" stroke-width="3"/>
+<text x="531.84" y="266" text-anchor="middle" class="b">x[256 : 512]</text>
+<path d="M240 220V296" stroke="#203b4d" stroke-width="3"/>
+<text x="1000" y="316" text-anchor="end" class="s">x 共 1000 个元素</text>
+<path d="M240 306H434.56" stroke="#7a8fa0" stroke-width="2" stroke-dasharray="6 6"/><text x="250" y="330" class="s">起始地址 + 256 个元素</text>
+<text x="64" y="426" class="m">y_ptr</text>
+<rect x="240" y="390" width="760" height="56" rx="6" fill="#eef2f6" stroke="#b4c5cf"/>
+<rect x="434.56" y="390" width="194.56" height="56" fill="#cfe8d6" stroke="#4f9a6a" stroke-width="3"/>
+<text x="531.84" y="426" text-anchor="middle" class="b">y[256 : 512]</text>
+<path d="M240 380V456" stroke="#203b4d" stroke-width="3"/>
+<text x="1000" y="476" text-anchor="end" class="s">y 共 1000 个元素</text>
+<path d="M240 466H434.56" stroke="#7a8fa0" stroke-width="2" stroke-dasharray="6 6"/><text x="250" y="490" class="s">起始地址 + 256 个元素</text>
+<text x="64" y="676" class="m">output_ptr</text>
+<rect x="240" y="640" width="760" height="56" rx="6" fill="#eef2f6" stroke="#b4c5cf"/>
+<rect x="434.56" y="640" width="194.56" height="56" fill="#fbefcc" stroke="#d9a53a" stroke-width="3"/>
+<text x="531.84" y="676" text-anchor="middle" class="b">output[256 : 512]</text>
+<path d="M240 630V706" stroke="#203b4d" stroke-width="3"/>
+<text x="1000" y="726" text-anchor="end" class="s">output 共 1000 个元素</text>
+<path d="M240 716H434.56" stroke="#7a8fa0" stroke-width="2" stroke-dasharray="6 6"/><text x="250" y="740" class="s">起始地址 + 256 个元素</text>
+<rect x="1100" y="210" width="436" height="340" rx="18" fill="#fff" stroke="#b4c5cf" stroke-width="2"/>
+<text x="1124" y="258" class="ms">x = tl.load(x_ptr + offsets)</text>
+<text x="1124" y="338" class="ms">y = tl.load(y_ptr + offsets)</text>
+<text x="1124" y="418" class="ms">result = x + y</text>
+<text x="1124" y="498" class="ms">tl.store(output_ptr + offsets, result)</text>
+<path d="M629.12 258H1092" stroke="#4f86b8" stroke-width="3" fill="none" marker-end="url(#ar)"/><text x="649.12" y="248" class="s" style="fill:#4f86b8">Load</text>
+<path d="M629.12 418C1040 418 1040 334 1092 334" stroke="#4f9a6a" stroke-width="3" fill="none" marker-end="url(#ar)"/><text x="649.12" y="408" class="s" style="fill:#4f9a6a">Load</text>
+<path d="M1300 550V600C1300 640 1200 668 637.12 668" stroke="#d9a53a" stroke-width="3" fill="none" marker-end="url(#ar)"/><text x="1316" y="600" class="s" style="fill:#b07d1c">Store</text>
+<rect x="64" y="790" width="1472" height="72" rx="14" fill="#eef2f6"/>
+<text x="94" y="834" class="b">三个张量起点不同，但用同一组 offsets。偏移单位是元素：FP32 时 +256 相当于 +1024 字节，由 Triton 自动换算。</text>
+</svg>

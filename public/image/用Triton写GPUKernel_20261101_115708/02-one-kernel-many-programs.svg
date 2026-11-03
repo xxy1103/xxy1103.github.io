@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">一份 Kernel 代码启动为多个 Program</title>
+<desc id="desc">一份 add_kernel 代码通过 add_kernel[grid] 以 Grid=(4,) 启动为 Program 0 到 3，每个 Program 的 pid 不同，分别处理 1000 个元素中的 0-255、256-511、512-767、768-999。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">一份代码，很多个 Program</text>
+<text x="64" y="118" class="b">我们只写一个 Program 的工作；Grid 决定这份代码被实例化多少次</text>
+<rect x="500" y="150" width="600" height="190" rx="18" fill="#fff" stroke="#b4c5cf" stroke-width="2"/>
+<text x="530" y="190" class="h">一份 Kernel 代码</text>
+<text x="530" y="228" class="m">pid = tl.program_id(0)</text>
+<text x="530" y="260" class="m">offsets = pid*256 + tl.arange(0,256)</text>
+<text x="530" y="292" class="m">load → add → store</text>
+<text x="1124" y="232" class="m">add_kernel[(4,)](...)</text>
+<text x="1124" y="266" class="s">启动：Grid = (4,)</text>
+<path d="M800 340L229 420" stroke="#7a8fa0" stroke-width="3" fill="none" marker-end="url(#ar)"/>
+<rect x="64" y="428" width="330" height="150" rx="16" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="88" y="470" class="h">Program 0</text>
+<text x="88" y="508" class="m">pid = 0</text>
+<text x="88" y="548" class="s">处理元素 0～255</text>
+<path d="M229 578L244.5 648" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<path d="M800 340L601 420" stroke="#7a8fa0" stroke-width="3" fill="none" marker-end="url(#ar)"/>
+<rect x="436" y="428" width="330" height="150" rx="16" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="460" y="470" class="h">Program 1</text>
+<text x="460" y="508" class="m">pid = 1</text>
+<text x="460" y="548" class="s">处理元素 256～511</text>
+<path d="M601 578L605.4 648" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<path d="M800 340L973 420" stroke="#7a8fa0" stroke-width="3" fill="none" marker-end="url(#ar)"/>
+<rect x="808" y="428" width="330" height="150" rx="16" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="832" y="470" class="h">Program 2</text>
+<text x="832" y="508" class="m">pid = 2</text>
+<text x="832" y="548" class="s">处理元素 512～767</text>
+<path d="M973 578L966.4 648" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<path d="M800 340L1345 420" stroke="#7a8fa0" stroke-width="3" fill="none" marker-end="url(#ar)"/>
+<rect x="1180" y="428" width="330" height="150" rx="16" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="1204" y="470" class="h">Program 3</text>
+<text x="1204" y="508" class="m">pid = 3</text>
+<text x="1204" y="548" class="s">处理元素 768～999</text>
+<path d="M1345 578L1310.4 648" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<text x="64" y="778" class="s">显存中的数组 x（共 1000 个元素）</text>
+<rect x="64.0" y="656" width="361.0" height="56" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/>
+<rect x="425.0" y="656" width="361.0" height="56" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/>
+<rect x="785.9" y="656" width="361.0" height="56" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/>
+<rect x="1146.9" y="656" width="327.1" height="56" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/>
+<text x="64" y="746" class="s">0</text><text x="425" y="746" class="s" text-anchor="middle">256</text><text x="786" y="746" class="s" text-anchor="middle">512</text><text x="1147" y="746" class="s" text-anchor="middle">768</text><text x="1474" y="746" class="s" text-anchor="end">999</text>
+<text x="244.5" y="692" text-anchor="middle" class="m">x[0 : 256]</text><text x="605.4" y="692" text-anchor="middle" class="m">x[256 : 512]</text><text x="966.4" y="692" text-anchor="middle" class="m">x[512 : 768]</text><text x="1310.4" y="692" text-anchor="middle" class="m">x[768 : 1000]</text>
+<rect x="64" y="800" width="1472" height="68" rx="14" fill="#eef2f6"/>
+<text x="94" y="842" class="b">4 个 Program 运行同一份代码，只有 pid 不同。它们由 GPU 调度到空闲的 SM 上，可能同时运行，也可能分批运行。</text>
+</svg>

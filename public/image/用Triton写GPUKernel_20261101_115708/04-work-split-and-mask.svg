@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">1000 个元素的工作划分与最后一块的 mask</title>
+<desc id="desc">上方：1000 个元素分给 4 个 Program，Program 3 的逻辑范围 768 到 1023 超出 N=1000。下方放大 Program 3：offsets、mask、load 结果三行，前 232 个位置 mask 为 True，后 24 个为 False，load 填入 other=0。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">最后一块不够长：用 mask 跳过越界位置</text>
+<text x="64" y="118" class="b">N = 1000，BLOCK_SIZE = 256，Grid = ceil(1000 / 256) = 4</text>
+<rect x="64.0" y="170" width="340.0" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/>
+<text x="234.0" y="210" text-anchor="middle" class="b">Program 0</text>
+<text x="64.0" y="264" class="s" text-anchor="start">0</text>
+<rect x="404.0" y="170" width="340.0" height="64" fill="#d7e6f5" stroke="#4f86b8" stroke-width="2"/>
+<text x="574.0" y="210" text-anchor="middle" class="b">Program 1</text>
+<text x="404.0" y="264" class="s" text-anchor="middle">256</text>
+<rect x="744.0" y="170" width="340.0" height="64" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/>
+<text x="914.0" y="210" text-anchor="middle" class="b">Program 2</text>
+<text x="744.0" y="264" class="s" text-anchor="middle">512</text>
+<rect x="1084.0" y="170" width="340.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="1254.0" y="210" text-anchor="middle" class="b">Program 3</text>
+<text x="1084.0" y="264" class="s" text-anchor="middle">768</text>
+<rect x="1392.1" y="170" width="31.9" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<path d="M1392.1 150V254" stroke="#c0392b" stroke-width="3"/><text x="1432.1" y="168" class="s" style="fill:#c0392b">N = 1000</text>
+<text x="1424.0" y="264" class="s" text-anchor="middle">1024</text>
+<path d="M1084.0 274L300 366M1424.0 274L1480 366" stroke="#d9a53a" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+<text x="64" y="356" class="h">放大 Program 3</text>
+<text x="64" y="422" class="m">offsets</text>
+<text x="64" y="512" class="m">mask</text>
+<text x="64" y="602" class="m">load 结果</text>
+<rect x="300.0" y="380" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="359.0" y="420" text-anchor="middle" class="m">768</text>
+<rect x="300.0" y="470" width="118.0" height="64" fill="#e3f1e7" stroke="#d9a53a" stroke-width="2"/>
+<text x="359.0" y="510" text-anchor="middle" class="m">True</text>
+<rect x="300.0" y="560" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="359.0" y="600" text-anchor="middle" class="ms">x[768]</text>
+<rect x="418.0" y="380" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="477.0" y="420" text-anchor="middle" class="m">769</text>
+<rect x="418.0" y="470" width="118.0" height="64" fill="#e3f1e7" stroke="#d9a53a" stroke-width="2"/>
+<text x="477.0" y="510" text-anchor="middle" class="m">True</text>
+<rect x="418.0" y="560" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="477.0" y="600" text-anchor="middle" class="ms">x[769]</text>
+<rect x="536.0" y="380" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="595.0" y="420" text-anchor="middle" class="m">770</text>
+<rect x="536.0" y="470" width="118.0" height="64" fill="#e3f1e7" stroke="#d9a53a" stroke-width="2"/>
+<text x="595.0" y="510" text-anchor="middle" class="m">True</text>
+<rect x="536.0" y="560" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="595.0" y="600" text-anchor="middle" class="ms">x[770]</text>
+<rect x="654.0" y="380" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="713.0" y="420" text-anchor="middle" class="m">…</text>
+<rect x="654.0" y="470" width="118.0" height="64" fill="#e3f1e7" stroke="#d9a53a" stroke-width="2"/>
+<text x="713.0" y="510" text-anchor="middle" class="m">…</text>
+<rect x="654.0" y="560" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="713.0" y="600" text-anchor="middle" class="ms">…</text>
+<rect x="772.0" y="380" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="831.0" y="420" text-anchor="middle" class="m">998</text>
+<rect x="772.0" y="470" width="118.0" height="64" fill="#e3f1e7" stroke="#d9a53a" stroke-width="2"/>
+<text x="831.0" y="510" text-anchor="middle" class="m">True</text>
+<rect x="772.0" y="560" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="831.0" y="600" text-anchor="middle" class="ms">x[998]</text>
+<rect x="890.0" y="380" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="949.0" y="420" text-anchor="middle" class="m">999</text>
+<rect x="890.0" y="470" width="118.0" height="64" fill="#e3f1e7" stroke="#d9a53a" stroke-width="2"/>
+<text x="949.0" y="510" text-anchor="middle" class="m">True</text>
+<rect x="890.0" y="560" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="949.0" y="600" text-anchor="middle" class="ms">x[999]</text>
+<rect x="1008.0" y="380" width="118.0" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1067.0" y="420" text-anchor="middle" class="m">1000</text>
+<rect x="1008.0" y="470" width="118.0" height="64" fill="#f6e0dd" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1067.0" y="510" text-anchor="middle" class="m" style="fill:#c0392b">False</text>
+<rect x="1008.0" y="560" width="118.0" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1067.0" y="600" text-anchor="middle" class="ms">0（other）</text>
+<rect x="1126.0" y="380" width="118.0" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1185.0" y="420" text-anchor="middle" class="m">1001</text>
+<rect x="1126.0" y="470" width="118.0" height="64" fill="#f6e0dd" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1185.0" y="510" text-anchor="middle" class="m" style="fill:#c0392b">False</text>
+<rect x="1126.0" y="560" width="118.0" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1185.0" y="600" text-anchor="middle" class="ms">0（other）</text>
+<rect x="1244.0" y="380" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="1303.0" y="420" text-anchor="middle" class="m">…</text>
+<rect x="1244.0" y="470" width="118.0" height="64" fill="#e3f1e7" stroke="#d9a53a" stroke-width="2"/>
+<text x="1303.0" y="510" text-anchor="middle" class="m">…</text>
+<rect x="1244.0" y="560" width="118.0" height="64" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/>
+<text x="1303.0" y="600" text-anchor="middle" class="ms">…</text>
+<rect x="1362.0" y="380" width="118.0" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1421.0" y="420" text-anchor="middle" class="m">1023</text>
+<rect x="1362.0" y="470" width="118.0" height="64" fill="#f6e0dd" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1421.0" y="510" text-anchor="middle" class="m" style="fill:#c0392b">False</text>
+<rect x="1362.0" y="560" width="118.0" height="64" fill="#f1f3f5" stroke="#9aa5ae" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="1421.0" y="600" text-anchor="middle" class="ms">0（other）</text>
+<path d="M1008.0 360V644" stroke="#c0392b" stroke-width="3"/>
+<text x="654.0" y="682" text-anchor="middle" class="b">232 个有效位置：正常读写</text>
+<text x="1244.0" y="682" text-anchor="middle" class="b" style="fill:#c0392b">24 个越界位置</text>
+<rect x="64" y="720" width="1472" height="140" rx="14" fill="#eef2f6"/>
+<text x="94" y="762" class="m">mask = offsets &lt; N</text>
+<text x="94" y="800" class="b">tl.load：mask 为 False 的位置不访问显存，直接填入 other（这里是 0）。</text>
+<text x="94" y="836" class="b">tl.store：只写 mask 为 True 的位置。前三个 Program 的 mask 全为 True，不受影响。</text>
+</svg>

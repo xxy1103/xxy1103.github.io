@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Kernel Fusion 的数据流对比</title>
+<desc id="desc">上方逐步执行：Max、Subtract、Exp、Sum、Divide 五个独立 Kernel，中间张量 z 和 e 写回显存再读出，约读 5 次、写 3 次大小为 M×N 的张量。下方融合 Kernel：读一次输入，片上完成五步，写一次输出。</desc>
+<defs><style>text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;fill:#203b4d}.t{font-size:38px;font-weight:700}.h{font-size:26px;font-weight:700}.b{font-size:22px}.s{font-size:19px;fill:#4d6575}.m{font-family:Menlo,Consolas,monospace;font-size:20px;fill:#203b4d}.ms{font-family:Menlo,Consolas,monospace;font-size:16px;fill:#203b4d}</style>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7a8fa0"/></marker></defs>
+<rect width="1600" height="900" fill="#f7f9fc"/>
+<text x="64" y="76" class="t">Kernel Fusion：计算没变，少的是显存往返</text>
+<text x="64" y="118" class="b">只统计 M × N 大小的张量；x_max、s 这类每行一个数的小张量忽略不计</text>
+<rect x="64" y="150" width="1472" height="330" rx="24" fill="#fff" stroke="#c9d5de"/>
+<text x="104" y="198" class="h">逐步执行：5 个 Kernel</text>
+<text x="1204" y="198" text-anchor="end" class="s"><tspan style="fill:#4f86b8;font-weight:700">↑ 蓝色：读显存</tspan>    <tspan style="fill:#c0392b;font-weight:700">↓ 红色：写显存</tspan></text>
+<rect x="104" y="390" width="1100" height="56" rx="10" fill="#e3e9ef" stroke="#9fb1be"/>
+<text x="654" y="426" text-anchor="middle" class="b">显存（HBM / GDDR）：x、z、e、y</text>
+<rect x="104" y="222" width="196" height="88" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="202" y="258" text-anchor="middle" class="h">Max</text><text x="202" y="292" text-anchor="middle" class="s" style="fill:#203b4d">读 x</text>
+<path d="M202 388V318" stroke="#4f86b8" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="328" y="222" width="196" height="88" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="426" y="258" text-anchor="middle" class="h">Subtract</text><text x="426" y="292" text-anchor="middle" class="s" style="fill:#203b4d">读 x，写 z</text>
+<path d="M398 388V318" stroke="#4f86b8" stroke-width="3" marker-end="url(#ar)"/>
+<path d="M454 312V382" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="552" y="222" width="196" height="88" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="650" y="258" text-anchor="middle" class="h">Exp</text><text x="650" y="292" text-anchor="middle" class="s" style="fill:#203b4d">读 z，写 e</text>
+<path d="M622 388V318" stroke="#4f86b8" stroke-width="3" marker-end="url(#ar)"/>
+<path d="M678 312V382" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="776" y="222" width="196" height="88" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="874" y="258" text-anchor="middle" class="h">Sum</text><text x="874" y="292" text-anchor="middle" class="s" style="fill:#203b4d">读 e</text>
+<path d="M874 388V318" stroke="#4f86b8" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="1000" y="222" width="196" height="88" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="1098" y="258" text-anchor="middle" class="h">Divide</text><text x="1098" y="292" text-anchor="middle" class="s" style="fill:#203b4d">读 e，写 y</text>
+<path d="M1070 388V318" stroke="#4f86b8" stroke-width="3" marker-end="url(#ar)"/>
+<path d="M1126 312V382" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="1240" y="222" width="272" height="224" rx="16" fill="#f6e0dd" stroke="#c0392b" stroke-width="2"/>
+<text x="1376" y="278" text-anchor="middle" class="h" style="fill:#c0392b">约 5 次读</text>
+<text x="1376" y="322" text-anchor="middle" class="h" style="fill:#c0392b">3 次写</text>
+<text x="1376" y="370" text-anchor="middle" class="s">5 次 Kernel 启动</text>
+<text x="1376" y="406" text-anchor="middle" class="s">z、e 是中间张量</text>
+<rect x="64" y="510" width="1472" height="270" rx="24" fill="#fff" stroke="#c9d5de"/>
+<text x="104" y="558" class="h">融合执行：1 个 Kernel</text>
+<rect x="104" y="590" width="150" height="70" rx="12" fill="#bcd6ef" stroke="#4f86b8" stroke-width="2"/><text x="179" y="633" text-anchor="middle" class="h">Load x</text>
+<path d="M254 625H300" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="310" y="578" width="720" height="94" rx="16" fill="#fbefcc" stroke="#d9a53a" stroke-width="3" stroke-dasharray="10 6"/>
+<text x="670" y="616" text-anchor="middle" class="b">片上（寄存器）完成</text>
+<text x="670" y="652" text-anchor="middle" class="m">Max → Subtract → Exp → Sum → Divide</text>
+<path d="M1030 625H1076" stroke="#7a8fa0" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="1086" y="590" width="150" height="70" rx="12" fill="#fbefcc" stroke="#d9a53a" stroke-width="2"/><text x="1161" y="633" text-anchor="middle" class="h">Store y</text>
+<rect x="1260" y="578" width="252" height="160" rx="16" fill="#e3f1e7" stroke="#4f9a6a" stroke-width="2"/>
+<text x="1386" y="626" text-anchor="middle" class="h" style="fill:#2e7d4f">1 次读</text>
+<text x="1386" y="668" text-anchor="middle" class="h" style="fill:#2e7d4f">1 次写</text>
+<text x="1386" y="712" text-anchor="middle" class="s">1 次 Kernel 启动</text>
+<text x="104" y="720" class="s">指数、加法、除法的次数和上面完全一样。</text>
+<rect x="64" y="800" width="1472" height="68" rx="14" fill="#eef2f6"/>
+<text x="94" y="842" class="b">Softmax 通常受显存带宽限制，减少搬运往往就能提速。torch.softmax 本身已是融合实现，快慢需实测。</text>
+</svg>
