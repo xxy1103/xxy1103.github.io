@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Dense Warm-up：冻结主模型，只训练共享 Indexer</title><desc id="desc">冻结的主模型在完整因果前缀上依次计算两层Attention，形成各自教师分布。Owner隐藏状态经Detach输入Indexer，对完整前缀打分并Softmax，预测分布同时接受两层KL监督，只更新Indexer。所选Top-K不控制主模型Attention。</desc>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9Z" fill="#64748b"/></marker><marker id="g" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9Z" fill="#b67727"/></marker><style>text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#243247}.t{font-size:34px;font-weight:650}.h{font-size:26px;font-weight:600}.b{font-size:23px}.s{font-size:21px;fill:#64748b}.a{fill:none;stroke:#64748b;stroke-width:3;marker-end:url(#a)}.d{fill:none;stroke:#64748b;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#a)}</style></defs>
+<rect width="1600" height="900" fill="#f8fafc"/><text x="60" y="65" class="t">Dense Warm-up：主模型提供完整注意力，Indexer 先学会选位置</text><text x="60" y="108" class="s">两层一组示意 · 监督覆盖完整因果前缀 · 实线：前向数据流；虚线：固定教师监督；橙线：参数更新</text>
+<rect x="60" y="145" width="690" height="590" rx="20" fill="#edf3fd" stroke="#9bb4db"/><text x="90" y="190" class="h">主模型：参数冻结，只做前向</text>
+<rect x="100" y="225" width="590" height="65" rx="12" fill="white" stroke="#9bb4db"/><text x="395" y="267" text-anchor="middle" class="b">Owner 层输入隐藏状态</text>
+<path d="M395 290 V335" class="a"/>
+<rect x="100" y="335" width="590" height="115" rx="12" fill="white" stroke="#9bb4db"/><text x="130" y="376" class="b">第 l 层：完整因果 Attention</text><text x="130" y="419" class="s">各 Head 权重聚合、归一化 → 教师 p⁽ˡ⁾</text>
+<path d="M395 450 V495" class="a"/>
+<rect x="100" y="495" width="590" height="115" rx="12" fill="white" stroke="#9bb4db"/><text x="130" y="536" class="b">第 l+1 层：完整因果 Attention</text><text x="130" y="579" class="s">各 Head 权重聚合、归一化 → 教师 p⁽ˡ⁺¹⁾</text>
+<text x="100" y="661" class="b">两层前向按顺序执行，各自产生教师分布</text><text x="100" y="703" class="s">不使用 Indexer 的 Top-K 来限制 Attention</text>
+<rect x="850" y="145" width="690" height="590" rx="20" fill="#fff6e9" stroke="#d9b17d"/><text x="880" y="190" class="h">Owner Indexer：唯一更新的参数</text>
+<path d="M690 258 H940 V280" class="a"/><rect x="720" y="235" width="170" height="36" rx="6" fill="#f8fafc"/><text x="805" y="260" text-anchor="middle" class="s">输入 Detach</text>
+<rect x="935" y="280" width="540" height="85" rx="12" fill="white" stroke="#d9b17d"/><text x="1205" y="316" text-anchor="middle" class="b">对完整可见前缀计算 Indexer 分数 I</text><text x="1205" y="348" text-anchor="middle" class="s">历史输入也与主模型梯度分离</text>
+<path d="M1205 365 V405" class="a"/>
+<rect x="935" y="405" width="540" height="60" rx="12" fill="white" stroke="#d9b17d"/><text x="1205" y="443" text-anchor="middle" class="b">Softmax → 位置预测分布 r</text>
+<path d="M1205 465 V515" class="a"/>
+<rect x="1000" y="515" width="475" height="105" rx="12" fill="white" stroke="#d9b17d"/><text x="1237" y="554" text-anchor="middle" class="b">KL(p⁽ˡ⁾ ∥ r) + KL(p⁽ˡ⁺¹⁾ ∥ r)</text><text x="1237" y="595" text-anchor="middle" class="s">同一份预测，同时对齐两层教师</text>
+<path d="M690 392 H965 V548 H1000" class="d"/>
+<path d="M690 552 H925 V590 H1000" class="d"/>
+<path d="M988 540 L1000 548 L988 556 Z M988 582 L1000 590 L988 598 Z" fill="#64748b"/>
+<rect x="749" y="464" width="143" height="63" rx="7" fill="#f8fafc"/><text x="820" y="488" text-anchor="middle" class="s">教师监督</text><text x="820" y="516" text-anchor="middle" class="s">不回传梯度</text>
+<path d="M1237 620 V655" fill="none" stroke="#b67727" stroke-width="3" marker-end="url(#g)"/><text x="1237" y="692" text-anchor="middle" class="b" style="fill:#9b621c">反向：只更新 Owner Indexer</text>
+<rect x="60" y="775" width="1480" height="90" rx="16" fill="white" stroke="#dce3ec"/><text x="90" y="812" class="b">先学习“哪些位置重要”，暂不让选择结果改变主模型的 Attention 范围。</text><text x="90" y="850" class="s">依据论文 Section 2.2、3.2：Dense Warm-up 也使用跨层蒸馏；下一阶段才切换为选中集合上的稀疏 Attention。</text>
+</svg>
