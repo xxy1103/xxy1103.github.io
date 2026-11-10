@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<style>
+text{font-family:'PingFang SC','Microsoft YaHei',sans-serif;font-size:22px;fill:#334155}
+.t{font-size:34px;font-weight:700;fill:#0f172a}
+.h{font-size:26px;font-weight:700;fill:#0f172a}
+.b{font-weight:700;fill:#0f172a}
+.c{text-anchor:middle}
+.mute{fill:#64748b}
+.on{fill:#6ee7b7;stroke:#059669;stroke-width:2}
+.off{fill:#f1f5f9;stroke:#94a3b8;stroke-width:2;stroke-dasharray:6 5}
+.g{fill:#e2e8f0;stroke:#cbd5e1;stroke-width:2}
+.p{fill:#ffffff;stroke:#cbd5e1;stroke-width:2}
+</style>
+<rect width="1600" height="900" fill="#f8fafc"/>
+<text x="60" y="68" class="t">稀疏 Attention 按 Ring 方式切到 4 张 GPU：时间花在哪里？</text>
+<text x="60" y="108">示意例子：Global+Local 稀疏模式，Q 与 KV 各切 4 块，第 i 块初始存放在 GPU i。</text>
+<rect x="40" y="135" width="470" height="475" rx="18" class="p"/>
+<text x="70" y="180" class="h">稀疏模式：16 个 Block 只算 7 个</text>
+<text x="190" y="218" class="c b">KV0</text>
+<text x="270" y="218" class="c b">KV1</text>
+<text x="350" y="218" class="c b">KV2</text>
+<text x="430" y="218" class="c b">KV3</text>
+<text x="135" y="278" text-anchor="end" class="b">Q0</text>
+<rect x="152" y="232" width="76" height="76" rx="6" class="on"/>
+<rect x="232" y="232" width="76" height="76" rx="6" class="g"/>
+<rect x="312" y="232" width="76" height="76" rx="6" class="g"/>
+<rect x="392" y="232" width="76" height="76" rx="6" class="g"/>
+<text x="135" y="358" text-anchor="end" class="b">Q1</text>
+<rect x="152" y="312" width="76" height="76" rx="6" class="on"/>
+<rect x="232" y="312" width="76" height="76" rx="6" class="on"/>
+<rect x="312" y="312" width="76" height="76" rx="6" class="g"/>
+<rect x="392" y="312" width="76" height="76" rx="6" class="g"/>
+<text x="135" y="438" text-anchor="end" class="b">Q2</text>
+<rect x="152" y="392" width="76" height="76" rx="6" class="on"/>
+<rect x="232" y="392" width="76" height="76" rx="6" class="g"/>
+<rect x="312" y="392" width="76" height="76" rx="6" class="on"/>
+<rect x="392" y="392" width="76" height="76" rx="6" class="g"/>
+<text x="135" y="518" text-anchor="end" class="b">Q3</text>
+<rect x="152" y="472" width="76" height="76" rx="6" class="on"/>
+<rect x="232" y="472" width="76" height="76" rx="6" class="g"/>
+<rect x="312" y="472" width="76" height="76" rx="6" class="g"/>
+<rect x="392" y="472" width="76" height="76" rx="6" class="on"/>
+<rect x="70" y="577" width="24" height="24" rx="4" class="on"/><text x="104" y="597">需要计算</text>
+<rect x="250" y="577" width="24" height="24" rx="4" class="g"/><text x="284" y="597">跳过</text>
+<rect x="540" y="135" width="1020" height="475" rx="18" class="p"/>
+<text x="570" y="180" class="h">Ring 通信：每一步，各 GPU 把手里的 KV 传给下一张</text>
+<text x="800" y="232" class="c b">Step 0</text>
+<text x="1010" y="232" class="c b">Step 1</text>
+<text x="1220" y="232" class="c b">Step 2</text>
+<text x="1430" y="232" class="c b">Step 3</text>
+<text x="570" y="285" class="b">GPU0</text>
+<rect x="700" y="245" width="200" height="62" rx="10" class="on"/><text x="800" y="284" class="c">计算 Q0·KV0</text>
+<rect x="910" y="245" width="200" height="62" rx="10" class="off"/><text x="1010" y="284" class="c mute">收到 KV3，用不上</text>
+<rect x="1120" y="245" width="200" height="62" rx="10" class="off"/><text x="1220" y="284" class="c mute">收到 KV2，用不上</text>
+<rect x="1330" y="245" width="200" height="62" rx="10" class="off"/><text x="1430" y="284" class="c mute">收到 KV1，用不上</text>
+<text x="570" y="357" class="b">GPU1</text>
+<rect x="700" y="317" width="200" height="62" rx="10" class="on"/><text x="800" y="356" class="c">计算 Q1·KV1</text>
+<rect x="910" y="317" width="200" height="62" rx="10" class="on"/><text x="1010" y="356" class="c">计算 Q1·KV0</text>
+<rect x="1120" y="317" width="200" height="62" rx="10" class="off"/><text x="1220" y="356" class="c mute">收到 KV3，用不上</text>
+<rect x="1330" y="317" width="200" height="62" rx="10" class="off"/><text x="1430" y="356" class="c mute">收到 KV2，用不上</text>
+<text x="570" y="429" class="b">GPU2</text>
+<rect x="700" y="389" width="200" height="62" rx="10" class="on"/><text x="800" y="428" class="c">计算 Q2·KV2</text>
+<rect x="910" y="389" width="200" height="62" rx="10" class="off"/><text x="1010" y="428" class="c mute">收到 KV1，用不上</text>
+<rect x="1120" y="389" width="200" height="62" rx="10" class="on"/><text x="1220" y="428" class="c">计算 Q2·KV0</text>
+<rect x="1330" y="389" width="200" height="62" rx="10" class="off"/><text x="1430" y="428" class="c mute">收到 KV3，用不上</text>
+<text x="570" y="501" class="b">GPU3</text>
+<rect x="700" y="461" width="200" height="62" rx="10" class="on"/><text x="800" y="500" class="c">计算 Q3·KV3</text>
+<rect x="910" y="461" width="200" height="62" rx="10" class="off"/><text x="1010" y="500" class="c mute">收到 KV2，用不上</text>
+<rect x="1120" y="461" width="200" height="62" rx="10" class="off"/><text x="1220" y="500" class="c mute">收到 KV1，用不上</text>
+<rect x="1330" y="461" width="200" height="62" rx="10" class="on"/><text x="1430" y="500" class="c">计算 Q3·KV0</text>
+<rect x="570" y="552" width="40" height="28" rx="6" class="off"/><text x="622" y="574">收到但用不上的 KV → ①</text>
+<rect x="950" y="552" width="40" height="28" rx="6" class="on"/><text x="1002" y="574">真正有计算</text>
+<text x="1530" y="574" text-anchor="end" class="b" style="fill:#c2410c">Step 1–3 每步只有 1 张卡在算 → ②</text>
+<rect x="40" y="635" width="745" height="225" rx="18" fill="#fff7ed" stroke="#fb923c" stroke-width="3"/>
+<text x="65" y="680" class="h" style="fill:#c2410c">① 白传的 KV</text>
+<text x="65" y="722">Step 1–3 共 12 次 KV 接收，</text>
+<text x="65" y="757">只有 3 次被计算用到，9 次（75%）</text>
+<text x="65" y="792">占用带宽却没有对应计算。</text>
+<rect x="815" y="635" width="745" height="225" rx="18" fill="#eff6ff" stroke="#60a5fa" stroke-width="3"/>
+<text x="840" y="680" class="h" style="fill:#1d4ed8">② 负载不均衡</text>
+<text x="840" y="722">Step 1–3 每步只有 1 张 GPU 在算，</text>
+<text x="840" y="757">其余 3 张空等；</text>
+<text x="840" y="792">GPU0 全程只算 1 个 Block。</text>
+<text x="1540" y="888" text-anchor="end" style="font-size:18px;fill:#94a3b8">示意例子，用于说明问题，非论文实验数据</text>
+</svg>

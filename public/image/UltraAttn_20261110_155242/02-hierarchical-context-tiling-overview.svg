@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow-dark" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#334155"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#2563eb"/>
+    </marker>
+    <style>
+      .title{font:700 34px 'PingFang SC','Microsoft YaHei',sans-serif;fill:#0f172a}
+      .stage{font:700 24px 'PingFang SC','Microsoft YaHei',sans-serif;fill:#0f172a}
+      .h{font:700 21px 'PingFang SC','Microsoft YaHei',sans-serif;fill:#0f172a}
+      .body{font:400 18px 'PingFang SC','Microsoft YaHei',sans-serif;fill:#334155}
+      .small{font:400 16px 'PingFang SC','Microsoft YaHei',sans-serif;fill:#475569}
+      .tiny{font:400 14px 'PingFang SC','Microsoft YaHei',sans-serif;fill:#64748b}
+      .panel{stroke:#cbd5e1;stroke-width:2;rx:18}
+      .label{font:700 16px 'PingFang SC','Microsoft YaHei',sans-serif;fill:#334155}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f8fafc"/>
+  <text x="60" y="55" class="title">同一个 Attention 工作负载，如何逐层变成可执行计划？</text>
+  <text x="60" y="88" class="body">上半部分追踪工作负载的细化；下半部分追踪 Kernel 依赖到 CUDA Stream 的落地。</text>
+
+  <rect x="55" y="125" width="330" height="420" fill="#ffffff" class="panel"/>
+  <rect x="55" y="125" width="330" height="54" fill="#e2e8f0" rx="18"/>
+  <text x="82" y="160" class="stage">① Attention Pattern</text>
+  <text x="82" y="207" class="body">黑色：有效计算 Block</text>
+  <text x="82" y="234" class="body">白色：跳过的 Block</text>
+  <g transform="translate(102,260)">
+    <rect x="0" y="0" width="220" height="176" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <g stroke="#cbd5e1" stroke-width="1">
+      <path d="M27.5 0V176 M55 0V176 M82.5 0V176 M110 0V176 M137.5 0V176 M165 0V176 M192.5 0V176"/>
+      <path d="M0 22H220 M0 44H220 M0 66H220 M0 88H220 M0 110H220 M0 132H220 M0 154H220"/>
+    </g>
+    <g fill="#334155">
+      <rect x="0" y="0" width="27.5" height="22"/><rect x="27.5" y="22" width="27.5" height="22"/>
+      <rect x="55" y="44" width="27.5" height="22"/><rect x="82.5" y="66" width="27.5" height="22"/>
+      <rect x="110" y="88" width="27.5" height="22"/><rect x="137.5" y="110" width="27.5" height="22"/>
+      <rect x="165" y="132" width="27.5" height="22"/><rect x="192.5" y="154" width="27.5" height="22"/>
+      <rect x="0" y="22" width="27.5" height="22"/><rect x="0" y="44" width="27.5" height="22"/>
+      <rect x="0" y="66" width="27.5" height="22"/><rect x="0" y="88" width="27.5" height="22"/>
+      <rect x="0" y="110" width="27.5" height="22"/><rect x="0" y="132" width="27.5" height="22"/>
+      <rect x="0" y="154" width="27.5" height="22"/>
+    </g>
+    <text x="48" y="206" class="small">Q × KV Block Pattern</text>
+  </g>
+  <text x="82" y="495" class="small">输入：稀疏模式、GPU/Node 拓扑、Profiling</text>
+
+  <line x1="400" y1="335" x2="450" y2="335" stroke="#334155" stroke-width="4" marker-end="url(#arrow-dark)"/>
+
+  <rect x="465" y="125" width="330" height="420" fill="#fff7ed" class="panel" stroke="#fb923c"/>
+  <rect x="465" y="125" width="330" height="54" fill="#fed7aa" rx="18"/>
+  <text x="492" y="160" class="stage">② Context Remap</text>
+  <text x="492" y="207" class="body">重新安排 Token 在 CP ranks 上的布局</text>
+  <g transform="translate(510,265)">
+    <rect x="0" y="0" width="240" height="170" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <g stroke="#cbd5e1" stroke-width="1">
+      <path d="M30 0V170 M60 0V170 M90 0V170 M120 0V170 M150 0V170 M180 0V170 M210 0V170"/>
+      <path d="M0 28.3H240 M0 56.6H240 M0 84.9H240 M0 113.2H240 M0 141.5H240"/>
+    </g>
+    <g fill="#fb923c">
+      <rect x="0" y="0" width="30" height="28.3"/><rect x="60" y="0" width="30" height="28.3"/><rect x="120" y="0" width="30" height="28.3"/><rect x="180" y="0" width="30" height="28.3"/>
+      <rect x="30" y="28.3" width="30" height="28.3"/><rect x="90" y="28.3" width="30" height="28.3"/><rect x="150" y="28.3" width="30" height="28.3"/><rect x="210" y="28.3" width="30" height="28.3"/>
+      <rect x="0" y="56.6" width="30" height="28.3"/><rect x="60" y="56.6" width="30" height="28.3"/><rect x="120" y="56.6" width="30" height="28.3"/><rect x="180" y="56.6" width="30" height="28.3"/>
+      <rect x="30" y="84.9" width="30" height="28.3"/><rect x="90" y="84.9" width="30" height="28.3"/><rect x="150" y="84.9" width="30" height="28.3"/><rect x="210" y="84.9" width="30" height="28.3"/>
+      <rect x="0" y="113.2" width="30" height="28.3"/><rect x="60" y="113.2" width="30" height="28.3"/><rect x="120" y="113.2" width="30" height="28.3"/><rect x="180" y="113.2" width="30" height="28.3"/>
+      <rect x="30" y="141.5" width="30" height="28.3"/><rect x="90" y="141.5" width="30" height="28.3"/><rect x="150" y="141.5" width="30" height="28.3"/><rect x="210" y="141.5" width="30" height="28.3"/>
+    </g>
+    <text x="50" y="204" class="small">Remapped Context</text>
+  </g>
+  <text x="492" y="495" class="small">输出：更适合后续切分的上下文布局</text>
+
+  <line x1="810" y1="335" x2="860" y2="335" stroke="#334155" stroke-width="4" marker-end="url(#arrow-dark)"/>
+
+  <rect x="875" y="125" width="330" height="420" fill="#eff6ff" class="panel" stroke="#60a5fa"/>
+  <rect x="875" y="125" width="330" height="54" fill="#bfdbfe" rx="18"/>
+  <text x="902" y="160" class="stage">③ Node → Device</text>
+  <text x="902" y="207" class="body">先按 Node，再展开到 GPU</text>
+  <g transform="translate(905,260)">
+    <rect x="0" y="0" width="125" height="170" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="10"/>
+    <text x="17" y="27" class="label">Node 0</text>
+    <rect x="15" y="45" width="42" height="42" fill="#f9a8d4" stroke="#334155"/><rect x="68" y="45" width="42" height="42" fill="#fcd34d" stroke="#334155"/>
+    <rect x="15" y="100" width="42" height="42" fill="#7dd3fc" stroke="#334155"/><rect x="68" y="100" width="42" height="42" fill="#86efac" stroke="#334155"/>
+    <text x="15" y="160" class="tiny">GPU 0–3</text>
+    <rect x="150" y="0" width="125" height="170" fill="#e2e8f0" stroke="#64748b" stroke-width="2" rx="10"/>
+    <text x="167" y="27" class="label">Node 1</text>
+    <rect x="165" y="45" width="42" height="42" fill="#c4b5fd" stroke="#334155"/><rect x="218" y="45" width="42" height="42" fill="#fdba74" stroke="#334155"/>
+    <rect x="165" y="100" width="42" height="42" fill="#67e8f9" stroke="#334155"/><rect x="218" y="100" width="42" height="42" fill="#fda4af" stroke="#334155"/>
+    <text x="165" y="160" class="tiny">GPU 4–7</text>
+    <path d="M126 83H148" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  </g>
+  <text x="902" y="468" class="small">Node-Level：安排节点间通信</text>
+  <text x="902" y="495" class="small">Device-Level：平衡 GPU 计算与通信</text>
+
+  <line x1="1220" y1="335" x2="1270" y2="335" stroke="#334155" stroke-width="4" marker-end="url(#arrow-dark)"/>
+
+  <rect x="1285" y="125" width="260" height="420" fill="#fef2f2" class="panel" stroke="#f87171"/>
+  <rect x="1285" y="125" width="260" height="54" fill="#fecaca" rx="18"/>
+  <text x="1312" y="160" class="stage">④ Kernel / Runtime</text>
+  <text x="1312" y="207" class="body">把任务变成执行图</text>
+  <text x="1312" y="254" class="h">计算 Kernel</text>
+  <rect x="1312" y="275" width="80" height="42" fill="#fca5a5" stroke="#334155" rx="6"/><text x="1336" y="302" class="label">A0</text>
+  <rect x="1410" y="275" width="80" height="42" fill="#fca5a5" stroke="#334155" rx="6"/><text x="1434" y="302" class="label">A1</text>
+  <text x="1312" y="358" class="h">通信 Kernel</text>
+  <rect x="1312" y="378" width="80" height="42" fill="#fcd34d" stroke="#334155" rx="6"/><text x="1330" y="405" class="label">KV3</text>
+  <rect x="1410" y="378" width="80" height="42" fill="#fcd34d" stroke="#334155" rx="6"/><text x="1430" y="405" class="label">Q3</text>
+  <path d="M1352 317V378 M1450 317V378" stroke="#334155" stroke-width="3" marker-end="url(#arrow-dark)"/>
+  <text x="1312" y="468" class="small">Kernel-Level：调粒度</text>
+  <text x="1312" y="495" class="small">Runtime：排执行顺序</text>
+
+  <rect x="55" y="595" width="1490" height="235" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" rx="18"/>
+  <text x="85" y="635" class="stage">同一个工作负载在层次之间如何变化？</text>
+  <line x1="85" y1="665" x2="1510" y2="665" stroke="#e2e8f0" stroke-width="2"/>
+  <circle cx="120" cy="720" r="23" fill="#334155"/><text x="112" y="728" font-size="20" font-weight="700" fill="#fff">A</text>
+  <text x="160" y="715" class="h">Pattern</text><text x="160" y="743" class="small">哪些 Block 有效？</text>
+  <line x1="300" y1="720" x2="365" y2="720" stroke="#334155" stroke-width="3" marker-end="url(#arrow-dark)"/>
+  <circle cx="415" cy="720" r="23" fill="#fb923c"/><text x="407" y="728" font-size="20" font-weight="700" fill="#fff">B</text>
+  <text x="455" y="715" class="h">Node / GPU Workload</text><text x="455" y="743" class="small">谁计算？需要哪些 Q/K/V？</text>
+  <line x1="700" y1="720" x2="765" y2="720" stroke="#334155" stroke-width="3" marker-end="url(#arrow-dark)"/>
+  <circle cx="815" cy="720" r="23" fill="#ef4444"/><text x="807" y="728" font-size="20" font-weight="700" fill="#fff">C</text>
+  <text x="855" y="715" class="h">Kernel Graph</text><text x="855" y="743" class="small">任务如何依赖和重叠？</text>
+  <line x1="1060" y1="720" x2="1125" y2="720" stroke="#334155" stroke-width="3" marker-end="url(#arrow-dark)"/>
+  <circle cx="1175" cy="720" r="23" fill="#8b5cf6"/><text x="1167" y="728" font-size="20" font-weight="700" fill="#fff">D</text>
+  <text x="1215" y="715" class="h">CUDA Stream Graph</text><text x="1215" y="743" class="small">什么时候执行？</text>
+  <text x="85" y="795" class="small">Context-Tiling ILP 主要决定 A → B；Runtime ILP 主要决定 C → D。</text>
+  <text x="790" y="795" class="small">两者共享同一份硬件与 Profiling 信息，但优化对象不同。</text>
+</svg>
